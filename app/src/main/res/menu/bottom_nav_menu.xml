@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/bottomcompose"
+        android:icon="@drawable/ic_action_play"
+        android:title="@string/bottomnav">
+
+    </item>
+
+    <item
+        android:id="@+id/surahcompose"
+        android:icon="@drawable/sura_1"
+        android:title="@string/SelectSurah"
+
+        app:showAsAction="always" />
+
+
+
+    <item
+        android:id="@+id/bottomcompseact"
+        android:icon="@drawable/sura_1"
+        android:title="@string/bottomact"
+
+        app:showAsAction="always" />
+
+
+
+
+
+</menu>

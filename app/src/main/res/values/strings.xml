@@ -1,0 +1,460 @@
+<!--
+~ Copyright (C) 2019 The Android Open Source Project
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~      http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--    <string name="app_name"></string>-->
+    <!--Main-->
+
+    <!--Instructions-->
+
+    <!--Component-->
+
+
+    <!--Theme Summary-->
+
+
+    <!-- Strings used for fragments for navigation -->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="prayertimings">Prayer Timings</string>
+    <!-- Shrine backdrop menu labels -->
+
+    <string name="OK" />
+
+
+    <string name="prefs_select_translaton">selecttranslation</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="app_folder_path">/Mushafapplication</string>
+    <string name="permission">he application can not start without this permission.</string>
+
+
+    <string name="Alert">Alert</string>
+
+    <string name="toolbar_title">SEARCH</string>
+    <string name="action_search">search</string>
+    <string name="prefs_show_translitration">showtransliterationKey</string>
+    <string name="prefs_show_root">showrootkey</string>
+    <string name="prefs_show_en_jalalayn">showEnglishJalalayn</string>
+
+    <string name="seek_title">English Font Selection</string>
+    <string name="seek_summary">Summary</string>
+
+    <!--website titles> -->
+    <string name="google_title">Google</string>
+    <string name="google_summary">Google search</string>
+    <string name="google_link" translatable="false">https://google.com</string>
+
+    <string name="ddg_title">DuckDuckGo</string>
+    <string name="ddg_summary">DuckDuckGo search</string>
+    <string name="ddg_link" translatable="false">https://duckduckgo.com/</string>
+    <string name="seek_titles">Arabic Font Size</string>
+    <string name="arabic_font_style"><![CDATA[Arabic Font Style<]]></string>
+
+
+    <string-array name="encase">
+
+        <item>Nom.</item>
+        <item>Acc.</item>
+        <item>Gen.</item>
+
+    </string-array>
+    <string-array name="arabicpronouns">
+
+        <item>هو </item>
+        <item>"هما(مذ)" </item>
+        <item>هم </item>
+        <item>هي </item>
+        <item>"هما(مؤ)" </item>
+        <item>هن </item>
+        <item>أنت</item>
+        <item>أنتما </item>
+        <item>أنتم </item>
+        <item>أنت </item>
+        <item>أنتما </item>
+        <item>أنتن </item>
+        <item>أنا  </item>
+        <item>نحن  </item>
+    </string-array>
+    <string-array name="arcase">
+
+        <item>الرفع </item>
+        <item>النصب</item>
+        <item>الجر  </item>
+
+    </string-array>
+
+
+    <string name="faelmazi">Past Activeٍ</string>
+    <string name="faelmudhary">Present Active</string>
+    <string name="faelmadimajhool">Past Passive </string>
+    <string name="faelmudharymajhol">Present Passive</string>
+    <string name="faelamr">Command</string>
+    <string name="lang">Conjugation Headers</string>
+    <string name="click_more">Click for Verb Conjugation</string>
+
+
+    <string-array name="lang_names">
+
+        <item>English</item>
+        <item>Arabic</item>
+    </string-array>
+
+    <string-array name="lang_codes">
+
+        <item>en</item>
+        <item>ar</item>
+    </string-array>
+
+    <string-array name="verbmoodsList">
+        <item>Indicative(مرفوع)</item>
+        <item>Subjunctive(منصوب)</item>
+        <item>Jussive(مجزوم)</item>
+        <item>Emphasized</item>
+
+    </string-array>
+
+    <string-array name="verbmoodEntry">
+        <item>Indicative</item>
+        <item>Subjunctive</item>
+        <item>Jussive</item>
+        <item>Emphasized</item>>
+    </string-array>
+
+    <string name="ismmafool">الاسم المفعول</string>
+    <string name="ismalaone">مِفْعَلٌ</string>
+    <string name="ismalatwo">مِفْعَلَةٌ</string>
+    <string name="ismalthree">مِفْعَالٌ</string>
+
+
+    <string name="zarfmafalun">مَفْعَلٌ</string>
+    <string name="zarfmafilun">مَفْعِلٌ</string>
+    <string name="zarfmafalatun">مَفْعَلةٌ</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="mujarradlist">Mujarrad </string>
+    <string name="title_activity_verb_conjugation">VerbConjugationAct</string>
+    <string name="conjugator">Verb Conjugator</string>
+    <string name="mazeed_list">Mazeed</string>
+    <string name="quranactivity">Quran</string>
+    <string name="settings_conjugator">Settings </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="prefs_show_mausoof">mausoof</string>
+    <string name="prefs_show_mudhaf">mudhaf</string>
+    <string name="prefs_show_harfnasb">harfnasb</string>
+
+    <string name="bookmarks">BookMarks</string>
+    <string name="bookmark_last_read">Last Read</string>
+    <string name="quick_links">Quick Links</string>
+
+    <string name="text_ayatul_kursi">Ayatul Kursi</string>
+    <string name="text_kahaf">Al-Kahaf</string>
+    <string name="lemma">lemma</string>
+    <string name="root_word">Root Word</string>
+    <string name="prefs_show_shart">shart</string>
+    <string name="prefs_grammar_sentence">grammarsentence</string>
+    <string name="prefs_show_kana">kana</string>
+    <string name="prefs_wbw">wbw</string>
+    <string name="prefs_show_colortag">colortag</string>
+    <string name="linkkahaf">Surah Kahaf</string>
+    <string name="mudhafsummary">Surah 1 to 8 and 59 to 114</string>
+    <string name="harfnasbsummary">Valid only from Surah 1 to 8 and 59 to 114</string>
+
+    <string name="notfound">not found</string>
+    <string name="colorize">Colorize</string>
+    <string name="go_to_surah_ayah">Go to Surah/Ayah</string>
+    <string name="jussive">Jussive</string>
+    <string name="emphasized">Emphasized</string>
+    <string name="subjunctive">Subjunctive</string>
+    <string name="nasara">nasara</string>
+    <string name="mujarrad_augmented">Mujarrad/UnAugmented</string>
+    <string name="iftiala">Iftiala</string>
+    <string name="istifala">Istifala</string>
+    <string name="mujarrad_listing">Mujarrad List</string>
+    <string name="mazeed_listing">Mazeed list</string>
+    <string name="moodsummar">indicative,Subjunctive,Jussive,Emphasized</string>
+    <string name="indicative">Indicative</string>
+    <string name="loadingverbs">Please wait! Loading Sample of 30 Verbs.</string>
+    <string name="title_activity_grammarrulelist_detail_host">grammarrulelistDetailHostActivity
+    </string>
+    <string name="prefs_show_kathir">showKathir</string>
+    <string name="arberry">A.J.Arberry</string>
+    <string name="ensahih">Sahee International</string>
+    <string name="enjalalayn">Jalalyan Tafseer</string>
+    <string name="urjunagadi">Junagarhi</string>
+    <string name="action_share_credit">via @HisnulMuslimApp</string>
+    <string name="action_share_title"><![CDATA[Share Dua<]]></string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
+
+
+    <string name="al_quran">Al - Quran</string>
+    <string name="tafsir_by_word">Version 1.0</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+
+    <string name="popup_tafsir_ibn_kathir">Tafsir Ibne Kathir</string>
+    <string name="_text_arabic">Arabic</string>
+    <string name="symbol_arrow_down">▼</string>
+    <string name="_text_translation">English Translation</string>
+    <string name="_text_tafsir">English Tafsir Kathir</string>
+    <string name="content_description_one">Search</string>
+    <string name="share_app">Share</string>
+    <string name="str_bookmark">Book</string>
+    <string name="search">search</string>
+    <string name="search_title">Search</string>
+    <string name="back">◀ </string>
+    <string name="jumpto">jumpto</string>
+    <string name="settings">settings</string>
+    <string name="mushafview">mushafview</string>
+    <string name="surah">Surah</string>
+    <string name="conjugatorS">Conjugator</string>
+    <string name="colorscheme">Word Color Scheme</string>
+    <string name="jeem">چ</string>
+    <string name="tha">ث</string>
+    <string name="ta">ت</string>
+    <string name="ba">ب</string>
+    <string name="alifhamza">ا</string>
+    <string name="dal">د</string>
+    <string name="kha">خ</string>
+    <string name="ha">ح</string>
+    <string name="toay">ط</string>
+    <string name="dhuad">ض</string>
+    <string name="suad">ص</string>
+    <string name="sheen">ش</string>
+    <string name="za">ز</string>
+    <string name="ra">ر</string>
+    <string name="zal">ذ</string>
+    <string name="lam">ل</string>
+    <string name="kaf">ك</string>
+    <string name="qaf">ق</string>
+    <string name="fa">ف</string>
+    <string name="ghain">غ</string>
+    <string name="ayan">ع</string>
+    <string name="zoa">ظ</string>
+    <string name="tamarboot">ة</string>
+    <string name="ya">ي</string>
+    <string name="waw">و</string>
+    <string name="Haa">ه</string>
+    <string name="nuun">ن</string>
+    <string name="meem">م</string>
+    <string name="kclear">ac</string>
+    <string name="kdelete">DEL</string>
+    <string name="kenter">ENTER</string>
+    <string name="seen">س</string>
+    <string name="sahi_international">Sahi International</string>
+    <string name="english_sahih_international">English Sahih International</string>
+    <string name="urdu_junagarhi_translation">Urdu Junagarhi -Translation</string>
+    <string name="english_jalalayn_tafsir">English Jalalayn -Tafsir</string>
+    <string name="urdu_jalalayn_tafsir">Urdu Jalalayn- Tafsir</string>
+    <string name="select_translation">Select Translation</string>
+    <string name="share_screen_image">Share ScreenShot</string>
+    <string name="share_text">Share Text</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <!--    mullimmate-->
+
+    <string name="bookmarkst">Bookmarks Display</string>
+
+    <string name="ok">OK</string>
+
+
+    <string name="content_description_two">Menu</string>
+    <string name="searchtopic">Quran Topics</string>
+    <string name="masdar">Masdar</string>
+    <string name="checkdictionary">Check Dictionary</string>
+    <string name="folder_name_hint">Folder Name</string>
+    <string name="exact_word_match">Exact word</string>
+    <string name="search_in_all_collections">search_in_all_collections</string>
+    <string name="searchhelptext">Examples:Use Sura Number:Ayah Number to quickly go to a ayah</string>
+    <string name="searchTitle">Search using Phrases</string>
+    <string name="searchhint">ex; 22 or Surah English Name</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="collection">Collections</string>
+    <string name="pins">Add to Pins</string>
+    <string name="ccreate_new">New Collection</string>
+    <string name="download">Download</string>
+
+
+    ///
+
+    <string name="download_busy">Other downloads in progress</string>
+    <string name="download_complete">Download complete</string>
+    <string name="download_failed">Download failed</string>
+    <string name="success_download_canceled">Download canceled</string>
+    <string name="qari_minshawi_murattal_gapless">Minshawi Murattal (gapless)</string>
+    <string name="qari_husary_gapless">Husary (gapless)</string>
+    <string name="qari_sudais_gapless">Abdurrahman As-Sudais (gapless)</string>
+    <string name="qari_qatami_gapless">Nasser Al Qatami (gapless)</string>
+    <string name="qari_abdulbaset">Abd Al-Basit</string>
+    <string name="qari_abdulbaset_mujawwad">Abd Al-Basit Mujawwad</string>
+    <string name="qari_basfar">Abdullah Basfar</string>
+    <string name="qari_suadis">Abdurrahmaan As-Sudais</string>
+    <string name="qari_shatri">Abu Bakr Ash-Shatri</string>
+    <string name="qari_afasy">Mishary Al-Afasy</string>
+    <string name="qari_saad_al_ghamdi">Saad Al-Ghamdi</string>
+    <string name="qari_walk">Ibrahim Walk (English Trans.)</string>
+    <string name="qari_hani_rifai">Hani Ar-Rifai</string>
+    <string name="qari_husary_mujawwad">Husary Mujawwad</string>
+    <string name="qari_hudhayfi">Ali Al-Hudhaify</string>
+    <string name="qari_muaiqly">Maher Al Muaiqly</string>
+    <string name="qari_minshawi_mujawwad">Minshawy Mujawwad</string>
+    <string name="qari_tablawy">Mohammad al Tablaway</string>
+    <string name="qari_ayyoub">Muhammad Ayyoub</string>
+    <string name="qari_jibreel">Muhammad Jibreel</string>
+    <string name="qari_shuraym">Saood Ash-Shuraym</string>
+    <string name="qari_dussary">Yasser Ad-Dussary</string>
+    <string name="qari_abdulbaset_gapless">Abd Al-Basit (gapless)</string>
+    <string name="qari_abdulbaset_mujawwad_gapless">Abd Al-Basit Mujawwad (gapless)</string>
+    <string name="qari_aziz_alili_gapless">Aziz Alili (gapless)</string>
+    <string name="qari_salah_budair_gapless">Salah Budair (gapless)</string>
+    <string name="qari_shuraym_gapless">Saood Ash-Shuraym (gapless)</string>
+    <string name="qari_yasser_dussary_gapless">Yasser Ad-Dussary (gapless)</string>
+    <string name="qari_mohammad_altablawi_gapless">Mohammad al Tablawy (gapless)</string>
+    <string name="qari_sahl_yaseen_gapless">Sahl Yaseen (gapless)</string>
+    <string name="qari_shatri_gapless">Abu Bakr Ash-Shatri (gapless)</string>
+    <string name="qari_ahmad_nauina_gapless">Ahmad Nauina (gapless)</string>
+    <string name="qari_akram_al_alaqmi">Akram Al-Alaqmi (gapless)</string>
+    <string name="qari_ali_hajjaj_alsouasi_gapless">Ali Hajjaj Alsouasi (gapless)</string>
+    <!--  TODO: Remove or change this placeholder text  -->
+    <!-- settings text resources -->
+
+    <string name="no_internet_alert">No Internet</string>
+
+
+    <string name="repeatof">Repeat Button</string><![CDATA[>
+    >
+    >
+
+    ]]>
+    <string name="qari">Reciter</string>
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="repeat_each_verse">Repeat Each Verse</string>
+    <string name="repeat_range">Repeat Range</string>
+    <string name="end_range">End Range</string>
+    <string name="start_range">Start Range</string>
+    <string name="Audio">Audio</string>
+    <string name="plays">Play</string>
+    <string name="SelectSurah">Surah Selection</string>
+    <string name="resume">Resume</string>
+    <string name="addtocollection">Add to Collection</string>
+    <string name="pref_default_device_font">default_font</string>
+    <string name="amr">AMr</string>
+    <string name="amrnahi">AmrNahi</string>
+    <string name="title_activity_arabicroot_detail_host">arabicrootDetailHostActivity</string>
+    <string name="title_arabicroot_detail">arabicroot Detail</string>
+    <string name="title_activity_root_breakup">RootBreakupAct</string>
+
+    <string name="title_activity_compose">ComposeAct</string>
+    <string name="title_activity_ajroomiya_detail_host">AjroomiyaDetailHostActivity</string>
+    <string name="app_name">QuranCorpus</string>
+    <string name="title_activity_quran_verb_root_detail_host">QuranVerbRootDetailHostActivity
+    </string>
+    <string name="title_quranverbroot_list">QuranVerbItems</string>
+    <string name="title_quranverbroot_detail">QuranVerbRoot Detail</string>
+    <string name="grid_icon">grid</string>
+    <string name="menu">menu\n</string>
+    <string name="bottomnav">BottomAapBar</string>
+    <string name="bottomact">BOttom act</string>
+    <string name="home">home</string>
+    <string name="verses">verses</string>
+    <string name="movies">movies</string>
+    <string name="Profile">profile</string>
+    <string name="books">books</string>
+
+
+
+
+
+    <string name="default_username">u/johndoe</string>
+
+    <string name="subreddits">Subreddits</string>
+    <string name="new_post">New Post</string>
+    <string name="my_profile">My Profile</string>
+    <string name="choose_community">Choose a community</string>
+    <string name="saved">Saved</string>
+    <string name="default_karma_amount">555</string>
+    <string name="karma">Karma</string>
+    <string name="default_reddit_age_amount">10m 10d</string>
+    <string name="reddit_age">Reddit age</string>
+
+    <string name="communities">COMMUNITIES</string>
+    <string name="trophies">TROPHIES</string>
+    <string name="subreddit_header">r/%s</string>
+    <string name="award">Award</string>
+    <string name="post_header">Posted by u/%s - %s</string>
+    <string name="recently_visited_subreddits">Recently visited subreddits</string>
+    <string name="digitalnomad">r/digitalnomad</string>
+    <string name="covid19">r/covid19</string>
+    <string name="memes">r/memes</string>
+    <string name="humor">r/humor</string>
+    <string name="worldnews">r/worldnews</string>
+    <string name="dogs">r/dogs</string>
+    <string name="cats">r/cats</string>
+    <string name="all">All</string>
+    <string name="public_network">Reddit Public Access Network</string>
+    <string name="kodeco">r/kodeco</string>
+    <string name="members_120k">120k members</string>
+    <string name="members_600k">600k members</string>
+    <string name="members_400k">400k members</string>
+    <string name="members_500k">500k members</string>
+    <string name="hello_android_devs">Hello Android devs!</string>
+    <string name="welcome_to_android">Welcome to Android!</string>
+    <string name="hello_programmers">Hello programers!</string>
+    <string name="welcome_to_kodeco">Welcome to kodeco!</string>
+    <string name="android">r/android</string>
+    <string name="programming">r/programming</string>
+    <string name="androiddev">r/androiddev</string>
+    <string name="title">An interesting title</string>
+    <string name="body_text">Your text post (optional)</string>
+    <string name="save_post">SAVE</string>
+
+    <string name="posts">Posts</string>
+    <string name="about">About</string>
+    <string name="verified_email">Verified Email</string>
+    <string name="gold_medal">Gold Medal</string>
+    <string name="top_comment">Top Comment</string>
+    <string name="share">Share</string>
+    <string name="account">Account</string>
+    <string name="home_icon">Home icon</string>
+    <string name="subscriptions_icon">Subscriptions icon</string>
+    <string name="post_icon">Post icon</string>
+    <string name="change_theme">Change theme</string>
+    <string name="more_actions">More actions</string>
+    <string name="save">Saved</string>
+    <string name="post_header_description">Post Header</string>
+    <string name="upvote">Upvote</string>
+    <string name="post_action">Post action</string>
+    <string name="close">Close</string>
+
+    <string name="subreddit_image">Subreddit Image</string>
+    <string name="subreddit_icon">Subreddit Icon</string>
+    <string name="community_icon">Community Icon</string>
+    <string name="kodeco_com">r/kodeco.com</string>
+
+
+
+
+
+
+
+
+
+</resources>
