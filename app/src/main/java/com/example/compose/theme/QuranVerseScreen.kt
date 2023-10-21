@@ -3,8 +3,10 @@ package com.example.compose.theme
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.TypedArray
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,7 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -48,14 +52,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.codelab.basics.ui.theme.dejavu
 import com.codelab.basics.ui.theme.indopak
+import com.example.bottomcompose.NewBottomActivity
 import com.example.compose.LoadingData
+import com.example.compose.WordDialogFragment
 import com.example.compose.screens.BottomSheetWordDetails
 import com.example.justJava.MyTextViewZoom
+import com.example.mushafconsolidated.Activity.MainActivitys
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
@@ -65,6 +73,7 @@ import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
+import com.example.utility.QuranGrammarApplication
 import com.example.utility.QuranGrammarApplication.Companion.context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -273,13 +282,17 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                             cid = wbw.corpus!!.surah
                                             aid = wbw.corpus!!.ayah
                                             wid = wbw.corpus!!.wordno
-
                                             showWordDetails.value = true
 
 
-                                            navController.navigate(
+                                   /*         showWordDetails.value = true
+                                            val activity = LocalContext.current as? AppCompatActivity
+                                                ?: return
+ 
+                                            WordDialogFragment().show(parentFragmentManager, "TestDialogFragment")*/
+                                        /*    navController.navigate(
                                                 "books/${cid}/${aid}/${wid}"
-                                            )
+                                            )*/
 
 
                                         },
@@ -292,14 +305,15 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
 
                                 }
-                                /*     if(showWordDetails.value) {
+                               if(showWordDetails.value) {
+                                   startDetailActivity(cid,aid, wid!!)
                                         // navController.popBackStack("verses/{id}", true)
                                          showWordDetails.value = false
-                                         BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                                       //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
                                      }
-                  */
+
 
 
                         }
@@ -352,7 +366,106 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
         }
     )
 }
+@Composable
+fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
+    val context = LocalContext.current
+  //  WordDialogFragment().show(context.parentFragmentManager, "TestDialogFragment")
+    /*
+        onDismissRequest: () -> Unit,
+    buttons: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    title: (@Composable () -> Unit)? = null,
+    text: @Composable (() -> Unit)? = null,
+    shape: Shape = MaterialTheme.shapes.medium,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = contentColorFor(backgroundColor),
+    properties: DialogProperties = DialogProperties()
+     */
+    var openDialog = remember { mutableStateOf(true) }
 
+        AlertExample()
+
+    Column {
+        AlertDialogS(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back button.
+                // If you want to disable that functionality, simply leave this block empty.
+           //     openDialog = false
+            },
+            buttons = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // confirm button
+                    Button(
+                        onClick = {
+                   //         dialogOpen = false
+                        }
+                    ) {
+                        Text(text = "Confirm")
+                    }
+
+                    // dismiss button
+                    Button(
+                        onClick = {
+                     //       openDialog = false
+                        }
+                    ) {
+                        Text(text = "Dismiss")
+                    }
+                }
+            },
+            title = {
+                Text(text = "Title")
+            },
+            text = {
+                Text(text = "Description")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            shape = RoundedCornerShape(5.dp),
+            backgroundColor = Color.White
+        )
+
+    }
+
+
+
+ /*   val intent = Intent(context, MainActivitys::class.java)
+  context.startActivity(intent)*/
+}
+
+@Composable
+@Preview
+fun AlertExample() {
+    var dialogVisibility by remember { mutableStateOf(true) }
+    if (dialogVisibility) {
+        AlertDialog(
+            onDismissRequest = {
+                dialogVisibility = false
+            },
+            title = {
+                Text(text = " Alert Title")
+            },
+            text = {
+                Text("This is a Jetpack Compose tutorial on AlertDialog.")
+            },
+            confirmButton = {
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { dialogVisibility = false }
+                ) {
+                    Text("Okay")
+                }
+            }
+        )
+    }
+}
 @OptIn(
     ExperimentalLayoutApi::class,
     ExperimentalFoundationApi::class

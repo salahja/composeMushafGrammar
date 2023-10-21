@@ -587,6 +587,7 @@ fun MyUI(mainViewModel: QuranVIewModel, chapterid: Int?, verseid: Int?, wordno: 
 @ExperimentalFoundationApi
 @Composable
 fun BottomSheetDemo(
+
     navController: NavHostController,
     mainViewModel: QuranVIewModel,
     chapterid: Int?,

@@ -74,6 +74,16 @@
         </activity>
 
 
+
+        <activity
+            android:name=".Activity.MainActivitys"
+            android:exported="true"
+            android:parentActivityName=".Activity.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mushafconsolidated.Activity.MainActivity" />
+        </activity>
         <activity
             android:name="com.example.compose.BottomCompose"
             android:exported="true"
