@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -31,9 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,12 +39,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -63,41 +58,45 @@ import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.launch
 import org.sj.conjugator.utilities.GatherAll
 import org.sj.verbConjugation.AmrNahiAmr
+import org.sj.verbConjugation.FaelMafool
 import org.sj.verbConjugation.MadhiMudharay
+import org.sj.verbConjugation.SarfSagheer
 
-var mujarrad: ArrayList<ArrayList<*>>? =null
-var mazeed: ArrayList<ArrayList<*>>? =null
+lateinit var sarfSagheer: SarfSagheer
+lateinit var  mujarrad: ArrayList<ArrayList<*>>
+var mazeed: ArrayList<ArrayList<*>>? = null
 var amrandnahi: ArrayList<*>? = null
 var faelmafool: ArrayList<*>? = null
 var madhimudhary: ArrayList<*>? = null
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 
 fun MatTab(navController: NavHostController, conjugation: String, root: String, mood: String?) {
     var allofQuran: List<QuranEntity>? = null
-val vb = VerbWazan()
+    val vb = VerbWazan()
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
     val filter = conjugation.toString().filter(Char::isDigit)
     val numeric = isNumeric(conjugation)
 
-   vb.wazan = conjugation
-    if(numeric){
-      mazeed =  GatherAll.instance.getMazeedListing(mood, root, conjugation)
+    vb.wazan = conjugation
+    if (numeric) {
+        mazeed = GatherAll.instance.getMazeedListing(mood, root, conjugation)
         madhimudhary = mazeed!![0]
         faelmafool = mazeed!![1]
         amrandnahi = mazeed!![2]
-    }else{
-        mujarrad =   GatherAll.instance.getMujarradListing(mood, root,  vb.wazan!! )
-
+    } else {
+        mujarrad = GatherAll.instance.getMujarradListing(mood, root, vb.wazan!!)
+        val arrayList = mujarrad[11]
+        sarfSagheer = arrayList[0] as SarfSagheer
         madhimudhary = mujarrad!![0]
         faelmafool = mujarrad!![1]
         amrandnahi = mujarrad!![2]
     }
     vb.wazan = conjugation
     val utils = Utils(QuranGrammarApplication.context)
-
 
 
     val corpus = CorpusUtilityorig
@@ -181,11 +180,14 @@ val vb = VerbWazan()
             modifier = Modifier.fillMaxWidth()
         ) { index ->
             // app content
-
             if (index == 0) {
+            // sarfsagheer(sarfSagheer)
+                sagheerscreen()
+            }
+            if (index == 1) {
                 cscreen(madhimudhary!!, amrandnahi!!)
             } else if (index == 2) {
-                //   participlescreen(faelmafool!!)
+                participlescreen(faelmafool!!)
             }
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -207,9 +209,384 @@ val vb = VerbWazan()
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview
+fun sagheerscreen() {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+
+
+        modifier = Modifier
+
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+            .wrapContentSize(Alignment.Center)
+            .padding(top = 10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = sarfSagheer.verbroot!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+                Text(
+                    text = sarfSagheer.verbtype!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+                Text(
+                    text = sarfSagheer.chaptername!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = sarfSagheer.faelsin!!.replace("[", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.mudharayhua!!.replace("[", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.madhihua!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text =  sarfSagheer.mafoolsin!!.replace("[", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.mudharaymajhoolhua!!.replace("[", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.madhimajhoolhua!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.nahiamr!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.amr!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Noun of Instrument",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text =  sarfSagheer.ismalaone!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.ismalatwo!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =   sarfSagheer.ismalathre!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+
+
+
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Adverb of Place& Time",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text =  sarfSagheer.ismzarfone!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =  sarfSagheer.ismzarftwo!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text =   sarfSagheer.ismzarfthree!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+    }
+}
+
+fun sarfsagheer(madhimudhary: SarfSagheer) {
+
+}
+
 fun isNumeric(toCheck: String): Boolean {
     return toCheck.all { char -> char.isDigit() }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayList<*>) {
@@ -1439,35 +1816,24 @@ data class TabItems(
 )
 
 
-/*
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun participlescreen(faelmafool: java.util.ArrayList<*>) {
-    */
-/*
-        var allofQuran: List<QuranEntity>? = null
 
-        val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
-        val utils = Utils(QuranGrammarApplication.context)
-        val mujarrad: ArrayList<ArrayList<*>> =
-            GatherAll.instance.getMujarradListing("Indicative", root, conjugation)
-        val madhimudhary = mujarrad[0]
-        val faelmafool = mujarrad[1]
-        val amrandnahi = mujarrad[2]
 
-        val madhi = madhimudhary[0]
-        val madhimajhool = madhimudhary[1]
-        val mudharaymaroof = madhimudhary[2]
-        val mudharaymajhool = madhimudhary[3]
-        val amr = amrandnahi[0]
-        val amrnahi = amrandnahi[1]
+    var allofQuran: List<QuranEntity>? = null
 
-        val corpus = CorpusUtilityorig
-    *//*
+    val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
+    val utils = Utils(QuranGrammarApplication.context)
+    //     val mujarrad: ArrayList<ArrayList<*>> =
+    //    GatherAll.instance.getMujarradListing("Indicative", root, conjugation)
 
-    val madhi = faelmafool[0]
-    val madhimajhool = faelmafool[1]
+
+    val corpus = CorpusUtilityorig
+
+
+    val faleactive = faelmafool[0]
+    val faelpassive = faelmafool[1]
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -1509,7 +1875,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = "Past Active",
+                    text = "Active Participle Masc.",
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1533,7 +1899,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (madhi as MadhiMudharay).hum!!,
+                    text = (faleactive as FaelMafool).nomplurarM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1542,7 +1908,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).huma!!,
+                    text = (faleactive as FaelMafool).nomdualM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1551,7 +1917,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).hua!!.toString().replace("[", "")
+                    text = (faleactive as FaelMafool).nomsinM!!.toString().replace("[", "")
                         .replace("]", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -1563,6 +1929,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
             }
         }
 
+
         Column {
 
 
@@ -1575,7 +1942,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (madhi as MadhiMudharay).hunna!!,
+                    text = (faleactive as FaelMafool).accplurarlM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1584,7 +1951,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).humaf!!,
+                    text = (faleactive as FaelMafool).accdualM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1593,47 +1960,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).hia!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhi as MadhiMudharay).antum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhi as MadhiMudharay).antuma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhi as MadhiMudharay).anta!!,
+                    text = (faleactive as FaelMafool).accsinM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1655,7 +1982,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (madhi as MadhiMudharay).antunna!!,
+                    text = (faleactive as FaelMafool).genplurarM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1664,7 +1991,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).antumaf!!,
+                    text = (faleactive as FaelMafool).gendualM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1673,7 +2000,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (madhi as MadhiMudharay).anti!!,
+                    text = (faleactive as FaelMafool).gensinM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -1684,509 +2011,9 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
             }
         }
 
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhi as MadhiMudharay).nahnu!!.toString().replace("[", "")
-                        .replace("]", ""),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhi as MadhiMudharay).ana!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-
-        //mudharay
-        Card(
-            onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 16.dp
-            ),
-
-
-            modifier = Modifier
-                .fillMaxWidth()
-
-                .padding(
-                    horizontal = 10.dp,
-                    //vertical = 8.dp
-                )
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = "Past Passive",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhimajhool as MadhiMudharay).hum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).huma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).hua!!.toString().replace("[", "")
-                        .replace("]", ""),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhimajhool as MadhiMudharay).hunna!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).humaf!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).hia!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhimajhool as MadhiMudharay).antum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).antuma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).anta!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhimajhool as MadhiMudharay).antunna!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).antumaf!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).anti!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (madhimajhool as MadhiMudharay).nahnu!!.toString().replace("[", "")
-                        .replace("]", ""),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (madhimajhool as MadhiMudharay).ana!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
 
 ///mudharay
 
-        Card(
-            onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 16.dp
-            ),
-
-
-            modifier = Modifier
-                .fillMaxWidth()
-
-                .padding(
-                    horizontal = 10.dp,
-                    //vertical = 8.dp
-                )
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = "Present Active",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).hum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).huma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).hua!!.toString().replace("[", "")
-                        .replace("]", ""),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).hunna!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).humaf!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).hia!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).antum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).antuma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).anta!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).antunna!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).antumaf!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).anti!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).nahnu!!.toString().replace("[", "")
-                        .replace("]", ""),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (mudharaymaroof as MadhiMudharay).ana!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-
-        //muhdary maroof
-
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
@@ -2215,18 +2042,20 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = "Present Passive",
+                    text = "Active Participle-Feminine",
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
                     textAlign = TextAlign.Center,
                     fontSize = 25.sp,
+
                     fontFamily = indopak
                 )
             }
         }
 
         Column {
+
 
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -2237,7 +2066,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).hum!!,
+                    text = (faleactive as FaelMafool).nomplurarF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2246,7 +2075,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).huma!!,
+                    text = (faleactive as FaelMafool).nomdualF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2255,7 +2084,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).hua!!.toString().replace("[", "")
+                    text = (faleactive as FaelMafool).nomsinF!!.toString().replace("[", "")
                         .replace("]", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -2266,7 +2095,10 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                 )
             }
         }
+
+
         Column {
+
 
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -2277,7 +2109,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).hunna!!,
+                    text = (faleactive as FaelMafool).accplurarlF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2286,7 +2118,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).humaf!!,
+                    text = (faleactive as FaelMafool).accdualF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2295,7 +2127,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).hia!!,
+                    text = (faleactive as FaelMafool).accsinF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2317,7 +2149,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).antum!!,
+                    text = (faleactive as FaelMafool).genplurarF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2326,7 +2158,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).antuma!!,
+                    text = (faleactive as FaelMafool).gendualF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2335,7 +2167,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).anta!!,
+                    text = (faleactive as FaelMafool).gensinF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2345,6 +2177,48 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                 )
             }
         }
+
+////
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Pssive Participle Masc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
         Column {
 
 
@@ -2357,7 +2231,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).antunna!!,
+                    text = (faelpassive as FaelMafool).nomplurarM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2366,7 +2240,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).antumaf!!,
+                    text = (faelpassive as FaelMafool).nomdualM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2375,31 +2249,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).anti!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (mudharaymajhool as MadhiMudharay).nahnu!!.toString().replace("[", "")
+                    text = (faelpassive as FaelMafool).nomsinM!!.toString().replace("[", "")
                         .replace("]", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -2408,8 +2258,81 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontSize = 25.sp,
                     fontFamily = indopak
                 )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
                 Text(
-                    text = (mudharaymajhool as MadhiMudharay).ana!!,
+                    text = (faelpassive as FaelMafool).accplurarlM!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).accdualM!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).accsinM!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = (faelpassive as FaelMafool).genplurarM!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).gendualM!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).gensinM!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2420,6 +2343,8 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
             }
         }
 
+
+///mudharay
 
 
         Card(
@@ -2449,7 +2374,50 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = "Command",
+                    text = "Passive Participle-Feminine",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = (faelpassive as FaelMafool).nomplurarF!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).nomdualF!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = (faelpassive as FaelMafool).nomsinF!!.toString().replace("[", "")
+                        .replace("]", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2462,6 +2430,8 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
         Column {
+
+
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
@@ -2471,7 +2441,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (amr as AmrNahiAmr).antum!!,
+                    text = (faelpassive as FaelMafool).accplurarlF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2480,7 +2450,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (amr as AmrNahiAmr).antuma!!,
+                    text = (faelpassive as FaelMafool).accdualF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2489,7 +2459,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (amr as AmrNahiAmr).anta!!,
+                    text = (faelpassive as FaelMafool).accsinF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2511,7 +2481,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
                 Text(
-                    text = (amr as AmrNahiAmr).antunna!!,
+                    text = (faelpassive as FaelMafool).genplurarF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2520,7 +2490,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (amr as AmrNahiAmr).antumaf!!,
+                    text = (faelpassive as FaelMafool).gendualF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2529,46 +2499,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     fontFamily = indopak
                 )
                 Text(
-                    text = (amr as AmrNahiAmr).anti!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-
-        }
-
-        Card(
-            onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 16.dp
-            ),
-
-
-            modifier = Modifier
-                .fillMaxWidth()
-
-                .padding(
-                    horizontal = 10.dp,
-                    //vertical = 8.dp
-                )
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = "Prohibition",
+                    text = (faelpassive as FaelMafool).gensinF!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -2579,85 +2510,32 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
             }
         }
 
-        Column {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
 
 
-                Text(
-                    text = (amrnahi as AmrNahiAmr).antum!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (amrnahi as AmrNahiAmr).antuma!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (amrnahi as AmrNahiAmr).anta!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = (amrnahi as AmrNahiAmr).antunna!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (amrnahi as AmrNahiAmr).antumaf!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = (amrnahi as AmrNahiAmr).anti!!,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-            }
-
-        }
 
     }
-}*/
+
+
+///mudharay
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

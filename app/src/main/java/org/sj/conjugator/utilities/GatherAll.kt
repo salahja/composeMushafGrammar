@@ -21,6 +21,7 @@ import org.sj.verbConjugation.IsmZarfMafalatun
 import org.sj.verbConjugation.IsmZarfMafalun
 import org.sj.verbConjugation.IsmZarfMafilun
 import org.sj.verbConjugation.MadhiMudharay
+import org.sj.verbConjugation.SarfSagheer
 import org.sj.verbConjugation.VerbDetails
 import org.sj.verbConjugation.trilateral.augmented.active.past.AugmentedActivePastConjugator
 import org.sj.verbConjugation.trilateral.augmented.active.present.AugmentedActivePresentConjugator
@@ -558,6 +559,7 @@ class GatherAll {
                                      ): ArrayList<ArrayList<*>> {
 
         val finallist = ArrayList<ArrayList<*>>()
+        val sarfsagheerobj = ArrayList<SarfSagheer>()
         val madhimuhdarymainobj = ArrayList<MadhiMudharay>()
         val ismalamifalunarr = ArrayList<IsmAlaMifalun>()
         val ismalamifalatunarr= ArrayList<IsmAlaMifalatun>()
@@ -569,6 +571,7 @@ class GatherAll {
         val skabeerismobj = ArrayList<FaelMafool>()
         val arrayofverbdetails = ArrayList<VerbDetails>()
         val arrayofamrobj = ArrayList<AmrNahiAmr>()
+
         val madhimajhoolobj: MadhiMudharay
         val mudharyobj: MadhiMudharay
         val mudharaymajhoolobj: MadhiMudharay
@@ -795,27 +798,38 @@ class GatherAll {
             madhimajhoolobj = madhimajhoolconj.madhiMudharay
 
 
+
+
             mudharyobj = mudharayconj.madhiMudharay
             mudharaymajhoolobj = mudharaymajhoolconj.madhiMudharay
-            /*
-                    val ismalamifalunarr = ArrayList<IsmAlaMifalun>()
-        val ismalamifalatunarr= ArrayList<IsmAlaMifalatun>()
-        val ismaalamifaalunarr = ArrayList<IsmAlaMifaalun>()
 
-        val ismZarfMafilunarr = ArrayList<IsmZarfMafilun>()
-        val ismzarfmafalatunarr = ArrayList<IsmZarfMafalatun>()
-        val ismzarfmafalunarr = ArrayList<IsmZarfMafalun>()
 
-             */
-   /*
-           val ismalamifalunarr = ArrayList<IsmAlaMifalun>()
-        val ismalamifalatunarr= ArrayList<IsmAlaMifalatun>()
-        val ismaalamifaalunarr = ArrayList<IsmAlaMifaalun>()
+            val ss=SarfSagheer()
+            ss.madhihua=madhiconjresult.madhiMudharay.hua
+            ss.mudharayhua=mudharayconj.madhiMudharay.hua
+            ss.faelsin=faelconjugatoinResult.faelMafool.nomsinM
 
-        val  = ArrayList<IsmZarfMafilun>()
-        val ismzarfmafalatunarr = ArrayList<IsmZarfMafalatun>()
-        val ismzarfmafalunarr = ArrayList<IsmZarfMafalun>()
-    */
+            ss.mafoolsin=mafoolconjugationresult.faelMafool.nomsinM
+
+            ss.madhimajhoolhua=madhimajhoolconj.madhiMudharay.hua
+            ss.mudharaymajhoolhua=mudharayconj.madhiMudharay.hua
+            ss.amr=amrconj.amrandnahi.anta
+            ss.nahiamr=new.anta
+            ss.ismalaone=ismAalaMifalunResult.alaMifalun.nomsinMifalun
+            ss.ismalatwo=ismALaMifalatunResult.alaMifalatun.nomsinMifalatun
+            ss.ismalathre=ismAlaMifaalun.alaMifaalun.nomsinMifaalun
+            ss.ismzarfone=ismZarafMafalunResult.zarfMafalun.nomsinMafalun
+            ss.ismzarftwo=ismZarfMafilunResult.zarfMafilun.nomsinMafilun
+            ss.ismzarfthree=ismZarfMafalatunResult.zarfMafalatun.nomsinMafalatun
+
+            ss.verbtype = rule.desc.toString()
+            ss.chaptername = unaugmentedTrilateralRoot.conjugationname
+            ss.mazeedormujjarrad = "mujarrad"
+            ss.rulename = unaugmentedTrilateralRoot.rulename
+            ss.verbroot = verbroot
+            sarfsagheerobj.add(ss)
+
+
              alamifal=ismAalaMifalunResult.alaMifalun
              alaMifaalun=ismAlaMifaalun.alaMifaalun
             alaMifalatun=ismALaMifalatunResult.alaMifalatun
@@ -867,6 +881,7 @@ class GatherAll {
 
             finallist.add(ismzarfmafalatunarr)
             finallist.add(ismzarfmafalunarr)
+            finallist.add(sarfsagheerobj)
 
 
 
@@ -1067,9 +1082,34 @@ class GatherAll {
             arrayofverbdetails.add(verbDetailsobj)
             finallist.add(arrayofverbdetails)
 
+            val sarfsagheerobj = ArrayList<SarfSagheer>()
+            val ss=SarfSagheer()
+            ss.madhihua=madhiconjresult.madhiMudharay.hua
+            ss.mudharayhua=mudharayconj.madhiMudharay.hua
+            ss.faelsin=ismfaleresult.faelMafool.nomsinM
+
+            ss.mafoolsin=ismmafoolresult.faelMafool.nomsinM
+
+            ss.madhimajhoolhua=madhimajhoolconj.madhiMudharay.hua
+            ss.mudharaymajhoolhua=mudharayconj.madhiMudharay.hua
+            ss.amr=amrconj.amrandnahi.anta
+            ss.nahiamr=new.anta
+            ss.ismalaone=""
+            ss.ismalatwo=""
+            ss.ismalathre=""
+            ss.ismzarfone=""
+            ss.ismzarftwo=""
+            ss.ismzarfthree=""
 
 
 
+            ss.verbtype = rule.desc.toString()
+            ss.chaptername = augmentedRoot.babname
+            ss.mazeedormujjarrad = "mazeed"
+            ss.rulename = augmentedRoot.form
+            ss.verbroot = verbroot
+            sarfsagheerobj.add(ss)
+finallist.add(sarfsagheerobj)
 
 
 

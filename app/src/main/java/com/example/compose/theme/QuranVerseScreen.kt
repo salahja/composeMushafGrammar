@@ -27,11 +27,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,7 +79,9 @@ import com.example.utility.QuranGrammarApplication
 import com.example.utility.QuranGrammarApplication.Companion.context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+var scopes: CoroutineScope?=null
 var wordarray: ArrayList<NewQuranCorpusWbw>?=null
 var listState: LazyListState?=null
 var annotatedStringStringPair: Pair<AnnotatedString, Int>? = null
@@ -86,6 +90,7 @@ var cid: Int = 0
 var wid: Int? = null
 private val showWordDetails = mutableStateOf(false)
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: QuranVIewModel?) {
@@ -93,7 +98,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val scopes = CoroutineScope(Dispatchers.Main)
+     scopes = CoroutineScope(Dispatchers.Main)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
     var corpusSurahWord: List<QuranCorpusWbw>? = null
     val utils = Utils(context)
@@ -270,7 +275,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                     val toList = list.toList()
                                     annotatedStringStringPair = toList[0]
 
-                                    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
+                                //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
 
 
 
@@ -282,17 +287,17 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                             cid = wbw.corpus!!.surah
                                             aid = wbw.corpus!!.ayah
                                             wid = wbw.corpus!!.wordno
-                                            showWordDetails.value = true
+                                            showWordDetails.value = false
 
 
                                    /*         showWordDetails.value = true
                                             val activity = LocalContext.current as? AppCompatActivity
                                                 ?: return
- 
+
                                             WordDialogFragment().show(parentFragmentManager, "TestDialogFragment")*/
-                                        /*    navController.navigate(
+                                           navController.navigate(
                                                 "books/${cid}/${aid}/${wid}"
-                                            )*/
+                                            )
 
 
                                         },
@@ -305,10 +310,11 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
 
                                 }
-                               if(showWordDetails.value) {
-                                   startDetailActivity(cid,aid, wid!!)
+
+
+                               //    startDetailActivity(cid,aid, wid!!)
                                         // navController.popBackStack("verses/{id}", true)
-                                         showWordDetails.value = false
+                                      //   showWordDetails.value = false
                                        //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
@@ -318,6 +324,10 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
                         }
 
+                    if(showWordDetails.value) {
+
+                            openWordDIalog(cid,aid,wid)
+                            showWordDetails.value=true
 
                     }
                     Row(
@@ -366,6 +376,18 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
         }
     )
 }
+@Composable
+fun openWordDIalog(cid: Int, aid: Int, wid: Int?) {
+     val openDialogCustom: MutableState<Boolean> = remember {
+        mutableStateOf(true)
+    }
+
+
+        CustomDialog(openDialogCustom)
+  //  MyUI()
+
+}
+
 @Composable
 fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
     val context = LocalContext.current
