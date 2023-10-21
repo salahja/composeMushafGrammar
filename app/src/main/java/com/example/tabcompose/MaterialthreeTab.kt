@@ -27,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -62,6 +63,7 @@ import org.sj.verbConjugation.FaelMafool
 import org.sj.verbConjugation.MadhiMudharay
 import org.sj.verbConjugation.SarfSagheer
 
+var numeric: Boolean=false
 lateinit var sarfSagheer: SarfSagheer
 lateinit var  mujarrad: ArrayList<ArrayList<*>>
 var mazeed: ArrayList<ArrayList<*>>? = null
@@ -79,7 +81,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
     val filter = conjugation.toString().filter(Char::isDigit)
-    val numeric = isNumeric(conjugation)
+    numeric = isNumeric(conjugation)
 
     vb.wazan = conjugation
     if (numeric) {
@@ -87,6 +89,8 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
         madhimudhary = mazeed!![0]
         faelmafool = mazeed!![1]
         amrandnahi = mazeed!![2]
+        val arrayList = mazeed!![4]
+        sarfSagheer = arrayList[0] as SarfSagheer
     } else {
         mujarrad = GatherAll.instance.getMujarradListing(mood, root, vb.wazan!!)
         val arrayList = mujarrad[11]
@@ -211,7 +215,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
+
 fun sagheerscreen() {
     Column(
         verticalArrangement = Arrangement.Top,
@@ -226,10 +230,10 @@ fun sagheerscreen() {
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Card(
+        OutlinedCard(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -412,7 +416,7 @@ fun sagheerscreen() {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -497,7 +501,7 @@ fun sagheerscreen() {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -579,8 +583,375 @@ fun sagheerscreen() {
     }
 }
 
-fun sarfsagheer(madhimudhary: SarfSagheer) {
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showBackground = true)
+fun sarfsagheers() {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+
+
+        modifier = Modifier
+
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.secondary)
+            .wrapContentSize(Alignment.Center)
+            .padding(top = 10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+
+                textAlign = TextAlign.Center,
+                fontSize = 25.sp,
+                fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        OutlinedCard(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                   vertical = 10.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Noun of Instrument",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+
+
+
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Adverb of  Place & Time",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+
+                    fontFamily = indopak
+                )
+
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+    }
 }
 
 fun isNumeric(toCheck: String): Boolean {
