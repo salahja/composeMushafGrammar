@@ -46,6 +46,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,7 +75,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.compose.theme.CustomDialog
 import com.example.compose.theme.QuranVerseScreen
+import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
@@ -241,6 +244,51 @@ fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
             BottomSheetDemo(navController, viewModel(), chapterid, verseid, wordno)
         }
 
+
+        composable("wordalert/{chapterid}/{verseid}/{wordno}",
+            arguments = listOf(
+                navArgument("chapterid") {
+                    type = NavType.IntType
+                    defaultValue = 2
+                },
+                navArgument("verseid") {
+                    type = NavType.IntType
+                    defaultValue = 3
+                },
+                navArgument("wordno") {
+                    type = NavType.IntType
+                    defaultValue = 4
+                }
+            )
+
+
+        ) { backStackEntry ->
+            val chapterid = backStackEntry.arguments?.getInt("chapterid")
+            val verseid = backStackEntry.arguments?.getInt("verseid")
+            val wordno = backStackEntry.arguments?.getInt("wordno")
+            val openDialogCustom: MutableState<Boolean> = remember {
+                mutableStateOf(true)
+            }
+       //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+
+            WordALert(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         composable("conjugation/{conjugation}/{root}/{mood}",
             arguments = listOf(
                 navArgument("conjugation") {
@@ -267,7 +315,22 @@ fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
         }
 
 
+
+
+
     }
+}
+
+@Composable
+fun CustomDialogs(
+    openDialogCustom: MutableState<Boolean>,
+    navController: NavHostController,
+    viewModel: Any,
+    chapterid: Int?,
+    verseid: Int?,
+    wordno: Int?
+) {
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

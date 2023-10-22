@@ -289,15 +289,15 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                             wid = wbw.corpus!!.wordno
                                             showWordDetails.value = false
 
-
-                                   /*         showWordDetails.value = true
-                                            val activity = LocalContext.current as? AppCompatActivity
-                                                ?: return
-
-                                            WordDialogFragment().show(parentFragmentManager, "TestDialogFragment")*/
+ /*
                                            navController.navigate(
                                                 "books/${cid}/${aid}/${wid}"
+                                            )*/
+
+                                            navController.navigate(
+                                                "wordalert/${cid}/${aid}/${wid}"
                                             )
+
 
 
                                         },
@@ -383,7 +383,7 @@ fun openWordDIalog(cid: Int, aid: Int, wid: Int?) {
     }
 
 
-        CustomDialog(openDialogCustom)
+       // CustomDialog(openDialogCustom)
   //  MyUI()
 
 }

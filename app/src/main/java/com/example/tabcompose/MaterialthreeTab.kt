@@ -60,6 +60,11 @@ import kotlinx.coroutines.launch
 import org.sj.conjugator.utilities.GatherAll
 import org.sj.verbConjugation.AmrNahiAmr
 import org.sj.verbConjugation.FaelMafool
+import org.sj.verbConjugation.IsmAlaMifaalun
+import org.sj.verbConjugation.IsmAlaMifalatun
+import org.sj.verbConjugation.IsmZarfMafalatun
+import org.sj.verbConjugation.IsmZarfMafalun
+import org.sj.verbConjugation.IsmZarfMafilun
 import org.sj.verbConjugation.MadhiMudharay
 import org.sj.verbConjugation.SarfSagheer
 
@@ -70,8 +75,12 @@ var mazeed: ArrayList<ArrayList<*>>? = null
 var amrandnahi: ArrayList<*>? = null
 var faelmafool: ArrayList<*>? = null
 var madhimudhary: ArrayList<*>? = null
-
-
+lateinit var mifalun: IsmAlaMifaalun
+lateinit var mifalatun : IsmAlaMifalatun
+lateinit var mifaalun: IsmAlaMifaalun
+lateinit var zmafilun: IsmZarfMafilun
+lateinit var zmafalatun : IsmZarfMafalatun
+lateinit var zmafalun: IsmZarfMafalun
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 
@@ -82,7 +91,27 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 
     val filter = conjugation.toString().filter(Char::isDigit)
     numeric = isNumeric(conjugation)
+/*
+5 = {ArrayList@27947}  size = 1
+ 0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
+6 = {ArrayList@27948}  size = 1
+ 0 = {IsmAlaMifalatun@27995} org.sj.verbConjugation.IsmAlaMifalatun@3dc3d4d
+7 = {ArrayList@27949}  size = 1
+ 0 = {IsmAlaMifaalun@27998} org.sj.verbConjugation.IsmAlaMifaalun@601c002
+8 = {ArrayList@27950}  size = 1
+ 0 = {IsmZarfMafilun@28048} org.sj.verbConjugation.IsmZarfMafilun@6cfda4e
+9 = {ArrayList@27951}  size = 1
+ 0 = {IsmZarfMafalatun@28045} org.sj.verbConjugation.IsmZarfMafalatun@3c6149
+10 = {ArrayList@27952}  size = 1
+ 0 = {IsmZarfMafalun@28017} org.sj.verbConjugation.IsmZarfMafalun@d590b50
 
+ lateinit var mifalun: IsmAlaMifaalun
+lateinit var mialatun : IsmAlaMifalatun
+lateinit var mifaalun: IsmAlaMifaalun
+lateinit var zmafilun: IsmZarfMafilun
+lateinit var zmafalatun : IsmZarfMafalatun
+lateinit var zmafalun: IsmZarfMafalun
+ */
     vb.wazan = conjugation
     if (numeric) {
         mazeed = GatherAll.instance.getMazeedListing(mood, root, conjugation)
@@ -98,6 +127,12 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
         madhimudhary = mujarrad!![0]
         faelmafool = mujarrad!![1]
         amrandnahi = mujarrad!![2]
+        mifalun = mujarrad!![5][0] as IsmAlaMifaalun
+  mifalatun= mujarrad!![6][0] as IsmAlaMifalatun
+  mifaalun= mujarrad!![7][0] as IsmAlaMifaalun
+   zmafilun= mujarrad!![8][0] as IsmZarfMafilun
+  zmafalatun    = mujarrad!![9][0] as IsmZarfMafalatun
+  zmafalun= mujarrad!![10][0] as IsmZarfMafalun
     }
     vb.wazan = conjugation
     val utils = Utils(QuranGrammarApplication.context)
@@ -120,6 +155,16 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
         ),
         TabItems(
             title = "Active/Passive Participles",
+            unselectedIcon = Icons.Outlined.FavoriteBorder,
+            selectedIcon = Icons.Filled.Favorite
+        ),
+        TabItems(
+            title = "Noun of Instruments",
+            unselectedIcon = Icons.Outlined.FavoriteBorder,
+            selectedIcon = Icons.Filled.Favorite
+        ),
+        TabItems(
+            title = "Adverb of Place/time",
             unselectedIcon = Icons.Outlined.FavoriteBorder,
             selectedIcon = Icons.Filled.Favorite
         ),
