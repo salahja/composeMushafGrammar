@@ -75,7 +75,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.compose.theme.CustomDialog
 import com.example.compose.theme.QuranVerseScreen
 import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity

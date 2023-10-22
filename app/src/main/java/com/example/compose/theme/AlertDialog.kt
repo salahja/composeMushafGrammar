@@ -809,7 +809,7 @@ fun WordALerts(
                 openDialog.value = false
             }
         ) {
-            Surface(
+            Card(
                 modifier = Modifier
                     .wrapContentWidth()
                     .wrapContentHeight(),

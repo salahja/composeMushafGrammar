@@ -46,7 +46,6 @@ import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.ProfileScreen
 import com.example.compose.SurahListScreen
 import com.example.compose.TextChip
-import com.example.compose.screens.BottomSheetWordDetails
 import com.example.compose.theme.QuranVerseScreen
 
 import com.example.mushafconsolidated.Entities.NounCorpus

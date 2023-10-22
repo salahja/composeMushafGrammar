@@ -3,14 +3,11 @@ package com.example.compose.theme
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.res.TypedArray
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -29,18 +26,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -54,18 +48,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.codelab.basics.ui.theme.dejavu
 import com.codelab.basics.ui.theme.indopak
-import com.example.bottomcompose.NewBottomActivity
 import com.example.compose.LoadingData
-import com.example.compose.WordDialogFragment
-import com.example.compose.screens.BottomSheetWordDetails
+import com.example.compose.TextChip
 import com.example.justJava.MyTextViewZoom
-import com.example.mushafconsolidated.Activity.MainActivitys
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
@@ -75,15 +64,13 @@ import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
-import com.example.utility.QuranGrammarApplication
 import com.example.utility.QuranGrammarApplication.Companion.context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-var scopes: CoroutineScope?=null
-var wordarray: ArrayList<NewQuranCorpusWbw>?=null
-var listState: LazyListState?=null
+var scopes: CoroutineScope? = null
+var wordarray: ArrayList<NewQuranCorpusWbw>? = null
+var listState: LazyListState? = null
 var annotatedStringStringPair: Pair<AnnotatedString, Int>? = null
 var aid: Int = 0
 var cid: Int = 0
@@ -98,7 +85,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-     scopes = CoroutineScope(Dispatchers.Main)
+    scopes = CoroutineScope(Dispatchers.Main)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
     var corpusSurahWord: List<QuranCorpusWbw>? = null
     val utils = Utils(context)
@@ -121,7 +108,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
     val data = remember { mutableStateOf(preferencesManager.getData("lastread", 1)) }
 
 
-  //  val state = rememberScrollState()
+    //  val state = rememberScrollState()
 
 
     preferencesManager.saveData("lastread", chapid.toString())
@@ -140,7 +127,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
 
             //     itemsIndexed(quranbySurah) { index, item ->
             itemsIndexed(quranbySurah!!.toList()) { index, item ->
-             //   val img = imgs.getDrawable(surahs!!.chapid - 2)
+                //   val img = imgs.getDrawable(surahs!!.chapid - 2)
 
 
                 Card(
@@ -241,58 +228,94 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                     textAlign = TextAlign.Center,
                                     fontSize = 15.sp
                                 )
-                           /*     AsyncImage(
-                                    modifier = Modifier.align(Alignment.TopStart),
-                                    model = img,
-                                    contentDescription = "",
-                                    colorFilter = ColorFilter.tint(Color.Red),
-                                )*/
+                                /*     AsyncImage(
+                                         modifier = Modifier.align(Alignment.TopStart),
+                                         model = img,
+                                         contentDescription = "",
+                                         colorFilter = ColorFilter.tint(Color.Red),
+                                     )*/
 
 
                             }
-                          wordarray = newnewadapterlist[index]
+                            wordarray = newnewadapterlist[index]
                             val totalItemsCount = listState!!.layoutInfo.totalItemsCount
                             println(totalItemsCount)
                             var counter = 0
-                                //  for (counter in wbw.size - 1 downTo 0) {
-                                //   wbw.forEach { indexval
-                                var list = LinkedHashMap<AnnotatedString, Int>()
-                                val lhm = LinkedHashMap<AnnotatedString, String>()
-                                for (wbw in wordarray!!) {
+                            //  for (counter in wbw.size - 1 downTo 0) {
+                            //   wbw.forEach { indexval
+                            var list = LinkedHashMap<AnnotatedString, Int>()
+                            val lhm = LinkedHashMap<AnnotatedString, String>()
+                            for (wbw in wordarray!!) {
 
 
-                                    list = AnnotationUtility.AnnotatedStrings(
-                                        wbw.corpus!!.tagone, wbw .corpus!!.tagtwo,
-                                        wbw .corpus!!.tagthree, wbw .corpus!!.tagfour,
-                                        wbw .corpus!!.tagfive,
+                                list = AnnotationUtility.AnnotatedStrings(
+                                    wbw.corpus!!.tagone, wbw.corpus!!.tagtwo,
+                                    wbw.corpus!!.tagthree, wbw.corpus!!.tagfour,
+                                    wbw.corpus!!.tagfive,
 
-                                        wbw .corpus!!.araone!!, wbw .corpus!!.aratwo!!,
-                                        wbw .corpus!!.arathree!!, wbw .corpus!!.arafour!!,
-                                        wbw .corpus!!.arafive!!,
-                                        wbw .corpus!!.wordno
-                                    )
+                                    wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
+                                    wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
+                                    wbw.corpus!!.arafive!!,
+                                    wbw.corpus!!.wordno
+                                )
 
-                                    val toList = list.toList()
-                                    annotatedStringStringPair = toList[0]
+                                val toList = list.toList()
+                                annotatedStringStringPair = toList[0]
 
                                 //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
+                                val textChipRememberOneState = remember {
+                                    mutableStateOf(false)
+                                }
+                                /*
+                                       modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 21.sp,
+                                 */
+                                TextChip(
+
+                                    isSelected = textChipRememberOneState.value,
+                                    text = annotatedStringStringPair!!.first,
+
+                                    selectedColor = Color.DarkGray,
 
 
+                                    onChecked = {
+                                        textChipRememberOneState.value = it
+                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                        cid = wbw.corpus!!.surah
+                                        aid = wbw.corpus!!.ayah
+                                        wid = wbw.corpus!!.wordno
+                                        showWordDetails.value = false
 
-                                    ClickableText(
-                                        text = annotatedStringStringPair!!.first,
+                                        /*
+                                                                                  navController.navigate(
+                                                                                       "books/${cid}/${aid}/${wid}"
+                                                                                   )*/
 
-                                        onClick = { position: Int ->
-                                            Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                            cid = wbw.corpus!!.surah
-                                            aid = wbw.corpus!!.ayah
-                                            wid = wbw.corpus!!.wordno
-                                            showWordDetails.value = false
+                                        navController.navigate(
+                                            "wordalert/${cid}/${aid}/${wid}"
+                                        )
 
- /*
+                                    }
+
+                                )
+
+                                /*            ClickableText(
+                                                text = annotatedStringStringPair!!.first,
+
+                                                onClick = { position: Int ->
+                                                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                                    cid = wbw.corpus!!.surah
+                                                    aid = wbw.corpus!!.ayah
+                                                    wid = wbw.corpus!!.wordno
+                                                    showWordDetails.value = false
+
+         *//*
                                            navController.navigate(
                                                 "books/${cid}/${aid}/${wid}"
-                                            )*/
+                                            )*//*
 
                                             navController.navigate(
                                                 "wordalert/${cid}/${aid}/${wid}"
@@ -306,28 +329,27 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                             fontSize = 26.sp,
                                             fontFamily = dejavu
                                         )
-                                    )
+                                    )*/
 
 
-                                }
+                            }
 
 
-                               //    startDetailActivity(cid,aid, wid!!)
-                                        // navController.popBackStack("verses/{id}", true)
-                                      //   showWordDetails.value = false
-                                       //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-
-
-                                     }
-
+                            //    startDetailActivity(cid,aid, wid!!)
+                            // navController.popBackStack("verses/{id}", true)
+                            //   showWordDetails.value = false
+                            //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
                         }
 
-                    if(showWordDetails.value) {
 
-                            openWordDIalog(cid,aid,wid)
-                            showWordDetails.value=true
+                    }
+
+                    if (showWordDetails.value) {
+
+                        openWordDIalog(cid, aid, wid)
+                        showWordDetails.value = true
 
                     }
                     Row(
@@ -376,22 +398,23 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
         }
     )
 }
+
 @Composable
 fun openWordDIalog(cid: Int, aid: Int, wid: Int?) {
-     val openDialogCustom: MutableState<Boolean> = remember {
+    val openDialogCustom: MutableState<Boolean> = remember {
         mutableStateOf(true)
     }
 
 
-       // CustomDialog(openDialogCustom)
-  //  MyUI()
+    // CustomDialog(openDialogCustom)
+    //  MyUI()
 
 }
 
 @Composable
 fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
     val context = LocalContext.current
-  //  WordDialogFragment().show(context.parentFragmentManager, "TestDialogFragment")
+    //  WordDialogFragment().show(context.parentFragmentManager, "TestDialogFragment")
     /*
         onDismissRequest: () -> Unit,
     buttons: @Composable () -> Unit,
@@ -405,14 +428,14 @@ fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
      */
     var openDialog = remember { mutableStateOf(true) }
 
-        AlertExample()
+    AlertExample()
 
     Column {
         AlertDialogS(
             onDismissRequest = {
                 // Dismiss the dialog when the user clicks outside the dialog or on the back button.
                 // If you want to disable that functionality, simply leave this block empty.
-           //     openDialog = false
+                //     openDialog = false
             },
             buttons = {
                 Column(
@@ -424,7 +447,7 @@ fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
                     // confirm button
                     Button(
                         onClick = {
-                   //         dialogOpen = false
+                            //         dialogOpen = false
                         }
                     ) {
                         Text(text = "Confirm")
@@ -433,7 +456,7 @@ fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
                     // dismiss button
                     Button(
                         onClick = {
-                     //       openDialog = false
+                            //       openDialog = false
                         }
                     ) {
                         Text(text = "Dismiss")
@@ -456,9 +479,8 @@ fun startDetailActivity(cid: Int, aid: Int, wid: Int) {
     }
 
 
-
- /*   val intent = Intent(context, MainActivitys::class.java)
-  context.startActivity(intent)*/
+    /*   val intent = Intent(context, MainActivitys::class.java)
+     context.startActivity(intent)*/
 }
 
 @Composable
@@ -488,6 +510,7 @@ fun AlertExample() {
         )
     }
 }
+
 @OptIn(
     ExperimentalLayoutApi::class,
     ExperimentalFoundationApi::class

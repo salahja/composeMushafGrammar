@@ -62,6 +62,7 @@ import org.sj.verbConjugation.AmrNahiAmr
 import org.sj.verbConjugation.FaelMafool
 import org.sj.verbConjugation.IsmAlaMifaalun
 import org.sj.verbConjugation.IsmAlaMifalatun
+import org.sj.verbConjugation.IsmAlaMifalun
 import org.sj.verbConjugation.IsmZarfMafalatun
 import org.sj.verbConjugation.IsmZarfMafalun
 import org.sj.verbConjugation.IsmZarfMafilun
@@ -75,7 +76,7 @@ var mazeed: ArrayList<ArrayList<*>>? = null
 var amrandnahi: ArrayList<*>? = null
 var faelmafool: ArrayList<*>? = null
 var madhimudhary: ArrayList<*>? = null
-lateinit var mifalun: IsmAlaMifaalun
+lateinit var mifalun: IsmAlaMifalun
 lateinit var mifalatun : IsmAlaMifalatun
 lateinit var mifaalun: IsmAlaMifaalun
 lateinit var zmafilun: IsmZarfMafilun
@@ -127,7 +128,7 @@ lateinit var zmafalun: IsmZarfMafalun
         madhimudhary = mujarrad!![0]
         faelmafool = mujarrad!![1]
         amrandnahi = mujarrad!![2]
-        mifalun = mujarrad!![5][0] as IsmAlaMifaalun
+   mifalun = mujarrad!![5][0] as IsmAlaMifalun
   mifalatun= mujarrad!![6][0] as IsmAlaMifalatun
   mifaalun= mujarrad!![7][0] as IsmAlaMifaalun
    zmafilun= mujarrad!![8][0] as IsmZarfMafilun
@@ -237,7 +238,13 @@ lateinit var zmafalun: IsmZarfMafalun
                 cscreen(madhimudhary!!, amrandnahi!!)
             } else if (index == 2) {
                 participlescreen(faelmafool!!)
+            }else if (index == 3) {
+                ismalascreen(mifalun,mifalatun,mifaalun)
             }
+            else if (index == 4) {
+                ismzarfscreen(zmafilun, zmafalatun,zmafalun)
+            }
+
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -258,6 +265,9 @@ lateinit var zmafalun: IsmZarfMafalun
         }
     }
 }
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
@@ -2941,11 +2951,1249 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: IsmAlaMifaalun) {
+
+
+    var allofQuran: List<QuranEntity>? = null
+
+    val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
+    val utils = Utils(QuranGrammarApplication.context)
+    //     val mujarrad: ArrayList<ArrayList<*>> =
+    //    GatherAll.instance.getMujarradListing("Indicative", root, conjugation)
+
+
+    val corpus = CorpusUtilityorig
+
+
+
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+
+
+        modifier = Modifier
+
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+            .wrapContentSize(Alignment.Center)
+            .padding(top = 10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Mifalun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalun .nomplurarMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalun.nomdualMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalun.nomsinMifalun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalun.accplurarlMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalun.accdualMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalun.accsinMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalun.genplurarMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalun.gendualMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                text = mifalun.gensinMifalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+///mudharay
+
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Mifalatun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalatun.nomplurarMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.nomdualMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.nomsinMifalatun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalatun.accplurarlMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.accdualMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.accsinMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifalatun.genplurarMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.gendualMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifalatun.gensinMifalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+////
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Mifalun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifaalun.nomplurarMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.nomdualMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.nomsinMifaalun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifaalun.accplurarlMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.accdualMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.accsinMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mifaalun.genplurarMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.gendualMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mifaalun.gensinMifaalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+///mudharay
 
 
 
 
 
+    }
+
+
+///mudharay
+
+
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalun: IsmZarfMafalun) {
+
+
+    var allofQuran: List<QuranEntity>? = null
+
+    val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
+    val utils = Utils(QuranGrammarApplication.context)
+    //     val mujarrad: ArrayList<ArrayList<*>> =
+    //    GatherAll.instance.getMujarradListing("Indicative", root, conjugation)
+
+
+    val corpus = CorpusUtilityorig
+
+
+
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+
+
+        modifier = Modifier
+
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+            .wrapContentSize(Alignment.Center)
+            .padding(top = 10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "mafilun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mafilun .nomplurarMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.nomdualMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.nomsinMafilun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mafilun.accpluralMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.accdualMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.accsinMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = mafilun.genplurarMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.gendualMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = mafilun.gensinMafilun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+///mudharay
+
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "zmafalatun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalatun.nomplurarMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.nomdualMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.nomsinMafalatun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalatun.accplurarlMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.accdualMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.accsinMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalatun.genplurarMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.gendualMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalatun.gensinMafalatun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+////
+
+        Card(
+            onClick = { Log.d("Click", "CardExample: Card Click") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            ),
+
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(
+                    horizontal = 10.dp,
+                    //vertical = 8.dp
+                )
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "mafilun",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalun.nomplurarMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.nomdualMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.nomsinMafalun!!.toString().replace("[", "")
+                        .replace("]", ""),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Nom.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalun.accplurarlMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.accdualMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.accsinMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Acc.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = zmafalun.genplurarMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.gendualMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = zmafalun.gensinMafalun!!,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Gen.",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+
+///mudharay
+
+
+
+
+
+    }
+
+
+///mudharay
+
+
+}
 
 
 
