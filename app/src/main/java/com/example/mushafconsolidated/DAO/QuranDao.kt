@@ -7,6 +7,8 @@ import androidx.room.Transaction
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.QuranAppDatabase
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import sj.hisnul.entity.hduanamesEnt
+import java.util.concurrent.Flow
 
 
 //.QuranEntity
@@ -98,7 +100,8 @@ where CorpusExpand.surah=1 and CorpusExpand.ayah=1 and CorpusExpand.wordno=2
     fun getsurahayahVerseslist(surahid: Int, ayahid: Int): List<QuranEntity>
     @Query("SELECT * FROM qurans where surah=:surahid")
     fun getQuranVersesBySurahl(surahid: Int):  List<QuranEntity>
-
+    @Query("SELECT * FROM qurans where surah=:surahid")
+    fun getQuranVersesBySurahflow(surahid: Int): kotlinx.coroutines.flow.Flow<List<QuranEntity>>
     @Query("SELECT * FROM qurans where surah=:surahid")
     fun getquranbyRoot(surahid: Int):  List<QuranEntity>
 

@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import com.example.ComposeConstant
+import com.example.mushafconsolidated.Utils
+import com.example.utility.CorpusUtilityorig.Companion.stringForegroundColorSpanMap
+import com.example.utility.QuranGrammarApplication.Companion.context
 
 
 class AnnotationUtility(private var context: Context?) {
@@ -18,7 +21,66 @@ class AnnotationUtility(private var context: Context?) {
     }
 
     companion object {
-        val dark=false
+        val dark = false
+
+        @JvmStatic
+        fun AnnotedMousuf(
+            verse: String?,
+            chapid: Int?,
+            aid : Int?
+
+            ): AnnotatedString {
+            val builder = AnnotatedString.Builder()
+            val utils = Utils(context)
+            val surah = utils.getSifabySurahAyah(chapid!!, aid!!)
+            val mudhaf = utils.getMudhafSurahAyahNew(chapid!!, aid!!)
+            val spanhash: Map<String?, Color> = stringForegroundColorSpanMap
+
+
+            val source = verse
+            // builder to attach metadata(link)
+            builder.append(source)
+            if (surah!!.isNotEmpty()) {
+                val start = surah!![0].startindex
+                val end = surah[0].endindex
+
+
+                val tagonecolor = spanhash["mousuf"]
+                val tagonestyle = SpanStyle(
+                    color = tagonecolor!!,
+                    // textDecoration = TextDecoration.Underline
+                )
+                builder.addStyle(tagonestyle, start, end)
+
+            } else if (mudhaf!!.isNotEmpty()) {
+                val start = mudhaf!![0].startindex
+                val end = mudhaf[0].endindex
+
+
+                val tagonecolor = spanhash["mudhaf"]
+                val tagonestyle = SpanStyle(
+                    color = tagonecolor!!,
+                    // textDecoration = TextDecoration.Underline
+                )
+                builder.addStyle(tagonestyle, start, end)
+            } else{
+                builder.append(verse)
+            }
+
+
+
+
+
+
+
+
+
+
+
+        //return builder.toAnnotatedString()
+            return builder.toAnnotatedString()
+        }
+
         @JvmStatic
         fun AnnotatedStrings(
             tagone: String?,
@@ -265,6 +327,8 @@ class AnnotationUtility(private var context: Context?) {
             get() {
                 val spanhash: MutableMap<String?, Color> = HashMap()
                 if (dark) {
+                    spanhash["mudhaf"] = ComposeConstant.prohibitionspanDark
+                    spanhash["mousuf"] = ComposeConstant.harfshartspanDark
                     spanhash["PN"] = ComposeConstant.propernounspanDark
                     spanhash["REL"] = ComposeConstant.relativespanDark
                     spanhash["DEM"] = ComposeConstant.demonstrativespanDark
@@ -344,6 +408,8 @@ class AnnotationUtility(private var context: Context?) {
                     spanhash["SUR"] =
                         ComposeConstant.surprisespanDark // "	Surprise particle	(حرف فجاءة)",
                 } else {
+                    spanhash["mudhaf"] = ComposeConstant.certainityspanLight
+                    spanhash["mousuf"] = ComposeConstant.propernounspanLight
                     spanhash["PN"] = ComposeConstant.propernounspanLight
                     spanhash["REL"] = ComposeConstant.relativespanLight
                     spanhash["DEM"] = ComposeConstant.demonstrativespanLight

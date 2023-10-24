@@ -130,7 +130,7 @@
 
 
         <activity
-            android:name=".Activity.QuranGrammarAct"
+            android:name="com.twopane.TwoPaneActivity"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait"

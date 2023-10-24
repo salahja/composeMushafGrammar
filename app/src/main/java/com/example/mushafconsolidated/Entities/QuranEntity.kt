@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
         onDelete = CASCADE
     )]
 )
- class QuranEntity constructor(
+data class QuranEntity constructor(
 
     var surah: Int,
     var ayah: Int,

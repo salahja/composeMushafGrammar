@@ -1,6 +1,10 @@
 package com.example.mushafconsolidated.quranrepo
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,19 +33,32 @@ import com.example.mushafconsolidated.Entities.surahsummary
 import com.example.mushafconsolidated.Entities.wbwentity
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.Juz
+import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import database.entity.kov
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sj.hisnul.entity.hcategoryEnt
+import java.util.ArrayList
+import java.util.LinkedHashMap
+
+data class Homestate(
+    val surahvers: List<QuranEntity> = emptyList(),
+    val chaptersflow: List<ChaptersAnaEntity> = emptyList()
+)
 
 class QuranVIewModel(
     private val newrepository: QuranRepository = QuranGraph.repository,
 ) : ViewModel() {
 
 
+    private lateinit var getsurahbychapflow: Flow<List<QuranEntity>>
     private var allquran: MutableLiveData<List<QuranEntity>> = MutableLiveData()
-    private val qurancorpus:MutableLiveData<List<QuranCorpusWbw>> = MutableLiveData()
+    private val qurancorpus: MutableLiveData<List<QuranCorpusWbw>> = MutableLiveData()
     private var sursumm: LiveData<List<surahsummary>> = MutableLiveData()
     private var chapters: LiveData<List<ChaptersAnaEntity>> = MutableLiveData()
     private var chapterslist: MutableLiveData<List<ChaptersAnaEntity>> = MutableLiveData()
@@ -79,10 +96,45 @@ class QuranVIewModel(
     var mudhaf: MutableLiveData<List<NewMudhafEntity>> = MutableLiveData()
     private var sifa: MutableLiveData<List<SifaEntity>> = MutableLiveData()
     var wbw: MutableLiveData<List<wbwentity>> = MutableLiveData()
-    val loading= mutableStateOf(true)
+    val loading = mutableStateOf(true)
     var lughat: MutableLiveData<List<lughat>> = MutableLiveData()
     private var grammarules: MutableLiveData<List<GrammarRules>> = MutableLiveData()
-  //  getQuranCorpusWbwBysurah
+
+    //  getQuranCorpusWbwBysurah
+    private val _quranverses = MutableStateFlow(listOf<QuranEntity>())
+    var state by mutableStateOf(Homestate())
+        private set
+
+    fun getQuranbysurah(cid: Int)  {
+        loading.value = true
+
+        viewModelScope.launch {
+            newrepository.getsurahbychapflow(cid).collectLatest {
+                state = state.copy(
+                    surahvers = it
+                )
+            }
+
+        }
+
+
+    }
+    fun getChaptersFlow() {
+        loading.value = true
+
+        viewModelScope.launch {
+            newrepository.chaptersflow.collectLatest {
+                state = state.copy(
+                    chaptersflow = it
+                )
+            }
+
+        }
+
+      //  return chaptersflow
+    }
+
+
 
     fun getGramarRulesbyHarf(root: String): LiveData<List<GrammarRules>> {
         grammarules.value = newrepository.grammarrulesDao.getGrammarRulesByHarf(root)
@@ -192,12 +244,11 @@ class QuranVIewModel(
         corpuswbwlist.value = this.newrepository.getQuranCorpusWbw(cid, aid, wid)
         return corpuswbwlist
     }
+
     fun getQuranCorpusWbwBysurah(cid: Int): MutableLiveData<List<QuranCorpusWbw>> {
         corpuswbwlist.value = this.newrepository.getQuranCorpusWbwBysurah(cid)
         return corpuswbwlist
     }
-
-
 
 
     fun getQuranRootBySurahAyahWord(
@@ -298,7 +349,6 @@ class QuranVIewModel(
     }
 
 
-
     fun getMafoolSurah(cid: Int): MutableLiveData<List<MafoolBihi>> {
         viewModelScope.launch {
             mafoolb.value = newrepository.getMafoolbihiSurah(cid)
@@ -330,7 +380,6 @@ class QuranVIewModel(
         allchapters.value = this.newrepository.chaptersmutable as List<ChaptersAnaEntity>?
         return allchapters
     }
-
 
 
     fun getAllChapters(): LiveData<List<ChaptersAnaEntity>> {
@@ -366,34 +415,37 @@ class QuranVIewModel(
 
 
         viewModelScope.launch {
-            allquran.value= newrepository.getsurahbyayah(cid, ayid)
+            allquran.value = newrepository.getsurahbyayah(cid, ayid)
         }
 
 
         return allquran
     }
+
     fun getquranbySUrah(cid: Int): LiveData<List<QuranEntity>> {
-        loading.value=true
+        loading.value = true
 
         viewModelScope.launch {
             allquran.value = newrepository.getsurahbychap(cid)
         }
 
-        loading.value=false
+        loading.value = false
         return allquran
     }
 
 
     fun getQuranCorpusWbwbysurah(cid: Int): LiveData<List<QuranCorpusWbw>> {
-        loading.value=true
+        loading.value = true
 
         viewModelScope.launch {
             qurancorpus.value = newrepository.getQuranCorpusWbwbysurah(cid)
         }
 
-        loading.value=false
+        loading.value = false
         return qurancorpus
     }
+
+
     fun getQuranCorpusWbwbyroot(root: String): LiveData<List<QuranCorpusWbw>> {
 
 
@@ -406,14 +458,11 @@ class QuranVIewModel(
     }
 
 
-
-
-
-    fun getQuranCorpusWbwbysurahAyah(cid: Int,aid : Int): LiveData<List<QuranCorpusWbw>> {
+    fun getQuranCorpusWbwbysurahAyah(cid: Int, aid: Int): LiveData<List<QuranCorpusWbw>> {
 
 
         viewModelScope.launch {
-            qurancorpus.value = newrepository.getQuranCorpusWbwbysurahAyah(cid,aid)
+            qurancorpus.value = newrepository.getQuranCorpusWbwbysurahAyah(cid, aid)
         }
 
 
@@ -457,6 +506,36 @@ class QuranVIewModel(
 
         newrepository.deletecollection(bookmar)
     }
+
+
+    fun setspans(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+        loading.value = true
+        val corpus = CorpusUtilityorig
+        corpus.setMudhafss(newnewadapterlist, chapid)
+        corpus.setSifa(newnewadapterlist, chapid)
+
+
+        loading.value = false
+
+
+    }
+    /*
+
+          fun getitall(
+               corpusSurahWord: List<QuranCorpusWbw>?,
+               newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+               chapid: Int,
+               quranbySurah: List<QuranEntity>?
+           ) {
+               val corpus = CorpusUtilityorig
+               corpusSurahWord = getQuranCorpusWbwbysurah(chapid).value
+               newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
+                 corpus.setMudhafs(newnewadapterlist,chapid)
+
+
+
+           }
+     */
 
 
     /*    fun update(fav: Int, id: Int) = viewModelScope.launch {

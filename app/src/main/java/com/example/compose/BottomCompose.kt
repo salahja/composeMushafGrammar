@@ -101,7 +101,7 @@ class BottomCompose : AppCompatActivity() {
     lateinit var mainViewModel: QuranVIewModel
     //  allofQuran = mainViewModel.getquranbySUrah(chapterno).value
 
-    private val quranModel by viewModels<QuranVIewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -114,6 +114,8 @@ class BottomCompose : AppCompatActivity() {
 
             val isDarkThemeEnabled = remember { mutableStateOf(false) }
             AppTheme() {
+                 val quranModel by viewModels<QuranVIewModel>()
+
                 val coroutineScope = rememberCoroutineScope()
                 val scaffoldState: ScaffoldState = rememberScaffoldState()
                 val navController = rememberNavController()
@@ -178,7 +180,7 @@ fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
                 SurahListScreen(navController,viewModel)
             } else {
 
-                QuranVerseScreen(navController, id, androidx.lifecycle.viewmodel.compose.viewModel())
+                QuranVerseScreen(navController, id, viewModel)
             }
         }
 

@@ -10,8 +10,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/FlowQuranVIewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/AnaQuranChapterDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/AnaQuranChapterDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/QuranDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/QuranDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/CorpusEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/CorpusEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/QuranEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/QuranEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/model/NewQuranCorpusWbw.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/model/NewQuranCorpusWbw.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/AnnotationUtility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/AnnotationUtility.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +104,7 @@
     "android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED": "MaterialButton",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh",
+    "last_opened_file_path": "/home/anons/Documents/Compose-Tooltip_Popup-master",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "nele.options"
   }
@@ -583,7 +598,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>648</line>
+          <line>652</line>
           <option name="timeStamp" value="117" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -598,20 +613,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>392</line>
+          <line>396</line>
           <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>405</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="129" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>466</line>
+          <line>470</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
@@ -619,18 +626,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>470</line>
+          <line>474</line>
           <option name="timeStamp" value="131" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
-          <line>386</line>
-          <option name="timeStamp" value="139" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt</url>
           <line>69</line>
           <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt</url>
+          <line>117</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt</url>
+          <line>432</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt</url>
+          <line>127</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt</url>
+          <line>106</line>
+          <option name="timeStamp" value="149" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -640,6 +662,7 @@
         <watch expression="vbdetail[&quot;verbmood&quot;]" />
         <watch expression="wid" />
         <watch expression="wordno" />
+        <watch expression="surahss" />
       </configuration>
     </watches-manager>
   </component>

@@ -5,6 +5,7 @@ import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,12 +44,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.codelab.basics.ui.theme.dejavu
@@ -68,6 +73,7 @@ import com.example.utility.QuranGrammarApplication.Companion.context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
+
 var scopes: CoroutineScope? = null
 var wordarray: ArrayList<NewQuranCorpusWbw>? = null
 var listState: LazyListState? = null
@@ -82,23 +88,31 @@ private val showWordDetails = mutableStateOf(false)
 @Composable
 fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: QuranVIewModel?) {
 
-
+ val model=       viewModel(modelClass=QuranVIewModel::class.java)
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
     var corpusSurahWord: List<QuranCorpusWbw>? = null
+
     val utils = Utils(context)
     val corpus = CorpusUtilityorig
     loading = quranModel!!.loading.value
     LoadingData(isDisplayed = loading)
-    val quranbySurah = quranModel.getquranbySUrah(chapid).value
+ val quranbySurah = quranModel.getquranbySUrah(chapid).value
+
+   val quranbySurahs = model.getQuranbysurah(chapid)
+ // val surahs = model.getChaptersFlow()
     //  val surahs = quranModel!!.getAllSurah().value
-    val surahs = utils.getAllAnaChapters()!!
+   val surahs = utils.getAllAnaChapters()!!
+    var annotatedlist = ArrayList<AnnotatedString>()
 
-
+   // quranModel.getitall(corpusSurahWord, newnewadapterlist, chapid, quranbySurah)
+ //   val quranbySurah1 = utils.getQuranbySurah(chapid)
     corpusSurahWord = quranModel.getQuranCorpusWbwbysurah(chapid).value
     newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
+    quranModel.setspans(newnewadapterlist,chapid)
+//    corpus.setMudhafs(newnewadapterlist, chapid)
 
     listState = rememberLazyListState()
     // corpusSurahWord = utils.getQuranCorpusWbwbysurah(chapid);
@@ -120,9 +134,8 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
     LoadingData(isDisplayed = false)
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(3) }
-    LazyColumn(state = listState!!,
-        modifier = Modifier.fillMaxSize(),
-
+  //  LazyColumn(state = listState!!,      modifier = Modifier.fillMaxSize(),
+        LazyColumn(     modifier = Modifier.fillMaxSize(),
         content = {
 
             //     itemsIndexed(quranbySurah) { index, item ->
@@ -365,7 +378,7 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                     ) {
                         Text(
 
-                            text = quranbySurah[index].qurantext,
+                            text = quranbySurah!![index].translation,
                             fontSize = 20.sp,
                             fontFamily = indopak,
                             color = colorResource(id = R.color.kashmirigreen)
@@ -380,13 +393,23 @@ fun QuranVerseScreen(navController: NavHostController, chapid: Int, quranModel: 
                                 vertical = 8.dp
                             )
                     ) {
+                        /*     wordarray = newnewadapterlist[index]
+                             val annotedMousuf = AnnotationUtility.AnnotedMousuf(
+                                 wordarray!![0].annotatedVerse.toString(),
+                                 wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
+                             )
+     */
+                        wordarray = newnewadapterlist[index]
 
-                        Text(
+                        wordarray!![0].annotatedVerse?.let {
+                            Text(
 
-                            text = quranbySurah[index].translation,
-                            fontSize = 20.sp,
-                            color = colorResource(id = R.color.burntamber)
-                        )
+                                text = it,
+                                fontSize = 20.sp,
+                                color = colorResource(id = R.color.burntamber)
+                           )
+                        }
+
 
                     }
 
@@ -827,5 +850,62 @@ fun AndroidCafe() {
                     )
             }
         }
+    }
+}
+
+@Composable
+@Preview
+fun SpeechScreen1() {
+
+    val listOfColors = listOf(
+        Color(0xFF080808),
+        Color(0xFF757575),
+        Color(0xFFB35353),
+        Color(0xFF750E0E)
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(21.dp)
+    ) {
+        Text(
+            text = "Please read the following text:",
+            style = TextStyle(
+                fontSize = 20.sp,
+                lineHeight = 28.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight(400),
+                color = Color(0xFF000000)
+            )
+        )
+        Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = "One morning Dorothy crossed the hall of the palace and knocked on the door of another girl named Trot. When told to enter, Dorothy found that Trot had company, an old sailor-man with a wooden leg who was sitting by the open window puffing smoke from a pipe.",
+            style = TextStyle(
+                fontSize = 32.sp,
+                lineHeight = 40.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight(300),
+                color = Color(0xFF080808)
+            )
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+        ) {
+            repeat(4) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
+                        .background(listOfColors[it])
+                )
+            }
+        }
+
     }
 }

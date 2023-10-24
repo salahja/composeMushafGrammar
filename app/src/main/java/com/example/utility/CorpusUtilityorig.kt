@@ -13,6 +13,8 @@ import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.core.content.ContextCompat
 import com.example.Constant
 import com.example.justJava.FrameSpan
@@ -1694,7 +1696,7 @@ class CorpusUtilityorig(private var context: Context?) {
                         if (corpusSurahWord[secondindex].corpus.ayah != allofQuran[aindex].ayah) {
                             break
                         }
-
+                        ayahWord.annotatedVerse = AnnotatedString(allofQuran[aindex].qurantext)
                         ayahWord.spannableverse = SpannableString.valueOf(allofQuran[aindex].qurantext)
                         ayahWord.wbw = corpusSurahWord[secondindex].wbw
                         ayahWord.corpus = corpusSurahWord[secondindex++].corpus
@@ -1718,6 +1720,449 @@ class CorpusUtilityorig(private var context: Context?) {
             return  newnewadapterlist
 
         }
+        fun setSifa(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+            var list= ArrayList<AnnotatedString>()
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getSifabySurah(chapid)
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (surah != null) {
+                for (indexval in 0 until surah.size) {
+                    val surahayah=utils.getSifabySurahAyah(chapid,indexval)
+                    if (surahayah != null) {
+                        if(surahayah.size > 1){
+                            setMultipleSifa(surahayah,newnewadapterlist,chapid,spanhash)
+                        }else if(surahayah.size==1){
+                            val builder = AnnotatedString.Builder()
+                            var annotatedString: AnnotatedString
+                            val tagonecolor =spanhash["mousuf"]
+                            val tagonestyle = SpanStyle(
+                                color = tagonecolor!!,                                )
+
+                            val annotatedVerse =
+                                newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+                            builder.append(annotatedVerse)
+                            builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+                            //  it[0]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+                            newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+                            println(builder.toAnnotatedString())
+                        }
+                    }
+
+
+
+                }
+            }
+
+
+
+        }
+        fun setMudhafss(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+            var list= ArrayList<AnnotatedString>()
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getMudhafSurahNew(chapid)
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (surah != null) {
+                for (indexval in 0 until surah.size) {
+                    val surahayah=utils.getMudhafSurahAyahNew(chapid,indexval)
+                    if (surahayah != null) {
+                        if(surahayah.size > 1){
+                            seTmultiple(surahayah,newnewadapterlist,chapid,spanhash)
+                        }else if(surahayah.size==1){
+                            val builder = AnnotatedString.Builder()
+                            var annotatedString: AnnotatedString
+                            val tagonecolor =spanhash["mudhaf"]
+                            val tagonestyle = SpanStyle(
+                                color = tagonecolor!!,                                )
+
+                            val annotatedVerse =
+                                newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+                            builder.append(annotatedVerse)
+                            builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+                            //  it[0]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+                            newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+                            println(builder.toAnnotatedString())
+                        }
+                    }
+
+
+
+                }
+            }
+
+            for (NewMudhafEntity in surah!!) {
+                val indexstart = NewMudhafEntity!!.startindex
+                val indexend = NewMudhafEntity.endindex
+
+
+                //  sifaspans = new BackgroundColorSpan(WBURNTUMBER);
+                val str: AnnotatedString =        mudhafannotedlist(newnewadapterlist, NewMudhafEntity, indexstart, indexend)
+                list.add(str)
+            }
+
+
+        }
+        fun setMudhafs(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int): ArrayList<AnnotatedString> {
+            var list= ArrayList<AnnotatedString>()
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getMudhafSurahNew(chapid)
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (surah != null) {
+                for (indexval in 0 until surah.size) {
+                    val surahayah=utils.getMudhafSurahAyahNew(chapid,indexval)
+                    if (surahayah != null) {
+                        if(surahayah.size > 1){
+                            seTmultiple(surahayah,newnewadapterlist,chapid,spanhash)
+                        }else if(surahayah.size==1){
+                            val builder = AnnotatedString.Builder()
+                            var annotatedString: AnnotatedString
+                            val tagonecolor =spanhash["mudhaf"]
+                            val tagonestyle = SpanStyle(
+                                color = tagonecolor!!,                                )
+
+                            val annotatedVerse =
+                                newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+                            builder.append(annotatedVerse)
+                            builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+                          //  it[0]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+                            newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+                            println(builder.toAnnotatedString())
+                        }
+                    }
+
+
+
+                }
+            }
+
+            for (NewMudhafEntity in surah!!) {
+                val indexstart = NewMudhafEntity!!.startindex
+                val indexend = NewMudhafEntity.endindex
+
+
+                //  sifaspans = new BackgroundColorSpan(WBURNTUMBER);
+                 val str: AnnotatedString =        mudhafannotedlist(newnewadapterlist, NewMudhafEntity, indexstart, indexend)
+                list.add(str)
+            }
+
+            return list
+        }
+
+
+        private fun setMultipleSifa(
+            surahayah: List<SifaEntity>?,
+            newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+            chapid: Int,
+            spanhash: Map<String?, androidx.compose.ui.graphics.Color>
+        ) {
+            if(surahayah!!.size==2){
+
+                val builder = AnnotatedString.Builder()
+                var annotatedString: AnnotatedString
+                val tagonecolor = spanhash["mousuf"]
+                val tagonestyle = SpanStyle(
+                    color = tagonecolor!!,                                )
+
+                val annotatedVerse =
+                    newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+                builder.append(annotatedVerse)
+                builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+
+
+
+                builder.addStyle(tagonestyle,  surahayah.get(1).startindex, surahayah.get(1).endindex)
+
+
+
+
+
+                newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+                println(builder.toAnnotatedString())
+            }else        if(surahayah.size==3){
+
+                val builder = AnnotatedString.Builder()
+                var annotatedString: AnnotatedString
+                val tagonecolor = spanhash["mudhaf"]
+                val tagonestyle = SpanStyle(
+                    color = tagonecolor!!,                                )
+
+                val annotatedVerse =
+                    newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+                builder.append(annotatedVerse)
+                builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+
+
+
+                builder.addStyle(tagonestyle,  surahayah.get(1).startindex, surahayah.get(1).endindex)
+
+                builder.addStyle(tagonestyle,  surahayah.get(2).startindex, surahayah.get(2).endindex)
+
+
+
+
+
+                newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+                println(builder.toAnnotatedString())
+            }
+
+
+        }
+
+        private fun seTmultiple(
+            surahayah: List<NewMudhafEntity>,
+            newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+            chapid: Int,
+            spanhash: Map<String?, androidx.compose.ui.graphics.Color>
+        ) {
+           if(surahayah.size==2){
+
+               val builder = AnnotatedString.Builder()
+               var annotatedString: AnnotatedString
+               val tagonecolor = spanhash["mudhaf"]
+               val tagonestyle = SpanStyle(
+                   color = tagonecolor!!,                                )
+
+               val annotatedVerse =
+                   newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+               builder.append(annotatedVerse)
+               builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+
+
+
+               builder.addStyle(tagonestyle,  surahayah.get(1).startindex, surahayah.get(1).endindex)
+
+
+
+
+
+               newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+               println(builder.toAnnotatedString())
+           }else        if(surahayah.size==3){
+
+               val builder = AnnotatedString.Builder()
+               var annotatedString: AnnotatedString
+               val tagonecolor = spanhash["mudhaf"]
+               val tagonestyle = SpanStyle(
+                   color = tagonecolor!!,                                )
+
+               val annotatedVerse =
+                   newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
+               builder.append(annotatedVerse)
+               builder.addStyle(tagonestyle,  surahayah.get(0).startindex, surahayah.get(0).endindex)
+
+
+
+
+               builder.addStyle(tagonestyle,  surahayah.get(1).startindex, surahayah.get(1).endindex)
+
+               builder.addStyle(tagonestyle,  surahayah.get(2).startindex, surahayah.get(2).endindex)
+
+
+
+
+
+               newnewadapterlist[surahayah.get(0).ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+
+               println(builder.toAnnotatedString())
+           }
+
+
+        }
+
+        private fun mudhafannotedlist(it: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, mudhafindex: NewMudhafEntity, indexstart: Int, indexend: Int)
+        :AnnotatedString{
+
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (dark) {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.WBURNTUMBER)
+            } else {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.CYANLIGHTEST)
+            }
+            val builder = AnnotatedString.Builder()
+            var annotatedString: AnnotatedString
+            annotatedString =
+                it[mudhafindex.ayah - 1]!![0].annotatedVerse!!
+            val source =  it[mudhafindex.ayah - 1]!![0].annotatedVerse!!
+            // builder to attach metadata(link)
+            builder.append(it[mudhafindex.ayah - 1]!![0].annotatedVerse!!)
+
+
+            val tagonecolor =spanhash["mudhaf"]
+            val tagonestyle = SpanStyle(
+                color = tagonecolor!!,
+
+            )
+
+
+
+
+
+          builder.addStyle(tagonestyle, indexstart, indexend)
+            return builder.toAnnotatedString()
+
+        }
+
+
+
+
+        fun setMudhaf(it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>, chapid: Int)
+        {
+
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getMudhafSurahNew(chapid)
+
+            for (NewMudhafEntity in surah!!) {
+                val indexstart = NewMudhafEntity!!.startindex
+                val indexend = NewMudhafEntity.endindex
+
+
+                //  sifaspans = new BackgroundColorSpan(WBURNTUMBER);
+                mudhafannote(it, NewMudhafEntity, indexstart, indexend)
+            }
+
+        }
+
+        private fun mudhafannote(
+            it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>,
+            mudhafindex: NewMudhafEntity,
+            indexstart: Int,
+            indexend: Int
+        ) {
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (dark) {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.WBURNTUMBER)
+            } else {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.CYANLIGHTEST)
+            }
+            val builder = AnnotatedString.Builder()
+            var annotatedString: AnnotatedString
+            annotatedString =
+                it[mudhafindex.ayah - 1]!![0].annotatedVerse!!
+            val source =  it[mudhafindex.ayah - 1]!![0].annotatedVerse!!
+            // builder to attach metadata(link)
+            builder.append(it[mudhafindex.ayah - 1]!![0].annotatedVerse!!)
+
+
+            val tagonecolor =spanhash["mudhaf"]
+            val tagonestyle = SpanStyle(
+                color = tagonecolor!!,
+                // textDecoration = TextDecoration.Underline
+            )
+
+
+
+
+
+            builder.addStyle(tagonestyle, indexstart, indexend)
+            annotatedString=builder.toAnnotatedString()
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        fun setShart(it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getSifabySurah(chapid)
+            //  SpannableStringBuilder spannableverse = null;
+            // SpannableString spannableString = null;
+//todo 2 188 iza ahudu
+            //todo 9;92 UNCERTAIN
+            //TODO 9:94 JAWABHARMAHDOOF 9 95 JAWABHSARMAHODFF
+            //TO 9;118 IZA IN THE MEANING OF HEENA AND 9 122 IZA AS HEENA
+            for (sifaEntity in surah!!) {
+                val indexstart = sifaEntity!!.startindex
+                val indexend = sifaEntity.endindex
+                //  sifaspans = new BackgroundColorSpan(WBURNTUMBER);
+                SifaSpansSetupbysurah(it, sifaEntity, indexstart, indexend)
+            }
+
+        }
+
+        private fun SifaSpansSetupbysurah(
+            it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>,
+            sifaEntity: SifaEntity,
+            indexstart: Int,
+            indexend: Int
+        ) {
+            val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+                AnnotationUtility.stringForegroundColorSpanMap
+            if (dark) {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.WBURNTUMBER)
+            } else {
+                Constant.sifaspansDark = BackgroundColorSpan(Constant.CYANLIGHTEST)
+            }
+            val builder = AnnotatedString.Builder()
+            var annotatedString: AnnotatedString
+            annotatedString =
+                it[sifaEntity.ayah - 1]!![0].annotatedVerse!!
+            val source = annotatedString
+            // builder to attach metadata(link)
+            builder.append(source)
+            val start =indexstart
+            val end = indexend
+
+
+
+            val tagonecolor =spanhash["mousuf"]
+            val tagonestyle = SpanStyle(
+                color = tagonecolor!!,
+                // textDecoration = TextDecoration.Underline
+            )
+
+
+
+
+
+            builder.addStyle(tagonestyle, start, end)
+            annotatedString=builder.toAnnotatedString()
+
+
+
+
+
+
+
+
+        }
+
+
+
     }
 
 

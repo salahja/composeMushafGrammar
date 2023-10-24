@@ -21,6 +21,7 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.DATABASENAME
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.DATABASEZIP
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.FILEPATH
+import com.twopane.TwoPaneActivity
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -148,7 +149,7 @@ class MainActivity : BaseActivity() {
                 fullQuranPages = new ArrayList<>(pages);
             PageAdapter pageAdapter=new PageAdapter(pages,this);
             recview.setAdapter(pageAdapter);*/
-    val homeactivity = Intent(this@MainActivity, BottomCompose::class.java)
+             val homeactivity = Intent(this@MainActivity, BottomCompose::class.java)
        //   val homeactivity = Intent(this@MainActivity, NewBottomActivity::class.java)
 
 

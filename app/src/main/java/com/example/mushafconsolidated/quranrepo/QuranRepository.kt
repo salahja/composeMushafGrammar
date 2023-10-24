@@ -51,6 +51,8 @@ import com.example.mushafconsolidated.Entities.lughat
 import com.example.mushafconsolidated.Entities.surahsummary
 import com.example.mushafconsolidated.Entities.wbwentity
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 
 //import com.example.mushafconsolidated.Entities.JoinVersesTranslationDataTranslation;
@@ -146,13 +148,13 @@ class QuranRepository(
     val bookmarlist:LiveData<List<BookMarks>> = bookm.getBookMarksLive()
     val bookmarckcollection:LiveData<List<BookMarks>> = bookm.getCollectionbygroupsLive()
      val chaptersmutable: List<ChaptersAnaEntity?>? = chaptersdao.chapterslist()
-
+    val chaptersflow: Flow<List<ChaptersAnaEntity>> = chaptersdao.chaptersflow()
 
     fun getQuranCorpusWbwbysurah(cid: Int): List<QuranCorpusWbw> = qurandao.getQuranCorpusWbwbysurah(cid)
     fun getQuranCorpusWbwbyroot(root: String): List<QuranCorpusWbw> = qurandao .getQuranCorpusWbwbyRoot(root)
     fun getQuranCorpusWbwbysurahAyah(cid : Int,aid : Int): List<QuranCorpusWbw> = qurandao.getQuranCorpusWbwSurhAyah(cid,aid)
     fun getsurahbychap(cid: Int): List<QuranEntity> = qurandao.getQuranVersesBySurahl(cid)
-
+    fun getsurahbychapflow(cid: Int): Flow<List<QuranEntity>> = qurandao.   getQuranVersesBySurahflow(cid)
 
 
     fun getsurahbyayahlist(cid: Int,ayid : Int):List<QuranEntity> = qurandao.getsurahayahVerseslist(cid,ayid)
