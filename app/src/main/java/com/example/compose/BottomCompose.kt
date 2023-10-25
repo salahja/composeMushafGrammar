@@ -76,15 +76,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.compose.theme.NewQuranVerseScreen
-import com.example.compose.theme.QuranVerseScreen
 import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
-import com.example.mushafconsolidated.model.NewQuranCorpusWbw
-import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.tabcompose.TabItem
 import com.example.utility.QuranGrammarApplication
@@ -93,7 +90,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skyyo.expandablelist.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import com.example.tabcompose.*
-import com.example.utility.CorpusUtilityorig
 
 
 lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
@@ -197,6 +193,8 @@ fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
 
 
                 QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
+             //   val surahs = viewModel.getChaptersFlow().value
+
                 NewQuranVerseScreen(navController,id,viewModel)
             }
         }

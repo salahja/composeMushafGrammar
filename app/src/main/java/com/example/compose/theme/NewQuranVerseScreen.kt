@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,9 +52,7 @@ import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
 import com.example.justJava.MyTextViewZoom
-import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
-import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
@@ -73,15 +72,16 @@ import kotlinx.coroutines.Dispatchers
 fun NewQuranVerseScreen(
     navController: NavHostController,
     chapid: Int,
-    quranModel: QuranVIewModel?,
+    quranModel: QuranVIewModel,
 
-) {
+
+    ) {
 
     val model = viewModel(modelClass = QuranVIewModel::class.java)
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
-
+ //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
     loading = quranModel!!.loading.value
@@ -90,7 +90,8 @@ fun NewQuranVerseScreen(
     var corpusSurahWord: List<QuranCorpusWbw>? = null
 
     val quranbySurah = quranModel.getquranbySUrah(chapid).value
-    val surahs = quranModel.getAllChapters().value
+    val surahs = quranModel.getAllSurah().value
+      // quranModel.getchapters().collectAsState()
     corpusSurahWord = quranModel.getQuranCorpusWbwbysurah(chapid).value
     newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
     quranModel.setspans(newnewadapterlist, chapid)

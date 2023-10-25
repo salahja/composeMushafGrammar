@@ -17,7 +17,7 @@ interface AnaQuranChapterDao {
     fun chaptersl(): LiveData<List<ChaptersAnaEntity>>
 
     @Query("SELECT * FROM chaptersana ORDER BY chapterid")
-    fun chaptersflow():  kotlinx.coroutines.flow.Flow<List<ChaptersAnaEntity>>
+  abstract  fun chaptersflow():  kotlinx.coroutines.flow.Flow<List<ChaptersAnaEntity>>
 
     @Query("SELECT * FROM chaptersana where chapterid=:id")
     fun getSingleChapters(id: Int): List<ChaptersAnaEntity?>?

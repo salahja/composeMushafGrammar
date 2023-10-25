@@ -40,6 +40,7 @@ import com.example.utility.QuranGrammarApplication
 import database.entity.kov
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sj.hisnul.entity.hcategoryEnt
@@ -100,41 +101,30 @@ class QuranVIewModel(
     var lughat: MutableLiveData<List<lughat>> = MutableLiveData()
     private var grammarules: MutableLiveData<List<GrammarRules>> = MutableLiveData()
 
+
+
+
+
     //  getQuranCorpusWbwBysurah
     private val _quranverses = MutableStateFlow(listOf<QuranEntity>())
-    var state by mutableStateOf(Homestate())
-        private set
+    val quranveres:StateFlow<List<QuranEntity>>
+        get() =          _quranverses
 
 
+    private val _chapterinfo = MutableStateFlow(listOf<ChaptersAnaEntity>())
+    val chapterinfo:StateFlow<List<ChaptersAnaEntity>>
+        get() =          _chapterinfo
+
+ fun getQuranverses(chapid : Int){
+
+     val _result = newrepository.getsurahbychap(chapid)
+
+ }
+    fun getchapters(){
+
+        val _result = newrepository.chaptersflow
 
 
-    fun getQuranbysurah(cid: Int)  {
-        loading.value = true
-
-        viewModelScope.launch {
-            newrepository.getsurahbychapflow(cid).collectLatest {
-                state = state.copy(
-                    surahvers = it
-                )
-            }
-
-        }
-
-
-    }
-    fun getChaptersFlow() {
-        loading.value = true
-
-        viewModelScope.launch {
-            newrepository.chaptersflow.collectLatest {
-                state = state.copy(
-                    chaptersflow = it
-                )
-            }
-
-        }
-
-      //  return chaptersflow
     }
 
 

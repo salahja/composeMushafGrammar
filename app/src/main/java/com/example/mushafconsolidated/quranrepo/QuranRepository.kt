@@ -97,6 +97,7 @@ class QuranRepository(
 
 ) {
 
+    fun chapters():Flow<List<ChaptersAnaEntity>> = chaptersdao.chaptersflow()
     fun getQuranCorpusWbwBysurah(cid: Int):  List<QuranCorpusWbw> =qurandao.getQuranCorpusWbwbysurah(cid)
 
 
