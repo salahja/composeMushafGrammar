@@ -17,7 +17,7 @@
 package com.codelab.basics.ui.theme
 
 import androidx.compose.ui.graphics.Color
-
+val Dark = Color(0xFF4A4D4B)
 val Navy = Color(0xFF073042)
 val Blue = Color(0xFF4285F4)
 val LightBlue = Color(0xFFD7EFFE)

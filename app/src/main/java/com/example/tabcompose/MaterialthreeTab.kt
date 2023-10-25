@@ -69,19 +69,21 @@ import org.sj.verbConjugation.IsmZarfMafilun
 import org.sj.verbConjugation.MadhiMudharay
 import org.sj.verbConjugation.SarfSagheer
 
-var numeric: Boolean=false
+lateinit var tabItems: List<TabItems>
+var numeric: Boolean = false
 lateinit var sarfSagheer: SarfSagheer
-lateinit var  mujarrad: ArrayList<ArrayList<*>>
+lateinit var mujarrad: ArrayList<ArrayList<*>>
 var mazeed: ArrayList<ArrayList<*>>? = null
 var amrandnahi: ArrayList<*>? = null
 var faelmafool: ArrayList<*>? = null
 var madhimudhary: ArrayList<*>? = null
 lateinit var mifalun: IsmAlaMifalun
-lateinit var mifalatun : IsmAlaMifalatun
+lateinit var mifalatun: IsmAlaMifalatun
 lateinit var mifaalun: IsmAlaMifaalun
 lateinit var zmafilun: IsmZarfMafilun
-lateinit var zmafalatun : IsmZarfMafalatun
+lateinit var zmafalatun: IsmZarfMafalatun
 lateinit var zmafalun: IsmZarfMafalun
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 
@@ -92,27 +94,27 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 
     val filter = conjugation.toString().filter(Char::isDigit)
     numeric = isNumeric(conjugation)
-/*
-5 = {ArrayList@27947}  size = 1
- 0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
-6 = {ArrayList@27948}  size = 1
- 0 = {IsmAlaMifalatun@27995} org.sj.verbConjugation.IsmAlaMifalatun@3dc3d4d
-7 = {ArrayList@27949}  size = 1
- 0 = {IsmAlaMifaalun@27998} org.sj.verbConjugation.IsmAlaMifaalun@601c002
-8 = {ArrayList@27950}  size = 1
- 0 = {IsmZarfMafilun@28048} org.sj.verbConjugation.IsmZarfMafilun@6cfda4e
-9 = {ArrayList@27951}  size = 1
- 0 = {IsmZarfMafalatun@28045} org.sj.verbConjugation.IsmZarfMafalatun@3c6149
-10 = {ArrayList@27952}  size = 1
- 0 = {IsmZarfMafalun@28017} org.sj.verbConjugation.IsmZarfMafalun@d590b50
+    /*
+    5 = {ArrayList@27947}  size = 1
+     0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
+    6 = {ArrayList@27948}  size = 1
+     0 = {IsmAlaMifalatun@27995} org.sj.verbConjugation.IsmAlaMifalatun@3dc3d4d
+    7 = {ArrayList@27949}  size = 1
+     0 = {IsmAlaMifaalun@27998} org.sj.verbConjugation.IsmAlaMifaalun@601c002
+    8 = {ArrayList@27950}  size = 1
+     0 = {IsmZarfMafilun@28048} org.sj.verbConjugation.IsmZarfMafilun@6cfda4e
+    9 = {ArrayList@27951}  size = 1
+     0 = {IsmZarfMafalatun@28045} org.sj.verbConjugation.IsmZarfMafalatun@3c6149
+    10 = {ArrayList@27952}  size = 1
+     0 = {IsmZarfMafalun@28017} org.sj.verbConjugation.IsmZarfMafalun@d590b50
 
- lateinit var mifalun: IsmAlaMifaalun
-lateinit var mialatun : IsmAlaMifalatun
-lateinit var mifaalun: IsmAlaMifaalun
-lateinit var zmafilun: IsmZarfMafilun
-lateinit var zmafalatun : IsmZarfMafalatun
-lateinit var zmafalun: IsmZarfMafalun
- */
+     lateinit var mifalun: IsmAlaMifaalun
+    lateinit var mialatun : IsmAlaMifalatun
+    lateinit var mifaalun: IsmAlaMifaalun
+    lateinit var zmafilun: IsmZarfMafilun
+    lateinit var zmafalatun : IsmZarfMafalatun
+    lateinit var zmafalun: IsmZarfMafalun
+     */
     vb.wazan = conjugation
     if (numeric) {
         mazeed = GatherAll.instance.getMazeedListing(mood, root, conjugation)
@@ -128,48 +130,71 @@ lateinit var zmafalun: IsmZarfMafalun
         madhimudhary = mujarrad!![0]
         faelmafool = mujarrad!![1]
         amrandnahi = mujarrad!![2]
-   mifalun = mujarrad!![5][0] as IsmAlaMifalun
-  mifalatun= mujarrad!![6][0] as IsmAlaMifalatun
-  mifaalun= mujarrad!![7][0] as IsmAlaMifaalun
-   zmafilun= mujarrad!![8][0] as IsmZarfMafilun
-  zmafalatun    = mujarrad!![9][0] as IsmZarfMafalatun
-  zmafalun= mujarrad!![10][0] as IsmZarfMafalun
+        mifalun = mujarrad!![5][0] as IsmAlaMifalun
+        mifalatun = mujarrad!![6][0] as IsmAlaMifalatun
+        mifaalun = mujarrad!![7][0] as IsmAlaMifaalun
+        zmafilun = mujarrad!![8][0] as IsmZarfMafilun
+        zmafalatun = mujarrad!![9][0] as IsmZarfMafalatun
+        zmafalun = mujarrad!![10][0] as IsmZarfMafalun
     }
     vb.wazan = conjugation
     val utils = Utils(QuranGrammarApplication.context)
 
 
     val corpus = CorpusUtilityorig
+    if (!numeric) {
+        // tab items
+        tabItems = listOf(
+            TabItems(
 
-    // tab items
-    val tabItems = listOf(
-        TabItems(
+                title = "Verb Conjugation Summary",
+                unselectedIcon = Icons.Outlined.Home,
+                selectedIcon = Icons.Filled.Home
+            ),
+            TabItems(
+                title = "Verb Conjugation",
+                unselectedIcon = Icons.Outlined.Email,
+                selectedIcon = Icons.Filled.Email
+            ),
+            TabItems(
+                title = "Active/Passive Participles",
+                unselectedIcon = Icons.Outlined.FavoriteBorder,
+                selectedIcon = Icons.Filled.Favorite
+            ),
+            TabItems(
+                title = "Noun of Instruments",
+                unselectedIcon = Icons.Outlined.FavoriteBorder,
+                selectedIcon = Icons.Filled.Favorite
+            ),
+            TabItems(
+                title = "Adverb of Place/time",
+                unselectedIcon = Icons.Outlined.FavoriteBorder,
+                selectedIcon = Icons.Filled.Favorite
+            ),
+        )
+    } else {
 
-            title = "Verb Conjugation Summary",
-            unselectedIcon = Icons.Outlined.Home,
-            selectedIcon = Icons.Filled.Home
-        ),
-        TabItems(
-            title = "Verb Conjugation",
-            unselectedIcon = Icons.Outlined.Email,
-            selectedIcon = Icons.Filled.Email
-        ),
-        TabItems(
-            title = "Active/Passive Participles",
-            unselectedIcon = Icons.Outlined.FavoriteBorder,
-            selectedIcon = Icons.Filled.Favorite
-        ),
-        TabItems(
-            title = "Noun of Instruments",
-            unselectedIcon = Icons.Outlined.FavoriteBorder,
-            selectedIcon = Icons.Filled.Favorite
-        ),
-        TabItems(
-            title = "Adverb of Place/time",
-            unselectedIcon = Icons.Outlined.FavoriteBorder,
-            selectedIcon = Icons.Filled.Favorite
-        ),
-    )
+         tabItems = listOf(
+            TabItems(
+
+                title = "Verb Conjugation Summary",
+                unselectedIcon = Icons.Outlined.Home,
+                selectedIcon = Icons.Filled.Home
+            ),
+            TabItems(
+                title = "Verb Conjugation",
+                unselectedIcon = Icons.Outlined.Email,
+                selectedIcon = Icons.Filled.Email
+            ),
+            TabItems(
+                title = "Active/Passive Participles",
+                unselectedIcon = Icons.Outlined.FavoriteBorder,
+                selectedIcon = Icons.Filled.Favorite
+            ),
+
+            )
+
+    }
 
     // remember the selected tab
     var selectedTabIndex by remember {
@@ -230,34 +255,55 @@ lateinit var zmafalun: IsmZarfMafalun
             modifier = Modifier.fillMaxWidth()
         ) { index ->
             // app content
-            if (index == 0) {
-            // sarfsagheer(sarfSagheer)
-                sagheerscreen()
-            }
-            if (index == 1) {
-                cscreen(madhimudhary!!, amrandnahi!!)
-            } else if (index == 2) {
-                participlescreen(faelmafool!!)
-            }else if (index == 3) {
-                ismalascreen(mifalun,mifalatun,mifaalun)
-            }
-            else if (index == 4) {
-                ismzarfscreen(zmafilun, zmafalatun,zmafalun)
-            }
+            if (numeric) {
+                if (index == 0) {
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = tabItems[index].title,
-                    fontSize = 18.sp
-                )
+                    sagheerscreen()
+                }
+                if (index == 1) {
+                    cscreen(madhimudhary!!, amrandnahi!!)
+                } else if (index == 2) {
+                    participlescreen(faelmafool!!)
+                } else if (index == 3) {
+                    ismalascreen(mifalun, mifalatun, mifaalun)
+                } else if (index == 4) {
+                    ismzarfscreen(zmafilun, zmafalatun, zmafalun)
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = tabItems[index].title,
+                        fontSize = 18.sp
+                    )
+                }
+            } else if (!numeric) {
+                if (index == 0) {
+
+                    sagheerscreen()
+                }
+                if (index == 1) {
+                    cscreen(madhimudhary!!, amrandnahi!!)
+                } else if (index == 2) {
+                    participlescreen(faelmafool!!)
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = tabItems[index].title,
+                        fontSize = 18.sp
+                    )
+                }
             }
         }
     }
 
-    // change the tab item when current page is changed
+// change the tab item when current page is changed
     LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
         if (!pagerState.isScrollInProgress) {
             selectedTabIndex = pagerState.currentPage
@@ -265,7 +311,6 @@ lateinit var zmafalun: IsmZarfMafalun
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -365,7 +410,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.mudharayhua!!.replace("[", ""),
+                    text = sarfSagheer.mudharayhua!!.replace("[", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -374,7 +419,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.madhihua!!.toString().replace("[", "")
+                    text = sarfSagheer.madhihua!!.toString().replace("[", "")
                         .replace("]", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -398,7 +443,7 @@ fun sagheerscreen() {
 
 
                 Text(
-                    text =  sarfSagheer.mafoolsin!!.replace("[", ""),
+                    text = sarfSagheer.mafoolsin!!.replace("[", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -407,7 +452,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.mudharaymajhoolhua!!.replace("[", ""),
+                    text = sarfSagheer.mudharaymajhoolhua!!.replace("[", ""),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -416,7 +461,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.madhimajhoolhua!!,
+                    text = sarfSagheer.madhimajhoolhua!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -447,7 +492,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.nahiamr!!,
+                    text = sarfSagheer.nahiamr!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -456,7 +501,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.amr!!,
+                    text = sarfSagheer.amr!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -519,7 +564,7 @@ fun sagheerscreen() {
 
 
                 Text(
-                    text =  sarfSagheer.ismalaone!!,
+                    text = sarfSagheer.ismalaone!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -528,7 +573,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.ismalatwo!!,
+                    text = sarfSagheer.ismalatwo!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -537,7 +582,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =   sarfSagheer.ismalathre!!,
+                    text = sarfSagheer.ismalathre!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -605,7 +650,7 @@ fun sagheerscreen() {
 
 
                 Text(
-                    text =  sarfSagheer.ismzarfone!!,
+                    text = sarfSagheer.ismzarfone!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -614,7 +659,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =  sarfSagheer.ismzarftwo!!,
+                    text = sarfSagheer.ismzarftwo!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -623,7 +668,7 @@ fun sagheerscreen() {
                     fontFamily = indopak
                 )
                 Text(
-                    text =   sarfSagheer.ismzarfthree!!,
+                    text = sarfSagheer.ismzarfthree!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -747,12 +792,12 @@ fun sarfsagheers() {
                 Text(
                     text = "Check",
 
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
 
-                textAlign = TextAlign.Center,
-                fontSize = 25.sp,
-                fontFamily = indopak
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp,
+                    fontFamily = indopak
                 )
             }
         }
@@ -854,7 +899,7 @@ fun sarfsagheers() {
 
                 .padding(
                     horizontal = 10.dp,
-                   vertical = 10.dp
+                    vertical = 10.dp
                 )
         ) {
             Row(
@@ -2937,8 +2982,6 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         }
 
 
-
-
     }
 
 
@@ -2946,9 +2989,6 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
 
 
 }
-
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -3032,7 +3072,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
 
 
                 Text(
-                    text = mifalun .nomplurarMifalun!!,
+                    text = mifalun.nomplurarMifalun!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -3151,7 +3191,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     fontFamily = indopak
                 )
                 Text(
-                text = mifalun.gensinMifalun!!,
+                    text = mifalun.gensinMifalun!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -3561,9 +3601,6 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
 ///mudharay
 
 
-
-
-
     }
 
 
@@ -3571,7 +3608,6 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
 
 
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -3655,7 +3691,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
 
 
                 Text(
-                    text = mafilun .nomplurarMafilun!!,
+                    text = mafilun.nomplurarMafilun!!,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
 
@@ -4182,9 +4218,6 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
 
 
 ///mudharay
-
-
-
 
 
     }

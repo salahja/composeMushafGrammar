@@ -52,7 +52,10 @@ import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.model.NewQuranCorpusWbw
+import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
+import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import com.skyyo.expandablelist.theme.AppTheme
 
@@ -191,10 +194,31 @@ private fun MainScreenContainer(
                         nullable = true}
                 )
             ) { backStackEntry ->
-                val id = backStackEntry.arguments!!.getString("chapterid")
+              //  val id = backStackEntry.arguments!!.getString("chapterid")
+                val id = backStackEntry.arguments!!.getInt("id")
+                var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
+                var corpusSurahWord: List<QuranCorpusWbw>? = null
+
+                val utils = Utils(QuranGrammarApplication.context)
+                val corpus = CorpusUtilityorig
+
+                val quranbySurah = viewModel.getquranbySUrah(id).value
+                val surahs = viewModel.getAllChapters().value
+                corpusSurahWord = viewModel.getQuranCorpusWbwbysurah(id).value
+                newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
+                viewModel.setspans(newnewadapterlist, id)
 
 
-                QuranVerseScreen(navController, id!!.toInt(), androidx.lifecycle.viewmodel.compose.viewModel())
+                QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)
+                QuranVerseScreen(
+                    navController,
+                    id!!.toInt(),
+                    androidx.lifecycle.viewmodel.compose.viewModel(),
+                    quranbySurah,
+                    surahs,
+                    corpusSurahWord,
+                    newnewadapterlist
+                )
             }
 
             composable( "books/{chapterid}/{verseid}/{wordno}",

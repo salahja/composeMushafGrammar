@@ -105,6 +105,9 @@ class QuranVIewModel(
     var state by mutableStateOf(Homestate())
         private set
 
+
+
+
     fun getQuranbysurah(cid: Int)  {
         loading.value = true
 
@@ -519,6 +522,8 @@ class QuranVIewModel(
 
 
     }
+
+
     /*
 
           fun getitall(
