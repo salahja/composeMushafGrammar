@@ -1,6 +1,7 @@
 package com.example.compose
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -66,6 +67,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -116,13 +119,19 @@ class BottomCompose : AppCompatActivity() {
             AppTheme() {
                  val quranModel by viewModels<QuranVIewModel>()
 
+                val quranarraymodel: VerseModel by viewModels {
+                    ViewModelFactory(
+                        application,2
+
+                    )
+                }
                 val coroutineScope = rememberCoroutineScope()
                 val scaffoldState: ScaffoldState = rememberScaffoldState()
                 val navController = rememberNavController()
                 val navBackStackEntry
                         by navController.currentBackStackEntryAsState()
 
-                MainScreen(viewModel)
+                MainScreen(viewModel,quranarraymodel,application)
 
 
             }
@@ -134,9 +143,30 @@ class BottomCompose : AppCompatActivity() {
     }
 }
 
+
+class ViewModelFactory(
+    private val mApplication: Application,
+    private val chapterid: Int
+
+) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        return VerseModel(mApplication, chapterid) as T
+    }
+}
+
+
+
+
+
+
+
+
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreen(viewModel: QuranVIewModel) {
+fun MainScreen(viewModel: QuranVIewModel, quranarraymodel: VerseModel, application: Application) {
     val navController = rememberNavController()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -149,7 +179,7 @@ fun MainScreen(viewModel: QuranVIewModel) {
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController,viewModel)
+                Navigation(navController,viewModel,quranarraymodel,application)
             }
         },
         //backgroundColor = colorResource(id =colorPrimaryDark),
@@ -160,7 +190,12 @@ fun MainScreen(viewModel: QuranVIewModel) {
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
-fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
+fun Navigation(
+    navController: NavHostController,
+    viewModel: QuranVIewModel,
+    quranarraymodel: VerseModel,
+    application: Application
+) {
 
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
         composable("home") {
@@ -195,7 +230,7 @@ fun Navigation(navController: NavHostController, viewModel: QuranVIewModel) {
                 QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
              //   val surahs = viewModel.getChaptersFlow().value
 
-                NewQuranVerseScreen(navController,id,viewModel)
+                NewQuranVerseScreen(navController,id,viewModel,quranarraymodel,application)
             }
         }
 

@@ -10,10 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/QuranArrays.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/AnaQuranChapterDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/AnaQuranChapterDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/QuranVIewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,23 +95,30 @@
     &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Documents/Compose-Tooltip_Popup-master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/java/com/example/compose&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable/lazytable/data" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable/lazytable/screens" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/Utility" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="com.example.tabcompose" />
     </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.example.viewmodels" />
+    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="com.example.compose" />
       <recent name="com.example.tabcompose" />
     </key>
   </component>
@@ -561,7 +571,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698116192044</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Initial commit">
+      <created>1698239864027</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698239864027</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -636,6 +653,26 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewToolTips.kt</url>
           <line>232</line>
           <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
+          <line>123</line>
+          <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
+          <line>111</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
+          <line>58</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
+          <line>68</line>
+          <option name="timeStamp" value="172" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

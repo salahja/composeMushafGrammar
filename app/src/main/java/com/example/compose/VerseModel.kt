@@ -1,0 +1,134 @@
+package com.example.compose
+
+
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
+import androidx.appcompat.app.AlertDialog
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
+import androidx.webkit.internal.ApiFeature.Q
+import com.example.Constant
+import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
+import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
+import com.example.mushafconsolidated.Entities.CorpusVerbWbwOccurance
+import com.example.mushafconsolidated.Entities.NounCorpusBreakup
+import com.example.mushafconsolidated.Entities.VerbCorpusBreakup
+import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.model.NewQuranCorpusWbw
+
+import com.example.utility.CorpusUtilityorig
+import com.example.utility.CorpusUtilityorig.Companion.getSpannableVerses
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.LinkedHashMap
+
+
+@SuppressLint("SuspiciousIndentation")
+class VerseModel(
+    mApplication: Application,
+
+    chapid: Int,
+
+    ) : ViewModel() {
+    val builder = AlertDialog.Builder(mApplication)
+    var listss: ArrayList<String> = ArrayList<String>()
+    val dialog = builder.create()
+    var open = MutableLiveData<Boolean>()
+    private lateinit var util: Utils
+    private lateinit var corpus: CorpusUtilityorig
+
+    // var verbroot: String = "حمد"
+    private lateinit var shared: SharedPreferences
+    lateinit var lemma: String
+    private val _cards = MutableStateFlow(listOf<QuranArrays>())
+
+
+    val cards: StateFlow<List<QuranArrays>> get() = _cards
+    private val _expandedCardIdsList = MutableStateFlow(listOf<Int>())
+    var counter = 0;
+    val expandedCardIdsList: StateFlow<List<Int>> get() = _expandedCardIdsList
+    private var nounCorpusArrayList: ArrayList<NounCorpusBreakup>? = null
+    private var verbCorpusArray: ArrayList<VerbCorpusBreakup>? = null
+    private var occurances: ArrayList<CorpusNounWbwOccurance>? = null
+    val loading = mutableStateOf(true)
+
+    init {
+        shared = PreferenceManager.getDefaultSharedPreferences(mApplication)
+        var job = Job()
+        util = Utils(mApplication)
+
+
+        getZarf(2)
+
+
+    }
+
+    private fun getZarf(chapid: Int) {
+        viewModelScope.launch {
+            loading.value = true
+            withContext(Dispatchers.Default) {
+                val testList = arrayListOf<QuranArrays>()
+                val corpus = CorpusUtilityorig
+
+                val quranbySurah = util.getQuranbySurah(chapid)
+                val chapterlist = util.getAllAnaChapters()
+                // quranModel.getchapters().collectAsState()
+                val corpusSurahWord = util.getQuranCorpusWbwbysurah(chapid)
+
+                val hashlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
+                //  quranModel.setspans(newnewadapterlist, chapid)
+
+
+                testList += QuranArrays(
+                    hashlist,
+                    corpusSurahWord,
+                    quranbySurah!!,
+                    chapterlist as List<ChaptersAnaEntity>
+                )
+
+
+
+                    corpus.setMudhafss(hashlist, 2)
+                    corpus.setSifa(hashlist, 2)
+
+
+
+
+
+
+                _cards.emit(testList)
+            }
+
+
+
+
+            loading.value = false
+
+
+
+        }
+        //    closeDialog()
+        loading.value = false
+    }
+
+}
+
+
+
+
+
+
+

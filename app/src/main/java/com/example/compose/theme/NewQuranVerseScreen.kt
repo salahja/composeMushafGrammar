@@ -2,6 +2,7 @@ package com.example.compose.theme
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
+import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,11 +46,14 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
+import com.example.compose.VerseModel
+import com.example.compose.ViewModelFactory
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
@@ -73,35 +76,47 @@ fun NewQuranVerseScreen(
     navController: NavHostController,
     chapid: Int,
     quranModel: QuranVIewModel,
+    quranarraymodel: VerseModel,
+    application: Application,
 
 
     ) {
 
-    val model = viewModel(modelClass = QuranVIewModel::class.java)
+   // val model = viewModel(modelClass = VerseModel::class.java)
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
+
  //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
-    loading = quranModel!!.loading.value
-    LoadingData(isDisplayed = loading)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
     var corpusSurahWord: List<QuranCorpusWbw>? = null
-
-    val quranbySurah = quranModel.getquranbySUrah(chapid).value
+   /* val quranbySurah = quranModel.getquranbySUrah(chapid).value
     val surahs = quranModel.getAllSurah().value
-      // quranModel.getchapters().collectAsState()
     corpusSurahWord = quranModel.getQuranCorpusWbwbysurah(chapid).value
     newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
-    quranModel.setspans(newnewadapterlist, chapid)
-  //  val surahs = utils.getAllAnaChapters()!!
-    var annotatedlist = ArrayList<AnnotatedString>()
+    corpus.composeWBWCollection(quranbySurah,corpusSurahWord)*/
+   // quranModel.setspans(newnewadapterlist, chapid)
 
-    // quranModel.getitall(corpusSurahWord, newnewadapterlist, chapid, quranbySurah)
-    //   val quranbySurah1 = utils.getQuranbySurah(chapid)
 
-//    corpus.setMudhafs(newnewadapterlist, chapid)
+
+
+
+   /*     val myViewModel: VerseModel =
+    viewModel(factory = ViewModelFactory(application,chapid))
+*/
+
+
+
+    val cards by quranarraymodel.cards.collectAsStateWithLifecycle()
+
+       val surahs=     cards[0].chapterlist
+    val quranbySurah=     cards[0].quranbySurah
+    newnewadapterlist=cards[0].newnewadapterlist
+    loading = quranarraymodel!!.loading.value
+    LoadingData(isDisplayed = loading)
+
 
     listState = rememberLazyListState()
     // corpusSurahWord = utils.getQuranCorpusWbwbysurah(chapid);
