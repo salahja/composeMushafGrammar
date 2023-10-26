@@ -51,7 +51,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.TextChip
-import com.example.compose.worddetails
+import com.example.compose.activity.worddetails
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R

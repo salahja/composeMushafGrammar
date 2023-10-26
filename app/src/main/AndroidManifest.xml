@@ -85,7 +85,7 @@
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.compose.BottomCompose"
+            android:name="com.example.compose.activity.BottomCompose"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -96,7 +96,7 @@
 
 
         <activity
-            android:name="com.example.bottomcompose.NewBottomActivity"
+            android:name="com.example.compose.activity.NewBottomActivity"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -106,7 +106,7 @@
         </activity>
 
         <activity
-            android:name="com.example.compose.BottomCompose"
+            android:name="com.example.compose.activity.QuranDisplayActs"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">

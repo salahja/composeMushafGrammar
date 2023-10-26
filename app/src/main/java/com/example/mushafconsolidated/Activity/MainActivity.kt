@@ -13,15 +13,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.window.layout.WindowMetricsCalculator
-import com.example.bottomcompose.NewBottomActivity
-import com.example.compose.BottomCompose
+import com.example.compose.activity.BottomCompose
 
 import com.example.mushafconsolidated.Activityimport.BaseActivity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.DATABASENAME
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.DATABASEZIP
 import com.example.mushafconsolidated.settingsimport.Constants.Companion.FILEPATH
-import com.twopane.TwoPaneActivity
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream

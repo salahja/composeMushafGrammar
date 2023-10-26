@@ -1,7 +1,8 @@
-package com.example.compose
+package com.example.compose.activity
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -44,22 +45,18 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -78,6 +75,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.compose.ConjugationScreen
+import com.example.compose.NavigationItem
+import com.example.compose.NewQuranMorphologyDetails
+import com.example.compose.SurahListScreen
+import com.example.compose.TextChip
+import com.example.compose.VerseModel
 import com.example.compose.theme.NewQuranVerseScreen
 import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
@@ -86,6 +89,8 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
+import com.example.mushafconsolidated.settingsimport.Constants
+import com.example.mushafconsolidated.settingsimport.Constants.Companion.SURAH_INDEX
 import com.example.tabcompose.TabItem
 import com.example.utility.QuranGrammarApplication
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -93,11 +98,12 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skyyo.expandablelist.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import com.example.tabcompose.*
+import com.example.utility.QuranGrammarApplication.Companion.context
 
 
-lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
+lateinit var worddetailss: HashMap<String, SpannableStringBuilder?>
 
-class BottomCompose : AppCompatActivity() {
+class QuranDisplayActs : AppCompatActivity() {
     private val viewModel by viewModels<QuranVIewModel>()
     private lateinit var allAnaChapters: List<ChaptersAnaEntity?>
     private lateinit var imgs: TypedArray
@@ -111,27 +117,33 @@ class BottomCompose : AppCompatActivity() {
 
         setContent {
 
+
+            //    root = bundle?.getString(Constant.QURAN_VERB_ROOT)
+            //  val defArgs = bundleOf("root" to root)
             val bundle: Bundle? = intent.extras
             //    root = bundle?.getString(Constant.QURAN_VERB_ROOT)
             //  val defArgs = bundleOf("root" to root)
 
+            val chapid = bundle?.getInt(Constants.SURAH_INDEX)
             val isDarkThemeEnabled = remember { mutableStateOf(false) }
             AppTheme() {
-                 val quranModel by viewModels<QuranVIewModel>()
 
-                val quranarraymodel: VerseModel by viewModels {
-                    ViewModelFactory(
-                        application,2
+                val viewModel: VerseModel by viewModels {
+                    ModelFactory(
+                        application, chapid!!,
 
-                    )
+                        )
                 }
+
+                val quranModel by viewModels<QuranVIewModel>()
+
                 val coroutineScope = rememberCoroutineScope()
                 val scaffoldState: ScaffoldState = rememberScaffoldState()
                 val navController = rememberNavController()
                 val navBackStackEntry
                         by navController.currentBackStackEntryAsState()
 
-                MainScreen(viewModel,quranarraymodel,application)
+                MainScreens(viewModel,quranModel)
 
 
             }
@@ -143,8 +155,21 @@ class BottomCompose : AppCompatActivity() {
     }
 }
 
+class ModelFactory(
+    private val mApplication: Application,
+    private val chapid: Int
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(VerseModel::class.java)) {
+            return VerseModel(mApplication,chapid) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
-class ViewModelFactory(
+
+/*class ViewModelFactory(
     private val mApplication: Application,
     private val chapterid: Int
 
@@ -154,9 +179,7 @@ class ViewModelFactory(
 
         return VerseModel(mApplication, chapterid) as T
     }
-}
-
-
+}*/
 
 
 
@@ -166,7 +189,7 @@ class ViewModelFactory(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreen(viewModel: QuranVIewModel, quranarraymodel: VerseModel, application: Application) {
+fun MainScreens(viewModel: VerseModel, quranModel: QuranVIewModel) {
     val navController = rememberNavController()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -179,7 +202,7 @@ fun MainScreen(viewModel: QuranVIewModel, quranarraymodel: VerseModel, applicati
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController,viewModel,quranarraymodel,application)
+                Navigations(navController,viewModel,quranModel)
             }
         },
         //backgroundColor = colorResource(id =colorPrimaryDark),
@@ -190,17 +213,17 @@ fun MainScreen(viewModel: QuranVIewModel, quranarraymodel: VerseModel, applicati
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
-fun Navigation(
+fun Navigations(
     navController: NavHostController,
-    viewModel: QuranVIewModel,
-    quranarraymodel: VerseModel,
-    application: Application
+    viewModel: VerseModel,
+
+    quranModel: QuranVIewModel
 ) {
 
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
         composable("home") {
 
-            SurahListScreen(navController,viewModel)
+            SurahListScreen(navController,quranModel)
         }
         composable("verses/{id}",
             arguments = listOf(
@@ -212,25 +235,24 @@ fun Navigation(
         ) { backStackEntry ->
             val id = backStackEntry.arguments!!.getInt("id")
             if (id < 0) {
-                SurahListScreen(navController,viewModel)
+                SurahListScreen(navController,quranModel)
             } else {
-    /*            var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
-                var corpusSurahWord: List<QuranCorpusWbw>? = null
-
-                val utils = Utils(QuranGrammarApplication.context)
-                val corpus = CorpusUtilityorig
-
-                val quranbySurah = viewModel.getquranbySUrah(id).value
-                val surahs = viewModel.loadListschapter().value
-                corpusSurahWord = viewModel.getQuranCorpusWbwbysurah(id).value
-                newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
-                viewModel.setspans(newnewadapterlist, id)
 
 
-                QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
-             //   val surahs = viewModel.getChaptersFlow().value
+                NewQuranVerseScreen(navController,id,viewModel)
 
-                NewQuranVerseScreen(navController,id,viewModel,quranarraymodel,application)
+
+
+
+
+
+
+
+
+
+
+
+
             }
         }
 
@@ -322,7 +344,7 @@ fun Navigation(
             }
        //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
 
-            WordALert(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+            WordALert(openDialogCustom,navController, quranModel, chapterid, verseid, wordno)
         }
 
 
@@ -372,335 +394,16 @@ fun Navigation(
     }
 }
 
-@Composable
-fun CustomDialogs(
-    openDialogCustom: MutableState<Boolean>,
-    navController: NavHostController,
-    viewModel: Any,
-    chapterid: Int?,
-    verseid: Int?,
-    wordno: Int?
-) {
 
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyUI(mainViewModel: QuranVIewModel, chapterid: Int?, verseid: Int?, wordno: Int?) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    val utils = Utils(QuranGrammarApplication.context)
 
-    val corpusSurahWord = mainViewModel.getQuranCorpusWbw(chapterid!!, verseid!!, wordno!!).value
-
-    var vbdetail = HashMap<String, String?>()
-    val quran = mainViewModel.getsurahayahVerseslist(chapterid!!, verseid!!).value
-    val corpusNounWord = mainViewModel.getNouncorpus(chapterid!!, verseid!!, wordno!!).value
-
-    val verbCorpusRootWord =
-        mainViewModel.getVerbRootBySurahAyahWord(chapterid!!, verseid!!, wordno!!).value
-
-
-    val am = NewQuranMorphologyDetails(
-        corpusSurahWord!!,
-        corpusNounWord as ArrayList<NounCorpus>?,
-        verbCorpusRootWord as ArrayList<VerbCorpus>?,
-        QuranGrammarApplication.context
-    )
-    worddetails = am.wordDetails
-    // wordbdetail = am.wordDetails
-    if (verbCorpusRootWord != null) {
-        if (verbCorpusRootWord.isNotEmpty() && verbCorpusRootWord[0].tag.equals("V")) {
-            vbdetail = am.verbDetails
-            //  isVerb = true
-        }
-    }
-    var openBottomSheet by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState()
-    val contextForToast = LocalContext.current.applicationContext
-//openBottomSheet=true
-    // app content
-
-    // sheet content
-    if (openBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { openBottomSheet = false },
-            sheetState = bottomSheetState
-        ) {
-
-            Spacer(modifier = Modifier.padding(16.dp))
-            Text(
-                text = worddetails["surahid"].toString() + ":" + worddetails["ayahid"].toString() + ":" + worddetails["wordno"].toString(),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontSize = 21.sp,
-
-                )
-            Row {
-
-                if (worddetails["arabicword"] != null) {
-                    /*          CustomChip(
-                                  selected = true,
-                                  text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                  modifier = Modifier.padding(horizontal = 8.dp),
-
-
-                                  )*/
-
-                    val textChipRememberOneState = remember {
-                        mutableStateOf(false)
-                    }
-                    TextChip(
-                        isSelected = textChipRememberOneState.value,
-                        text = "ArabicWord" + worddetails["arabicword"].toString(),
-
-                        selectedColor = Color.DarkGray,
-                        onChecked = {
-                            textChipRememberOneState.value = it
-                        }
-                    )
-
-
-                }
-                /*
-                         Chip(onClick = { *//*TODO*//* }) {
-
-
-
-                            if (worddetails["arabicword"] != null) {
-                                Text(
-                                    text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 21.sp,
-
-                                )
-                            }
-                        }*/
-
-            }
-
-            Row {
-
-                if (worddetails["PRON"] != null) {
-                    Text(
-                        text = worddetails["PRON"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-            Row {
-
-                if (worddetails["worddetails"] != null) {
-                    Text(
-                        text = worddetails["worddetails"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-
-
-
-            Row {
-                if (worddetails["noun"] != null) {
-                    Text(
-                        text = "Noun" + worddetails["noun"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-            Row {
-                if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
-                    Text(
-                        text = "Lemma" + worddetails["lemma"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-                }
-            }
-            Row {
-                if (worddetails["arabicword"] != null) {
-                    Text(
-                        text = "ArabicWord" + worddetails["arabicword"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-            Row {
-                if (worddetails["translation"] != null) {
-                    Text(
-                        text = "Translation" + worddetails["translation"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-
-
-            Row {
-                if (worddetails["root"] != null) {
-                    Text(
-                        text = "Root:" + worddetails["root"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-                }
-            }
-            Row {
-                if (worddetails["formnumber"] != null) {
-                    Text(
-                        text = worddetails["form"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-            //
-            Row {
-                if (vbdetail["mazeed"] != null) {
-                    Text(
-                        text = vbdetail["mazeed"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-            Row {
-                if (vbdetail["form"] != null) {
-                    Text(
-                        text = vbdetail["form"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-
-            Row {
-                if (vbdetail["verbmood"] != null) {
-                    Text(
-                        text = vbdetail["verbmood"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-            val vb: StringBuilder = StringBuilder()
-            vb.append("V-")
-            if (vbdetail["thulathi"] != null) {
-                vb.append(vbdetail["thulathi"])
-            }
-            if (vbdetail["png"] != null) {
-                vb.append(vbdetail["png"])
-            }
-            if (vbdetail["tense"] != null) {
-                vb.append(vbdetail["tense"])
-            }
-            if (vbdetail["voice"] != null) {
-                vb.append(vbdetail["voice"])
-            }
-            if (vbdetail["mood"] != null) {
-                vb.append(vbdetail["mood"])
-            }
-            if (vb.length > 2) {
-
-
-                Row {
-
-                    Text(
-                        text = vb.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-
-
-                //  holder.verbdetails.setTextSize(arabicFontsize);
-            }
-
-        }
-    }
-}
 
 
 @Suppress("DEPRECATION")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @ExperimentalFoundationApi
 @Composable
-fun BottomSheetDemo(
+fun BottomSheetDemos(
 
     navController: NavHostController,
     mainViewModel: QuranVIewModel,
@@ -1130,59 +833,7 @@ fun BottomSheetDemo(
     }
 }
 
-@Composable
-fun CustomChip(
-    selected: Boolean,
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    // define properties to the chip
-    // such as color, shape, width
-    Surface(
-        color = when {
-            selected -> MaterialTheme.colorScheme.onSurface
-            else -> Color.Transparent
-        },
-        contentColor = when {
-            selected -> MaterialTheme.colorScheme.onPrimary
-            else -> Color.LightGray
-        },
-        shape = CircleShape,
-        border = BorderStroke(
-            width = 1.dp,
-            color = when {
-                selected -> MaterialTheme.colorScheme.primary
-                else -> Color.LightGray
-            }
-        ),
-        modifier = modifier
-    ) {
-        // Add text to show the data that we passed
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(8.dp)
-        )
 
-    }
-}
-
-@Composable
-fun TopBar() {
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.app_name),
-                fontSize = 18.sp
-            )
-        },
-        //  backgroundColor = colorResource(id = colorPrimary),
-
-
-        backgroundColor = MaterialTheme.colorScheme.inversePrimary,
-    )
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -1211,84 +862,12 @@ private fun CollapsedTopBar(
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun CollapsableTopBar() {
-    Scaffold(
-
-        // Creating a Top Bar
-        topBar = {
-            TopAppBar(
-                title = { Text("GFG | Collapsing Toolbar", color = Color.White) },
-                backgroundColor = Color(0xff0f9d58)
-            )
-        },
-
-        // Creating Content
-        content = {
-
-            // Creating a Column Layout
-            Column(
-                Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                // Creating a Scrollable list of 100 items
-                val items = (1..100).map { "Item $it" }
-                val lazyListState = rememberLazyListState()
-                var scrolledY = 0f
-                var previousOffset = 0
-                LazyColumn(
-                    Modifier.fillMaxSize(),
-                    lazyListState,
-                ) {
-                    // Setting the Image as the first
-                    // item and making it collapsible
-                    item {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_quran_nav_top_54),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillWidth,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
-                                    translationY = scrolledY * 0.5f
-                                    previousOffset = lazyListState.firstVisibleItemScrollOffset
-                                }
-                                .height(240.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-
-                    // Displaying the remaining 100 items
-                    /*    items(items) {
-                            Text(
-                                text = it,
-                                Modifier
-                                    .background(Color.White)
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
-                            )
-                        }*/
-                }
-            }
-        }
-    )
 
 
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun TopBarPreview() {
-    TopBar()
-}
 
 @Composable
 
-fun BottomNavigationBars(navController: NavController) {
+fun BottomNavigationBarss(navController: NavController) {
     val items = listOf(
         NavigationItem.Home,
         //  NavigationItem.Verses,
@@ -1337,11 +916,5 @@ fun BottomNavigationBars(navController: NavController) {
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomNavigationBarPreview() {
-    // BottomNavigationBar()
 }
 

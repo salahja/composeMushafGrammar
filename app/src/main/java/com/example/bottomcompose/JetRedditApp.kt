@@ -245,8 +245,13 @@ private fun MainScreenContainer(
                 val wordno = backStackEntry.arguments?.getString("wordno")
 
          //       BottomSheetWordDetails(navController,viewModel(),chapterid!!.toInt(),verseid!!.toInt(),wordno!!.toInt() )
-                com.example.compose.BottomSheetDemo(
-                    navController,viewModel(),chapterid!!.toInt(),verseid!!.toInt(),wordno!!.toInt() )
+                com.example.compose.activity.BottomSheetDemo(
+                    navController,
+                    viewModel(),
+                    chapterid!!.toInt(),
+                    verseid!!.toInt(),
+                    wordno!!.toInt()
+                )
 
             }
 

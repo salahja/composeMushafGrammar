@@ -2,7 +2,6 @@ package com.example.compose.theme
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,13 +46,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
-import com.example.compose.ViewModelFactory
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
@@ -61,7 +58,6 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
@@ -75,9 +71,9 @@ import kotlinx.coroutines.Dispatchers
 fun NewQuranVerseScreen(
     navController: NavHostController,
     chapid: Int,
-    quranModel: QuranVIewModel,
-    quranarraymodel: VerseModel,
-    application: Application,
+    quranModel: VerseModel,
+
+
 
 
     ) {
@@ -103,18 +99,19 @@ fun NewQuranVerseScreen(
 
 
 
-   /*     val myViewModel: VerseModel =
-    viewModel(factory = ViewModelFactory(application,chapid))
-*/
+    //  val myViewModel: VerseModel = viewModel(factory = ViewModelFactory(application,chapid))
 
 
 
-    val cards by quranarraymodel.cards.collectAsStateWithLifecycle()
+
+   // val cards by quranarraymodel.cards.collectAsStateWithLifecycle()
+    val cards by quranModel.cards.collectAsStateWithLifecycle()
+
 
        val surahs=     cards[0].chapterlist
     val quranbySurah=     cards[0].quranbySurah
     newnewadapterlist=cards[0].newnewadapterlist
-    loading = quranarraymodel!!.loading.value
+  //  loading = quranarraymodel!!.loading.value
     LoadingData(isDisplayed = loading)
 
 
@@ -199,7 +196,7 @@ fun NewQuranVerseScreen(
                         ) {
                             Text(
 
-                                text = surahs!![chapid]!!.abjadname,
+                                text = surahs!![chapid-1]!!.abjadname,
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Red,
@@ -207,7 +204,7 @@ fun NewQuranVerseScreen(
                                 textAlign = TextAlign.Center,
                                 fontSize = 20.sp
                             )
-                            if (surahs[chapid]!!.ismakki == 1) {
+                            if (surahs[chapid-1]!!.ismakki == 1) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_makkah_48),
 
@@ -230,7 +227,7 @@ fun NewQuranVerseScreen(
                             }
 
                             Text(
-                                text = "No.Of Aya's" + surahs[chapid]!!.versescount.toString(),
+                                text = "No.Of Aya's" + surahs[chapid-1]!!.versescount.toString(),
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold,
 
@@ -239,7 +236,7 @@ fun NewQuranVerseScreen(
                                 fontSize = 15.sp
                             )
                             Text(
-                                text = "No.Of Ruku's" + surahs[chapid]!!.rukucount.toString(),
+                                text = "No.Of Ruku's" + surahs[chapid-1]!!.rukucount.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,

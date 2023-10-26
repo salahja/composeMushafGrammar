@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.activity
 
 import CardsScreen
 import android.app.Application
@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.compose.CardsViewModel
 import com.skyyo.expandablelist.theme.AppTheme
 
 

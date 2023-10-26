@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -27,6 +28,7 @@ import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.CorpusUtilityorig.Companion.getSpannableVerses
+import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,12 +40,18 @@ import java.util.LinkedHashMap
 
 @SuppressLint("SuspiciousIndentation")
 class VerseModel(
-    mApplication: Application,
+   application: Application,
 
     chapid: Int,
 
     ) : ViewModel() {
-    val builder = AlertDialog.Builder(mApplication)
+
+//private val argument = checkNotNull(savedStateHandle.get<[type]>([argument name]))
+
+
+
+
+    val builder = AlertDialog.Builder(QuranGrammarApplication.context!!)
     var listss: ArrayList<String> = ArrayList<String>()
     val dialog = builder.create()
     var open = MutableLiveData<Boolean>()
@@ -66,17 +74,17 @@ class VerseModel(
     val loading = mutableStateOf(true)
 
     init {
-        shared = PreferenceManager.getDefaultSharedPreferences(mApplication)
+        shared = PreferenceManager.getDefaultSharedPreferences(QuranGrammarApplication.context!!)
         var job = Job()
-        util = Utils(mApplication)
+        util = Utils(QuranGrammarApplication.context!!)
 
 
-        getZarf(2)
+        getZarf(chapid)
 
 
     }
 
-    private fun getZarf(chapid: Int) {
+     fun getZarf(chapid: Int) {
         viewModelScope.launch {
             loading.value = true
             withContext(Dispatchers.Default) {
@@ -101,8 +109,8 @@ class VerseModel(
 
 
 
-                    corpus.setMudhafss(hashlist, 2)
-                    corpus.setSifa(hashlist, 2)
+                    corpus.setMudhafss(hashlist, chapid)
+                    corpus.setSifa(hashlist, chapid)
 
 
 
