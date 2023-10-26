@@ -1,8 +1,6 @@
 package com.example.compose.activity
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -11,21 +9,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -38,9 +31,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,13 +46,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -81,16 +68,13 @@ import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.SurahListScreen
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
-import com.example.compose.theme.NewQuranVerseScreen
 import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
-import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.mushafconsolidated.settingsimport.Constants
-import com.example.mushafconsolidated.settingsimport.Constants.Companion.SURAH_INDEX
 import com.example.tabcompose.TabItem
 import com.example.utility.QuranGrammarApplication
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -98,6 +82,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skyyo.expandablelist.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import com.example.tabcompose.*
+import com.example.utility.BackButtonHandler
 import com.example.utility.QuranGrammarApplication.Companion.context
 
 
@@ -128,9 +113,9 @@ class QuranDisplayActs : AppCompatActivity() {
             val isDarkThemeEnabled = remember { mutableStateOf(false) }
             AppTheme() {
 
-                val viewModel: VerseModel by viewModels {
+                val verseModel: VerseModel by viewModels {
                     ModelFactory(
-                        application, chapid!!,
+                         chapid!!,
 
                         )
                 }
@@ -143,7 +128,7 @@ class QuranDisplayActs : AppCompatActivity() {
                 val navBackStackEntry
                         by navController.currentBackStackEntryAsState()
 
-                MainScreens(viewModel,quranModel)
+                MainScreens(verseModel,quranModel)
 
 
             }
@@ -156,17 +141,21 @@ class QuranDisplayActs : AppCompatActivity() {
 }
 
 class ModelFactory(
-    private val mApplication: Application,
+
     private val chapid: Int
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(VerseModel::class.java)) {
-            return VerseModel(mApplication,chapid) as T
+            return VerseModel(chapid) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
+
+
+
 
 
 /*class ViewModelFactory(
@@ -189,7 +178,7 @@ class ModelFactory(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreens(viewModel: VerseModel, quranModel: QuranVIewModel) {
+fun MainScreens(verseModel: VerseModel, quranModel: QuranVIewModel) {
     val navController = rememberNavController()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -202,12 +191,15 @@ fun MainScreens(viewModel: VerseModel, quranModel: QuranVIewModel) {
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
-                Navigations(navController,viewModel,quranModel)
+                Navigations(navController,verseModel,quranModel)
             }
         },
         //backgroundColor = colorResource(id =colorPrimaryDark),
         // backgroundColor = colorResource(R.color.colorPrimaryDark) // Set background color to avoid the white flashing when you switch between screens
     )
+    BackButtonHandler {
+        (context as QuranDisplayActs).finish()
+    }
 }
 
 
@@ -215,7 +207,7 @@ fun MainScreens(viewModel: VerseModel, quranModel: QuranVIewModel) {
 @Composable
 fun Navigations(
     navController: NavHostController,
-    viewModel: VerseModel,
+    verseModel: VerseModel,
 
     quranModel: QuranVIewModel
 ) {
@@ -239,7 +231,7 @@ fun Navigations(
             } else {
 
 
-                NewQuranVerseScreen(navController,id,viewModel)
+             //   NewQuranVerseScreen(navController,id,verseModel)
 
 
 

@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,18 +47,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
+import com.example.compose.activity.newViewModelFactory
+
 import com.example.justJava.MyTextViewZoom
+import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
+import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
@@ -65,52 +72,61 @@ import com.example.utility.refWordMorphologyDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
+var quranbySurah: List<QuranEntity>? = null
+var surahs: List<ChaptersAnaEntity>?=null
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NewQuranVerseScreen(
     navController: NavHostController,
     chapid: Int,
-    quranModel: VerseModel,
+    quranmodel: QuranVIewModel,
+    verseModel: VerseModel,
+
+
 
 
 
 
     ) {
 
-   // val model = viewModel(modelClass = VerseModel::class.java)
+    // val model = viewModel(modelClass = VerseModel::class.java)
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
 
- //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
+    //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
     var corpusSurahWord: List<QuranCorpusWbw>? = null
-   /* val quranbySurah = quranModel.getquranbySUrah(chapid).value
+    /* val quranbySurah = quranModel.getquranbySUrah(chapid).value
     val surahs = quranModel.getAllSurah().value
     corpusSurahWord = quranModel.getQuranCorpusWbwbysurah(chapid).value
     newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
     corpus.composeWBWCollection(quranbySurah,corpusSurahWord)*/
-   // quranModel.setspans(newnewadapterlist, chapid)
+    // quranModel.setspans(newnewadapterlist, chapid)
 
 
+ //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
 
 
+    val cardss by verseModel.cards.collectAsStateWithLifecycle()
+    val collectAsStateWithLifecycle = verseModel.cards.collectAsStateWithLifecycle()
+    val collectAsState = verseModel.cards.collectAsState()
+    /*
+    val myViewModel: VerseModel =
+        viewModel(factory = ViewModelFactory(chapid))
+*/
 
-    //  val myViewModel: VerseModel = viewModel(factory = ViewModelFactory(application,chapid))
 
-
-
-
-   // val cards by quranarraymodel.cards.collectAsStateWithLifecycle()
-    val cards by quranModel.cards.collectAsStateWithLifecycle()
-
-
-       val surahs=     cards[0].chapterlist
-    val quranbySurah=     cards[0].quranbySurah
-    newnewadapterlist=cards[0].newnewadapterlist
+    //val cards by verseModel.cards.collectAsStateWithLifecycle()
+    if (cardss.isNotEmpty()){
+      surahs = cardss[0].chapterlist
+      quranbySurah = cardss[0].quranbySurah
+    newnewadapterlist = cardss[0].newnewadapterlist
+}
   //  loading = quranarraymodel!!.loading.value
     LoadingData(isDisplayed = loading)
 
@@ -204,7 +220,7 @@ fun NewQuranVerseScreen(
                                 textAlign = TextAlign.Center,
                                 fontSize = 20.sp
                             )
-                            if (surahs[chapid-1]!!.ismakki == 1) {
+                            if (surahs!![chapid-1]!!.ismakki == 1) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_makkah_48),
 
@@ -227,7 +243,7 @@ fun NewQuranVerseScreen(
                             }
 
                             Text(
-                                text = "No.Of Aya's" + surahs[chapid-1]!!.versescount.toString(),
+                                text = "No.Of Aya's" + surahs!![chapid-1]!!.versescount.toString(),
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold,
 
@@ -236,7 +252,7 @@ fun NewQuranVerseScreen(
                                 fontSize = 15.sp
                             )
                             Text(
-                                text = "No.Of Ruku's" + surahs[chapid-1]!!.rukucount.toString(),
+                                text = "No.Of Ruku's" + surahs!![chapid-1]!!.rukucount.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
@@ -500,3 +516,4 @@ fun NewQuranVerseScreen(
         }
     }
 }
+

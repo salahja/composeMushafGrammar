@@ -1,8 +1,6 @@
 package com.example.compose.activity
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -70,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -93,8 +92,6 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
-import com.example.mushafconsolidated.settingsimport.Constants
-import com.example.mushafconsolidated.settingsimport.Constants.Companion.SURAH_INDEX
 import com.example.tabcompose.TabItem
 import com.example.utility.QuranGrammarApplication
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -102,7 +99,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skyyo.expandablelist.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import com.example.tabcompose.*
-import com.example.utility.QuranGrammarApplication.Companion.context
 
 
 lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
@@ -112,7 +108,27 @@ class BottomCompose : AppCompatActivity() {
     private lateinit var allAnaChapters: List<ChaptersAnaEntity?>
     private lateinit var imgs: TypedArray
     lateinit var mainViewModel: QuranVIewModel
+
     //  allofQuran = mainViewModel.getquranbySUrah(chapterno).value
+    val verseModel: VerseModel by viewModels {
+        ModelFactory(
+           2!!,
+
+            )
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,7 +143,7 @@ class BottomCompose : AppCompatActivity() {
 
             val isDarkThemeEnabled = remember { mutableStateOf(false) }
             AppTheme() {
-                 val quranModel by viewModels<QuranVIewModel>()
+                val quranModel by viewModels<QuranVIewModel>()
 
                 val coroutineScope = rememberCoroutineScope()
                 val scaffoldState: ScaffoldState = rememberScaffoldState()
@@ -135,7 +151,7 @@ class BottomCompose : AppCompatActivity() {
                 val navBackStackEntry
                         by navController.currentBackStackEntryAsState()
 
-                MainScreen(viewModel,application)
+                MainScreen(viewModel)
 
 
             }
@@ -168,7 +184,7 @@ class BottomCompose : AppCompatActivity() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreen(viewModel: QuranVIewModel, application: Application) {
+fun MainScreen(viewModel: QuranVIewModel,  ) {
     val navController = rememberNavController()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -181,7 +197,7 @@ fun MainScreen(viewModel: QuranVIewModel, application: Application) {
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController,viewModel,application)
+                Navigation(navController, viewModel,)
             }
         },
         //backgroundColor = colorResource(id =colorPrimaryDark),
@@ -194,15 +210,15 @@ fun MainScreen(viewModel: QuranVIewModel, application: Application) {
 @Composable
 fun Navigation(
     navController: NavHostController,
-    viewModel: QuranVIewModel,
+    quranmodel: QuranVIewModel,
 
-    application: Application
+
 ) {
 
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
         composable("home") {
 
-            SurahListScreen(navController,viewModel)
+            SurahListScreen(navController, quranmodel)
         }
         composable("verses/{id}",
             arguments = listOf(
@@ -214,59 +230,52 @@ fun Navigation(
         ) { backStackEntry ->
             val id = backStackEntry.arguments!!.getInt("id")
             if (id < 0) {
-                SurahListScreen(navController,viewModel)
+                SurahListScreen(navController, quranmodel)
             } else {
-              //  val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id)
-    /*            var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
-                var corpusSurahWord: List<QuranCorpusWbw>? = null
+                //  val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id)
+                /*            var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
+                            var corpusSurahWord: List<QuranCorpusWbw>? = null
 
-                val utils = Utils(QuranGrammarApplication.context)
-                val corpus = CorpusUtilityorig
+                            val utils = Utils(QuranGrammarApplication.context)
+                            val corpus = CorpusUtilityorig
 
-                val quranbySurah = viewModel.getquranbySUrah(id).value
-                val surahs = viewModel.loadListschapter().value
-                corpusSurahWord = viewModel.getQuranCorpusWbwbysurah(id).value
-                newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
-                viewModel.setspans(newnewadapterlist, id)
-
-
-                QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
-             //   val surahs = viewModel.getChaptersFlow().value
-             //   val myViewModel: VerseModel = viewModel(factory = ViewModelFactory(application,id))
-             //   val viewModel: VerseModel = viewModel()
-             /*   val quranarraymodel: VerseModel by viewModels {
-                    ViewModelFactory(
-                        application,2
-
-                    )
-                }*/
+                            val quranbySurah = viewModel.getquranbySUrah(id).value
+                            val surahs = viewModel.loadListschapter().value
+                            corpusSurahWord = viewModel.getQuranCorpusWbwbysurah(id).value
+                            newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
+                            viewModel.setspans(newnewadapterlist, id)
 
 
-               // val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id))
+                            QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
+                //   val surahs = viewModel.getChaptersFlow().value
+                //   val myViewModel: VerseModel = viewModel(factory = ViewModelFactory(application,id))
+                //   val viewModel: VerseModel = viewModel()
+                /*   val quranarraymodel: VerseModel by viewModels {
+                       ViewModelFactory(
+                           application,2
 
-               // NewQuranVerseScreen(navController,id,viewModels)
-
-                val dataBundle = Bundle()
-
+                       )
+                   }*/
 
 
+                // val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id))
+                val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(id))
+                NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
 
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                val i = Intent(context, QuranDisplayActs::class.java)
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                 i.putExtra(SURAH_INDEX,id)
-             //   intent.putExtra(Constants.SURAH_INDEX, id)
-               // i.putExtras(dataBundle)
-                context!!.startActivity(i)
+                /*           val dataBundle = Bundle()
 
 
 
 
+                           val intent = Intent(Intent.ACTION_VIEW)
+                           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                           val i = Intent(context, QuranDisplayActs::class.java)
+                           i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                            i.putExtra(SURAH_INDEX,id)
 
-
+                           context!!.startActivity(i)
+           */
 
 
             }
@@ -288,7 +297,6 @@ fun Navigation(
                     defaultValue = "Indicative"
                 }
             )
-
 
 
         ) { backStackEntry ->
@@ -358,9 +366,9 @@ fun Navigation(
             val openDialogCustom: MutableState<Boolean> = remember {
                 mutableStateOf(true)
             }
-       //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+            //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
 
-            WordALert(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+            WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
         }
 
 
@@ -402,9 +410,6 @@ fun Navigation(
 
             ConjugationScreen(navController, conjugation.toString(), root.toString(), mood)
         }
-
-
-
 
 
     }
@@ -1383,3 +1388,7 @@ fun BottomNavigationBarPreview() {
     // BottomNavigationBar()
 }
 
+class newViewModelFactory(private val dbname: Int) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = VerseModel(dbname) as T
+}

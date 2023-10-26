@@ -4,11 +4,6 @@ package com.example.compose
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -16,8 +11,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import androidx.webkit.internal.ApiFeature.Q
-import com.example.Constant
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
 import com.example.mushafconsolidated.Entities.CorpusVerbWbwOccurance
@@ -40,7 +33,7 @@ import java.util.LinkedHashMap
 
 @SuppressLint("SuspiciousIndentation")
 class VerseModel(
-   application: Application,
+ //   application: Application,
 
     chapid: Int,
 
@@ -87,7 +80,7 @@ class VerseModel(
      fun getZarf(chapid: Int) {
         viewModelScope.launch {
             loading.value = true
-            withContext(Dispatchers.Default) {
+
                 val testList = arrayListOf<QuranArrays>()
                 val corpus = CorpusUtilityorig
 
@@ -118,7 +111,7 @@ class VerseModel(
 
 
                 _cards.emit(testList)
-            }
+
 
 
 
