@@ -10,13 +10,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/QuranArrays.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/NewBottomActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/NewBottomActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ComposeAct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/ComposeAct.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,19 +91,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/java/com/example/compose&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED": "MaterialButton",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/java/com/example/compose/activity",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "nele.options"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose" />
@@ -109,12 +113,14 @@
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity" />
       <recent name="$PROJECT_DIR$/app/src/main/java/Utility" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="com.example.tabcompose" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.example.compose.activity" />
       <recent name="com.example.viewmodels" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
@@ -578,7 +584,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698239864027</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Initial commit">
+      <created>1698258316587</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698258316587</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -656,23 +669,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
-          <line>123</line>
-          <option name="timeStamp" value="168" />
+          <line>81</line>
+          <option name="timeStamp" value="174" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
-          <line>111</line>
-          <option name="timeStamp" value="170" />
+          <line>107</line>
+          <option name="timeStamp" value="175" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
+          <line>113</line>
+          <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
-          <line>58</line>
-          <option name="timeStamp" value="171" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt</url>
-          <line>68</line>
-          <option name="timeStamp" value="172" />
+          <line>119</line>
+          <option name="timeStamp" value="178" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -683,6 +696,7 @@
         <watch expression="wid" />
         <watch expression="wordno" />
         <watch expression="surahss" />
+        <watch expression="cards" />
       </configuration>
     </watches-manager>
   </component>
