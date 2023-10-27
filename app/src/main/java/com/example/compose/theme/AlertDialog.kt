@@ -403,10 +403,13 @@ fun WordALert(
             }
         ) {
             Surface(
-                modifier = Modifier
+                   modifier = Modifier
                     .wrapContentWidth()
                     .wrapContentHeight(),
-                shape = MaterialTheme.shapes.large
+
+
+                shape = MaterialTheme.shapes.medium,
+
             ) {
                 Column(
                     content = {

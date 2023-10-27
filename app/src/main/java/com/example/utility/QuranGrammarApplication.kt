@@ -22,6 +22,7 @@ import androidx.preference.PreferenceManager
 import com.example.mushafconsolidated.quranrepo.QuranGraph
 import com.example.utility.ThemeHelper.applyTheme
 import database.verbrepo.VerbGraph
+import dev.wirespec.jetmagic.initializeJetmagic
 import leakcanary.LeakCanary
 import leakcanary.LeakCanary.config
 import sj.hisnul.newepository.Graph
@@ -46,7 +47,7 @@ class QuranGrammarApplication : Application() {
    // val repository by lazy { MazeedInfoRepository(database.MazeedDao()) }
     override fun onCreate() {
         super.onCreate()
-
+        initializeJetmagic(this)
         val config: LeakCanary.Config = config
         if (context == null) {
             context = this

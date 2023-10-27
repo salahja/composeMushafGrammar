@@ -97,7 +97,7 @@ class ComposeAct : AppCompatActivity() {
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-            return CardsViewModel(mApplication, verbroot, nounroot, isharf) as T
+            return CardsViewModel( verbroot, nounroot, isharf) as T
         }
     }
 

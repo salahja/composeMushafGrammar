@@ -8,5 +8,6 @@ sealed class NavigationItem(var route: String, var icon: Int, var title: String)
     object Conjugator : NavigationItem("conjugator", R.drawable.ic_action_voice_search, "Conjugator")
     object Books : NavigationItem("books", R.drawable.ic_book, "Books")
     object Conjugation : NavigationItem("conjugation", R.drawable.ic_baseline_construction_24, "Conjugation")
+    object Wordoccurance : NavigationItem("wordoccurance", R.drawable.ic_baseline_construction_24, "Conjugation")
 }
 

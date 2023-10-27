@@ -77,6 +77,7 @@
 
         <activity
             android:name=".Activity.MainActivitys"
+            android:launchMode="singleInstance"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -106,7 +107,7 @@
         </activity>
 
         <activity
-            android:name="com.example.compose.activity.QuranDisplayActs"
+            android:name="com.example.compose.activity.TwoPane"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">

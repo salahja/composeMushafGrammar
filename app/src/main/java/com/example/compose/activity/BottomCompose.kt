@@ -1,5 +1,6 @@
 package com.example.compose.activity
 
+import CardsScreen
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
 import android.os.Bundle
@@ -78,6 +79,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.compose.CardsViewModel
 import com.example.compose.ConjugationScreen
 import com.example.compose.NavigationItem
 import com.example.compose.NewQuranMorphologyDetails
@@ -85,7 +87,6 @@ import com.example.compose.SurahListScreen
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
 import com.example.compose.theme.NewQuranVerseScreen
-import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
@@ -110,14 +111,6 @@ class BottomCompose : AppCompatActivity() {
     lateinit var mainViewModel: QuranVIewModel
 
     //  allofQuran = mainViewModel.getquranbySUrah(chapterno).value
-    val verseModel: VerseModel by viewModels {
-        ModelFactory(
-           2!!,
-
-            )
-    }
-
-
 
 
 
@@ -232,33 +225,7 @@ fun Navigation(
             if (id < 0) {
                 SurahListScreen(navController, quranmodel)
             } else {
-                //  val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id)
-                /*            var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
-                            var corpusSurahWord: List<QuranCorpusWbw>? = null
 
-                            val utils = Utils(QuranGrammarApplication.context)
-                            val corpus = CorpusUtilityorig
-
-                            val quranbySurah = viewModel.getquranbySUrah(id).value
-                            val surahs = viewModel.loadListschapter().value
-                            corpusSurahWord = viewModel.getQuranCorpusWbwbysurah(id).value
-                            newnewadapterlist = corpus.composeWBWCollection(quranbySurah, corpusSurahWord)
-                            viewModel.setspans(newnewadapterlist, id)
-
-
-                            QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)*/
-                //   val surahs = viewModel.getChaptersFlow().value
-                //   val myViewModel: VerseModel = viewModel(factory = ViewModelFactory(application,id))
-                //   val viewModel: VerseModel = viewModel()
-                /*   val quranarraymodel: VerseModel by viewModels {
-                       ViewModelFactory(
-                           application,2
-
-                       )
-                   }*/
-
-
-                // val viewModels: VerseModel = viewModel(factory = MyViewModelFactory(dbname =id))
                 val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(id))
                 NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
 
@@ -279,6 +246,51 @@ fun Navigation(
 
 
             }
+        }
+
+        composable(
+            "wordoccurance/{root}",
+            arguments = listOf(
+
+                navArgument("root") {
+                    type = NavType.StringType
+                    defaultValue = "نصر"
+                },
+
+            )
+
+
+        ) { backStackEntry ->
+
+            val root = backStackEntry.arguments?.getString("root")
+            val hamzaindex = root!!.indexOf("ء")
+            var nounroot: String? = ""
+            val verbindex = root!!.indexOf("ا")
+
+            var verbroot: String? = ""
+            nounroot = if (hamzaindex != -1) {
+                root!!.replace("ء", "ا")
+            } else {
+                root
+            }
+            verbroot = if (verbindex != -1) {
+                root!!.replace("ا", "ء")
+            } else {
+                root
+            }
+            if (root == "ACC" || root == "LOC" || root == "T") {
+                val myViewModel: CardsViewModel    = viewModel(factory = CardViewModelFactory(verbroot,nounroot,true))
+
+                nounroot=root
+
+                CardsScreen(myViewModel)
+            }else{
+                val myViewModel: CardsViewModel    = viewModel(factory = CardViewModelFactory(verbroot,nounroot,false))
+                nounroot=root
+                CardsScreen(myViewModel)
+
+            }
+
         }
 
         composable(
@@ -306,7 +318,6 @@ fun Navigation(
 
             MatTab(navController, conjugation.toString(), root.toString(), mood)
         }
-
 
 
 
@@ -367,8 +378,8 @@ fun Navigation(
                 mutableStateOf(true)
             }
             //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
-
-            WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
+            BottomSheetDemo(navController, viewModel(), chapterid, verseid, wordno)
+          //  WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
         }
 
 
@@ -908,19 +919,32 @@ fun BottomSheetDemo(
 
 
                                           )*/
+                                 val root=     worddetails["root"]
 
-                            val textChipRememberOneState = remember {
+                         /*   val textChipRememberOneState = remember {
                                 mutableStateOf(false)
-                            }
-                            TextChip(
-                                isSelected = textChipRememberOneState.value,
-                                text = "ArabicWord" + worddetails["arabicword"].toString(),
+                            }*/
+                            Button(
+                                modifier = Modifier
+                                    .padding(20.dp),
+                                onClick = {
 
-                                selectedColor = Color.DarkGray,
-                                onChecked = {
-                                    textChipRememberOneState.value = it
+                                    navController.navigate(
+                                        "wordoccurance/${root}"
+                                    )
+                                    /*     val intent = Intent(Intent.ACTION_VIEW)
+                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                         val i = Intent(context, SurahComposeAct::class.java)
+                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                         context!!.startActivity(i)
+
+     */
                                 }
-                            )
+                            ) {
+                                Text(
+                                    text = "Word Occurance" + worddetails["root"].toString()
+                                )
+                            }
 
 
                         }
@@ -1163,7 +1187,7 @@ fun BottomSheetDemo(
 
                 )
         },
-        sheetPeekHeight = 0.dp,
+        sheetPeekHeight = 60.dp,
 
         ) {
 
@@ -1391,4 +1415,8 @@ fun BottomNavigationBarPreview() {
 class newViewModelFactory(private val dbname: Int) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = VerseModel(dbname) as T
+}
+class CardViewModelFactory(private val dbname: String, private val nounroot: String, private val isharf: Boolean) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = CardsViewModel(dbname,nounroot,isharf) as T
 }

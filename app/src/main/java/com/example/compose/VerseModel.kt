@@ -67,6 +67,7 @@ class VerseModel(
     val loading = mutableStateOf(true)
 
     init {
+        loading.value = true
         shared = PreferenceManager.getDefaultSharedPreferences(QuranGrammarApplication.context!!)
         var job = Job()
         util = Utils(QuranGrammarApplication.context!!)
@@ -79,7 +80,7 @@ class VerseModel(
 
      fun getZarf(chapid: Int) {
         viewModelScope.launch {
-            loading.value = true
+
 
                 val testList = arrayListOf<QuranArrays>()
                 val corpus = CorpusUtilityorig

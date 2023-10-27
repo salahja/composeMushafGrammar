@@ -24,6 +24,7 @@ import com.example.mushafconsolidated.Utils
 
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.CorpusUtilityorig.Companion.getSpannableVerses
+import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,12 +35,12 @@ import kotlinx.coroutines.withContext
 
 @SuppressLint("SuspiciousIndentation")
 class CardsViewModel(
-    mApplication: Application,
+
     verbroot: String,
     nounroot: String,
     isharf: Boolean
 ) : ViewModel() {
-    val builder = AlertDialog.Builder(mApplication)
+    val builder = AlertDialog.Builder(QuranGrammarApplication.context!!)
     var listss: ArrayList<String> = ArrayList<String>()
     val dialog = builder.create()
     var open = MutableLiveData<Boolean>()
@@ -61,9 +62,9 @@ class CardsViewModel(
     val loading = mutableStateOf(true)
 
     init {
-        shared = PreferenceManager.getDefaultSharedPreferences(mApplication)
+        shared = PreferenceManager.getDefaultSharedPreferences(QuranGrammarApplication.context!!)
         var job = Job()
-        util = Utils(mApplication)
+        util = Utils(QuranGrammarApplication.context!!)
         if (isharf) {
             getZarf(nounroot, isharf)
         } else

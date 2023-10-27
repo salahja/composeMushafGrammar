@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,6 +76,8 @@ fun CardsScreen(viewModel: CardsViewModel) {
     // val words by wordoccuranceModel.words.collectAsStateWithLifecycle()
     val cards by viewModel.cards.collectAsStateWithLifecycle()
     val expandedCardIds by viewModel.expandedCardIdsList.collectAsStateWithLifecycle()
+    val collectAsStateWithLifecycle = viewModel.cards.collectAsStateWithLifecycle()
+    val collectAsState = viewModel.cards.collectAsState()
     val context = LocalContext.current
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     viewModel.open.value = true

@@ -111,10 +111,13 @@ fun NewQuranVerseScreen(
 
  //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
 
-
+    loading = verseModel!!.loading.value
+    LoadingData(isDisplayed = loading)
     val cardss by verseModel.cards.collectAsStateWithLifecycle()
     val collectAsStateWithLifecycle = verseModel.cards.collectAsStateWithLifecycle()
     val collectAsState = verseModel.cards.collectAsState()
+    loading = verseModel!!.loading.value
+    LoadingData(isDisplayed = loading)
     /*
     val myViewModel: VerseModel =
         viewModel(factory = ViewModelFactory(chapid))
@@ -127,8 +130,7 @@ fun NewQuranVerseScreen(
       quranbySurah = cardss[0].quranbySurah
     newnewadapterlist = cardss[0].newnewadapterlist
 }
-  //  loading = quranarraymodel!!.loading.value
-    LoadingData(isDisplayed = loading)
+
 
 
     listState = rememberLazyListState()
