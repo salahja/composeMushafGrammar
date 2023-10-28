@@ -1,6 +1,10 @@
 package com.example.utility
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -27,9 +31,9 @@ class AnnotationUtility(private var context: Context?) {
         fun AnnotedMousuf(
             verse: String?,
             chapid: Int?,
-            aid : Int?
+            aid: Int?
 
-            ): AnnotatedString {
+        ): AnnotatedString {
             val builder = AnnotatedString.Builder()
             val utils = Utils(context)
             val surah = utils.getSifabySurahAyah(chapid!!, aid!!)
@@ -63,23 +67,504 @@ class AnnotationUtility(private var context: Context?) {
                     // textDecoration = TextDecoration.Underline
                 )
                 builder.addStyle(tagonestyle, start, end)
-            } else{
+            } else {
                 builder.append(verse)
             }
 
 
-
-
-
-
-
-
-
-
-
-        //return builder.toAnnotatedString()
+            //return builder.toAnnotatedString()
             return builder.toAnnotatedString()
         }
+        @JvmStatic
+        fun AnnotatedSetWordSpanTag(
+            tagone: String,
+            tagtwo: String,
+            tagthree: String,
+            tagfour: String,
+            tagfive: String,
+            arafive: String,
+            arafour: String,
+            arathree: String,
+            aratwo: String,
+            araone: String,
+        ): AnnotatedString {
+            var arafive = arafive
+            var arafour = arafour
+            var arathree = arathree
+            var aratwo = aratwo
+            var araone = araone
+            var str: SpannableString? = null
+            var tagcounter = 0
+            val b = tagone.isNotEmpty()
+            val bb = tagtwo.isNotEmpty()
+            val bbb = tagthree.isNotEmpty()
+            val bbbb = tagfour.isNotEmpty()
+            val bbbbb = tagfive.isNotEmpty()
+            if (b && !bb && !bbb && !bbbb && !bbbbb) {
+                tagcounter = 1
+            } else if (b && bb && !bbb && !bbbb && !bbbbb) {
+                tagcounter = 2
+            } else if (b && bb && bbb && !bbbb && !bbbbb) {
+                tagcounter = 3
+            } else if (b && bb && bbb && bbbb && !bbbbb) {
+                tagcounter = 4
+            } else if (b && bb && bbb && bbbb) {
+                tagcounter = 5
+            }
+            araone = araone.trim { it <= ' ' }
+            aratwo = aratwo.trim { it <= ' ' }
+            arathree = arathree.trim { it <= ' ' }
+            arafour = arafour.trim { it <= ' ' }
+            arafive = arafive.trim { it <= ' ' }
+            val builder = AnnotatedString.Builder()
+            val returstr = araone + aratwo + arathree + arafour + arafive
+            val spanhash: Map<String?, Color> = stringForegroundColorSpanMap
+            //
+
+            when (tagcounter) {
+                1 -> {
+                    //   Set<String> strings = spanhash.keySet();
+
+                    val source = araone
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+
+
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    builder.addStyle(tagonestyle, start, end)
+
+
+
+
+
+
+
+
+
+                }
+                2 -> {
+                 /*   val strone = SpannableString(araone.trim { it <= ' ' })
+                    val strtwo = SpannableString(aratwo.trim { it <= ' ' })
+                    strtwo.setSpan(spanhash[tagtwo], 0, aratwo.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    strone.setSpan(spanhash[tagone], 0, araone.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    val charSequence = TextUtils.concat(strtwo, strone)
+                    str = SpannableString(charSequence)*/
+
+                    val source = araone + aratwo
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+
+
+
+
+
+
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+
+
+
+
+
+
+
+                }
+                3 -> {
+                    spanhash[tagone]
+                    val source = araone + aratwo + arathree
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+
+
+
+
+
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+
+                }
+                4 -> {
+                    //  str = new SpannableString(arafour.trim() + arathree.trim() + aratwo.trim() + araone.trim());
+                    val source = araone + aratwo + arathree + arafour
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
+
+
+
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+
+
+                }
+                5 -> {
+                    val source = araone + aratwo + arathree + arafour + arafive
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
+
+                    val fivestart = source.indexOf(arafour)
+                    val fiveend = fivestart + arafour.length
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefive = SpanStyle(
+                        color = spanhash[tagfive]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+                    builder.addStyle(tagstylefive, fivestart, fiveend)
+
+                }
+            }
+            return builder.toAnnotatedString()
+        }
+
+        @JvmStatic
+        fun AnnotatedWordSpan(
+            tagone: String?,
+            tagtwo: String?,
+            tagthree: String?,
+            tagfour: String?,
+            tagfive: String?,
+            araone: String,
+            aratwo: String,
+            arathree: String,
+            arafour: String,
+            arafive: String,
+
+        ): AnnotatedString {
+            var list = LinkedHashMap<AnnotatedString, Int>()
+            var araone = araone
+            var aratwo = aratwo
+            var arathree = arathree
+            var arafour = arafour
+            var arafive = arafive
+            var str: String
+            val istagnull =
+                tagone == null || tagtwo == null || tagthree == null || tagfour == null || tagfive == null
+            val builder = AnnotatedString.Builder()
+
+            var tagcounter = 0
+            val b = tagone!!.isNotEmpty()
+            val bb = tagtwo!!.isNotEmpty()
+            val bbb = tagthree!!.isNotEmpty()
+            val bbbb = tagfour!!.isNotEmpty()
+            val bbbbb = tagfive!!.isNotEmpty()
+            if (b && !bb && !bbb && !bbbb && !bbbbb) {
+                tagcounter = 1
+            } else if (b && bb && !bbb && !bbbb && !bbbbb) {
+                tagcounter = 2
+            } else if (b && bb && bbb && !bbbb && !bbbbb) {
+                tagcounter = 3
+            } else if (b && bb && bbb && bbbb && !bbbbb) {
+                tagcounter = 4
+            } else if (b && bb && bbb && bbbb) {
+                tagcounter = 5
+            }
+            araone = araone.trim { it <= ' ' }
+            aratwo = aratwo.trim { it <= ' ' }
+            arathree = arathree.trim { it <= ' ' }
+            arafour = arafour.trim { it <= ' ' }
+            arafive = arafive.trim { it <= ' ' }
+            //   SharedPreferences sharedPreferences =
+            //      androidx.preference.PreferenceManager.getDefaultSharedPreferences(DarkThemeApplication.context!!);
+            //   String isNightmode = sharedPreferences.getString("themepref", "dark" );
+            //   if (isNightmode.equals("dark")||isNightmode.equals("blue")) {
+            val returstr = araone + aratwo + arathree + arafour + arafive
+            val spanhash: Map<String?, Color> = stringForegroundColorSpanMap
+            //  }else{
+            //   spanhash = getColorSpanforPhrasesLight();
+            //  }
+            if (tagcounter == 1) {
+
+                val source = araone
+                // builder to attach metadata(link)
+                builder.append(source)
+                val start = source.indexOf(araone)
+                val end = start + araone.length
+
+
+                val tagonecolor = spanhash[tagone]
+                val tagonestyle = SpanStyle(
+                    color = tagonecolor!!,
+                    // textDecoration = TextDecoration.Underline
+                )
+
+
+
+
+
+                builder.addStyle(tagonestyle, start, end)
+
+
+
+            } else
+
+                if (tagcounter == 2) {
+
+                    val source = araone + aratwo
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val tagonecolor = spanhash[tagone]
+                    val tagonestyle = SpanStyle(
+                        color = tagonecolor!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+
+
+                } else if (tagcounter == 3) {
+                    val source = araone + aratwo + arathree
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val tagonecolor = spanhash[tagone]
+                    val tagonestyle = SpanStyle(
+                        color = tagonecolor!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+
+                } else if (tagcounter == 4) {
+
+                    val source = araone + aratwo + arathree + arafour
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
+
+
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+
+                } else if (tagcounter == 5) {
+
+                    val source = araone + aratwo + arathree + arafour + arafive
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
+
+                    val fivestart = source.indexOf(arafour)
+                    val fiveend = fivestart + arafour.length
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefive = SpanStyle(
+                        color = spanhash[tagfive]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+                    builder.addStyle(tagstylefive, fivestart, fiveend)
+
+
+                } else {
+                    builder.append(returstr)
+
+                }
+            return builder.toAnnotatedString()
+            //return builder.toAnnotatedString()
+        }
+
+
 
         @JvmStatic
         fun AnnotatedStrings(
@@ -95,7 +580,7 @@ class AnnotationUtility(private var context: Context?) {
             arafive: String,
             wordno: Int,
         ): LinkedHashMap<AnnotatedString, Int> {
-            var list= LinkedHashMap<AnnotatedString, Int>()
+            var list = LinkedHashMap<AnnotatedString, Int>()
             var araone = araone
             var aratwo = aratwo
             var arathree = arathree
@@ -131,7 +616,7 @@ class AnnotationUtility(private var context: Context?) {
             //      androidx.preference.PreferenceManager.getDefaultSharedPreferences(DarkThemeApplication.context!!);
             //   String isNightmode = sharedPreferences.getString("themepref", "dark" );
             //   if (isNightmode.equals("dark")||isNightmode.equals("blue")) {
-  val returstr=araone+aratwo+arathree+arafour+arafive
+            val returstr = araone + aratwo + arathree + arafour + arafive
             val spanhash: Map<String?, Color> = stringForegroundColorSpanMap
             //  }else{
             //   spanhash = getColorSpanforPhrasesLight();
@@ -143,7 +628,6 @@ class AnnotationUtility(private var context: Context?) {
                 builder.append(source)
                 val start = source.indexOf(araone)
                 val end = start + araone.length
-
 
 
                 val tagonecolor = spanhash[tagone]
@@ -158,166 +642,163 @@ class AnnotationUtility(private var context: Context?) {
 
                 builder.addStyle(tagonestyle, start, end)
 
-                list[builder.toAnnotatedString()]=wordno
+                list[builder.toAnnotatedString()] = wordno
 
-            }else
+            } else
 
-            if (tagcounter == 2) {
+                if (tagcounter == 2) {
 
-                val source = araone + aratwo
-                // builder to attach metadata(link)
-                builder.append(source)
-                val start = source.indexOf(araone)
-                val end = start + araone.length
+                    val source = araone + aratwo
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
 
-                val twostart = source.indexOf(aratwo)
-                val twoend = twostart + aratwo.length
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
 
-                val tagonecolor = spanhash[tagone]
-                val tagonestyle = SpanStyle(
-                    color = tagonecolor!!,
-                   // textDecoration = TextDecoration.Underline
-                )
+                    val tagonecolor = spanhash[tagone]
+                    val tagonestyle = SpanStyle(
+                        color = tagonecolor!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
 
-                val tagtwostyle = SpanStyle(
-                    color = spanhash[tagtwo]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-
-
-
-                builder.addStyle(tagonestyle, start, end)
-                builder.addStyle(tagtwostyle, twostart, twoend)
-                list[builder.toAnnotatedString()]=wordno
-
-            } else if(tagcounter==3){
-                val source = araone + aratwo+arathree
-                // builder to attach metadata(link)
-                builder.append(source)
-                val start = source.indexOf(araone)
-                val end = start + araone.length
-
-                val twostart = source.indexOf(aratwo)
-                val twoend = twostart + aratwo.length
-
-                val threestart = source.indexOf(arathree)
-                val threeend = threestart + aratwo.length
-
-                val tagonecolor = spanhash[tagone]
-                val tagonestyle = SpanStyle(
-                    color = tagonecolor!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-
-                val tagtwostyle = SpanStyle(
-                    color = spanhash[tagtwo]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylethree = SpanStyle(
-                    color = spanhash[tagthree]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-
-                builder.addStyle(tagonestyle, start, end)
-                builder.addStyle(tagtwostyle, twostart, twoend)
-                builder.addStyle(tagstylethree, threestart, threeend)
-                list[builder.toAnnotatedString()]=wordno
-            } else if(tagcounter==4){
-
-                val source = araone + aratwo+arathree+arafour
-                // builder to attach metadata(link)
-                builder.append(source)
-                val start = source.indexOf(araone)
-                val end = start + araone.length
-
-                val twostart = source.indexOf(aratwo)
-                val twoend = twostart + aratwo.length
-
-                val threestart = source.indexOf(arathree)
-                val threeend = threestart + aratwo.length
-
-                val fourstart = source.indexOf(arafour)
-                val fourend = fourstart + arafour.length
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
 
 
-                val tagonestyle = SpanStyle(
-                    color = spanhash[tagone]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
 
-                val tagtwostyle = SpanStyle(
-                    color = spanhash[tagtwo]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylethree = SpanStyle(
-                    color = spanhash[tagthree]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylefour = SpanStyle(
-                    color = spanhash[tagfour]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    list[builder.toAnnotatedString()] = wordno
 
-                builder.addStyle(tagonestyle, start, end)
-                builder.addStyle(tagtwostyle, twostart, twoend)
-                builder.addStyle(tagstylethree, threestart, threeend)
-                builder.addStyle(tagstylefour, fourstart, fourend)
-                list[builder.toAnnotatedString()]=wordno
-            } else if(tagcounter==5){
+                } else if (tagcounter == 3) {
+                    val source = araone + aratwo + arathree
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
 
-                val source = araone + aratwo+arathree+arafour+arafive
-                // builder to attach metadata(link)
-                builder.append(source)
-                val start = source.indexOf(araone)
-                val end = start + araone.length
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
 
-                val twostart = source.indexOf(aratwo)
-                val twoend = twostart + aratwo.length
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
 
-                val threestart = source.indexOf(arathree)
-                val threeend = threestart + aratwo.length
+                    val tagonecolor = spanhash[tagone]
+                    val tagonestyle = SpanStyle(
+                        color = tagonecolor!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
 
-                val fourstart = source.indexOf(arafour)
-                val fourend = fourstart + arafour.length
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
 
-                val fivestart = source.indexOf(arafour)
-                val fiveend = fivestart + arafour.length
-                val tagonestyle = SpanStyle(
-                    color = spanhash[tagone]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    list[builder.toAnnotatedString()] = wordno
+                } else if (tagcounter == 4) {
 
-                val tagtwostyle = SpanStyle(
-                    color = spanhash[tagtwo]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylethree = SpanStyle(
-                    color = spanhash[tagthree]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylefour = SpanStyle(
-                    color = spanhash[tagfour]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                val tagstylefive = SpanStyle(
-                    color = spanhash[tagfive]!!,
-                   // textDecoration = TextDecoration.Underline
-                )
-                builder.addStyle(tagonestyle, start, end)
-                builder.addStyle(tagtwostyle, twostart, twoend)
-                builder.addStyle(tagstylethree, threestart, threeend)
-                builder.addStyle(tagstylefour, fourstart, fourend)
-                builder.addStyle(tagstylefive, fivestart, fiveend)
-                list[builder.toAnnotatedString()]=wordno
+                    val source = araone + aratwo + arathree + arafour
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
 
-            }
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
 
 
-            else{
-                builder.append(returstr)
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
 
-            }
-             return list
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+                    list[builder.toAnnotatedString()] = wordno
+                } else if (tagcounter == 5) {
+
+                    val source = araone + aratwo + arathree + arafour + arafive
+                    // builder to attach metadata(link)
+                    builder.append(source)
+                    val start = source.indexOf(araone)
+                    val end = start + araone.length
+
+                    val twostart = source.indexOf(aratwo)
+                    val twoend = twostart + aratwo.length
+
+                    val threestart = source.indexOf(arathree)
+                    val threeend = threestart + aratwo.length
+
+                    val fourstart = source.indexOf(arafour)
+                    val fourend = fourstart + arafour.length
+
+                    val fivestart = source.indexOf(arafour)
+                    val fiveend = fivestart + arafour.length
+                    val tagonestyle = SpanStyle(
+                        color = spanhash[tagone]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = spanhash[tagtwo]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylethree = SpanStyle(
+                        color = spanhash[tagthree]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefour = SpanStyle(
+                        color = spanhash[tagfour]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    val tagstylefive = SpanStyle(
+                        color = spanhash[tagfive]!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    builder.addStyle(tagonestyle, start, end)
+                    builder.addStyle(tagtwostyle, twostart, twoend)
+                    builder.addStyle(tagstylethree, threestart, threeend)
+                    builder.addStyle(tagstylefour, fourstart, fourend)
+                    builder.addStyle(tagstylefive, fivestart, fiveend)
+                    list[builder.toAnnotatedString()] = wordno
+
+                } else {
+                    builder.append(returstr)
+
+                }
+            return list
             //return builder.toAnnotatedString()
         }
 

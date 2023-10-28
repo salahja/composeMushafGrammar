@@ -1,6 +1,7 @@
 package com.example.compose.theme
 
 import android.annotation.SuppressLint
+import android.text.SpannableStringBuilder
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,56 +53,20 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.TextChip
-import com.example.compose.activity.worddetails
+
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.QuranGrammarApplication
-
+lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
 
 @Composable
 @Preview
 fun mpre(){
     fun MyUi() {}
 }
-@Composable
-fun MyUI() {
-
-    var dialogOpen by remember {
-        mutableStateOf(true)
-    }
-
-    if (dialogOpen) {
-        Dialog(onDismissRequest = {
-            dialogOpen = false
-        }) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                shape = RoundedCornerShape(size = 10.dp)
-            ) {
-                Column(modifier = Modifier.padding(all = 16.dp)) {
-                    Text(text = "Your Dialog UI Here")
-                }
-            }
-        }
-    }
-
-
-}
-
-
-
-
-
-
-
-
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

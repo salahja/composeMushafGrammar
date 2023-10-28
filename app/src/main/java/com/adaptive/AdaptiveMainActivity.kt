@@ -62,10 +62,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.adaptive.theme.BottomSheetWordDetails
+import com.example.bottomcompose.BottomSheetDemo
 import com.example.compose.CardsViewModel
 import com.example.compose.SurahListScreen
 import com.example.compose.VerseModel
-import com.example.compose.activity.BottomSheetDemo
+
 import com.example.compose.activity.CardViewModelFactory
 import com.example.compose.activity.newViewModelFactory
 import com.example.compose.activity.surahViewModelFactory
@@ -74,13 +76,14 @@ import com.example.compose.theme.NewQuranVerseScreen
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.tabcompose.MatTab
+import com.skyyo.expandablelist.theme.AppTheme
 
 class AdaptiveMainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeTutorial12DifferentScreenSizesSupportTheme {
+            AppTheme {
 
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -169,24 +172,10 @@ fun AppNavHost(
     NavHost(navController = navController, startDestination = "login") {
 
         composable("login") {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text(text = "Login")
-
-                TextButton(modifier = Modifier.fillMaxWidth(), onClick = {
-                    navController.navigate("tabs") {
-                        popUpTo("login") {
-                            inclusive = true
-                        }
-                    }
-                }) {
-
-                    Text(text = "Go to Home")
+            navController.navigate("tabs") {
+                popUpTo("login") {
+                    inclusive = true
                 }
-
             }
         }
 
@@ -513,7 +502,7 @@ fun MainContent(
                         mutableStateOf(true)
                     }
                     //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
-                    BottomSheetDemo(navController, viewModel(), chapterid, verseid, wordno)
+                    BottomSheetWordDetails(navController, viewModel(), chapterid, verseid, wordno)
                     //  WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
                 }
 

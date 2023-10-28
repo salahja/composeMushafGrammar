@@ -41,6 +41,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.adaptive.theme.BottomSheetWordDetails
 
 import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.ProfileScreen
@@ -245,7 +246,7 @@ private fun MainScreenContainer(
                 val wordno = backStackEntry.arguments?.getString("wordno")
 
          //       BottomSheetWordDetails(navController,viewModel(),chapterid!!.toInt(),verseid!!.toInt(),wordno!!.toInt() )
-                com.example.compose.activity.BottomSheetDemo(
+               BottomSheetWordDetails(
                     navController,
                     viewModel(),
                     chapterid!!.toInt(),

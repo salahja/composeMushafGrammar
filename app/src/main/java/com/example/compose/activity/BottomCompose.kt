@@ -64,6 +64,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,6 +83,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.adaptive.AdaptiveMainActivity
+import com.example.bottomcompose.BottomSheetDemo
 import com.example.compose.CardsViewModel
 import com.example.compose.ConjugationScreen
 import com.example.compose.NavigationItem
@@ -107,7 +109,6 @@ import com.example.tabcompose.*
 import com.example.utility.QuranGrammarApplication.Companion.context
 
 
-lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
 
 class BottomCompose : AppCompatActivity() {
     private val viewModel by viewModels<QuranVIewModel>()
@@ -116,17 +117,6 @@ class BottomCompose : AppCompatActivity() {
     lateinit var mainViewModel: QuranVIewModel
 
     //  allofQuran = mainViewModel.getquranbySUrah(chapterno).value
-
-
-
-
-
-
-
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,7 +172,7 @@ class BottomCompose : AppCompatActivity() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreen(viewModel: QuranVIewModel,  ) {
+fun MainScreen(viewModel: QuranVIewModel) {
     val navController = rememberNavController()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -195,7 +185,7 @@ fun MainScreen(viewModel: QuranVIewModel,  ) {
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController, viewModel,)
+                Navigation(navController, viewModel)
             }
         },
         //backgroundColor = colorResource(id =colorPrimaryDark),
@@ -211,7 +201,7 @@ fun Navigation(
     quranmodel: QuranVIewModel,
 
 
-) {
+    ) {
 
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
         composable("home") {
@@ -227,7 +217,7 @@ fun Navigation(
             val i = Intent(context, AdaptiveMainActivity::class.java)
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            i.putExtra(SURAH_INDEX,id)
+            i.putExtra(SURAH_INDEX, id)
 
             context!!.startActivity(i)
         }
@@ -248,8 +238,8 @@ fun Navigation(
                 SurahListScreen(navController, quranmodel)
             } else {
 
-                val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(id))
-             //   NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
+                val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id))
+                //   NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
 
             }
         }
@@ -263,7 +253,7 @@ fun Navigation(
                     defaultValue = "نصر"
                 },
 
-            )
+                )
 
 
         ) { backStackEntry ->
@@ -285,14 +275,16 @@ fun Navigation(
                 root
             }
             if (root == "ACC" || root == "LOC" || root == "T") {
-                val myViewModel: CardsViewModel    = viewModel(factory = CardViewModelFactory(verbroot,nounroot,true))
+                val myViewModel: CardsViewModel =
+                    viewModel(factory = CardViewModelFactory(verbroot, nounroot, true))
 
-                nounroot=root
+                nounroot = root
 
                 CardsScreen(myViewModel)
-            }else{
-                val myViewModel: CardsViewModel    = viewModel(factory = CardViewModelFactory(verbroot,nounroot,false))
-                nounroot=root
+            } else {
+                val myViewModel: CardsViewModel =
+                    viewModel(factory = CardViewModelFactory(verbroot, nounroot, false))
+                nounroot = root
                 CardsScreen(myViewModel)
 
             }
@@ -385,7 +377,7 @@ fun Navigation(
             }
             //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
             BottomSheetDemo(navController, viewModel(), chapterid, verseid, wordno)
-          //  WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
+            //  WordALert(openDialogCustom, navController, quranmodel, chapterid, verseid, wordno)
         }
 
 
@@ -442,803 +434,6 @@ fun CustomDialogs(
     wordno: Int?
 ) {
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyUI(mainViewModel: QuranVIewModel, chapterid: Int?, verseid: Int?, wordno: Int?) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    val utils = Utils(QuranGrammarApplication.context)
-
-    val corpusSurahWord = mainViewModel.getQuranCorpusWbw(chapterid!!, verseid!!, wordno!!).value
-
-    var vbdetail = HashMap<String, String?>()
-    val quran = mainViewModel.getsurahayahVerseslist(chapterid!!, verseid!!).value
-    val corpusNounWord = mainViewModel.getNouncorpus(chapterid!!, verseid!!, wordno!!).value
-
-    val verbCorpusRootWord =
-        mainViewModel.getVerbRootBySurahAyahWord(chapterid!!, verseid!!, wordno!!).value
-
-
-    val am = NewQuranMorphologyDetails(
-        corpusSurahWord!!,
-        corpusNounWord as ArrayList<NounCorpus>?,
-        verbCorpusRootWord as ArrayList<VerbCorpus>?,
-        QuranGrammarApplication.context
-    )
-    worddetails = am.wordDetails
-    // wordbdetail = am.wordDetails
-    if (verbCorpusRootWord != null) {
-        if (verbCorpusRootWord.isNotEmpty() && verbCorpusRootWord[0].tag.equals("V")) {
-            vbdetail = am.verbDetails
-            //  isVerb = true
-        }
-    }
-    var openBottomSheet by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState()
-    val contextForToast = LocalContext.current.applicationContext
-//openBottomSheet=true
-    // app content
-
-    // sheet content
-    if (openBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { openBottomSheet = false },
-            sheetState = bottomSheetState
-        ) {
-
-            Spacer(modifier = Modifier.padding(16.dp))
-            Text(
-                text = worddetails["surahid"].toString() + ":" + worddetails["ayahid"].toString() + ":" + worddetails["wordno"].toString(),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontSize = 21.sp,
-
-                )
-            Row {
-
-                if (worddetails["arabicword"] != null) {
-                    /*          CustomChip(
-                                  selected = true,
-                                  text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                  modifier = Modifier.padding(horizontal = 8.dp),
-
-
-                                  )*/
-
-                    val textChipRememberOneState = remember {
-                        mutableStateOf(false)
-                    }
-                    TextChip(
-                        isSelected = textChipRememberOneState.value,
-                        text = "ArabicWord" + worddetails["arabicword"].toString(),
-
-                        selectedColor = Color.DarkGray,
-                        onChecked = {
-                            textChipRememberOneState.value = it
-                        }
-                    )
-
-
-                }
-                /*
-                         Chip(onClick = { *//*TODO*//* }) {
-
-
-
-                            if (worddetails["arabicword"] != null) {
-                                Text(
-                                    text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 21.sp,
-
-                                )
-                            }
-                        }*/
-
-            }
-
-            Row {
-
-                if (worddetails["PRON"] != null) {
-                    Text(
-                        text = worddetails["PRON"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-            Row {
-
-                if (worddetails["worddetails"] != null) {
-                    Text(
-                        text = worddetails["worddetails"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-
-
-
-            Row {
-                if (worddetails["noun"] != null) {
-                    Text(
-                        text = "Noun" + worddetails["noun"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-            Row {
-                if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
-                    Text(
-                        text = "Lemma" + worddetails["lemma"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-                }
-            }
-            Row {
-                if (worddetails["arabicword"] != null) {
-                    Text(
-                        text = "ArabicWord" + worddetails["arabicword"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-            Row {
-                if (worddetails["translation"] != null) {
-                    Text(
-                        text = "Translation" + worddetails["translation"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-                }
-            }
-
-
-
-            Row {
-                if (worddetails["root"] != null) {
-                    Text(
-                        text = "Root:" + worddetails["root"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-                }
-            }
-            Row {
-                if (worddetails["formnumber"] != null) {
-                    Text(
-                        text = worddetails["form"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-            //
-            Row {
-                if (vbdetail["mazeed"] != null) {
-                    Text(
-                        text = vbdetail["mazeed"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-            Row {
-                if (vbdetail["form"] != null) {
-                    Text(
-                        text = vbdetail["form"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-
-            Row {
-                if (vbdetail["verbmood"] != null) {
-                    Text(
-                        text = vbdetail["verbmood"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-            }
-
-            val vb: StringBuilder = StringBuilder()
-            vb.append("V-")
-            if (vbdetail["thulathi"] != null) {
-                vb.append(vbdetail["thulathi"])
-            }
-            if (vbdetail["png"] != null) {
-                vb.append(vbdetail["png"])
-            }
-            if (vbdetail["tense"] != null) {
-                vb.append(vbdetail["tense"])
-            }
-            if (vbdetail["voice"] != null) {
-                vb.append(vbdetail["voice"])
-            }
-            if (vbdetail["mood"] != null) {
-                vb.append(vbdetail["mood"])
-            }
-            if (vb.length > 2) {
-
-
-                Row {
-
-                    Text(
-                        text = vb.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-
-                        )
-
-
-                }
-
-
-                //  holder.verbdetails.setTextSize(arabicFontsize);
-            }
-
-        }
-    }
-}
-
-
-@Suppress("DEPRECATION")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
-@ExperimentalFoundationApi
-@Composable
-fun BottomSheetDemo(
-
-    navController: NavHostController,
-    mainViewModel: QuranVIewModel,
-    chapterid: Int?,
-    verseid: Int?,
-    wordno: Int?
-) {
-    val utils = Utils(QuranGrammarApplication.context)
-
-    val corpusSurahWord = mainViewModel.getQuranCorpusWbw(chapterid!!, verseid!!, wordno!!).value
-
-    var vbdetail = HashMap<String, String?>()
-    val quran = mainViewModel.getsurahayahVerseslist(chapterid!!, verseid!!).value
-    val corpusNounWord = mainViewModel.getNouncorpus(chapterid!!, verseid!!, wordno!!).value
-
-    val verbCorpusRootWord =
-        mainViewModel.getVerbRootBySurahAyahWord(chapterid!!, verseid!!, wordno!!).value
-
-
-    val am = NewQuranMorphologyDetails(
-        corpusSurahWord!!,
-        corpusNounWord as ArrayList<NounCorpus>?,
-        verbCorpusRootWord as ArrayList<VerbCorpus>?,
-        QuranGrammarApplication.context
-    )
-    worddetails = am.wordDetails
-    // wordbdetail = am.wordDetails
-    if (verbCorpusRootWord != null) {
-        if (verbCorpusRootWord.isNotEmpty() && verbCorpusRootWord[0].tag.equals("V")) {
-            vbdetail = am.verbDetails
-            //  isVerb = true
-        }
-    }
-
-
-    //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
-
-    //   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
-    )
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetShape = RoundedCornerShape(topEnd = 30.dp),
-        sheetContent = {
-            //Ui for bottom sheet
-            Column(
-                content = {
-
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Text(
-                        text = worddetails["surahid"].toString() + ":" + worddetails["ayahid"].toString() + ":" + worddetails["wordno"].toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-                    )
-
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = 2.dp,
-                                horizontal = 4.dp
-                            )
-
-                            .clip(shape = CircleShape)
-
-                            .padding(4.dp)
-                    ) {
-                        if (vbdetail["thulathi"] != null) {
-                            val conjugation = vbdetail["wazan"].toString()
-                            val root = vbdetail["root"].toString()
-                            val mood = vbdetail["verbmood"].toString()
-                            Button(
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                onClick = {
-
-                                    navController.navigate(
-                                        "conjugator/${conjugation}/${root}/${mood}"
-                                    )
-                                    /*     val intent = Intent(Intent.ACTION_VIEW)
-                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                         val i = Intent(context, SurahComposeAct::class.java)
-                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                         context!!.startActivity(i)
-
-     */
-                                }
-                            ) {
-                                Text(
-                                    text = "Conjugate" + vbdetail["thulathi"].toString()
-                                )
-                            }
-
-
-                        }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = 2.dp,
-                                horizontal = 4.dp
-                            )
-
-                            .clip(shape = CircleShape)
-
-                            .padding(4.dp)
-                    ) {
-                        if (vbdetail["formnumber"] != null) {
-                            val conjugation = vbdetail["form"].toString()
-                            val root = vbdetail["root"].toString()
-                            val mood = vbdetail["verbmood"].toString()
-                            Button(
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                onClick = {
-                                    navController.navigate(
-                                        "conjugator/${conjugation}/${root}/${mood}"
-                                    )
-                                }
-                            ) {
-                                Text(
-                                    text = "Conjugate" + vbdetail["formnumber"].toString()
-                                )
-                            }
-
-
-                        }
-
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = 2.dp,
-                                horizontal = 4.dp
-                            )
-
-                            .clip(shape = CircleShape)
-
-                            .padding(4.dp)
-
-
-                    ) {
-                        if (worddetails["arabicword"] != null) {
-                            /*          CustomChip(
-                                          selected = true,
-                                          text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                          modifier = Modifier.padding(horizontal = 8.dp),
-
-
-                                          )*/
-                                 val root=     worddetails["root"]
-
-                         /*   val textChipRememberOneState = remember {
-                                mutableStateOf(false)
-                            }*/
-                            Button(
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                onClick = {
-
-                                    navController.navigate(
-                                        "wordoccurance/${root}"
-                                    )
-                                    /*     val intent = Intent(Intent.ACTION_VIEW)
-                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                         val i = Intent(context, SurahComposeAct::class.java)
-                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                         context!!.startActivity(i)
-
-     */
-                                }
-                            ) {
-                                Text(
-                                    text = "Word Occurance" + worddetails["root"].toString()
-                                )
-                            }
-
-
-                        }
-                        /*
-                                 Chip(onClick = { *//*TODO*//* }) {
-
-
-
-                            if (worddetails["arabicword"] != null) {
-                                Text(
-                                    text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 21.sp,
-
-                                )
-                            }
-                        }*/
-
-                    }
-
-                    Row {
-
-                        if (worddetails["PRON"] != null) {
-                            Text(
-                                text = worddetails["PRON"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-                        }
-                    }
-                    Row {
-
-                        if (worddetails["worddetails"] != null) {
-                            Text(
-                                text = worddetails["worddetails"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-                        }
-                    }
-
-
-
-
-                    Row {
-                        if (worddetails["noun"] != null) {
-                            Text(
-                                text = "Noun" + worddetails["noun"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-                        }
-                    }
-
-                    Row {
-                        if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
-                            Text(
-                                text = "Lemma" + worddetails["lemma"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-                        }
-                    }
-                    Row {
-                        if (worddetails["arabicword"] != null) {
-                            Text(
-                                text = "ArabicWord" + worddetails["arabicword"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-                        }
-                    }
-                    Row {
-                        if (worddetails["translation"] != null) {
-                            Text(
-                                text = "Translation" + worddetails["translation"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-                        }
-                    }
-
-
-
-                    Row {
-                        if (worddetails["root"] != null) {
-                            Text(
-                                text = "Root:" + worddetails["root"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-                        }
-                    }
-                    Row {
-                        if (worddetails["formnumber"] != null) {
-                            Text(
-                                text = worddetails["form"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-
-                        }
-                    }
-
-                    //
-                    Row {
-                        if (vbdetail["mazeed"] != null) {
-                            Text(
-                                text = vbdetail["mazeed"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-
-                        }
-                    }
-                    Row {
-                        if (vbdetail["form"] != null) {
-                            Text(
-                                text = vbdetail["form"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-
-                        }
-                    }
-
-
-                    Row {
-                        if (vbdetail["verbmood"] != null) {
-                            Text(
-                                text = vbdetail["verbmood"].toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-
-                        }
-                    }
-
-                    val vb: StringBuilder = StringBuilder()
-                    vb.append("V-")
-                    if (vbdetail["thulathi"] != null) {
-                        vb.append(vbdetail["thulathi"])
-                    }
-                    if (vbdetail["png"] != null) {
-                        vb.append(vbdetail["png"])
-                    }
-                    if (vbdetail["tense"] != null) {
-                        vb.append(vbdetail["tense"])
-                    }
-                    if (vbdetail["voice"] != null) {
-                        vb.append(vbdetail["voice"])
-                    }
-                    if (vbdetail["mood"] != null) {
-                        vb.append(vbdetail["mood"])
-                    }
-                    if (vb.length > 2) {
-
-
-                        Row {
-
-                            Text(
-                                text = vb.toString(),
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 21.sp,
-
-                                )
-
-
-                        }
-
-
-                        //  holder.verbdetails.setTextSize(arabicFontsize);
-                    }
-
-
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp)
-
-
-                    .background(MaterialTheme.colorScheme.inversePrimary)
-                    .padding(16.dp),
-
-                )
-        },
-        sheetPeekHeight = 60.dp,
-
-        ) {
-
-
-        //Add button to open bottom sheet
-
-    }
-}
-
-@Composable
-fun CustomChip(
-    selected: Boolean,
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    // define properties to the chip
-    // such as color, shape, width
-    Surface(
-        color = when {
-            selected -> MaterialTheme.colorScheme.onSurface
-            else -> Color.Transparent
-        },
-        contentColor = when {
-            selected -> MaterialTheme.colorScheme.onPrimary
-            else -> Color.LightGray
-        },
-        shape = CircleShape,
-        border = BorderStroke(
-            width = 1.dp,
-            color = when {
-                selected -> MaterialTheme.colorScheme.primary
-                else -> Color.LightGray
-            }
-        ),
-        modifier = modifier
-    ) {
-        // Add text to show the data that we passed
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(8.dp)
-        )
-
-    }
 }
 
 @Composable
@@ -1420,13 +615,22 @@ fun BottomNavigationBarPreview() {
 
 class newViewModelFactory(private val dbname: Int) :
     ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = VerseModel(dbname) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        VerseModel(dbname) as T
 }
-class CardViewModelFactory(private val dbname: String, private val nounroot: String, private val isharf: Boolean) :
+
+class CardViewModelFactory(
+    private val dbname: String,
+    private val nounroot: String,
+    private val isharf: Boolean
+) :
     ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = CardsViewModel(dbname,nounroot,isharf) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        CardsViewModel(dbname, nounroot, isharf) as T
 }
+
 class surahViewModelFactory() :
     ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = QuranVIewModel() as T
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        QuranVIewModel() as T
 }

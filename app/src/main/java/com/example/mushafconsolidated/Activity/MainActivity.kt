@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.window.layout.WindowMetricsCalculator
+import com.adaptive.AdaptiveMainActivity
 import com.example.compose.activity.BottomCompose
 import com.example.compose.activity.TwoPane
 
@@ -148,7 +149,7 @@ class MainActivity : BaseActivity() {
                 fullQuranPages = new ArrayList<>(pages);
             PageAdapter pageAdapter=new PageAdapter(pages,this);
             recview.setAdapter(pageAdapter);*/
-             val homeactivity = Intent(this@MainActivity, BottomCompose::class.java)
+             val homeactivity = Intent(this@MainActivity, AdaptiveMainActivity::class.java)
        //   val homeactivity = Intent(this@MainActivity, NewBottomActivity::class.java)
 
 
@@ -261,7 +262,7 @@ class MainActivity : BaseActivity() {
                     ex.shutdown()
                     dialog.dismiss()
 
-                   val zipintent = Intent(this@MainActivity, BottomCompose::class.java)
+                   val zipintent = Intent(this@MainActivity, AdaptiveMainActivity::class.java)
                     startActivity(zipintent)
                     finish()
                 }

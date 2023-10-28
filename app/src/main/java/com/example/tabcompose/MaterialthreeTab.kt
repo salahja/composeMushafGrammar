@@ -70,7 +70,7 @@ import org.sj.verbConjugation.MadhiMudharay
 import org.sj.verbConjugation.SarfSagheer
 
 lateinit var tabItems: List<TabItems>
-var numeric: Boolean = false
+var isMujarrad: Boolean = false
 lateinit var sarfSagheer: SarfSagheer
 lateinit var mujarrad: ArrayList<ArrayList<*>>
 var mazeed: ArrayList<ArrayList<*>>? = null
@@ -93,7 +93,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
     val filter = conjugation.toString().filter(Char::isDigit)
-    numeric = isNumeric(conjugation)
+    isMujarrad = isNumeric(conjugation)
     /*
     5 = {ArrayList@27947}  size = 1
      0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
@@ -116,7 +116,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
     lateinit var zmafalun: IsmZarfMafalun
      */
     vb.wazan = conjugation
-    if (numeric) {
+    if (isMujarrad) {
         mazeed = GatherAll.instance.getMazeedListing(mood, root, conjugation)
         madhimudhary = mazeed!![0]
         faelmafool = mazeed!![1]
@@ -142,7 +142,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 
 
     val corpus = CorpusUtilityorig
-    if (!numeric) {
+    if (!isMujarrad) {
         // tab items
         tabItems = listOf(
             TabItems(
@@ -255,7 +255,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
             modifier = Modifier.fillMaxWidth()
         ) { index ->
             // app content
-            if (numeric) {
+            if (!isMujarrad) {
                 if (index == 0) {
 
                     sagheerscreen()
@@ -279,7 +279,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
                         fontSize = 18.sp
                     )
                 }
-            } else if (!numeric) {
+            } else if (isMujarrad) {
                 if (index == 0) {
 
                     sagheerscreen()
