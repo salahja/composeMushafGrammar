@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -85,6 +86,7 @@ import com.example.compose.theme.WordALert
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
+import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.mushafconsolidated.settingsimport.Constants
@@ -102,13 +104,16 @@ class TwoPane : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val array: Array<String> = QuranGrammarApplication.context!!.resources
+            .getStringArray(R.array.arabicletters)
         setContent {
             AppTheme {
                 Surface(color = androidx.compose.material.MaterialTheme.colors.surface) {
                     @Suppress("MagicNumber")
                     ListDetailLayout(
-                        (1..10).map { index -> "Item $index" },
+
+                            array.map { index -> "$index" },
+
                         LocalConfiguration.current
                     ) {
                         List { list, onSelectionChange ->
@@ -119,7 +124,7 @@ class TwoPane : ComponentActivity() {
 
 
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    containerColor = MaterialTheme.colorScheme.secondary,
                                 ),
                                 elevation = CardDefaults.cardElevation(
                                     defaultElevation = 16.dp
@@ -213,7 +218,15 @@ private fun SplitLayout(
     onSelectionChange: (String) -> Unit
 ) {
     Row(Modifier.fillMaxWidth()) {
-        Box(modifier = Modifier.weight(0.3f)) {
+        Box(modifier = Modifier.weight(0.3f)
+
+            .background(Color.Green)
+            .padding(16.dp)
+            .clip(RoundedCornerShape(size = 20.dp))
+            .background(Color.Red))
+
+
+          {
             twoPaneScope.list(twoPaneScope.items, onSelectionChange)
         }
         Box(modifier = Modifier.weight(1f)) {
@@ -365,6 +378,7 @@ private fun SplitLayouts(
             }
         }
 
-    }
+      }
+
 
 }

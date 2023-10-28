@@ -1,10 +1,10 @@
-package com.example.compose
+package com.adaptive
 
-import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.BottomSheetScaffold
@@ -26,33 +25,25 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +51,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -68,44 +59,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.codelab.basics.ui.theme.md_theme_light_primaryContainer
+
+import com.example.compose.indexval
+import com.example.compose.theme.listState
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
+import com.example.mushafconsolidated.Entities.qurandictionary
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
-import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.QuranGrammarApplication
-import com.skyyo.expandablelist.theme.AppThemeSettings.isDarkThemeEnabled
+import com.skyyo.expandablelist.theme.AppThemeSettings
 import kotlinx.coroutines.launch
 
-
-var pref: PreferencesManager?=null
-
-var indexval = 0
-
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel?) {
-    pref = remember { PreferencesManager(QuranGrammarApplication.context!!) }
-    val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
-
-
-   val allAnaChapters = quranModel!!.getAllSurah().value
-    //   val listState = rememberLazyListState()
-    val listState =                 rememberLazyGridState()
-
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    val isCollapsed: Boolean by remember {
-        derivedStateOf {
-            scrollBehavior.state.collapsedFraction == 1f
-        }
-    }
-
+fun UserDetailScreen(userId: String?, isOnlyDetailScreen: Boolean, onBackPressed: () -> Unit) {
+    val util= Utils(QuranGrammarApplication.context!!)
+    val searchs= "$userId%";
+    val letter: ArrayList<qurandictionary> = util.getByfirstletter(searchs!!) as ArrayList<qurandictionary>
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { LibraryTopBar(navController,scrollBehavior, isCollapsed) }
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            if (isOnlyDetailScreen)
+                TopAppBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = { Text(text = "User Detail", textAlign = TextAlign.Center) },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                onBackPressed()
+                            },
+                        ) {
+                            Icon(
+                                Icons.Default.ArrowBack,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                )
+        },
     ) {
         LazyVerticalGrid(
 
@@ -113,90 +106,35 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
                 .fillMaxSize()
                 .padding(top = 100.dp),
 
-            columns = GridCells.Fixed(2),
-            state = listState
+            columns = GridCells.Fixed(4),
+
         ) {
-            items(allAnaChapters!!.size) { index ->
+            items(letter!!.size) { index ->
                 //          indexval=index
-                GridList(allAnaChapters[index], imgs, navController)
+                GridList(letter[index])
             }
         }
     }
 
-
 }
 
+fun GridLists(qurandictionary: qurandictionary) {
+    TODO("Not yet implemented")
+}
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LibraryTopBar(navController: NavHostController,scrollBehavior: TopAppBarScrollBehavior, isCollapsed: Boolean) =
-    MediumTopAppBar(
-
-        title = { androidx.compose.material3.Text(text = "SurahList") },
-        navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
-        actions = {
-
-            FilledTonalButton(onClick = {
-                val data = pref!!.getData("lastread", 1)
-                navController.navigate("verses/" + data)
-            }) {
-                Text("Last Read")
-            }
-
-
-
-            ElevatedButton(onClick = {  }) {
-                    Text("Surah Kahaf")
-                }
-
-
-
-
-
-
-
-
-            IconButton(onClick = { /* Define your action here */ }) {
-                Icon(Icons.Filled.Favorite, contentDescription = null)
-            }
-        },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = md_theme_light_primaryContainer,
-            scrolledContainerColor = MaterialTheme.colorScheme.background,
-            titleContentColor = if (isCollapsed) {
-                MaterialTheme.colorScheme.onBackground
-            } else {
-                MaterialTheme.colorScheme.onPrimary
-            },
-        ),
-
-        scrollBehavior = scrollBehavior,
-    )
-
-@OptIn(ExperimentalMaterial3Api::class)
-private
-@Composable
-
 fun GridList(
-    surahModelList: ChaptersAnaEntity?,
-    imgs: TypedArray,
-    navController: NavHostController,
+    surahModelList: qurandictionary?,
+
 ) {
-    val img = imgs.getDrawable(surahModelList!!.chapterid.toInt() - 1)
-    val darkThemeEnabled = isDarkThemeEnabled
+
+    val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
 
     Card(
-/*
-         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-        ),*/
+
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 16.dp
         ),
@@ -218,73 +156,21 @@ fun GridList(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxSize()
         ) {
-            indexval = surahModelList!!.chapterid
+           // indexval = surahModelList!!.chapterid
             ClickableText(
-                text = AnnotatedString(surahModelList!!.chapterid.toString()),
+                text = AnnotatedString(surahModelList!!.rootarabic),
 
                 onClick = {
                     Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
                     //    navController.navigate(NavigationItem.Books.route)
 
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
 
 
-                })
-            ClickableText(
-                text = AnnotatedString(surahModelList!!.namearabic.toString()),
-
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    //   navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid.toString())
 
                 })
 
-            ClickableText(
-                text = AnnotatedString(surahModelList!!.nameenglish.toString()),
 
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    // navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
 
-                })
-
-            /*       Text(
-                       modifier = Modifier.clickable { println("Clicked") },
-                       text = surahModelList!!.namearabic,
-                       fontSize = 20.sp
-                   )
-                   Text(
-                       modifier = Modifier.clickable { println("Clicked") },
-                       text = surahModelList.nameenglish,
-                       fontSize = 10.sp
-                   )
-       */
-
-            if (!darkThemeEnabled) {
-                AsyncImage(
-
-                    model = img,
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Cyan),
-                    modifier = Modifier
-                        .height(30.dp)
-                        .width(30.dp),
-
-                    )
-            } else {
-                AsyncImage(
-
-                    model = img,
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Red),
-                    modifier = Modifier
-                        .height(30.dp)
-                        .width(30.dp),
-
-                    )
-            }
 
 
         }
@@ -322,7 +208,7 @@ fun GridList(
                     content = {
 
                         Spacer(modifier = Modifier.padding(16.dp))
-                        Text(
+                        androidx.compose.material.Text(
                             text = "Bottom Sheet",
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -347,13 +233,13 @@ fun GridList(
                                         },
                                 ) {
                                     Spacer(modifier = Modifier.padding(8.dp))
-                                    Icon(
+                                    androidx.compose.material.Icon(
                                         bottomSheetItems[it].icon,
                                         bottomSheetItems[it].title,
                                         tint = Color.White
                                     )
                                     Spacer(modifier = Modifier.padding(8.dp))
-                                    Text(text = bottomSheetItems[it].title, color = Color.White)
+                                    androidx.compose.material.Text(text = bottomSheetItems[it].title, color = Color.White)
                                 }
 
                             })
@@ -397,7 +283,7 @@ fun GridList(
                         }
                     }
                 ) {
-                    Text(
+                    androidx.compose.material.Text(
                         text = "Click to show Bottom Sheet"
                     )
                 }

@@ -1,7 +1,9 @@
 package com.example.compose.activity
 
+
 import CardsScreen
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -79,6 +81,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.adaptive.AdaptiveMainActivity
 import com.example.compose.CardsViewModel
 import com.example.compose.ConjugationScreen
 import com.example.compose.NavigationItem
@@ -93,6 +96,7 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
+import com.example.mushafconsolidated.settingsimport.Constants.Companion.SURAH_INDEX
 import com.example.tabcompose.TabItem
 import com.example.utility.QuranGrammarApplication
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -100,6 +104,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.skyyo.expandablelist.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import com.example.tabcompose.*
+import com.example.utility.QuranGrammarApplication.Companion.context
 
 
 lateinit var worddetails: HashMap<String, SpannableStringBuilder?>
@@ -213,6 +218,23 @@ fun Navigation(
 
             SurahListScreen(navController, quranmodel)
         }
+
+        composable("Wordoccurance") {
+
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val i = Intent(context, AdaptiveMainActivity::class.java)
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            i.putExtra(SURAH_INDEX,id)
+
+            context!!.startActivity(i)
+        }
+
+
+
+
         composable("verses/{id}",
             arguments = listOf(
                 navArgument(name = "id") {
@@ -227,23 +249,7 @@ fun Navigation(
             } else {
 
                 val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(id))
-                NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
-
-                /*           val dataBundle = Bundle()
-
-
-
-
-                           val intent = Intent(Intent.ACTION_VIEW)
-                           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                           val i = Intent(context, QuranDisplayActs::class.java)
-                           i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                            i.putExtra(SURAH_INDEX,id)
-
-                           context!!.startActivity(i)
-           */
-
+             //   NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
 
             }
         }
@@ -1358,7 +1364,7 @@ fun TopBarPreview() {
 fun BottomNavigationBars(navController: NavController) {
     val items = listOf(
         NavigationItem.Home,
-        //  NavigationItem.Verses,
+        NavigationItem.Wordoccurance,
         //  NavigationItem.Conjugator,
         //   NavigationItem.Books,
         //  NavigationItem.Conjugation
@@ -1419,4 +1425,8 @@ class newViewModelFactory(private val dbname: Int) :
 class CardViewModelFactory(private val dbname: String, private val nounroot: String, private val isharf: Boolean) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = CardsViewModel(dbname,nounroot,isharf) as T
+}
+class surahViewModelFactory() :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T = QuranVIewModel() as T
 }

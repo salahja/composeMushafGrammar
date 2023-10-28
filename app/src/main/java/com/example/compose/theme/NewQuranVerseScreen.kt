@@ -81,7 +81,7 @@ var surahs: List<ChaptersAnaEntity>?=null
 fun NewQuranVerseScreen(
     navController: NavHostController,
     chapid: Int,
-    quranmodel: QuranVIewModel,
+
     verseModel: VerseModel,
 
 
@@ -166,9 +166,9 @@ fun NewQuranVerseScreen(
             Card(
 
 
-                colors = CardDefaults.cardColors(
+          /*      colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                ),
+                ),*/
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 16.dp
                 ),

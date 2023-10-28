@@ -325,16 +325,16 @@ fun sagheerscreen() {
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.primary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
         OutlinedCard(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
+        /*    colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+            ),*/
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -515,9 +515,9 @@ fun sagheerscreen() {
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
+          /*  colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+            ),*/
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -600,9 +600,7 @@ fun sagheerscreen() {
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -703,9 +701,7 @@ fun sarfsagheers() {
     ) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -886,9 +882,7 @@ fun sarfsagheers() {
 
         OutlinedCard(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -971,9 +965,7 @@ fun sarfsagheers() {
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.inversePrimary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -1095,16 +1087,14 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.primary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -1339,9 +1329,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
         //mudharay
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -1573,9 +1561,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -1808,9 +1794,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
 
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
@@ -2043,7 +2027,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -2314,7 +2298,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.primary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
@@ -3016,7 +3000,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.primary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
@@ -3635,7 +3619,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.primary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())

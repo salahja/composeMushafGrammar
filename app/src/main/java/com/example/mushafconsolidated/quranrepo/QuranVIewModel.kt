@@ -53,7 +53,7 @@ data class Homestate(
 )
 
 class QuranVIewModel(
-    private val newrepository: QuranRepository = QuranGraph.repository,
+    private val newrepository: QuranRepository = QuranGraph.repository
 ) : ViewModel() {
 
 
