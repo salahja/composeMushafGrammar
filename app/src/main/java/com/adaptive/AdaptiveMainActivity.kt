@@ -327,13 +327,9 @@ fun MainContent(
             ) {
                 navigation(startDestination = "home_main", route = Screen.Home.route) {
                     composable("home_main") {
-                        HomeScreen(
-                            userId = selectedUserId,
-                            isOnlyDetailScreen = isOnlyDetailScreen,
-                            navigationType = navigationType,
-                            goToUserDetail = goToUserDetail,
-                            onDetailBackPressed = closeUserDetail
-                        )
+
+                        val myViewModel: QuranVIewModel = viewModel(factory = surahViewModelFactory())
+                        SurahListScreen(navController,myViewModel)
                     }
 
                     composable(
@@ -351,8 +347,13 @@ fun MainContent(
                 }
                 composable(Screen.Profile.route) {
 
-                    val myViewModel: QuranVIewModel = viewModel(factory = surahViewModelFactory())
-                    SurahListScreen(navController,myViewModel)
+                    HomeScreen(
+                        userId = selectedUserId,
+                        isOnlyDetailScreen = isOnlyDetailScreen,
+                        navigationType = navigationType,
+                        goToUserDetail = goToUserDetail,
+                        onDetailBackPressed = closeUserDetail
+                    )
                 }
 
                 composable("verses/{id}",
