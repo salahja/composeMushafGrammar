@@ -10,13 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

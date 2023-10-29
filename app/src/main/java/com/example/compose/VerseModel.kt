@@ -105,6 +105,7 @@ class VerseModel(
 
                     corpus.setMudhafss(hashlist, chapid)
                     corpus.setSifa(hashlist, chapid)
+                    corpus.setShart(hashlist,chapid)
 
 
 

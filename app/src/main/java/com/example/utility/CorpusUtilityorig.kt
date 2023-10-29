@@ -2,7 +2,8 @@ package com.example.utility
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
+
+import android.graphics.Color.CYAN
 import android.preference.PreferenceManager
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,9 +14,11 @@ import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.core.content.ContextCompat
+import com.example.ComposeConstant
 import com.example.Constant
 import com.example.justJava.FrameSpan
 import com.example.mushafconsolidated.Entities.NewMudhafEntity
@@ -26,6 +29,7 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import com.example.utility.QuranGrammarApplication.Companion.context
 import java.util.regex.Pattern
 
 class CorpusUtilityorig(private var context: Context?) {
@@ -107,6 +111,7 @@ class CorpusUtilityorig(private var context: Context?) {
         }
     }
 
+/*
     fun newnewHarfNasbDb(
         corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
         surah_id: Int,
@@ -185,33 +190,9 @@ class CorpusUtilityorig(private var context: Context?) {
             }
         }
     }
+*/
 
-    fun setMudhafFromDB(
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
-        surah_id: Int,
-        ayah: Int,
-        size: Int,
-    ) {
-        val utils = Utils(QuranGrammarApplication.context!!)
-        val surah = utils.getMudhafSurahAyahNew(surah_id,ayah)
-//todo 2 188 iza ahudu
-        //todo 9;92 UNCERTAIN
-        //TODO 9:94 JAWABHARMAHDOOF 9 95 JAWABHSARMAHODFF
-        //TO 9;118 IZA IN THE MEANING OF HEENA AND 9 122 IZA AS HEENA
-        for (mudhafen in surah!!) {
-            val indexstart = mudhafen.startindex
-            val indexend = mudhafen.endindex
-            val frameshartharf = FrameSpan(Color.GREEN, 2f, Constant.RECKT)
-            MudhafSpansSetup(
-                frameshartharf,
-                corpusayahWordArrayList,
-                mudhafen,
-                indexstart,
-                indexend,
-                size
-            )
-        }
-    }
+
 
     private fun MudhafSpansSetup(
         frameshartharf: FrameSpan,
@@ -315,13 +296,13 @@ class CorpusUtilityorig(private var context: Context?) {
         if (dark) {
             Constant.harfshartspanDark = ForegroundColorSpan(Constant.GOLD)
             Constant.shartspanDark = ForegroundColorSpan(Constant.ORANGE400)
-            Constant.jawabshartspanDark = ForegroundColorSpan(Color.CYAN)
+            Constant.jawabshartspanDark = ForegroundColorSpan(CYAN)
         } else {
             Constant.harfshartspanDark = ForegroundColorSpan(Constant.FORESTGREEN)
             Constant.shartspanDark = ForegroundColorSpan(Constant.KASHMIRIGREEN)
             Constant.jawabshartspanDark = ForegroundColorSpan(Constant.WHOTPINK)
         }
-        try {
+    
             //   spannableverse = corpusayahWordArrayList[shart.ayah - 1].spannableverse!!
             spannableverse = corpusayahWordArrayList[size - 1]!![0].spannableverse!!
             //   spannableString = SpannableString.valueOf(corpusayahWordArrayList.get(shart.getAyah() - 1).getSpannableverse());
@@ -380,10 +361,7 @@ class CorpusUtilityorig(private var context: Context?) {
             catch (e: IndexOutOfBoundsException) {
                 //System.out.println(e.getMessage());
             }
-        }
-        catch (e: IndexOutOfBoundsException) {
-            //System.out.println(e.getMessage());
-        }
+   
     }
 
     fun setKana(
@@ -402,7 +380,7 @@ class CorpusUtilityorig(private var context: Context?) {
         if (dark) {
             harfkana = ForegroundColorSpan(Constant.GOLD)
             kanaism = ForegroundColorSpan(Constant.ORANGE400)
-            kanakhbar = ForegroundColorSpan(Color.CYAN)
+            kanakhbar = ForegroundColorSpan(CYAN)
         } else {
             harfkana = ForegroundColorSpan(Constant.FORESTGREEN)
             kanaism = ForegroundColorSpan(Constant.KASHMIRIGREEN)
@@ -511,7 +489,7 @@ class CorpusUtilityorig(private var context: Context?) {
         }
     }
 
-    fun newnewHarfNasbDb(
+/*    fun newnewHarfNasbDb(
         corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
         surah_id: Int,
     ) {
@@ -533,7 +511,7 @@ class CorpusUtilityorig(private var context: Context?) {
                     corpusayahWordArrayList[nasb.ayah - 1]!![0].spannableverse!!
                 try {
                     if (dark) {
-                        Constant.harfinnaspanDark = ForegroundColorSpan(Color.GREEN)
+                        Constant.harfinnaspanDark = ForegroundColorSpan(GREEN)
                     } else {
                         Constant.harfinnaspanDark = ForegroundColorSpan(Constant.KASHMIRIGREEN)
                     }
@@ -586,83 +564,14 @@ class CorpusUtilityorig(private var context: Context?) {
                 }
             }
         }
-    }
+    }*/
 
-    fun setMudhafFromDB(
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
-        surah_id: Int,
-    ) {
-        val utils = Utils(QuranGrammarApplication.context!!)
-        val surah = utils.getMudhafSurahNew(surah_id)
-//todo 2 188 iza ahudu
-        //todo 9;92 UNCERTAIN
-        //TODO 9:94 JAWABHARMAHDOOF 9 95 JAWABHSARMAHODFF
-        //TO 9;118 IZA IN THE MEANING OF HEENA AND 9 122 IZA AS HEENA
-        for (mudhafen in surah!!) {
-            val indexstart = mudhafen!!.startindex
-            val indexend = mudhafen.endindex
-            val frameshartharf = FrameSpan(Color.GREEN, 2f, Constant.RECKT)
-            MudhafSpansSetup(
-                frameshartharf,
-                corpusayahWordArrayList,
-                mudhafen,
-                indexstart,
-                indexend
-            )
-        }
-    }
+    fun setShart(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, surah_id: Int)
 
-    private fun MudhafSpansSetup(
-        frameshartharf: FrameSpan,
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
-        mudhafen: NewMudhafEntity,
-        indexstart: Int,
-        indexend: Int,
-    ) {
-        lateinit var spannableverse: SpannableString
 
-        try {
-            //   spannableverse = corpusayahWordArrayList!!.get(0)!!.get(0).spannableverse
-            //  spannableverse = corpusayahWordArrayList[sifaEntity.ayah - 1].spannableverse!!
-            try {
-                spannableverse = corpusayahWordArrayList[mudhafen.ayah - 1]?.get(0)!!.spannableverse!!
-            }catch (e:NullPointerException) {
-
-                println(e.localizedMessage)
-                println(corpusayahWordArrayList[0]?.get(0)?.corpus!!.ayah)
-                println(corpusayahWordArrayList[mudhafen.ayah]?.get(0)!!.corpus!!.ayah)
-            }
-
-            // spannableString = SpannableString.valueOf(corpusayahWordArrayList.get(mudhafen.getAyah() - 1).getSpannableverse());
-            try {
-                if (indexstart == 0 || indexstart > 0) {
-                    if (dark) {
-                        Constant.mudhafspansDark = BackgroundColorSpan(Constant.MIDNIGHTBLUE)
-                    } else {
-                        Constant.mudhafspansDark = BackgroundColorSpan(Constant.GREENYELLOW)
-                    }
-                    spannableverse.setSpan(
-                        Constant.mudhafspansDark,
-                        indexstart,
-                        indexend,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    //   spannableverse.setSpan(new UnderlineSpan(),indexstart, indexend, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-            }
-            catch (e: IndexOutOfBoundsException) {
-                //System.out.println(e.getMessage());
-            }
-        }
-        catch (e: IndexOutOfBoundsException) {
-            //System.out.println(e.getMessage());
-        }
-    }
-
-    fun setShart(
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
-        surah_id: Int,
-    ) {
+   {
+        val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+            AnnotationUtility.stringForegroundColorSpanMap
         val utils = Utils(QuranGrammarApplication.context!!)
         val surah = utils.getShartSurahNew(surah_id)
         //  final ArrayList<ShartEntity> surah = utils.getShartSurah(surah_id);
@@ -682,7 +591,7 @@ class CorpusUtilityorig(private var context: Context?) {
                 }
                 //   spanIt(SpanType.BGCOLOR,spannableString, shart, indexstart, indexend, shartsindex, sharteindex, jawabstartindex, jawabendindex);
                 ColoredShart(
-                    corpusayahWordArrayList,
+                    newnewadapterlist,
                     shart,
                     indexstart,
                     indexend,
@@ -696,7 +605,7 @@ class CorpusUtilityorig(private var context: Context?) {
     }
 
     private fun ColoredShart(
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+        newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
         shart: NewShartEntity,
         indexstart: Int,
         indexend: Int,
@@ -705,48 +614,49 @@ class CorpusUtilityorig(private var context: Context?) {
         jawabstartindex: Int,
         jawabendindex: Int,
     ) {
-        val spannableverse: SpannableString
+        val spannableverse: AnnotatedString
+        val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+            AnnotationUtility.stringForegroundColorSpanMap
         if (dark) {
-            Constant.harfshartspanDark = ForegroundColorSpan(Constant.GOLD)
-            Constant.shartspanDark = ForegroundColorSpan(Constant.ORANGE400)
-            Constant.jawabshartspanDark = ForegroundColorSpan(Color.CYAN)
+            ComposeConstant.harfshartspanDark = Color(Constant.GOLD)
+            ComposeConstant.shartspanDark = Color(Constant.ORANGE400)
+            ComposeConstant.jawabshartspanDark = Color(CYAN)
         } else {
-            Constant.harfshartspanDark = ForegroundColorSpan(Constant.FORESTGREEN)
-            Constant.shartspanDark = ForegroundColorSpan(Constant.KASHMIRIGREEN)
-            Constant.jawabshartspanDark = ForegroundColorSpan(Constant.WHOTPINK)
+            ComposeConstant.harfshartspanDark = Color(ComposeConstant.FORESTGREEN)
+            ComposeConstant.shartspanDark = Color(Constant.KASHMIRIGREEN)
+            ComposeConstant.jawabshartspanDark = Color(Constant.WHOTPINK)
         }
-        try {
+        val builder = AnnotatedString.Builder()
+        var annotatedString: AnnotatedString
+        val tagonecolor =spanhash["mudhaf"]
+        val tagonestyle = SpanStyle(
+            color = ComposeConstant.harfshartspanDark!!,  )
+        val tagtwostyle = SpanStyle(
+            color = ComposeConstant.shartspanDark,  )
+        val tagthreestyle = SpanStyle(
+            color =  ComposeConstant.jawabshartspanDark,  )
+
+        val annotatedVerse = newnewadapterlist[shart.ayah - 1]!![0].annotatedVerse!!
+        builder.append(annotatedVerse)
+
+        builder.addStyle( tagonestyle,  indexstart, indexend)
+        builder.addStyle( tagonestyle,  shartsindex, sharteindex)
+        builder.addStyle( tagonestyle,  jawabstartindex, jawabendindex)
+
+
+        println(builder.toAnnotatedString())
+
+
+        
             //   spannableverse = corpusayahWordArrayList[shart.ayah - 1].spannableverse!!
-            spannableverse = corpusayahWordArrayList[shart.ayah - 1]!![0].spannableverse!!
+
             //   spannableString = SpannableString.valueOf(corpusayahWordArrayList.get(shart.getAyah() - 1).getSpannableverse());
             try {
                 if (indexstart == 0 || indexstart > 0) {
-                    spannableverse.setSpan(
-                        Constant.harfshartspanDark,
-                        indexstart,
-                        indexend,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    spannableverse.setSpan(
-                        UnderlineSpan(),
-                        indexstart,
-                        indexend,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                    builder.addStyle( tagonestyle,  indexstart, indexend)
                 }
                 if (shartsindex == 0 || shartsindex > 0) {
-                    spannableverse.setSpan(
-                        Constant.shartspanDark,
-                        shartsindex,
-                        sharteindex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    spannableverse.setSpan(
-                        UnderlineSpan(),
-                        shartsindex,
-                        sharteindex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                    builder.addStyle( tagonestyle,  shartsindex, sharteindex)
                 }
                 if (jawabstartindex == 0 || jawabstartindex > 0) {
                     val myDrawable =
@@ -757,30 +667,16 @@ class CorpusUtilityorig(private var context: Context?) {
                         myDrawable.intrinsicWidth,
                         myDrawable.intrinsicHeight
                     )
-                    spannableverse.setSpan(
-                        Constant.jawabshartspanDark,
-                        jawabstartindex,
-                        jawabendindex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    spannableverse.setSpan(
-                        UnderlineSpan(),
-                        jawabstartindex,
-                        jawabendindex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                    builder.addStyle( tagonestyle,  jawabstartindex, jawabendindex)
                 }
             }
             catch (e: IndexOutOfBoundsException) {
                 //System.out.println(e.getMessage());
             }
-        }
-        catch (e: IndexOutOfBoundsException) {
-            //System.out.println(e.getMessage());
-        }
+        newnewadapterlist[shart.ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
     }
 
-    fun setKana(
+ /*   fun setKana(
         corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
         surah_id: Int,
     ) {
@@ -840,11 +736,11 @@ class CorpusUtilityorig(private var context: Context?) {
             }
         }
     }
-
+*/
 
 
     companion object {
-        private var dark = true
+        var dark = false
 
         @JvmStatic
         fun NewSetWordSpanTag(
@@ -1497,7 +1393,7 @@ class CorpusUtilityorig(private var context: Context?) {
                 str = SpannableString(quranverses)
                 if (dark) {
                     str.setSpan(
-                        ForegroundColorSpan(Color.CYAN),
+                        ForegroundColorSpan(CYAN),
                         indexOf,
                         indexOf + wordlen,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -1540,7 +1436,7 @@ class CorpusUtilityorig(private var context: Context?) {
                     end++
                 }
                 spannable.setSpan(
-                    ForegroundColorSpan(Color.RED),
+                    ForegroundColorSpan(Constant.DeepPink),
                     start,
                     end,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -1771,7 +1667,7 @@ class CorpusUtilityorig(private var context: Context?) {
 
 
         }
-        fun setMudhafss(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+         fun setMudhafss(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
             var list= ArrayList<AnnotatedString>()
             val utils = Utils(QuranGrammarApplication.context!!)
             val surah = utils.getMudhafSurahNew(chapid)
@@ -2093,86 +1989,40 @@ class CorpusUtilityorig(private var context: Context?) {
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        fun setShart(it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
-
-            val utils = Utils(QuranGrammarApplication.context!!)
-            val surah = utils.getSifabySurah(chapid)
-            //  SpannableStringBuilder spannableverse = null;
-            // SpannableString spannableString = null;
-//todo 2 188 iza ahudu
-            //todo 9;92 UNCERTAIN
-            //TODO 9:94 JAWABHARMAHDOOF 9 95 JAWABHSARMAHODFF
-            //TO 9;118 IZA IN THE MEANING OF HEENA AND 9 122 IZA AS HEENA
-            for (sifaEntity in surah!!) {
-                val indexstart = sifaEntity!!.startindex
-                val indexend = sifaEntity.endindex
-                //  sifaspans = new BackgroundColorSpan(WBURNTUMBER);
-                SifaSpansSetupbysurah(it, sifaEntity, indexstart, indexend)
-            }
-
-        }
-
-        private fun SifaSpansSetupbysurah(
-            it: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>,
-            sifaEntity: SifaEntity,
-            indexstart: Int,
-            indexend: Int
-        ) {
+        fun setShart(hashlist: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>, surah_id: Int) {
             val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
                 AnnotationUtility.stringForegroundColorSpanMap
-            if (dark) {
-                Constant.sifaspansDark = BackgroundColorSpan(Constant.WBURNTUMBER)
-            } else {
-                Constant.sifaspansDark = BackgroundColorSpan(Constant.CYANLIGHTEST)
+            val utils = Utils(QuranGrammarApplication.context!!)
+            val surah = utils.getShartSurahNew(surah_id)
+            //  final ArrayList<ShartEntity> surah = utils.getShartSurah(surah_id);
+            //TO 9;118 IZA IN THE MEANING OF HEENA AND 9 122 IZA AS HEENA
+            if (surah_id in 2..10 || surah_id in 58..114) {
+                for (shart in surah!!) {
+                    val indexstart = shart!!.indexstart
+                    val indexend = shart.indexend
+                    val shartsindex = shart.shartindexstart
+                    val sharteindex = shart.shartindexend
+                    val jawabstartindex = shart.jawabshartindexstart
+                    val jawabendindex = shart.jawabshartindexend
+                    try {
+                    }
+                    catch (e: ArrayIndexOutOfBoundsException) {
+                        println(shart.surah.toString() + " " + shart.ayah)
+                    }
+                    //   spanIt(SpanType.BGCOLOR,spannableString, shart, indexstart, indexend, shartsindex, sharteindex, jawabstartindex, jawabendindex);
+                    ColoredShart(
+                        hashlist,
+                        shart,
+                        indexstart,
+                        indexend,
+                        shartsindex,
+                        sharteindex,
+                        jawabstartindex,
+                        jawabendindex
+                    )
+                }
             }
-            val builder = AnnotatedString.Builder()
-            var annotatedString: AnnotatedString
-            annotatedString =
-                it[sifaEntity.ayah - 1]!![0].annotatedVerse!!
-            val source = annotatedString
-            // builder to attach metadata(link)
-            builder.append(source)
-            val start =indexstart
-            val end = indexend
-
-
-
-            val tagonecolor =spanhash["mousuf"]
-            val tagonestyle = SpanStyle(
-                color = tagonecolor!!,
-                // textDecoration = TextDecoration.Underline
-            )
-
-
-
-
-
-            builder.addStyle(tagonestyle, start, end)
-            annotatedString=builder.toAnnotatedString()
-
-
-
-
-
-
-
-
         }
-
 
 
     }
@@ -2182,4 +2032,76 @@ class CorpusUtilityorig(private var context: Context?) {
 
 
 
+}
+
+private fun ColoredShart(
+    newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+    shart: NewShartEntity,
+    indexstart: Int,
+    indexend: Int,
+    shartsindex: Int,
+    sharteindex: Int,
+    jawabstartindex: Int,
+    jawabendindex: Int,
+) {
+    val spannableverse: AnnotatedString
+    val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
+        AnnotationUtility.stringForegroundColorSpanMap
+    if (CorpusUtilityorig.dark) {
+        ComposeConstant.harfshartspanDark = Color(Constant.GOLD)
+        ComposeConstant.shartspanDark = Color(Constant.ORANGE400)
+        ComposeConstant.jawabshartspanDark = Color(CYAN)
+    } else {
+        ComposeConstant.harfshartspanDark = Color(ComposeConstant.FORESTGREEN)
+        ComposeConstant.shartspanDark = Color(Constant.KASHMIRIGREEN)
+        ComposeConstant.jawabshartspanDark = Color(Constant.WHOTPINK)
+    }
+    val builder = AnnotatedString.Builder()
+    var annotatedString: AnnotatedString
+    val tagonecolor =spanhash["mudhaf"]
+    val tagonestyle = SpanStyle(
+        color = ComposeConstant.harfshartspanDark!!,  )
+    val tagtwostyle = SpanStyle(
+        color = ComposeConstant.shartspanDark,  )
+    val tagthreestyle = SpanStyle(
+        color =  ComposeConstant.jawabshartspanDark,  )
+
+    val annotatedVerse = newnewadapterlist[shart.ayah - 1]!![0].annotatedVerse!!
+    builder.append(annotatedVerse)
+
+    builder.addStyle( tagonestyle,  indexstart, indexend)
+    builder.addStyle( tagonestyle,  shartsindex, sharteindex)
+    builder.addStyle( tagonestyle,  jawabstartindex, jawabendindex)
+
+
+    println(builder.toAnnotatedString())
+
+
+
+    //   spannableverse = corpusayahWordArrayList[shart.ayah - 1].spannableverse!!
+
+    //   spannableString = SpannableString.valueOf(corpusayahWordArrayList.get(shart.getAyah() - 1).getSpannableverse());
+    try {
+        if (indexstart == 0 || indexstart > 0) {
+            builder.addStyle( tagonestyle,  indexstart, indexend)
+        }
+        if (shartsindex == 0 || shartsindex > 0) {
+            builder.addStyle( tagonestyle,  shartsindex, sharteindex)
+        }
+        if (jawabstartindex == 0 || jawabstartindex > 0) {
+            val myDrawable =
+                AppCompatResources.getDrawable(context!!, R.drawable.oval_circle)!!
+            myDrawable.setBounds(
+                0,
+                0,
+                myDrawable.intrinsicWidth,
+                myDrawable.intrinsicHeight
+            )
+            builder.addStyle( tagonestyle,  jawabstartindex, jawabendindex)
+        }
+    }
+    catch (e: IndexOutOfBoundsException) {
+        //System.out.println(e.getMessage());
+    }
+    newnewadapterlist[shart.ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
 }

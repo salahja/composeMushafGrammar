@@ -128,13 +128,23 @@ fun BottomSheetWordDetails(
                     )
 
 
-                    Row (modifier=Modifier.padding(10.dp)
-                            .wrapContentHeight(),
+
+                    Row(
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.Top
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 2.dp,
+                                horizontal = 4.dp
+                            )
+
+                            .clip(shape = CircleShape)
+
+                            .padding(4.dp)
 
 
-                    ){
+                    ) {
                         if (worddetails["word"] != null) {
                            val annotatedString=      worddetails["word"]
                             if (annotatedString != null) {
