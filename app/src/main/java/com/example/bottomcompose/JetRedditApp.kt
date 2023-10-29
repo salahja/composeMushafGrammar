@@ -47,7 +47,8 @@ import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.ProfileScreen
 import com.example.compose.SurahListScreen
 import com.example.compose.TextChip
-import com.example.compose.theme.QuranVerseScreen
+import com.example.compose.theme.NewQuranVerseScreen
+
 
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
@@ -210,16 +211,8 @@ private fun MainScreenContainer(
                 viewModel.setspans(newnewadapterlist, id)
 
 
-                QuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)
-                QuranVerseScreen(
-                    navController,
-                    id!!.toInt(),
-                    androidx.lifecycle.viewmodel.compose.viewModel(),
-                    quranbySurah,
-                    surahs,
-                    corpusSurahWord,
-                    newnewadapterlist
-                )
+            //    NewQuranVerseScreen(navController, id, viewModel,quranbySurah,surahs,corpusSurahWord,newnewadapterlist)
+
             }
 
             composable( "books/{chapterid}/{verseid}/{wordno}",

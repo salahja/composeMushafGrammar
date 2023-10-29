@@ -18,7 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 
 import com.example.mushafconsolidated.R
@@ -29,11 +30,12 @@ import com.google.accompanist.adaptive.TwoPane
 
 @Composable
 fun HomeScreen(
-    navigationType: NavigationType,
     userId: String?,
     isOnlyDetailScreen: Boolean,
-    goToUserDetail: (String) -> Unit,
+    navigationType: NavigationType,
+    goToUserDetail: (String?) -> Unit,
     onDetailBackPressed: () -> Unit,
+    navController: NavHostController,
 ) {
 
     //custom back handler
@@ -47,7 +49,7 @@ fun HomeScreen(
         TwoPane(
             first = { HomeSingleScreen(goToUserDetail = goToUserDetail) },
             second = {
-                UserDetailScreen(userId = userId, isOnlyDetailScreen = isOnlyDetailScreen) {
+                UserDetailScreen(userId = userId, isOnlyDetailScreen = isOnlyDetailScreen,navController) {
 
                 }
             },
@@ -58,7 +60,7 @@ fun HomeScreen(
     } else {
 
         if(userId != null && isOnlyDetailScreen && navigationType == NavigationType.NAV_RAIL) {
-            UserDetailScreen(userId = userId, isOnlyDetailScreen = isOnlyDetailScreen) {
+            UserDetailScreen(userId = userId, isOnlyDetailScreen = isOnlyDetailScreen,navController) {
                 onDetailBackPressed()
             }
         } else {

@@ -2,7 +2,6 @@ package com.example.compose
 
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.text.SpannableString
@@ -52,7 +51,7 @@ class CardsViewModel(
     private val _cards = MutableStateFlow(listOf<ExpandableCardModelSpannableLists>())
 
 
-    val cards: StateFlow<List<ExpandableCardModelSpannableLists>> get() = _cards
+    val roots: StateFlow<List<ExpandableCardModelSpannableLists>> get() = _cards
     private val _expandedCardIdsList = MutableStateFlow(listOf<Int>())
     var counter = 0;
     val expandedCardIdsList: StateFlow<List<Int>> get() = _expandedCardIdsList

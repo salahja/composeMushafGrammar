@@ -3,24 +3,33 @@ package com.adaptive
 import CardsScreen
 import ComposeTutorial12DifferentScreenSizesSupportTheme
 import NavigationActions
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -33,7 +42,7 @@ import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -49,8 +58,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -65,18 +77,27 @@ import androidx.navigation.navigation
 import com.adaptive.theme.BottomSheetWordDetails
 import com.example.bottomcompose.BottomSheetDemo
 import com.example.compose.CardsViewModel
+import com.example.compose.QuranMorphologyDetails
+import com.example.compose.RootModel
 import com.example.compose.SurahListScreen
 import com.example.compose.VerseModel
 
 import com.example.compose.activity.CardViewModelFactory
+import com.example.compose.activity.RootViewModelFactory
 import com.example.compose.activity.newViewModelFactory
 import com.example.compose.activity.surahViewModelFactory
 import com.example.compose.theme.NewQuranVerseScreen
+import com.example.justJava.MyTextViewZoom
+import com.example.mushafconsolidated.Entities.RootVerbDetails
 
 import com.example.mushafconsolidated.R
+import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.tabcompose.MatTab
+import com.example.utility.QuranGrammarApplication
 import com.skyyo.expandablelist.theme.AppTheme
+import com.skyyo.expandablelist.theme.AppThemeSettings
 
 class AdaptiveMainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -339,7 +360,8 @@ fun MainContent(
                         //val userId = it.arguments?.getInt("userId")
                         UserDetailScreen(
                             userId = selectedUserId,
-                            isOnlyDetailScreen = isOnlyDetailScreen
+                            isOnlyDetailScreen = isOnlyDetailScreen,
+                            navController
                         ) {
                             navController.popBackStack()
                         }
@@ -352,7 +374,9 @@ fun MainContent(
                         isOnlyDetailScreen = isOnlyDetailScreen,
                         navigationType = navigationType,
                         goToUserDetail = goToUserDetail,
-                        onDetailBackPressed = closeUserDetail
+                        onDetailBackPressed = closeUserDetail,
+                        navController
+
                     )
                 }
 
@@ -417,6 +441,52 @@ fun MainContent(
                     }
 
                 }
+
+
+
+                composable(
+
+                    "roots/{root}",
+                    arguments = listOf(
+
+                        navArgument("root") {
+                            type = NavType.StringType
+                            defaultValue = "نصر"
+                        },
+
+                        )
+
+
+                ) { backStackEntry ->
+
+                    var root = backStackEntry.arguments?.getString("root")
+
+
+
+                    val indexOf = root!!.indexOf("ء")
+                    if(indexOf!=-1){
+                        root=root.replace("ء","ا")
+                    }
+                     val rootmodel: RootModel = viewModel(factory = RootViewModelFactory(root))
+
+
+
+
+                        RootScreens(rootmodel,     isOnlyDetailScreen = isOnlyDetailScreen,
+                            navigationType = navigationType,
+                            goToUserDetail = goToUserDetail,
+                            onDetailBackPressed = closeUserDetail,
+                            navController)
+
+
+                }
+
+
+
+
+
+
+
 
                 composable(
                     "conjugator/{conjugation}/{root}/{mood}",
@@ -516,6 +586,209 @@ fun MainContent(
             }
         }
     }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun RootScreens(
+    rootmodel: RootModel,
+    isOnlyDetailScreen: Boolean,
+    navigationType: NavigationType,
+    goToUserDetail: (String?) -> Unit,
+    onDetailBackPressed: () -> Unit,
+    navController: NavHostController
+) {
+    val  util = Utils(QuranGrammarApplication.context!!)
+    val roots by rootmodel.verbroot.collectAsStateWithLifecycle()
+    val collectAsStateWithLifecycle = rootmodel.verbroot.collectAsStateWithLifecycle()
+    val collectAsState = rootmodel.verbroot.collectAsState()
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            if (isOnlyDetailScreen)
+                TopAppBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = { Text(text = "User Detail", textAlign = TextAlign.Center) },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                onDetailBackPressed()
+                            },
+                        ) {
+                            Icon(
+                                Icons.Default.ArrowBack,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                )
+        },
+    ) {
+        LazyColumn(
+
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 100.dp),
+
+
+
+            ) {
+            items(roots!!.size) { index ->
+                //          indexval=index
+                RootGrid(roots[index],navController)
+            }
+        }
+    }
+
+
+
+}
+
+@Composable
+fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
+    val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
+
+    Card(
+
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ),
+
+
+        modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(
+                horizontal = 5.dp,
+                vertical = 5.dp
+            )
+
+    )
+    {
+/*
+      holder.arabicsurahname.text = charSequence
+        holder.arabicsurahname.text = lughat.namearabic
+        var sa = StringBuilder()
+        sa.append(lughat.surah).append(":").append(lughat.ayah).append(":").append(lughat.wordno)
+        holder.verbsaw.text = sa
+        holder.arabicword.text = spannableString
+        holder.wordmeaning.text = lughat.en
+        holder.tensevoicegendernumbermood.text =
+            QuranMorphologyDetails.getGenderNumberdetails(lughat.gendernumber)
+        sa = StringBuilder()
+        sa.append(lughat.tense).append(":").append(lughat.voice).append(":")
+            .append(lughat.mood_kananumbers)
+        holder.tensevoice.text = sa
+ */
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            var sa = StringBuilder()
+            sa.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":").append(rootdetails.wordno)
+
+         val wazan=   QuranMorphologyDetails.getFormName(rootdetails.form)
+            // indexval = surahModelList!!.chapterid
+            ClickableText(
+                text = AnnotatedString(rootdetails.abjadname!!),
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(sa.toString()),
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(rootdetails.arabic.toString()),
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(wazan.toString()),
+
+                onClick = {
+
+
+                })
+
+
+
+        }
+
+
+
+
+
+
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            var sa = StringBuilder()
+            sa.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":").append(rootdetails.wordno)
+
+            val gender =
+                QuranMorphologyDetails.getGenderNumberdetails(rootdetails.gendernumber)
+            val tense = StringBuilder()
+            tense.append(rootdetails.tense).append(":").append(rootdetails.voice).append(":")
+                .append(rootdetails.mood_kananumbers)
+
+            // indexval = surahModelList!!.chapterid
+            ClickableText(
+                text = AnnotatedString(gender.toString()),
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(tense.toString()),
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(rootdetails.en.toString()),
+
+                onClick = {
+
+
+                })
+
+
+
+
+
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun RootScreen(rootmodel: RootModel,
+               isOnlyDetailScreen: Boolean,
+               navController: NavHostController,
+               onBackPressed: () -> Unit,
+
+               ) {
+
 
 }
 
@@ -629,6 +902,7 @@ val items = listOf(
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object Home : Screen("home", R.string.home)
     object Profile : Screen("profile", R.string.Profile)
+    object Roots : Screen("roots", R.string.Profile)
 }
 
 @Preview(showBackground = true)

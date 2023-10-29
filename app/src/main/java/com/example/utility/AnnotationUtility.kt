@@ -2,16 +2,12 @@ package com.example.utility
 
 import android.content.Context
 import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import com.example.ComposeConstant
 import com.example.mushafconsolidated.Utils
-import com.example.utility.CorpusUtilityorig.Companion.stringForegroundColorSpanMap
 import com.example.utility.QuranGrammarApplication.Companion.context
 
 
@@ -578,9 +574,10 @@ class AnnotationUtility(private var context: Context?) {
             arathree: String,
             arafour: String,
             arafive: String,
-            wordno: Int,
-        ): LinkedHashMap<AnnotatedString, Int> {
-            var list = LinkedHashMap<AnnotatedString, Int>()
+            wordno: String,
+
+            ): LinkedHashMap<AnnotatedString, String> {
+            var list = LinkedHashMap<AnnotatedString, String>()
             var araone = araone
             var aratwo = aratwo
             var arathree = arathree
@@ -672,6 +669,7 @@ class AnnotationUtility(private var context: Context?) {
 
                     builder.addStyle(tagonestyle, start, end)
                     builder.addStyle(tagtwostyle, twostart, twoend)
+                    
                     list[builder.toAnnotatedString()] = wordno
 
                 } else if (tagcounter == 3) {

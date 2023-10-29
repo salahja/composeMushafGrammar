@@ -101,6 +101,9 @@ class Utils {
         return database.QuranDao().getQuranCorpusWbwbysurah(id)
     }
 
+    fun getQuranCorpusWbwbyroot(id: String): List<QuranCorpusWbw> {
+        return database.QuranDao().getQuranCorpusWbwbyRoot(id)
+    }
 
 
     fun insertBookMark(entity: BookMarks?) {
@@ -345,7 +348,7 @@ class Utils {
         return database.RawDao().getrootdetails(query)
     }
 
-    fun getRootVerbDetails(tid: String): List<RootVerbDetails?>? {
+    fun getRootVerbDetails(tid: String): List<RootVerbDetails>? {
         val sqlverb: String =
             ("SELECT CorpusExpand.araone ||CorpusExpand. aratwo ||CorpusExpand. arathree || CorpusExpand.arafour ||CorpusExpand.arafive as arabic,\n" +
                     "CorpusExpand.lemaraone ||CorpusExpand. lemaratwo ||CorpusExpand. lemarathree || CorpusExpand.lemarafour ||CorpusExpand. lemarafive as lemma,\n" +

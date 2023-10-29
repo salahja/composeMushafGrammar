@@ -88,6 +88,7 @@ import com.example.compose.CardsViewModel
 import com.example.compose.ConjugationScreen
 import com.example.compose.NavigationItem
 import com.example.compose.NewQuranMorphologyDetails
+import com.example.compose.RootModel
 import com.example.compose.SurahListScreen
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
@@ -628,6 +629,20 @@ class CardViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         CardsViewModel(dbname, nounroot, isharf) as T
 }
+
+
+class RootViewModelFactory(
+    private val dbname: String,
+
+
+) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        RootModel(dbname) as T
+}
+
+
+
 
 class surahViewModelFactory() :
     ViewModelProvider.NewInstanceFactory() {

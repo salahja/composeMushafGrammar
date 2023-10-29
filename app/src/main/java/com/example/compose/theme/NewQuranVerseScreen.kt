@@ -3,6 +3,7 @@ package com.example.compose.theme
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,14 +18,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -37,23 +42,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
 import com.example.compose.VerseModel
-import com.example.compose.activity.newViewModelFactory
 
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
@@ -64,7 +69,6 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
@@ -74,9 +78,18 @@ import kotlinx.coroutines.Dispatchers
 
 var quranbySurah: List<QuranEntity>? = null
 var surahs: List<ChaptersAnaEntity>?=null
-
+var scopes: CoroutineScope? = null
+var wordarray: ArrayList<NewQuranCorpusWbw>? = null
+var listState: LazyListState? = null
+var annotatedStringStringPair: Pair<AnnotatedString, Int>? = null
+var aid: Int = 0
+var cid: Int = 0
+var wid: Int = 0
+val showWordDetails = mutableStateOf(false)
 @SuppressLint("CoroutineCreationDuringComposition")
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun NewQuranVerseScreen(
     navController: NavHostController,
@@ -109,7 +122,7 @@ fun NewQuranVerseScreen(
     // quranModel.setspans(newnewadapterlist, chapid)
 
 
- //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
+    //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
 
     loading = verseModel!!.loading.value
     LoadingData(isDisplayed = loading)
@@ -125,11 +138,11 @@ fun NewQuranVerseScreen(
 
 
     //val cards by verseModel.cards.collectAsStateWithLifecycle()
-    if (cardss.isNotEmpty()){
-      surahs = cardss[0].chapterlist
-      quranbySurah = cardss[0].quranbySurah
-    newnewadapterlist = cardss[0].newnewadapterlist
-}
+    if (cardss.isNotEmpty()) {
+        surahs = cardss[0].chapterlist
+        quranbySurah = cardss[0].quranbySurah
+        newnewadapterlist = cardss[0].newnewadapterlist
+    }
 
 
 
@@ -166,7 +179,7 @@ fun NewQuranVerseScreen(
             Card(
 
 
-          /*      colors = CardDefaults.cardColors(
+                /*      colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                 ),*/
                 elevation = CardDefaults.cardElevation(
@@ -214,7 +227,7 @@ fun NewQuranVerseScreen(
                         ) {
                             Text(
 
-                                text = surahs!![chapid-1]!!.abjadname,
+                                text = surahs!![chapid - 1]!!.abjadname,
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Red,
@@ -222,7 +235,7 @@ fun NewQuranVerseScreen(
                                 textAlign = TextAlign.Center,
                                 fontSize = 20.sp
                             )
-                            if (surahs!![chapid-1]!!.ismakki == 1) {
+                            if (surahs!![chapid - 1]!!.ismakki == 1) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_makkah_48),
 
@@ -245,7 +258,7 @@ fun NewQuranVerseScreen(
                             }
 
                             Text(
-                                text = "No.Of Aya's" + surahs!![chapid-1]!!.versescount.toString(),
+                                text = "No.Of Aya's" + surahs!![chapid - 1]!!.versescount.toString(),
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold,
 
@@ -254,7 +267,7 @@ fun NewQuranVerseScreen(
                                 fontSize = 15.sp
                             )
                             Text(
-                                text = "No.Of Ruku's" + surahs!![chapid-1]!!.rukucount.toString(),
+                                text = "No.Of Ruku's" + surahs!![chapid - 1]!!.rukucount.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
@@ -277,7 +290,7 @@ fun NewQuranVerseScreen(
                         var counter = 0
                         //  for (counter in wbw.size - 1 downTo 0) {
                         //   wbw.forEach { indexval
-                        var list = LinkedHashMap<AnnotatedString, Int>()
+                        var list = LinkedHashMap<AnnotatedString, String>()
                         val lhm = LinkedHashMap<AnnotatedString, String>()
                         for (wbw: NewQuranCorpusWbw in wordarray!!) {
 
@@ -290,11 +303,11 @@ fun NewQuranVerseScreen(
                                 wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
                                 wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
                                 wbw.corpus!!.arafive!!,
-                                wbw.corpus!!.wordno
+                                wbw.wbw!!.en
                             )
 
                             val toList = list.toList()
-                            annotatedStringStringPair = toList[0]
+                            var annotatedStringStringPair = toList[0]
 
                             //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
                             val textChipRememberOneState = remember {
@@ -311,6 +324,7 @@ fun NewQuranVerseScreen(
 
                                 isSelected = textChipRememberOneState.value,
                                 text = annotatedStringStringPair!!.first,
+                               
 
                                 selectedColor = Color.DarkGray,
 
@@ -319,14 +333,14 @@ fun NewQuranVerseScreen(
                                     cid = wbw.corpus!!.surah
                                     aid = wbw.corpus!!.ayah
                                     wid = wbw.corpus!!.wordno
-                                    showWordDetails.value = false
+
                                     textChipRememberOneState.value = it
                                     Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
                                     cid = wbw.corpus!!.surah
                                     aid = wbw.corpus!!.ayah
                                     wid = wbw.corpus!!.wordno
-                                    showWordDetails.value = false
 
+                                    showWordDetails.value = false
 
                                     navController.navigate(
                                         "wordalert/$cid/$aid/$wid"
@@ -335,6 +349,7 @@ fun NewQuranVerseScreen(
                                 }
 
                             )
+                            Text(text = wbw.wbw!!.en)
 
                             /*            ClickableText(
                                             text = annotatedStringStringPair!!.first,
@@ -433,73 +448,85 @@ fun NewQuranVerseScreen(
             }
             if (showWordDetails.value) {
 
-                //  TooltipOnLongClickExample()
-                val openDialogCustom: MutableState<Boolean> = remember {
-                    mutableStateOf(true)
+                //    extractedtooltips(utils)
+
+                var openBottomSheet by remember { mutableStateOf(false) }
+                //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
+
                 }
 
+            }
+        }
+    }
 
-                val TooltipPopupProperties = PopupProperties(focusable = true)
-                val TooltipOffset = DpOffset(0.dp, 0.dp)
-                val corpusNounWord: ArrayList<NounCorpus?> =
-                    utils.getQuranNouns(
-                        cid,
-                        aid,
-                        wid
-                    ) as ArrayList<NounCorpus?>
-                val verbCorpusRootWord: List<VerbCorpus?> =
-                    utils.getQuranRoot(
-                        cid,
-                        aid,
-                        wid
+    @Composable
+    fun extractedtooltips(utils: Utils) {
+        //  TooltipOnLongClickExample()
+        val openDialogCustom: MutableState<Boolean> = remember {
+            mutableStateOf(true)
+        }
 
 
-                    ) as List<VerbCorpus>
+        val TooltipPopupProperties = PopupProperties(focusable = true)
+        val TooltipOffset = DpOffset(0.dp, 0.dp)
+        val corpusNounWord: ArrayList<NounCorpus?> =
+            utils.getQuranNouns(
+                cid,
+                aid,
+                wid
+            ) as ArrayList<NounCorpus?>
+        val verbCorpusRootWord: List<VerbCorpus?> =
+            utils.getQuranRoot(
+                cid,
+                aid,
+                wid
 
-                val qm =
-                    refWordMorphologyDetails(
-                        wordarray!!.get(0).corpus!!,
-                        corpusNounWord,
-                        verbCorpusRootWord
-                    )
-                val workBreakDown = qm.workBreakDown
-                Tooltips(
-                    expanded = openDialogCustom,
-                    modifier = Modifier,
-                    2000L,
-                    TooltipOffset,
-                    TooltipPopupProperties
+
+            ) as List<VerbCorpus>
+
+        val qm =
+            refWordMorphologyDetails(
+                wordarray!!.get(0).corpus!!,
+                corpusNounWord,
+                verbCorpusRootWord
+            )
+        val workBreakDown = qm.workBreakDown
+        Tooltips(
+            expanded = openDialogCustom,
+            modifier = Modifier,
+            2000L,
+            TooltipOffset,
+            TooltipPopupProperties
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth(),
+
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth(),
-
-                        ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(1.dp, Color.Red)
-                        ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Color.Red)
+                ) {
 
 
-                            Text(
-                                text = workBreakDown.toString(),
-                                fontWeight = FontWeight.Bold,
+                    Text(
+                        text = workBreakDown.toString(),
+                        fontWeight = FontWeight.Bold,
 
 
-                                textAlign = TextAlign.Center,
-                                fontSize = 25.sp
-                            )
-                        }
-
-                        //   MyScreen(visible = expanded)
-
-                        //     ExpandableContent( visible = expanded)
-                    }
+                        textAlign = TextAlign.Center,
+                        fontSize = 25.sp
+                    )
                 }
 
-                /*
+
+            }
+        }
+
+        /*
 
                                     Tooltips(openDialogCustom, modifier = Modifier,
                                         200L, TooltipOffset, TooltipPopupProperties,comp
@@ -510,12 +537,16 @@ fun NewQuranVerseScreen(
                                     )
                 */
 
-                //    openWordDIalog(cid, aid, wid)
-                //    showWordDetails.value = true
-                // showWordDetails.value = false
-            }
-
-        }
+        //    openWordDIalog(cid, aid, wid)
+        //    showWordDetails.value = true
+        // showWordDetails.value = false
     }
 }
 
+
+@Composable
+fun RightToLeftLayout(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        content()
+    }
+}

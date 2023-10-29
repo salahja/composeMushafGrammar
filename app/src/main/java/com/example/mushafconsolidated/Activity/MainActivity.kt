@@ -58,7 +58,9 @@ class MainActivity : BaseActivity() {
             sp.edit().putInt("spl", SPL).apply()
         }
         newquran = File("$FILEPATH/$DATABASENAME")
-        if (!hasPermission) {
+        validateFilesAndDownload()
+        //for api31
+      /*  if (!hasPermission) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -70,7 +72,10 @@ class MainActivity : BaseActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        }
+        }*/
+
+
+
         //  PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 

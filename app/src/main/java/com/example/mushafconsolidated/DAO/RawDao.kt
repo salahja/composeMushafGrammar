@@ -39,7 +39,7 @@ interface RawDao {
     fun getrootdetails(query: SupportSQLiteQuery): List<RootWordDetails?>?
 
     @RawQuery
-    fun getverbdetails(query: SupportSQLiteQuery): List<RootVerbDetails?>?
+    fun getverbdetails(query: SupportSQLiteQuery): List<RootVerbDetails>?
 
     @RawQuery
     fun getnounoccurancebysurahayah(query: SupportSQLiteQuery): List<CorpusNounWbwOccurance?>?

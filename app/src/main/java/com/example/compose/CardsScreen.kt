@@ -74,10 +74,10 @@ fun CardsScreen(viewModel: CardsViewModel) {
     val arabic_font_selection =
         sharedPreferences.getString("Arabic_Font_Selection", "quranicfontregular.ttf")
     // val words by wordoccuranceModel.words.collectAsStateWithLifecycle()
-    val cards by viewModel.cards.collectAsStateWithLifecycle()
+    val cards by viewModel.roots.collectAsStateWithLifecycle()
     val expandedCardIds by viewModel.expandedCardIdsList.collectAsStateWithLifecycle()
-    val collectAsStateWithLifecycle = viewModel.cards.collectAsStateWithLifecycle()
-    val collectAsState = viewModel.cards.collectAsState()
+    val collectAsStateWithLifecycle = viewModel.roots.collectAsStateWithLifecycle()
+    val collectAsState = viewModel.roots.collectAsState()
     val context = LocalContext.current
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     viewModel.open.value = true
