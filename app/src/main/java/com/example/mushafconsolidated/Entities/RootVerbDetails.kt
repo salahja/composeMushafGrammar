@@ -34,6 +34,8 @@ class RootVerbDetails {
     var abjadname: String? = null
     var namearabic: String? = null
     var nameenglish: String? = null
+    var qurantext: String? = null
+    var translation: String? = null
 
     constructor()
     constructor(
@@ -64,7 +66,9 @@ class RootVerbDetails {
         en: String?,
         abjadname: String?,
         namearabic: String?,
-        nameenglish: String?
+        nameenglish: String?,
+         qurantext: String,
+         translation: String,
     ) {
         this.arabic = arabic
         this.lemma = lemma
@@ -94,5 +98,7 @@ class RootVerbDetails {
         this.abjadname = abjadname
         this.namearabic = namearabic
         this.nameenglish = nameenglish
+        this.qurantext=qurantext
+        this.translation=translation
     }
 }

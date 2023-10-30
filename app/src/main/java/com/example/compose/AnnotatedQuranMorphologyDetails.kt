@@ -181,7 +181,7 @@ open class AnnotatedQuranMorphologyDetails(
             return vbdetail
         }
 
-    private fun convertForms(mform: String?) {
+      fun convertForms(mform: String?) {
         when (mform) {
             "IV" -> form = 1
             "II" -> form = 2

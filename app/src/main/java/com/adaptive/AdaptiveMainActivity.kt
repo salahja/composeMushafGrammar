@@ -1,11 +1,10 @@
-
 package com.adaptive
+
 import CardsScreen
 import ComposeTutorial12DifferentScreenSizesSupportTheme
 import NavigationActions
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
@@ -13,13 +12,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -56,12 +55,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
@@ -75,8 +81,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.adaptive.theme.BottomSheetWordDetails
+import com.codelab.basics.ui.theme.indopak
 import com.example.bottomcompose.BottomSheetDemo
 import com.example.compose.CardsViewModel
+import com.example.compose.NewQuranMorphologyDetails
+import com.example.compose.NounMorphologyDetails
 import com.example.compose.QuranMorphologyDetails
 import com.example.compose.RootModel
 import com.example.compose.SurahListScreen
@@ -87,7 +96,8 @@ import com.example.compose.activity.RootViewModelFactory
 import com.example.compose.activity.newViewModelFactory
 import com.example.compose.activity.surahViewModelFactory
 import com.example.compose.theme.NewQuranVerseScreen
-import com.example.justJava.MyTextViewZoom
+import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
+import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.RootVerbDetails
 
 import com.example.mushafconsolidated.R
@@ -95,6 +105,7 @@ import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.tabcompose.MatTab
+import com.example.utility.AnnotationUtility.Companion.AnnotatedSetWordSpanTag
 import com.example.utility.QuranGrammarApplication
 import com.skyyo.expandablelist.theme.AppTheme
 import com.skyyo.expandablelist.theme.AppThemeSettings
@@ -234,7 +245,8 @@ fun TabsNavGraph(
     }
 
     // for desktop device
-    val firstItemId = 0 //set first item id from list when u will be getting list dynamically from viewmodel
+    val firstItemId =
+        0 //set first item id from list when u will be getting list dynamically from viewmodel
 
     val goToUserDetail: (String?) -> Unit = { userId ->
         if (navigationType == NavigationType.BOTTOM_NAV) {
@@ -349,8 +361,9 @@ fun MainContent(
                 navigation(startDestination = "home_main", route = Screen.Home.route) {
                     composable("home_main") {
 
-                        val myViewModel: QuranVIewModel = viewModel(factory = surahViewModelFactory())
-                        SurahListScreen(navController,myViewModel)
+                        val myViewModel: QuranVIewModel =
+                            viewModel(factory = surahViewModelFactory())
+                        SurahListScreen(navController, myViewModel)
                     }
 
                     composable(
@@ -391,8 +404,8 @@ fun MainContent(
                     val id = backStackEntry.arguments!!.getInt("id")
 
 
-                        val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(id))
-                        NewQuranVerseScreen(navController, id, myViewModel)
+                    val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id))
+                    NewQuranVerseScreen(navController, id, myViewModel)
 
 
                 }
@@ -428,14 +441,16 @@ fun MainContent(
                         root
                     }
                     if (root == "ACC" || root == "LOC" || root == "T") {
-                        val myViewModel: CardsViewModel = viewModel(factory = CardViewModelFactory(verbroot,nounroot,true))
+                        val myViewModel: CardsViewModel =
+                            viewModel(factory = CardViewModelFactory(verbroot, nounroot, true))
 
-                        nounroot=root
+                        nounroot = root
 
                         CardsScreen(myViewModel)
-                    }else{
-                        val myViewModel: CardsViewModel = viewModel(factory = CardViewModelFactory(verbroot,nounroot,false))
-                        nounroot=root
+                    } else {
+                        val myViewModel: CardsViewModel =
+                            viewModel(factory = CardViewModelFactory(verbroot, nounroot, false))
+                        nounroot = root
                         CardsScreen(myViewModel)
 
                     }
@@ -462,21 +477,22 @@ fun MainContent(
                     var root = backStackEntry.arguments?.getString("root")
 
 
-
                     val indexOf = root!!.indexOf("ء")
-                    if(indexOf!=-1){
-                        root=root.replace("ء","ا")
+                    if (indexOf != -1) {
+                        root = root.replace("ء", "ا")
                     }
-                     val rootmodel: RootModel = viewModel(factory = RootViewModelFactory(root))
+                    val rootmodel: RootModel = viewModel(factory = RootViewModelFactory(root))
 
 
 
 
-                        RootScreens(rootmodel,     isOnlyDetailScreen = isOnlyDetailScreen,
-                            navigationType = navigationType,
-                            goToUserDetail = goToUserDetail,
-                            onDetailBackPressed = closeUserDetail,
-                            navController)
+                    RootScreens(
+                        rootmodel, isOnlyDetailScreen = isOnlyDetailScreen,
+                        navigationType = navigationType,
+                        goToUserDetail = goToUserDetail,
+                        onDetailBackPressed = closeUserDetail,
+                        navController
+                    )
 
 
                 }
@@ -578,11 +594,6 @@ fun MainContent(
                 }
 
 
-
-
-
-
-
             }
         }
     }
@@ -600,10 +611,22 @@ fun RootScreens(
     onDetailBackPressed: () -> Unit,
     navController: NavHostController
 ) {
-    val  util = Utils(QuranGrammarApplication.context!!)
+    val util = Utils(QuranGrammarApplication.context!!)
     val roots by rootmodel.verbroot.collectAsStateWithLifecycle()
     val collectAsStateWithLifecycle = rootmodel.verbroot.collectAsStateWithLifecycle()
     val collectAsState = rootmodel.verbroot.collectAsState()
+    val verbroots = roots[0].verbrootlist
+    val nounroots = roots[0].corpusSurahWordlist
+    val chapters = roots[0].chapterlist
+    val nouns = roots[0].nounlist
+ /*   val nm=NounMorphologyDetails(nounroots ,nouns)
+    var wordbdetail = HashMap<String, AnnotatedString>()
+    wordbdetail=nm.wordDetails
+
+    if(verbroots.isEmpty()){
+        wordbdetail=nm.wordDetails
+
+    }*/
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -627,6 +650,7 @@ fun RootScreens(
                 )
         },
     ) {
+        //  if (verbroots.isNotEmpty())
         LazyColumn(
 
             modifier = Modifier
@@ -634,22 +658,52 @@ fun RootScreens(
                 .padding(top = 100.dp),
 
 
-
             ) {
-            items(roots!!.size) { index ->
-                //          indexval=index
-                RootGrid(roots[index],navController)
+            if (verbroots.isNotEmpty()) {
+                items(verbroots.size) { index ->
+                    //          indexval=index
+                    RootGrid(verbroots[index], navController)
+                }
+            }else{
+                items(nounroots.size) { index ->
+                    //          indexval=index
+                    NounGrid(nounroots[index], navController,chapters,nouns[index])
+                }
+
             }
         }
     }
-
-
-
 }
 
 @Composable
-fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
-    val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
+fun NounGrid(
+    quranCorpusWbw: QuranCorpusWbw,
+    navController: NavHostController,
+    chapters: List<ChaptersAnaEntity?>,
+    nounCorpus: NounCorpus?,
+
+    ) {
+    val sb = StringBuilder()
+    val spannableString = AnnotatedSetWordSpanTag(
+        quranCorpusWbw.corpus.tagone!!,
+        quranCorpusWbw.corpus.tagtwo!!,
+        quranCorpusWbw.corpus.tagthree!!,
+        quranCorpusWbw.corpus.tagfour!!,
+        quranCorpusWbw.corpus.tagfive!!,
+        quranCorpusWbw.corpus.araone!!,
+        quranCorpusWbw.corpus.aratwo!!,
+        quranCorpusWbw.corpus.arathree!!,
+        quranCorpusWbw.corpus.arafour!!,
+        quranCorpusWbw.corpus.arafive!!
+    )
+    val nm=NounMorphologyDetails(quranCorpusWbw ,nounCorpus)
+    var wordbdetail = HashMap<String, AnnotatedString>()
+    wordbdetail=nm.wordDetails
+val arabicword: AnnotatedString= wordbdetail["arabicword"]!!
+    //  sb.append(lughat.getSurah()).append("   ").append(lughat.getNamearabic()).append(lughat.getAyah()).append(" ").append(lughat.getArabic());
+    sb.append(quranCorpusWbw.corpus.ayah).append("  ")
+        .append(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic).append("   ")
+        .append(quranCorpusWbw.corpus.surah).append(" ").append(quranCorpusWbw.wbw.en)
 
     Card(
 
@@ -671,30 +725,154 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 
     )
     {
-/*
-      holder.arabicsurahname.text = charSequence
-        holder.arabicsurahname.text = lughat.namearabic
-        var sa = StringBuilder()
-        sa.append(lughat.surah).append(":").append(lughat.ayah).append(":").append(lughat.wordno)
-        holder.verbsaw.text = sa
-        holder.arabicword.text = spannableString
-        holder.wordmeaning.text = lughat.en
-        holder.tensevoicegendernumbermood.text =
-            QuranMorphologyDetails.getGenderNumberdetails(lughat.gendernumber)
-        sa = StringBuilder()
-        sa.append(lughat.tense).append(":").append(lughat.voice).append(":")
-            .append(lughat.mood_kananumbers)
-        holder.tensevoice.text = sa
- */
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+            ClickableText(
+                text = arabicword,
+
+                onClick = {
+
+
+                })
+            Text(
+                text = wordbdetail["noun"].toString(),
+            )
+
+
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+            ClickableText(
+                text = AnnotatedString(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic.toString()),
+
+                onClick = {
+
+
+                })
+            Text(
+                text = "Ayah  " + quranCorpusWbw.corpus.ayah.toString(),
+            )
+
+            // indexval = surahModelList!!.chapterid
+            ClickableText(
+                text = spannableString,
+
+                onClick = {
+
+
+                })
+            ClickableText(
+                text = AnnotatedString(quranCorpusWbw.wbw.en.toString()),
+
+                onClick = {
+
+
+                })
+
+
+        }
+
+
+    }
+}
+
+@Composable
+fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
+    val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
+    var wazan = ""
+    if (rootdetails.form == "I") {
+        if (rootdetails.thulathibab!!.length > 1) {
+            val s = rootdetails.thulathibab!!.substring(0, 1)
+            wazan = QuranMorphologyDetails.getThulathiName(s).toString()
+        } else {
+            wazan = QuranMorphologyDetails.getThulathiName(rootdetails.thulathibab).toString()
+        }
+
+
+        //   QuranMorphologyDetails.getThulathiName(rootdetails.getThulathibab());
+    } else {
+        wazan = QuranMorphologyDetails.getFormName(rootdetails.form)
+    }
+
+    var surahinfo = StringBuilder()
+    surahinfo.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":")
+        .append(rootdetails.wordno)
+
+    val gender =
+        QuranMorphologyDetails.getGenderNumberdetails(rootdetails.gendernumber)
+    val tense = StringBuilder()
+    tense.append(rootdetails.tense).append(":").append(rootdetails.voice).append(":")
+        .append(rootdetails.mood_kananumbers)
+
+    val start = rootdetails.qurantext!!.indexOf(rootdetails.arabic!!)
+    val builder = AnnotatedString.Builder()
+    builder.append(rootdetails.qurantext)
+    val tagonestyle = SpanStyle(
+
+        textDecoration = TextDecoration.Underline,
+        fontWeight = FontWeight.Bold,
+    )
+    if (start != -1) {
+        builder.addStyle(tagonestyle, start, start + rootdetails.arabic!!.length)
+    }
+
+    val form1 = rootdetails.form!!
+    var sform = ""
+    if (rootdetails.form!!.isNotEmpty() && !form1.equals("I")) {
+        sform = convertFormss(form1)
+    } else {
+        var thulathi = rootdetails.thulathibab
+        extracted(rootdetails, thulathi)
+        sform = thulathi.toString()
+    }
+
+
+
+    Card(
+
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ),
+
+
+        modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(
+                horizontal = 5.dp,
+                vertical = 5.dp
+            )
+
+    )
+    {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
             var sa = StringBuilder()
-            sa.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":").append(rootdetails.wordno)
+            sa.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":")
+                .append(rootdetails.wordno)
 
-         val wazan=   QuranMorphologyDetails.getFormName(rootdetails.form)
+
             // indexval = surahModelList!!.chapterid
             ClickableText(
                 text = AnnotatedString(rootdetails.abjadname!!),
@@ -726,7 +904,6 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
                 })
 
 
-
         }
 
 
@@ -738,16 +915,11 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
-            var sa = StringBuilder()
-            sa.append(rootdetails.surah).append(":").append(rootdetails.ayah).append(":").append(rootdetails.wordno)
 
-            val gender =
-                QuranMorphologyDetails.getGenderNumberdetails(rootdetails.gendernumber)
-            val tense = StringBuilder()
-            tense.append(rootdetails.tense).append(":").append(rootdetails.voice).append(":")
-                .append(rootdetails.mood_kananumbers)
 
             // indexval = surahModelList!!.chapterid
             ClickableText(
@@ -773,21 +945,152 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
                 })
 
 
+        }
+
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            Text(
+                text = builder.toAnnotatedString(),
+
+                fontSize = 20.sp,
+                fontFamily = indopak,
+                color = colorResource(id = R.color.kashmirigreen)
+
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+
+
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            Text(
+                text = rootdetails.translation!!,
+
+                fontSize = 18.sp,
+
+                color = colorResource(id = R.color.burntamber)
+
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+
+
+        }
 
 
 
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            IconButton(
+                onClick = {
+                    val root = rootdetails.rootarabic
+                    val form = rootdetails.form
+
+                    val conjugation = rootdetails.thulathibab
+
+                    if (sform.length > 1) {
+                        sform = sform.substring(0, 1)
+                    }
+                    val mood = "Indicative"
+                    navController.navigate(
+                        "conjugator/${sform}/${root}/${mood}"
+                    )
+                },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_construction_24),
+                    contentDescription = "Expandable Arrow",
+                    modifier = Modifier.rotate(20.0f),
+
+                    )
+            }
+
+
+        }
+
+
+    }
+}
+
+@Composable
+private fun extracted(
+    rootdetails: RootVerbDetails,
+    thulathi: String?
+) {
+    var thulathi1 = thulathi
+    if (rootdetails.thulathibab!!.isNotEmpty()) {
+        when (thulathi1!!.length) {
+            0 -> thulathi1 =
+                null
+
+            1 -> {
+                thulathi1 = rootdetails.thulathibab
+                val sb = NewQuranMorphologyDetails.getThulathiName(thulathi1)
+
+            }
+
+            else -> {
+                thulathi1.length
+                val s = thulathi1.substring(0, 1)
+                val sb = NewQuranMorphologyDetails.getThulathiName(thulathi1)
+                thulathi1 = s
+            }
         }
     }
 }
 
+fun convertFormss(form1: String): String {
+    var form = form1
+    when (form) {
+        "IV" -> form = 1.toString()
+        "II" -> form = 2.toString()
+        "III" -> form = 3.toString()
+        "VII" -> form = 4.toString()
+        "VIII" -> form = 5.toString()
+        "VI" -> form = 7.toString()
+        "V" -> form = 8.toString()
+        "X" -> form = 9.toString()
+        else -> {
+
+        }
+    }
+
+
+    return form
+}
+
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RootScreen(rootmodel: RootModel,
-               isOnlyDetailScreen: Boolean,
-               navController: NavHostController,
-               onBackPressed: () -> Unit,
+fun RootScreen(
+    rootmodel: RootModel,
+    isOnlyDetailScreen: Boolean,
+    navController: NavHostController,
+    onBackPressed: () -> Unit,
 
-               ) {
+    ) {
 
 
 }

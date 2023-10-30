@@ -11,10 +11,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
 import com.example.mushafconsolidated.Entities.NounCorpusBreakup
-import com.example.mushafconsolidated.Entities.RootVerbDetails
 import com.example.mushafconsolidated.Entities.VerbCorpusBreakup
 import com.example.mushafconsolidated.Utils
-import com.example.mushafconsolidated.model.QuranCorpusWbw
 
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
@@ -47,10 +45,10 @@ class RootModel(
     // var verbroot: String = "حمد"
     private lateinit var shared: SharedPreferences
     lateinit var lemma: String
-    private val _cards = MutableStateFlow(listOf<RootVerbDetails>())
+    private val _cards = MutableStateFlow(listOf<AllRootWords>())
 
 
-    val verbroot: StateFlow<List<RootVerbDetails>> get() = _cards
+    val verbroot: StateFlow<List<AllRootWords>> get() = _cards
     private val _expandedCardIdsList = MutableStateFlow(listOf<Int>())
     var counter = 0;
     val expandedCardIdsList: StateFlow<List<Int>> get() = _expandedCardIdsList
@@ -74,23 +72,32 @@ class RootModel(
      fun getVerbRoot(root: String) {
         viewModelScope.launch {
 
+            val testList = arrayListOf<AllRootWords>()
 
 
 
-                val quranbySurah =   util.getRootVerbDetails(root)
+                val verblist =   util.getRootVerbDetails(root)
+
+                               val corpusrootlist=             util.getQuranCorpusWbwbyroot(root)
+            val chapters=util.getAllAnaChapters()
+            val nounlist=util.getQuranNounsbyroot(root)
+
+
+            testList += AllRootWords(
+                verblist!!,
+                corpusrootlist,
+                chapters!!,
+                nounlist
+
+            )
 
 
 
 
 
 
+                _cards.emit(testList)
 
-
-
-
-            if (quranbySurah != null) {
-                _cards.emit(quranbySurah)
-            }
 
 
 

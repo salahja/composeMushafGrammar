@@ -10,13 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AllRootWords.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/QuranVerseScreen.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/AnnotationUtility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/AnnotationUtility.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AnnotatedQuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AnnotatedQuranMorphologyDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/NewQuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/NewQuranMorphologyDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/RootModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/RootModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/RootVerbDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/RootVerbDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Utils.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,15 +98,15 @@
     &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/ToKtMushafVerbConDuaNamesFresh&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/java/com/example/compose&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/adaptive" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/adaptive" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable/lazytable/data" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/lazytable/lazytable/screens" />
@@ -616,7 +618,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698544325200</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Initial commit">
+      <created>1698601199129</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698601199129</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -689,63 +698,58 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>260</line>
+          <line>261</line>
           <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>312</line>
+          <line>313</line>
           <option name="timeStamp" value="188" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>282</line>
+          <line>283</line>
           <option name="timeStamp" value="189" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>287</line>
+          <line>288</line>
           <option name="timeStamp" value="190" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>64</line>
+          <line>63</line>
           <option name="timeStamp" value="192" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>68</line>
+          <line>67</line>
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>70</line>
+          <line>69</line>
           <option name="timeStamp" value="194" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>171</line>
+          <line>170</line>
           <option name="timeStamp" value="195" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>77</line>
+          <line>76</line>
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>185</line>
+          <line>184</line>
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt</url>
-          <line>280</line>
+          <line>279</line>
           <option name="timeStamp" value="199" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt</url>
-          <line>82</line>
-          <option name="timeStamp" value="200" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/TwoPane.kt</url>
@@ -787,41 +791,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt</url>
-          <line>267</line>
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt</url>
-          <line>257</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="222" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt</url>
           <line>287</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
-          <line>476</line>
-          <option name="timeStamp" value="229" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>349</line>
+          <line>350</line>
           <option name="timeStamp" value="230" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt</url>
-          <line>378</line>
+          <line>379</line>
           <option name="timeStamp" value="231" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt</url>
-          <line>117</line>
-          <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt</url>
@@ -839,28 +820,13 @@
           <option name="timeStamp" value="260" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt</url>
-          <line>87</line>
-          <option name="timeStamp" value="262" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
           <line>453</line>
           <option name="timeStamp" value="263" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
-          <line>328</line>
-          <option name="timeStamp" value="264" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/HomeScreen.kt</url>
-          <line>89</line>
-          <option name="timeStamp" value="265" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/HomeScreen.kt</url>
-          <line>49</line>
+          <line>51</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
@@ -868,13 +834,48 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
-          <line>340</line>
+          <line>373</line>
           <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt</url>
-          <line>77</line>
-          <option name="timeStamp" value="268" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>425</line>
+          <option name="timeStamp" value="272" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt</url>
+          <line>551</line>
+          <option name="timeStamp" value="273" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>442</line>
+          <option name="timeStamp" value="274" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>449</line>
+          <option name="timeStamp" value="275" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>475</line>
+          <option name="timeStamp" value="276" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>744</line>
+          <option name="timeStamp" value="284" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt</url>
+          <line>885</line>
+          <option name="timeStamp" value="290" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt</url>
+          <line>477</line>
+          <option name="timeStamp" value="293" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/TwoPane.kt</url>
@@ -897,6 +898,9 @@
         <watch expression="index" />
         <watch expression="$index" />
         <watch expression="worddetails" />
+        <watch expression="rootdetails.thulathibab" />
+        <watch expression="annotatedStringStringPair.second" />
+        <watch expression="annotatedStringStringPair.second" />
       </configuration>
       <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/TwoPane.kt" line="205">
         <watch expression="twoPaneScope.items" />

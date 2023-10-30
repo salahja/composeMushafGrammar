@@ -13,6 +13,12 @@ interface NounCorpusDao {
     @Query("SELECT * FROM nouncorpus where surah=:surahid and ayah=:ayaid and wordno=:wordid order by surah,ayah,wordno")
     fun getQuranNounsBysurahayahword(surahid: Int, ayaid: Int, wordid: Int): List<NounCorpus>
 
+    @Query("SELECT  * FROM nouncorpus where root_a=:verbroot ")
+
+    fun NounbyRoot(verbroot :String): List<NounCorpus>
+
+
+
     @Query("SELECT * FROM nouncorpus where surah=:surahid and ayah=:ayaid  order by surah,ayah,wordno")
     fun getQuranNounAyah(surahid: Int, ayaid: Int): List<NounCorpus>
 

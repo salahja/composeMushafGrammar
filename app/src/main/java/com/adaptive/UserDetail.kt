@@ -46,8 +46,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -159,6 +162,7 @@ fun GridList(
             val root=        surahModelList!!.rootarabic
            // indexval = surahModelList!!.chapterid
             ClickableText(
+
                 text = AnnotatedString(surahModelList!!.rootarabic),
 
                 onClick = {
@@ -172,7 +176,15 @@ fun GridList(
 
 
 
-                })
+                },
+                style = TextStyle(
+                    color = Blue,
+                    fontSize = 26.sp,
+                    fontFamily = FontFamily.Cursive
+                )
+
+
+            )
 
 
 
