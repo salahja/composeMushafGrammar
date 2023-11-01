@@ -36,7 +36,7 @@ class RootVerbDetails {
     var nameenglish: String? = null
     var qurantext: String? = null
     var translation: String? = null
-
+    var tafsir_kathir: String? = null
     constructor()
     constructor(
         arabic: String?,
@@ -100,5 +100,6 @@ class RootVerbDetails {
         this.nameenglish = nameenglish
         this.qurantext=qurantext
         this.translation=translation
+        this.tafsir_kathir=tafsir_kathir
     }
 }

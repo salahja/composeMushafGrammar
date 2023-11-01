@@ -94,6 +94,14 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 
     val filter = conjugation.toString().filter(Char::isDigit)
     isMujarrad = isNumeric(conjugation)
+
+    val verbindex = root!!.indexOf("ا")
+
+ val   verbroot = if (verbindex != -1) {
+        root!!.replace("ا", "ء")
+    } else {
+        root
+    }
     /*
     5 = {ArrayList@27947}  size = 1
      0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
@@ -117,14 +125,14 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
      */
     vb.wazan = conjugation
     if (isMujarrad) {
-        mazeed = GatherAll.instance.getMazeedListing(mood, root, conjugation)
+        mazeed = GatherAll.instance.getMazeedListing(mood, verbroot, conjugation)
         madhimudhary = mazeed!![0]
         faelmafool = mazeed!![1]
         amrandnahi = mazeed!![2]
         val arrayList = mazeed!![4]
         sarfSagheer = arrayList[0] as SarfSagheer
     } else {
-        mujarrad = GatherAll.instance.getMujarradListing(mood, root, vb.wazan!!)
+        mujarrad = GatherAll.instance.getMujarradListing(mood, verbroot, vb.wazan!!)
         val arrayList = mujarrad[11]
         sarfSagheer = arrayList[0] as SarfSagheer
         madhimudhary = mujarrad!![0]

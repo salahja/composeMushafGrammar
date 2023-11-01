@@ -363,7 +363,7 @@ class Utils {
                     "       qurandictionary.rootarabic,qurandictionary.wordno,\n" +
                     "\t   wbw.en,\n" +
                     "\t   chaptersana.abjadname,chaptersana.namearabic,chaptersana.nameenglish,\n" +
-                    "\t   verbcorpus.form,verbcorpus.thulathibab,verbcorpus.gendernumber,verbcorpus.tense,verbcorpus.voice,verbcorpus.mood_kananumbers,verbcorpus.lemma_a, qurans.translation,qurans.qurantext\n" +
+                    "\t   verbcorpus.form,verbcorpus.thulathibab,verbcorpus.gendernumber,verbcorpus.tense,verbcorpus.voice,verbcorpus.mood_kananumbers,verbcorpus.lemma_a, qurans.translation,qurans.qurantext,qurans.tafsir_kathir\n" +
                     "\t  \n" +
                     " \n" +
                     "      FROM corpusexpand,qurandictionary,wbw,chaptersana,verbcorpus,qurans\n" +

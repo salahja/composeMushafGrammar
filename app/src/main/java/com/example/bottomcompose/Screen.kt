@@ -7,7 +7,7 @@ sealed class Screen(val titleResId: Int, val route: String) {
     object Verses : Screen(R.string.verses, "Quran")
     object Movies : Screen(R.string.movies, "Movies Post")
     object Words : Screen(R.string.books, "Books")
-    object Profile : Screen(R.string.Profile, "Profile")
+    object Profile : Screen(R.string.Verb, "Profile")
 
     companion object {
         fun fromRoute(route: String?): Screen {

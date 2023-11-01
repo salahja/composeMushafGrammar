@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.adaptive.ExpandableText
 import com.codelab.basics.ui.theme.indopak
 import com.example.compose.LoadingData
 import com.example.compose.TextChip
@@ -442,7 +443,35 @@ fun NewQuranVerseScreen(
                     }
 
 
+
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 8.dp
+                        )
+                ) {
+                    /*     wordarray = newnewadapterlist[index]
+                         val annotedMousuf = AnnotationUtility.AnnotedMousuf(
+                             wordarray!![0].annotatedVerse.toString(),
+                             wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
+                         )
+ */ 
+
+                    ExpandableText(
+                        text = AnnotatedString( "Ibne Kathir :"+         quranbySurah!![0].tafsir_kathir,)
+
+
+
+
+                    )
+
+
+                }
+
 
 
             }

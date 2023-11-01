@@ -99,7 +99,8 @@ task wrapper(type: Wrapper) {
 
 dependencies {
  //new
-
+    implementation "com.github.alorma:compose-settings-storage-preferences:1.0.2"
+    implementation "com.github.alorma:compose-settings-ui-m3:1.0.1"
     // for supporting large screen devices
     implementation "androidx.compose.material3:material3-window-size-class"
     implementation "com.google.accompanist:accompanist-adaptive:0.33.1-alpha"

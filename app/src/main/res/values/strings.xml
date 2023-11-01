@@ -376,7 +376,7 @@
     <string name="home">home</string>
     <string name="verses">verses</string>
     <string name="movies">movies</string>
-    <string name="Profile">profile</string>
+    <string name="Verb">Verb Roots</string>
     <string name="books">books</string>
 
 
@@ -448,13 +448,13 @@
     <string name="subreddit_icon">Subreddit Icon</string>
     <string name="community_icon">Community Icon</string>
     <string name="kodeco_com">r/kodeco.com</string>
-
-
-
-
-
-
-
+    <string name="settings_switch">Setting</string>
+    <string name="ic_icon_description">Setting\n</string>
+    <string name="settings_first_category">First</string>
+    <string name="settings_second_category">Second</string>
+    <string name="ic_arrow_forward">Arrow</string>
+    <string name="Setting">Setting</string>
+    <string name="Topsetting">topsettings</string>
 
 
 </resources>

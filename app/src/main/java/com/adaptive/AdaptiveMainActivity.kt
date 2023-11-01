@@ -4,13 +4,18 @@ import CardsScreen
 import ComposeTutorial12DifferentScreenSizesSupportTheme
 import NavigationActions
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +25,14 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.LocalTextStyle
+
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +51,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -53,21 +66,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
@@ -81,7 +98,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.adaptive.theme.BottomSheetWordDetails
-import com.codelab.basics.ui.theme.indopak
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.example.bottomcompose.BottomSheetDemo
 import com.example.compose.CardsViewModel
 import com.example.compose.NewQuranMorphologyDetails
@@ -107,15 +125,31 @@ import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.tabcompose.MatTab
 import com.example.utility.AnnotationUtility.Companion.AnnotatedSetWordSpanTag
 import com.example.utility.QuranGrammarApplication
-import com.skyyo.expandablelist.theme.AppTheme
+import com.settings.AppSettingsScreen
+import com.settings.preference.SeetingScreen
 import com.skyyo.expandablelist.theme.AppThemeSettings
 
+val showbootomsheet = mutableStateOf(false)
 class AdaptiveMainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            AppTheme {
+            val darkThemePreference = rememberPreferenceBooleanSettingState(
+                key = "darkThemePreference",
+                defaultValue = true,
+            )
+
+            val dynamicThemePreference = rememberPreferenceBooleanSettingState(
+                key = "dynamicThemePreference",
+                defaultValue = true,
+            )
+
+            ComposeSettingsTheme (
+                darkThemePreference = darkThemePreference.value,
+                dynamicThemePreference = dynamicThemePreference.value,
+            ) {
 
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -146,12 +180,38 @@ class AdaptiveMainActivity : ComponentActivity() {
                         isOnlyDetailScreen = uiState.value.isOnlyDetailScreen,
                         updateFullState,
                         updateUserId,
-                        finishActivity
+                        finishActivity,    darkThemePreference,       dynamicThemePreference
                     )
                 }
             }
         }
     }
+
+
+    @Composable
+    fun ComposeSettingsTheme(
+        darkThemePreference: Boolean,
+        dynamicThemePreference: Boolean,
+        content: @Composable () -> Unit,
+    ) {
+        MaterialTheme(
+            colorScheme = if (Build.VERSION.SDK_INT >= 31 && dynamicThemePreference) {
+                if (darkThemePreference) {
+                    dynamicDarkColorScheme(LocalContext.current)
+                } else {
+                    dynamicLightColorScheme(LocalContext.current)
+                }
+            } else {
+                if (darkThemePreference) {
+                    darkColorScheme()
+                } else {
+                    lightColorScheme()
+                }
+            },
+            content = content,
+        )
+    }
+
 }
 
 @Composable
@@ -162,6 +222,8 @@ fun AppContent(
     updateFullState: (String?, Boolean) -> Unit,
     updateUserId: (String?) -> Unit,
     finishActivity: () -> Unit,
+    darkThemePreference: BooleanPreferenceSettingValueState,
+    dynamicThemePreference: BooleanPreferenceSettingValueState,
 ) {
     val navController = rememberNavController()
 
@@ -173,12 +235,15 @@ fun AppContent(
     }
 
     AppNavHost(
+        darkThemePreference,
+        dynamicThemePreference,
         navController = navController,
         navigationType,
         selectedUserId,
         isOnlyDetailScreen,
         updateFullState,
-        updateUserId
+        updateUserId,
+
     ) {
         //minor change after tutorial
         navController.popBackStack()
@@ -192,13 +257,16 @@ enum class NavigationType {
 
 @Composable
 fun AppNavHost(
+    darkThemePreference: BooleanPreferenceSettingValueState,
+    dynamicThemePreference: BooleanPreferenceSettingValueState,
     navController: NavHostController,
     navigationType: NavigationType,
     selectedUserId: String?,
     isOnlyDetailScreen: Boolean,
     updateFullState: (String?, Boolean) -> Unit,
     updateUserId: (String?) -> Unit,
-    popFromMainBackStack: () -> Unit
+    popFromMainBackStack: () -> Unit,
+
 ) {
 
     NavHost(navController = navController, startDestination = "login") {
@@ -213,11 +281,13 @@ fun AppNavHost(
 
         composable("tabs") {
             TabsNavGraph(
+                darkThemePreference,
+                dynamicThemePreference,
                 navigationType, selectedUserId,
                 isOnlyDetailScreen,
                 updateFullState,
                 updateUserId,
-                popFromMainBackStack = popFromMainBackStack
+                popFromMainBackStack = popFromMainBackStack,
             )
         }
 
@@ -226,6 +296,8 @@ fun AppNavHost(
 
 @Composable
 fun TabsNavGraph(
+    darkThemePreference: BooleanPreferenceSettingValueState,
+    dynamicThemePreference: BooleanPreferenceSettingValueState,
     navigationType: NavigationType,
     selectedUserId: String?,
     isOnlyDetailScreen: Boolean,
@@ -287,6 +359,9 @@ fun TabsNavGraph(
             navigateToTopLevelDestination = navigationActions::navigateTo
         ) {
             MainContent(
+                darkThemePreference,
+                dynamicThemePreference,
+
                 navController = navController,
                 currentDestination = currentDestination,
                 navigationType = navigationType,
@@ -302,6 +377,9 @@ fun TabsNavGraph(
 
     } else {
         MainContent(
+            darkThemePreference,
+            dynamicThemePreference,
+
             navController = navController,
             currentDestination = currentDestination,
             navigationType = navigationType,
@@ -320,6 +398,8 @@ fun TabsNavGraph(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent(
+    darkThemePreference: BooleanPreferenceSettingValueState,
+    dynamicThemePreference: BooleanPreferenceSettingValueState,
     navController: NavHostController,
     currentDestination: NavDestination?,
     navigationType: NavigationType,
@@ -382,16 +462,59 @@ fun MainContent(
                 }
                 composable(Screen.Profile.route) {
 
-                    HomeScreen(
+                   HomeScreen(
                         userId = selectedUserId,
                         isOnlyDetailScreen = isOnlyDetailScreen,
                         navigationType = navigationType,
                         goToUserDetail = goToUserDetail,
                         onDetailBackPressed = closeUserDetail,
-                        navController
+                        navController)
 
-                    )
+
+
+
+
+
+
+
+
+
+
+
                 }
+
+                composable(Screen.Settings.route) {
+
+                    /*       val intent = Intent(Intent.ACTION_VIEW)
+                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                          val i = Intent(context, SettingAct::class.java)
+                          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          context!!.startActivity(i)
+*/                    SeetingScreen(navController)
+
+                }
+
+                composable(Screen.TopSettings.route) {
+
+
+                    /*       val intent = Intent(Intent.ACTION_VIEW)
+                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                          val i = Intent(context, SettingAct::class.java)
+                          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          context!!.startActivity(i)
+*/
+                    AppSettingsScreen(
+                        navController = navController,
+                        darkThemePreference = darkThemePreference,
+                        dynamicThemePreference = dynamicThemePreference,
+                    )
+
+
+
+
+
+                }
+
 
                 composable("verses/{id}",
                     arguments = listOf(
@@ -619,14 +742,14 @@ fun RootScreens(
     val nounroots = roots[0].corpusSurahWordlist
     val chapters = roots[0].chapterlist
     val nouns = roots[0].nounlist
- /*   val nm=NounMorphologyDetails(nounroots ,nouns)
-    var wordbdetail = HashMap<String, AnnotatedString>()
-    wordbdetail=nm.wordDetails
+    /*   val nm=NounMorphologyDetails(nounroots ,nouns)
+       var wordbdetail = HashMap<String, AnnotatedString>()
+       wordbdetail=nm.wordDetails
 
-    if(verbroots.isEmpty()){
-        wordbdetail=nm.wordDetails
+       if(verbroots.isEmpty()){
+           wordbdetail=nm.wordDetails
 
-    }*/
+       }*/
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -664,10 +787,10 @@ fun RootScreens(
                     //          indexval=index
                     RootGrid(verbroots[index], navController)
                 }
-            }else{
+            } else {
                 items(nounroots.size) { index ->
                     //          indexval=index
-                    NounGrid(nounroots[index], navController,chapters,nouns[index])
+                    NounGrid(nounroots[index], navController, chapters, nouns[index])
                 }
 
             }
@@ -696,10 +819,10 @@ fun NounGrid(
         quranCorpusWbw.corpus.arafour!!,
         quranCorpusWbw.corpus.arafive!!
     )
-    val nm=NounMorphologyDetails(quranCorpusWbw ,nounCorpus)
+    val nm = NounMorphologyDetails(quranCorpusWbw, nounCorpus)
     var wordbdetail = HashMap<String, AnnotatedString>()
-    wordbdetail=nm.wordDetails
-val arabicword: AnnotatedString= wordbdetail["arabicword"]!!
+    wordbdetail = nm.wordDetails
+    val arabicword: AnnotatedString = wordbdetail["arabicword"]!!
     //  sb.append(lughat.getSurah()).append("   ").append(lughat.getNamearabic()).append(lughat.getAyah()).append(" ").append(lughat.getArabic());
     sb.append(quranCorpusWbw.corpus.ayah).append("  ")
         .append(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic).append("   ")
@@ -788,6 +911,7 @@ val arabicword: AnnotatedString= wordbdetail["arabicword"]!!
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
     val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
@@ -957,12 +1081,10 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
         ) {
 
 
-            Text(
+            ExpandableText(
                 text = builder.toAnnotatedString(),
 
-                fontSize = 20.sp,
-                fontFamily = indopak,
-                color = colorResource(id = R.color.kashmirigreen)
+
 
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -979,12 +1101,31 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
         ) {
 
 
-            Text(
-                text = rootdetails.translation!!,
+            ExpandableText(
+                text = AnnotatedString( "Translation :"+         rootdetails.translation!!,)
 
-                fontSize = 18.sp,
 
-                color = colorResource(id = R.color.burntamber)
+
+
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+
+
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            ExpandableText(
+                text = AnnotatedString("Tafsir Ibne Kathir:"   +   rootdetails.tafsir_kathir!!,)
+
+
+
 
             )
             Spacer(modifier = Modifier.width(20.dp))
@@ -1001,10 +1142,40 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
+            val root = rootdetails.rootarabic
+            val form = rootdetails.form
 
+            val conjugation = rootdetails.thulathibab
+
+            if (sform.length > 1) {
+                sform = sform.substring(0, 1)
+            }
+            val mood = "Indicative"
+            IconButton(
+
+                onClick = {
+                    showbootomsheet.value=false
+
+                   navController.navigate(
+                        "conjugator/${sform}/${root}/${mood}"
+                    )
+                }
+
+
+            ) {
+                Column {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_construction_24),
+                        contentDescription = "Expandable Arrow",
+                      //  modifier = Modifier.rotate(20.0f),
+
+                        )
+                    Text("Conjugate")
+                }
+            }
 
             IconButton(
-                onClick = {
+                {
                     val root = rootdetails.rootarabic
                     val form = rootdetails.form
 
@@ -1018,13 +1189,20 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
                         "conjugator/${sform}/${root}/${mood}"
                     )
                 },
-            ) {
+
+                )
+            {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_construction_24),
+                    painter = painterResource(id = R.drawable.tafsir),
                     contentDescription = "Expandable Arrow",
                     modifier = Modifier.rotate(20.0f),
 
                     )
+
+            }
+
+            if(showbootomsheet.value){
+                //BottomDialog()
             }
 
 
@@ -1033,6 +1211,75 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 
     }
 }
+
+
+const val DEFAULT_MINIMUM_TEXT_LINE = 1
+
+@Composable
+fun ExpandableText(
+    modifier: Modifier = Modifier,
+    textModifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+    fontStyle: FontStyle? = null,
+    text: AnnotatedString,
+    collapsedMaxLine: Int = DEFAULT_MINIMUM_TEXT_LINE,
+    showMoreText: String = "... Show More",
+    showMoreStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.W500),
+    showLessText: String = " Show Less",
+    showLessStyle: SpanStyle = showMoreStyle,
+    textAlign: TextAlign? = null
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    var clickable by remember { mutableStateOf(false) }
+    var lastCharIndex by remember { mutableStateOf(0) }
+    Box(modifier = Modifier
+        .clickable(clickable) {
+            isExpanded = !isExpanded
+        }
+        .then(modifier)
+    ) {
+        Text(
+            modifier = textModifier
+                .fillMaxWidth()
+                .animateContentSize(),
+            text = buildAnnotatedString {
+                if (clickable) {
+                    if (isExpanded) {
+                        append(text)
+                        withStyle(style = showLessStyle) { append(showLessText) }
+                    } else {
+                        val adjustText = text.substring(startIndex = 0, endIndex = lastCharIndex)
+                            .dropLast(showMoreText.length)
+                            .dropLastWhile { Character.isWhitespace(it) || it == '.' }
+                        append(adjustText)
+                        withStyle(style = showMoreStyle) { append(showMoreText) }
+                    }
+                } else {
+                    append(text)
+                }
+            },
+            maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLine,
+            fontStyle = fontStyle,
+            onTextLayout = { textLayoutResult ->
+                if (!isExpanded && textLayoutResult.hasVisualOverflow) {
+                    clickable = true
+                    lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
+                }
+            },
+            style = style,
+            textAlign = textAlign
+        )
+    }
+
+}
+
+
+
+
+
+
+
+
 
 @Composable
 private fun extracted(
@@ -1200,12 +1447,16 @@ fun BottomNavBar(
 val items = listOf(
     Screen.Home,
     Screen.Profile,
+    Screen.Settings
 )
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object Home : Screen("home", R.string.home)
-    object Profile : Screen("profile", R.string.Profile)
-    object Roots : Screen("roots", R.string.Profile)
+    object Profile : Screen("Verb Root", R.string.Verb)
+    object Roots : Screen("roots", R.string.Verb)
+    object Settings : Screen("setting", R.string.Setting)
+    object TopSettings : Screen("topsetting", R.string.Topsetting)
+
 }
 
 @Preview(showBackground = true)

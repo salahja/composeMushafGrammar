@@ -57,10 +57,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
-import com.example.compose.theme.aid
-import com.example.compose.theme.cid
-import com.example.compose.theme.wid
 import com.example.justJava.MyTextViewZoom
+import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.Entities.qurandictionary
 import com.example.mushafconsolidated.Utils
 import com.example.utility.QuranGrammarApplication
@@ -79,7 +77,7 @@ fun UserDetailScreen(
 ) {
     val util= Utils(QuranGrammarApplication.context!!)
     val searchs= "$userId%";
-    val letter: ArrayList<qurandictionary> = util.getByfirstletter(searchs!!) as ArrayList<qurandictionary>
+    val letter: List<VerbCorpus> = util.getQuranVerbsByfirstletter(searchs!!)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -126,7 +124,7 @@ fun GridLists(qurandictionary: qurandictionary) {
 
 @Composable
 fun GridList(
-    surahModelList: qurandictionary?,
+    surahModelList: VerbCorpus,
     navController: NavHostController,
 
     ) {
@@ -159,11 +157,11 @@ fun GridList(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxSize()
         ) {
-            val root=        surahModelList!!.rootarabic
+            val root=        surahModelList!!.root_a
            // indexval = surahModelList!!.chapterid
             ClickableText(
 
-                text = AnnotatedString(surahModelList!!.rootarabic),
+                text = AnnotatedString(surahModelList!!.root_a.toString()),
 
                 onClick = {
                     Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
@@ -182,7 +180,7 @@ fun GridList(
                     fontSize = 26.sp,
                     fontFamily = FontFamily.Cursive
                 )
-
+                   
 
             )
 
