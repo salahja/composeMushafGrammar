@@ -98,6 +98,9 @@ task wrapper(type: Wrapper) {
 }
 
 dependencies {
+
+    implementation "io.github.pilgr:paperdb:2.7.2"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
  //new
     implementation "com.github.alorma:compose-settings-storage-preferences:1.0.2"
     implementation "com.github.alorma:compose-settings-ui-m3:1.0.1"

@@ -32,6 +32,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -104,7 +105,8 @@ fun BottomSheetWordDetails(
 
 
     //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
-
+    val coroutineScope = rememberCoroutineScope()
+  //  val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
      val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
@@ -114,6 +116,8 @@ fun BottomSheetWordDetails(
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
+
+        sheetBackgroundColor = MaterialTheme.colorScheme.background,
 
         sheetContent = {
             //Ui for bottom sheet
@@ -598,7 +602,7 @@ fun BottomSheetWordDetails(
                     .wrapContentHeight()
 
 
-                     .background(MaterialTheme.colorScheme.primary)
+                //     .background(MaterialTheme.colorScheme.primary)
                     .padding(16.dp),
 
                 )

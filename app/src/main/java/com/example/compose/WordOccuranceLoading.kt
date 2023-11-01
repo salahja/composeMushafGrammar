@@ -89,6 +89,62 @@ fun WordOccuranceLoading(
 
 }
 
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RootWordLoading(
+    isDisplayed: Boolean,
+    cornerRadius: Dp = 16.dp,
+    progressIndicatorColor: Color = Color(0xFF35898f),
+    progressIndicatorSize: Dp = 80.dp
+) {
+    val viewModel: RootModel = viewModel()
+
+    val showDialog by viewModel.open.observeAsState(initial = true) // initially, don't show the dialog
+
+    if (isDisplayed) {
+        AlertDialog(
+            onDismissRequest = {
+            },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false // disable the default size so that we can customize it
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(start = 42.dp, end = 42.dp) // margin
+                    .background(color = Color.White, shape = RoundedCornerShape(cornerRadius))
+                    .padding(top = 36.dp, bottom = 36.dp), // inner padding
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                ProgressIndicatorLoading(
+                    progressIndicatorSize = progressIndicatorSize,
+                    progressIndicatorColor = progressIndicatorColor
+                )
+
+                // Gap between progress indicator and text
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // Please wait text
+                Text(
+                    text = "Please wait...",
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+            }
+        }
+    }
+
+
+}
+
+
 @Composable
 private fun ProgressIndicatorLoading(
     progressIndicatorSize: Dp,

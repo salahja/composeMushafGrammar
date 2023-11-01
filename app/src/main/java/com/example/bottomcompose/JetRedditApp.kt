@@ -676,7 +676,7 @@ fun BottomSheetDemo(
                     .height(350.dp)
 
 
-                    .background(androidx.compose.material3.MaterialTheme.colorScheme.inversePrimary)
+                 //   .background(androidx.compose.material3.MaterialTheme.colorScheme.inversePrimary)
                     .padding(16.dp),
 
                 )

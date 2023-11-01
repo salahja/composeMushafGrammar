@@ -71,7 +71,7 @@ class RootModel(
 
      fun getVerbRoot(root: String) {
         viewModelScope.launch {
-
+            loading.value = true
             val testList = arrayListOf<AllRootWords>()
 
 

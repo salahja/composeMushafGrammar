@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 
+/*
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -28,7 +29,8 @@ private val LightColorScheme = lightColorScheme(
     secondary = PurpleGrey40,
     tertiary = Pink40
 
-    /* Other default colors to override
+    */
+/* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
@@ -36,7 +38,8 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color.White,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
-    */
+    *//*
+
 )
 
 @Composable
@@ -69,4 +72,4 @@ fun ComposeTutorial12DifferentScreenSizesSupportTheme(
         typography = Typography,
         content = content
     )
-}
+}*/

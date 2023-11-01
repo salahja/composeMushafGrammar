@@ -1,7 +1,7 @@
 package com.adaptive
 
 import CardsScreen
-import ComposeTutorial12DifferentScreenSizesSupportTheme
+
 import NavigationActions
 import android.annotation.SuppressLint
 import android.os.Build
@@ -106,8 +106,10 @@ import com.example.compose.NewQuranMorphologyDetails
 import com.example.compose.NounMorphologyDetails
 import com.example.compose.QuranMorphologyDetails
 import com.example.compose.RootModel
+import com.example.compose.RootWordLoading
 import com.example.compose.SurahListScreen
 import com.example.compose.VerseModel
+import com.example.compose.WordOccuranceLoading
 
 import com.example.compose.activity.CardViewModelFactory
 import com.example.compose.activity.RootViewModelFactory
@@ -127,6 +129,7 @@ import com.example.utility.AnnotationUtility.Companion.AnnotatedSetWordSpanTag
 import com.example.utility.QuranGrammarApplication
 import com.settings.AppSettingsScreen
 import com.settings.preference.SeetingScreen
+import com.skyyo.expandablelist.theme.AppTheme
 import com.skyyo.expandablelist.theme.AppThemeSettings
 
 val showbootomsheet = mutableStateOf(false)
@@ -147,8 +150,8 @@ class AdaptiveMainActivity : ComponentActivity() {
             )
 
             ComposeSettingsTheme (
-                darkThemePreference = darkThemePreference.value,
-                dynamicThemePreference = dynamicThemePreference.value,
+              darkThemePreference = darkThemePreference.value,
+               dynamicThemePreference = dynamicThemePreference.value,
             ) {
 
                 // A surface container using the 'background' color from the theme
@@ -735,13 +738,18 @@ fun RootScreens(
     navController: NavHostController
 ) {
     val util = Utils(QuranGrammarApplication.context!!)
+    var loading = rootmodel.loading.value
+
     val roots by rootmodel.verbroot.collectAsStateWithLifecycle()
-    val collectAsStateWithLifecycle = rootmodel.verbroot.collectAsStateWithLifecycle()
-    val collectAsState = rootmodel.verbroot.collectAsState()
+   // val collectAsStateWithLifecycle = rootmodel.verbroot.collectAsStateWithLifecycle()
+   // val collectAsState = rootmodel.verbroot.collectAsState()
+
     val verbroots = roots[0].verbrootlist
     val nounroots = roots[0].corpusSurahWordlist
     val chapters = roots[0].chapterlist
     val nouns = roots[0].nounlist
+        // loading = rootmodel.loading.value
+    rootmodel.open.value = true
     /*   val nm=NounMorphologyDetails(nounroots ,nouns)
        var wordbdetail = HashMap<String, AnnotatedString>()
        wordbdetail=nm.wordDetails
@@ -774,6 +782,8 @@ fun RootScreens(
         },
     ) {
         //  if (verbroots.isNotEmpty())
+        loading = rootmodel.loading.value
+        RootWordLoading(isDisplayed = loading)
         LazyColumn(
 
             modifier = Modifier
@@ -782,6 +792,7 @@ fun RootScreens(
 
 
             ) {
+
             if (verbroots.isNotEmpty()) {
                 items(verbroots.size) { index ->
                     //          indexval=index
@@ -1457,12 +1468,4 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object Settings : Screen("setting", R.string.Setting)
     object TopSettings : Screen("topsetting", R.string.Topsetting)
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ComposeTutorial12DifferentScreenSizesSupportTheme {
-
-    }
 }

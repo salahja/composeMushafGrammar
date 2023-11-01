@@ -167,16 +167,16 @@ private fun LibraryTopBar(navController: NavHostController,scrollBehavior: TopAp
                 Icon(Icons.Filled.Favorite, contentDescription = null)
             }
         },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = md_theme_light_primaryContainer,
-            scrolledContainerColor = MaterialTheme.colorScheme.background,
+      /*  colors = TopAppBarDefaults.mediumTopAppBarColors(
+         //   containerColor = md_theme_light_primaryContainer,
+           // scrolledContainerColor = MaterialTheme.colorScheme.background,
             titleContentColor = if (isCollapsed) {
                 MaterialTheme.colorScheme.onBackground
             } else {
                 MaterialTheme.colorScheme.onPrimary
             },
         ),
-
+*/
         scrollBehavior = scrollBehavior,
     )
 

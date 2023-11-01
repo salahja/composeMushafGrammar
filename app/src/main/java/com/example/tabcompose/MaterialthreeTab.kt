@@ -89,6 +89,7 @@ lateinit var zmafalun: IsmZarfMafalun
 
 fun MatTab(navController: NavHostController, conjugation: String, root: String, mood: String?) {
     var allofQuran: List<QuranEntity>? = null
+
     val vb = VerbWazan()
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
@@ -702,7 +703,7 @@ fun sarfsagheers() {
         modifier = Modifier
 
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.secondary)
+         //   .background(MaterialTheme.colorScheme.secondary)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
@@ -1106,7 +1107,9 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
-
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -1341,7 +1344,9 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
-
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -1573,7 +1578,9 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
-
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -1806,7 +1813,9 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
             ),
-
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -2154,7 +2163,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -2314,7 +2323,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -2481,7 +2490,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -2646,7 +2655,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -2813,7 +2822,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -3008,7 +3017,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
         modifier = Modifier
 
             .fillMaxSize()
-            //.background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.background)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
@@ -3016,7 +3025,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -3210,7 +3219,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -3402,7 +3411,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -3627,7 +3636,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
         modifier = Modifier
 
             .fillMaxSize()
-            //.background(MaterialTheme.colorScheme.primary)
+            //.background(MaterialTheme.colorScheme.background)
             .wrapContentSize(Alignment.Center)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
@@ -3635,7 +3644,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -3829,7 +3838,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
@@ -4021,7 +4030,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
         Card(
             onClick = { Log.d("Click", "CardExample: Card Click") },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 16.dp
