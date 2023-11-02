@@ -46,8 +46,8 @@ import com.codelab.basics.ui.theme.cardCollapsedBackgroundColor
 import com.codelab.basics.ui.theme.cardExpandedBackgroundColor
 import com.codelab.basics.ui.theme.qalam
 import com.viewmodels.CardsViewModel
-import com.example.compose.ExpandableCardModelSpannableLists
-import com.example.compose.VerseOccuranceModel
+import com.example.viewmodels.ExpandableCardModelSpannableLists
+import com.viewmodels.VerseOccuranceModel
 import com.example.compose.WordOccuranceLoading
 import com.example.mushafconsolidated.R
 import com.example.utility.QuranGrammarApplication.Companion.context

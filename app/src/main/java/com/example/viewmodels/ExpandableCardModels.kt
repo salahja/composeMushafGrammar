@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.viewmodels
 
 import androidx.compose.runtime.Immutable
 

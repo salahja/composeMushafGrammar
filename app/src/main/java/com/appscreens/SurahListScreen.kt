@@ -43,6 +43,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -61,18 +62,23 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.utility.QuranGrammarApplication
+import com.skyyo.expandablelist.theme.DarkColors
+import com.skyyo.expandablelist.theme.LightColors
 
 import kotlinx.coroutines.launch
 
@@ -88,7 +94,7 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
     pref = remember { PreferencesManager(QuranGrammarApplication.context!!) }
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
-
+    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
    val allAnaChapters = quranModel!!.getAllSurah().value
     //   val listState = rememberLazyListState()
     val listState =                 rememberLazyGridState()
@@ -116,7 +122,7 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
         ) {
             items(allAnaChapters!!.size) { index ->
                 //          indexval=index
-                GridList(allAnaChapters[index], imgs, navController)
+                GridList(allAnaChapters[index], imgs, navController,thememode)
             }
         }
     }
@@ -186,6 +192,7 @@ fun GridList(
     surahModelList: ChaptersAnaEntity?,
     imgs: TypedArray,
     navController: NavHostController,
+    thememode: BooleanPreferenceSettingValueState
 ) {
     val img = imgs.getDrawable(surahModelList!!.chapterid.toInt() - 1)
 
@@ -227,7 +234,14 @@ fun GridList(
                     navController.navigate("verses/" + surahModelList!!.chapterid)
 
 
-                })
+                },style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
+
+
+            )
             ClickableText(
                 text = AnnotatedString(surahModelList!!.namearabic.toString()),
 
@@ -236,7 +250,11 @@ fun GridList(
                     //   navController.navigate(NavigationItem.Books.route)
                     navController.navigate("verses/" + surahModelList!!.chapterid.toString())
 
-                })
+                },style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                ))
 
             ClickableText(
                 text = AnnotatedString(surahModelList!!.nameenglish.toString()),
@@ -246,7 +264,11 @@ fun GridList(
                     // navController.navigate(NavigationItem.Books.route)
                     navController.navigate("verses/" + surahModelList!!.chapterid)
 
-                })
+                },style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                ))
 
             /*       Text(
                        modifier = Modifier.clickable { println("Clicked") },
@@ -289,117 +311,4 @@ fun GridList(
     }
 
 
-    @Suppress("DEPRECATION")
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
-    @ExperimentalFoundationApi
-    @Composable
-    fun BottomDialog() {
-        //Lets create list to show in bottom sheet
-        data class BottomSheetItem(val title: String, val icon: ImageVector)
-
-        val bottomSheetItems = listOf(
-            BottomSheetItem(title = "Notification", icon = Icons.Default.Notifications),
-            BottomSheetItem(title = "Mail", icon = Icons.Default.MailOutline),
-            BottomSheetItem(title = "Scan", icon = Icons.Default.Search),
-            BottomSheetItem(title = "Edit", icon = Icons.Default.Edit),
-            BottomSheetItem(title = "Favorite", icon = Icons.Default.Favorite),
-            BottomSheetItem(title = "Settings", icon = Icons.Default.Settings)
-        )
-
-        //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
-        )
-        val coroutineScope = rememberCoroutineScope()
-        BottomSheetScaffold(
-            scaffoldState = bottomSheetScaffoldState,
-            sheetShape = RoundedCornerShape(topEnd = 30.dp),
-            sheetContent = {
-                //Ui for bottom sheet
-                Column(
-                    content = {
-
-                        Spacer(modifier = Modifier.padding(16.dp))
-                        Text(
-                            text = "Bottom Sheet",
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 21.sp,
-                            color = Color.White
-                        )
-                        LazyVerticalGrid(
-                            //cells = GridCells.Fixed(3)
-                            columns = GridCells.Fixed(3), //https://developer.android.com/jetpack/compose/lists
-                        ) {
-                            items(bottomSheetItems.size, itemContent = {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 24.dp)
-                                        .clickable {
-
-
-                                        },
-                                ) {
-                                    Spacer(modifier = Modifier.padding(8.dp))
-                                    Icon(
-                                        bottomSheetItems[it].icon,
-                                        bottomSheetItems[it].title,
-                                        tint = Color.White
-                                    )
-                                    Spacer(modifier = Modifier.padding(8.dp))
-                                    Text(text = bottomSheetItems[it].title, color = Color.White)
-                                }
-
-                            })
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(350.dp)
-
-                        //.background(Color(0xFF6650a4))
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF8E2DE2),
-                                    Color(0xFF4A00E0)
-                                )
-                            ),
-                            // shape = RoundedCornerShape(cornerRadius)
-                        )
-                        .padding(16.dp),
-
-                    )
-            },
-            sheetPeekHeight = 0.dp,
-
-            ) {
-
-
-            //Add button to open bottom sheet
-            Column(modifier = Modifier.fillMaxSize()) {
-                Button(
-                    modifier = Modifier
-                        .padding(20.dp),
-                    onClick = {
-                        coroutineScope.launch {
-                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
-                            } else {
-                                bottomSheetScaffoldState.bottomSheetState.collapse()
-                            }
-                        }
-                    }
-                ) {
-                    Text(
-                        text = "Click to show Bottom Sheet"
-                    )
-                }
-            }
-        }
-    }
 }

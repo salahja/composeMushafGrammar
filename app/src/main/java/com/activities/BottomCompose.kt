@@ -42,7 +42,7 @@ import androidx.navigation.navArgument
 import com.appscreens.MatTab
 
 import com.viewmodels.CardsViewModel
-import com.example.compose.ConjugationScreen
+import com.appscreens.ConjugationScreen
 import com.example.compose.NavigationItem
 import com.appscreens.SurahListScreen
 import com.viewmodels.VerseModel

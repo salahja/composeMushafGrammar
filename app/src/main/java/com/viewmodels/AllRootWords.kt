@@ -1,4 +1,4 @@
-package com.example.compose
+package com.viewmodels
 
 import androidx.compose.runtime.Immutable
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity

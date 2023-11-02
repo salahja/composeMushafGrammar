@@ -1,4 +1,4 @@
-package com.adaptive
+package com.appscreens
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility

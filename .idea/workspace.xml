@@ -10,71 +10,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/progressbar.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/modelfactory/Factories.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/HomeScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/NavigationActions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/NavigationActions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/AppPreferences.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/AppTheme.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/BottomCompose.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/ProfileScreen.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/BottomSheet.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Color.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/ComposeSettingsTheme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/ComposeSettingsTheme.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Theme.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adaptive/theme/Type.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/AppDrawer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/AppDrawer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/JetRedditApp.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/TooltipPopup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bottomcompose/TooltipPopup.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AnnotatedQuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AnnotatedQuranMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsViewModelbackup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModelbackup.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ContentScreens.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ContentScreens.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/JetRedditApplication.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/LemmaViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/LemmaViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/NewQuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/NewQuranMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/NounMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/NounMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/QuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/QuranMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/RootModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/RootModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/SurahListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/SurahModelList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/SurahModelList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AllRootWords.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/AllRootWords.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/AnnotatedQuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/AnnotatedQuranMorphologyDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/VersesOccuranceCardsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ConjugationScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/ConjugationScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/Conjugator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/Conjugator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ContentScreens.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/DependencyInjector.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ExpandableCardModelSpannableLists.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels/ExpandableCardModelSpannableLists.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/ExpandableCardModels.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels/ExpandableCardModels.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/GridScreens.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/QuranArrays.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels/QuranArrays.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/SurahScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/SurahScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/WordOccuranceLoading.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/WordOccuranceLoading.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/BottomCompose.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/BottomCompose.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/ComposeAct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/ComposeAct.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/NewBottomActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity/TwoPane.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/screens/Screens.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/AlertDialog.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/VerseOccuranceModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseOccuranceModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/WordDialogFragment.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Activity/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidatedimport/MushafApplication.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/surahdisplaycompose/SurahViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/surahdisplaycompose/SurahViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/MaterialthreeTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/TabContentScreens.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/TabContentScreens.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/TabItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/TabItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/tabcompose/TabScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/TabScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/text/ColourStateListSpan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/text/SpanUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/text/StaticColourSpan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/text/TextColourSpan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/AnnotationUtility.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/AnnotationUtility.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusConstants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/CorpusConstants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/QuranMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/QuranMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/refWordMorphologyDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/corpusutility/refWordMorphologyDetails.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/AppScaffold.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/settings/AppScaffold.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/ListScreen.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/SettingAct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/SettingAct.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/prefrence.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/prefrence.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/FlowQuranVIewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/quranrepo/FlowQuranVIewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/surahdisplaycompose/SurahViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels/SurahViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/BooleanPreferenceSettingValueState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/FloatPreferenceSettingValueState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/IntPreferenceSettingValueState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/settings/preference/IntSetPreferenceSettingValueState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModelbackup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/CardsViewModelbackup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/LemmaViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/LemmaViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/RootModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/RootModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/sj/hisnul/compose/HisnulComposeAct.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +105,7 @@
       <list>
         <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -169,20 +145,20 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/java/com/appscreens" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/viewmodels" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/activities" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/settings/preference" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose/activity" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="com.example.tabcompose" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="com.activities" />
       <recent name="com.corpusutility" />
+      <recent name="com.viewmodels" />
+      <recent name="com.example.viewmodels" />
+      <recent name="com.activities" />
       <recent name="com.models" />
-      <recent name="com.settings" />
-      <recent name="com.example.compose.activity" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="com.example.compose" />
@@ -694,7 +670,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698866406035</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Initial commit">
+      <created>1698950083166</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1698950083166</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -738,7 +721,7 @@
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/NewQuranVerseScreen.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
           <line>120</line>
           <option name="timeStamp" value="175" />
         </line-breakpoint>
@@ -874,17 +857,17 @@
           <option name="timeStamp" value="296" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/VersesOccuranceCardsScreen.kt</url>
           <line>70</line>
           <option name="timeStamp" value="298" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/VersesOccuranceCardsScreen.kt</url>
           <line>82</line>
           <option name="timeStamp" value="299" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/compose/CardsScreen.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/VersesOccuranceCardsScreen.kt</url>
           <line>94</line>
           <option name="timeStamp" value="300" />
         </line-breakpoint>
@@ -899,12 +882,12 @@
           <option name="timeStamp" value="302" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt</url>
           <line>399</line>
           <option name="timeStamp" value="304" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/adaptive/UserDetail.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt</url>
           <line>398</line>
           <option name="timeStamp" value="305" />
         </line-breakpoint>

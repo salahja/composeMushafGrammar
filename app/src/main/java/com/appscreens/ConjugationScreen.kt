@@ -1,4 +1,4 @@
-package com.example.compose
+package com.appscreens
 
 import android.util.Log
 import androidx.compose.foundation.background

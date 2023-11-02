@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.example.Constant
-import com.example.compose.ExpandableCardModel
-import com.example.compose.ExpandableCardModelSpannableLists
+import com.example.viewmodels.ExpandableCardModel
+import com.example.viewmodels.ExpandableCardModelSpannableLists
 import com.example.compose.QuranMorphologyDetails
 import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
 import com.example.mushafconsolidated.Entities.CorpusVerbWbwOccurance

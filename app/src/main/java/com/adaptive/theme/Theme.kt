@@ -14,8 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-
-
+import com.skyyo.expandablelist.theme.LightColors
 
 
 private val DarkColorScheme = darkColorScheme(
@@ -61,6 +60,7 @@ fun ComposeTutorial12DifferentScreenSizesSupportTheme(
     }
 
     MaterialTheme(
+
         colorScheme = colorScheme,
         typography = Typography,
         content = content

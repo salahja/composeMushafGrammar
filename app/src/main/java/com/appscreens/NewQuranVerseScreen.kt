@@ -1,4 +1,4 @@
-package com.example.compose.theme
+package com.appscreens
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.activities.ExpandableText
+
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 
 import com.example.compose.TextChip
@@ -73,6 +73,7 @@ import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
+import com.example.compose.theme.Tooltips
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

@@ -29,7 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.preference.PreferenceManager
 import com.viewmodels.SurahModelList
 import com.example.mushafconsolidated.R
-import com.example.surahdisplaycompose.SurahViewModel
+import com.example.viewmodels.SurahViewModel
 import com.example.utility.QuranGrammarApplication.Companion.context
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

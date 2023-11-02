@@ -214,6 +214,86 @@ val DarkThemeColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
+
+ val LightColorsNew = lightColorScheme(
+    primary = mdnew_theme_light_primary,
+    onPrimary = mdnew_theme_light_onPrimary,
+    primaryContainer = mdnew_theme_light_primaryContainer,
+    onPrimaryContainer = mdnew_theme_light_onPrimaryContainer,
+    secondary = mdnew_theme_light_secondary,
+    onSecondary = mdnew_theme_light_onSecondary,
+    secondaryContainer = mdnew_theme_light_secondaryContainer,
+    onSecondaryContainer = mdnew_theme_light_onSecondaryContainer,
+    tertiary = mdnew_theme_light_tertiary,
+    onTertiary = mdnew_theme_light_onTertiary,
+    tertiaryContainer = mdnew_theme_light_tertiaryContainer,
+    onTertiaryContainer = mdnew_theme_light_onTertiaryContainer,
+    error = mdnew_theme_light_error,
+    errorContainer = mdnew_theme_light_errorContainer,
+    onError = mdnew_theme_light_onError,
+    onErrorContainer = mdnew_theme_light_onErrorContainer,
+    background = mdnew_theme_light_background,
+    onBackground = mdnew_theme_light_onBackground,
+    surface = mdnew_theme_light_surface,
+    onSurface = mdnew_theme_light_onSurface,
+    surfaceVariant = mdnew_theme_light_surfaceVariant,
+    onSurfaceVariant = mdnew_theme_light_onSurfaceVariant,
+    outline = mdnew_theme_light_outline,
+    inverseOnSurface = mdnew_theme_light_inverseOnSurface,
+    inverseSurface = mdnew_theme_light_inverseSurface,
+    inversePrimary = mdnew_theme_light_inversePrimary,
+    surfaceTint = mdnew_theme_light_surfaceTint,
+    outlineVariant = mdnew_theme_light_outlineVariant,
+    scrim = mdnew_theme_light_scrim,
+)
+
+
+ val DarkColorsNew = darkColorScheme(
+    primary = mdnew_theme_dark_primary,
+    onPrimary = mdnew_theme_dark_onPrimary,
+    primaryContainer = mdnew_theme_dark_primaryContainer,
+    onPrimaryContainer = mdnew_theme_dark_onPrimaryContainer,
+    secondary = mdnew_theme_dark_secondary,
+    onSecondary = mdnew_theme_dark_onSecondary,
+    secondaryContainer = mdnew_theme_dark_secondaryContainer,
+    onSecondaryContainer = mdnew_theme_dark_onSecondaryContainer,
+    tertiary = mdnew_theme_dark_tertiary,
+    onTertiary = mdnew_theme_dark_onTertiary,
+    tertiaryContainer = mdnew_theme_dark_tertiaryContainer,
+    onTertiaryContainer = mdnew_theme_dark_onTertiaryContainer,
+    error = mdnew_theme_dark_error,
+    errorContainer = mdnew_theme_dark_errorContainer,
+    onError = mdnew_theme_dark_onError,
+    onErrorContainer = mdnew_theme_dark_onErrorContainer,
+    background = mdnew_theme_dark_background,
+    onBackground = mdnew_theme_dark_onBackground,
+    surface = mdnew_theme_dark_surface,
+    onSurface = mdnew_theme_dark_onSurface,
+    surfaceVariant = mdnew_theme_dark_surfaceVariant,
+    onSurfaceVariant = mdnew_theme_dark_onSurfaceVariant,
+    outline = mdnew_theme_dark_outline,
+    inverseOnSurface = mdnew_theme_dark_inverseOnSurface,
+    inverseSurface = mdnew_theme_dark_inverseSurface,
+    inversePrimary = mdnew_theme_dark_inversePrimary,
+    surfaceTint = mdnew_theme_dark_surfaceTint,
+    outlineVariant = mdnew_theme_dark_outlineVariant,
+    scrim = mdnew_theme_dark_scrim,
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 @Composable
 fun JetRedditTheme(
@@ -265,8 +345,8 @@ fun AppTheme(
             if (useDarkTheme) dynamicDarkColorScheme(context)
             else dynamicLightColorScheme(context)
         }
-        useDarkTheme -> DarkColors
-        else -> LightColors
+        useDarkTheme -> DarkColorsNew
+        else -> LightColorsNew
     }
 
     val view = LocalView.current

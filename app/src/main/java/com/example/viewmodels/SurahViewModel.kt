@@ -1,4 +1,4 @@
-package com.example.surahdisplaycompose
+package com.example.viewmodels
 
 
 import android.annotation.SuppressLint
