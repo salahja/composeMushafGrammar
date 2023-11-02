@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.example.mushafconsolidated.R
-import com.skyyo.expandablelist.theme.AppThemeSettings
+
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -331,5 +331,5 @@ private fun AppDrawerFooter(modifier: Modifier = Modifier) {
 }
 
 private fun changeTheme() {
-    AppThemeSettings.isDarkThemeEnabled = !AppThemeSettings.isDarkThemeEnabled
+   // AppThemeSettings.isDarkThemeEnabled = !AppThemeSettings.isDarkThemeEnabled
 }

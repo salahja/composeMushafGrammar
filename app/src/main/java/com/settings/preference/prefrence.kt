@@ -64,7 +64,7 @@ fun SeetingScreen(navController: NavHostController) {
 
 
                 val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
+                    key = "Dark",
                     defaultValue = false,
                 )
                 SettingsSwitch(
@@ -80,7 +80,7 @@ fun SeetingScreen(navController: NavHostController) {
                     onCheckedChange = {
                         snackbarHostState.showChange(
                             coroutineScope = coroutineScope,
-                            key = "Memory",
+                            key = "Dark",
                             state = darkmode,
                         )
                     },
@@ -90,12 +90,9 @@ fun SeetingScreen(navController: NavHostController) {
             Row(Modifier.height(100.dp)) {
 
 
-                val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
-                    defaultValue = false,
-                )
+
                 val preferenceStorage = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
+                    key = "Conjugation",
                     defaultValue = false,
                 )
                 SettingsSwitch(
@@ -112,7 +109,7 @@ fun SeetingScreen(navController: NavHostController) {
                     onCheckedChange = {
                         snackbarHostState.showChange(
                             coroutineScope = coroutineScope,
-                            key = "Preferences",
+                            key = "Conjugation",
                             state = preferenceStorage,
                         )
                     },
@@ -124,7 +121,7 @@ fun SeetingScreen(navController: NavHostController) {
 
 
                 val showTranslation = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
+                    key = "showtranslation",
                     defaultValue = false,
                 )
 
@@ -142,7 +139,7 @@ fun SeetingScreen(navController: NavHostController) {
                     onCheckedChange = {
                         snackbarHostState.showChange(
                             coroutineScope = coroutineScope,
-                            key = "Memory",
+                            key = "showtranslation",
                             state = showTranslation,
                         )
                     },
@@ -153,7 +150,7 @@ fun SeetingScreen(navController: NavHostController) {
 
 
                 val wordbywordState = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
+                    key = "wbw",
                     defaultValue = false,
                 )
 
@@ -171,7 +168,7 @@ fun SeetingScreen(navController: NavHostController) {
                     onCheckedChange = {
                         snackbarHostState.showChange(
                             coroutineScope = coroutineScope,
-                            key = "Memory",
+                            key = "wbw",
                             state = wordbywordState,
                         )
                     },
@@ -185,7 +182,7 @@ fun SeetingScreen(navController: NavHostController) {
                     key = "switch_2",
                     defaultValue = false,
                 )
-                val selectTranslation = rememberPreferenceIntSettingState(key = "list_pref_1")
+                val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
                 SettingsList(
                     enabled = enabledState.value,
                     state = selectTranslation,
@@ -213,10 +210,7 @@ fun SeetingScreen(navController: NavHostController) {
             Row(Modifier.height(100.dp)) {
 
 
-                val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
-                    defaultValue = false,
-                )
+
                 val wbwchoice = rememberPreferenceIntSettingState(key = "list_pref_1")
                 SettingsList(
                     enabled = enabledState.value,
@@ -246,10 +240,6 @@ fun SeetingScreen(navController: NavHostController) {
             Row(Modifier.height(100.dp)) {
 
 
-                val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
-                    defaultValue = false,
-                )
                 val ArabicFontChoice = rememberPreferenceIntSettingState(key = "list_pref_1")
                 SettingsList(
                     enabled = enabledState.value,

@@ -86,7 +86,7 @@
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.compose.activity.BottomCompose"
+            android:name="com.activities.BottomCompose"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -96,7 +96,7 @@
         </activity>
 
         <activity
-            android:name="com.adaptive.AdaptiveMainActivity"
+            android:name="com.activities.AdaptiveMainActivity"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -106,7 +106,7 @@
         </activity>
 
         <activity
-            android:name="com.settings.SettingAct"
+            android:name="com.activities.SettingAct"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -120,17 +120,7 @@
 
 
         <activity
-            android:name="com.example.compose.activity.NewBottomActivity"
-            android:exported="true"
-            android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mushafconsolidated.Activity.MainActivity" />
-        </activity>
-
-        <activity
-            android:name="com.example.compose.activity.TwoPane"
+            android:name="com.activities.TwoPane"
             android:exported="true"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,12 +34,7 @@ import coil.compose.AsyncImage
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
-import com.example.tabcompose.TabItem
-import com.example.tabcompose.Tabs
-import com.example.tabcompose.TabsContent
 import com.example.utility.QuranGrammarApplication.Companion.context
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 
 @Composable
 fun HomeScreen() {

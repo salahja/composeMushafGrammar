@@ -20,6 +20,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.content.ContextCompat
+import com.corpusutility.AnnotationUtility
 import com.example.ComposeConstant
 import com.example.ComposeConstant.harfinnaspanDark
 import com.example.ComposeConstant.harfismspanDark
@@ -35,7 +36,6 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.utility.QuranGrammarApplication.Companion.context
 import java.util.regex.Pattern
 
 class CorpusUtilityorig(private var context: Context?) {

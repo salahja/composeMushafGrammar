@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,11 +53,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.adaptive.ExpandableText
-import com.codelab.basics.ui.theme.indopak
-import com.example.compose.LoadingData
+import com.activities.ExpandableText
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
+
 import com.example.compose.TextChip
-import com.example.compose.VerseModel
+import com.viewmodels.VerseModel
 
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
@@ -70,10 +68,11 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.utility.AnnotationUtility
+import com.corpusutility.AnnotationUtility
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
-import com.example.utility.refWordMorphologyDetails
+import com.corpusutility.refWordMorphologyDetails
+import com.example.compose.LoadingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -109,7 +108,8 @@ fun NewQuranVerseScreen(
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
-
+    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+    val showtranslation = rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
     //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
@@ -224,7 +224,7 @@ fun NewQuranVerseScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp)
-                                .background(MaterialTheme.colorScheme.background)
+                           //  .background(MaterialTheme.colorScheme.background)
                         ) {
                             Text(
 
@@ -304,7 +304,7 @@ fun NewQuranVerseScreen(
                                 wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
                                 wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
                                 wbw.corpus!!.arafive!!,
-                                wbw.wbw!!.en
+                                wbw.wbw!!.en,thememode
                             )
 
                             val toList = list.toList()
@@ -397,25 +397,7 @@ fun NewQuranVerseScreen(
                 }
 
 
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier
-                        .fillMaxWidth()
 
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 8.dp
-                        )
-
-                ) {
-                    Text(
-
-                        text = quranbySurah!![index].translation,
-                        fontSize = 20.sp,
-                        fontFamily = indopak,
-                        color = colorResource(id = R.color.kashmirigreen)
-                    )
-                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -444,6 +426,27 @@ fun NewQuranVerseScreen(
 
 
 
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 8.dp
+                        )
+
+                ) {
+                    if(showtranslation.value) {
+                        ExpandableText(
+
+                            text = AnnotatedString(quranbySurah!![index].translation)
+                            /*    fontSize = 20.sp,
+                        fontFamily = indopak,
+                        color = colorResource(id = R.color.kashmirigreen)*/
+                        )
+                    }
                 }
                 Row(
                     modifier = Modifier

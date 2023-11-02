@@ -100,9 +100,11 @@ task wrapper(type: Wrapper) {
 dependencies {
 
     implementation "io.github.pilgr:paperdb:2.7.2"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.0"
  //new
     implementation "com.github.alorma:compose-settings-storage-preferences:1.0.2"
+
+    implementation "androidx.datastore:datastore-preferences:1.1.0-alpha05"
     implementation "com.github.alorma:compose-settings-ui-m3:1.0.1"
     // for supporting large screen devices
     implementation "androidx.compose.material3:material3-window-size-class"

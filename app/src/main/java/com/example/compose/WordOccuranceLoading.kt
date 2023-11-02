@@ -20,7 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.viewmodels.RootModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,9 +44,9 @@ fun WordOccuranceLoading(
     progressIndicatorColor: Color = Color(0xFF35898f),
     progressIndicatorSize: Dp = 80.dp
 ) {
-    val viewModel: CardsViewModel = viewModel()
+  //  val viewModel: CardsViewModel = viewModel()
 
-    val showDialog by viewModel.open.observeAsState(initial = true) // initially, don't show the dialog
+ //   val showDialog by viewModel.open.observeAsState(initial = true) // initially, don't show the dialog
 
     if (isDisplayed) {
         AlertDialog(
@@ -94,16 +94,16 @@ fun WordOccuranceLoading(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RootWordLoading(
-    isDisplayed: Boolean,
+    showDialog: Boolean,
     cornerRadius: Dp = 16.dp,
     progressIndicatorColor: Color = Color(0xFF35898f),
     progressIndicatorSize: Dp = 80.dp
 ) {
     val viewModel: RootModel = viewModel()
 
-    val showDialog by viewModel.open.observeAsState(initial = true) // initially, don't show the dialog
+   // val showDialog by viewModel.open.observeAsState(initial = true) // initially, don't show the dialog
 
-    if (isDisplayed) {
+    if (showDialog) {
         AlertDialog(
             onDismissRequest = {
             },

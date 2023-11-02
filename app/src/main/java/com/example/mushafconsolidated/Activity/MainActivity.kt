@@ -9,13 +9,10 @@ import android.os.Environment
 import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.window.layout.WindowMetricsCalculator
-import com.adaptive.AdaptiveMainActivity
-import com.example.compose.activity.BottomCompose
-import com.example.compose.activity.TwoPane
+import com.activities.AdaptiveMainActivity
 
 import com.example.mushafconsolidated.Activityimport.BaseActivity
 import com.example.mushafconsolidated.R

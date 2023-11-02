@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.preference.PreferenceManager
-import com.example.compose.SurahModelList
+import com.viewmodels.SurahModelList
 import com.example.mushafconsolidated.R
 import com.example.surahdisplaycompose.SurahViewModel
 import com.example.utility.QuranGrammarApplication.Companion.context

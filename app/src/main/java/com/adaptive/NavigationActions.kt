@@ -1,11 +1,8 @@
 
 
-import com.adaptive.Screen
+import com.activities.Screen
 
 
-
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 

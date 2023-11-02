@@ -16,9 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
-import com.adaptive.Screen
+import com.activities.Screen
 import com.alorma.compose.settings.example.demo.SettingsToolbar
-import com.alorma.compose.settings.example.ui.Navigation
 import com.alorma.compose.settings.storage.base.SettingValueState
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
 

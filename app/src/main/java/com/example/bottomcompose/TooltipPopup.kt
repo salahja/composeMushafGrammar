@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
-import com.codelab.basics.ui.theme.Dark
+
 
 import kotlin.math.roundToInt
 
@@ -270,7 +270,7 @@ fun BubbleLayout(
 
                 drawPath(
                     path = path,
-                    color = Dark,
+                    color = Color.Blue
                 )
                 path.close()
             }

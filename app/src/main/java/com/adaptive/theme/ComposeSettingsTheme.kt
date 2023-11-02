@@ -8,6 +8,10 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.skyyo.expandablelist.theme.DarkColors
+import com.skyyo.expandablelist.theme.DarkThemeColors
+import com.skyyo.expandablelist.theme.LightColors
+import com.skyyo.expandablelist.theme.LightThemeColors
 
 
 @Composable
@@ -25,9 +29,9 @@ fun ComposeSettingsTheme(
             }
         } else {
             if (darkThemePreference) {
-                darkColorScheme()
+                DarkColors
             } else {
-                lightColorScheme()
+                LightColors
             }
         },
         content = content,

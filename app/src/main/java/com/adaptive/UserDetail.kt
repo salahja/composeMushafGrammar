@@ -3,7 +3,6 @@ package com.adaptive
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.IndicationInstance
@@ -19,15 +18,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetState
@@ -36,41 +34,42 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -79,25 +78,22 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.Entities.qurandictionary
 import com.example.mushafconsolidated.Utils
 import com.example.utility.QuranGrammarApplication
-import com.skyyo.expandablelist.theme.AppThemeSettings
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
+
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailScreen(
+fun RootDetailScreen(
     userId: String?,
     isOnlyDetailScreen: Boolean,
     navController: NavHostController,
     onBackPressed: () -> Unit,
 
-) {
-    val util= Utils(QuranGrammarApplication.context!!)
-    val searchs= "$userId%";
+    ) {
+    val util = Utils(QuranGrammarApplication.context!!)
+    val searchs = "$userId%";
     val letter: List<VerbCorpus> = util.getQuranVerbsByfirstletter(searchs!!)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -129,10 +125,10 @@ fun UserDetailScreen(
 
             columns = GridCells.Fixed(4),
 
-        ) {
+            ) {
             items(letter!!.size) { index ->
                 //          indexval=index
-                GridList(letter[index],navController)
+                GridList(letter[index], navController)
             }
         }
     }
@@ -143,6 +139,7 @@ fun GridLists(qurandictionary: qurandictionary) {
     TODO("Not yet implemented")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GridList(
     surahModelList: VerbCorpus,
@@ -150,37 +147,177 @@ fun GridList(
 
     ) {
 
-    val darkThemeEnabled = AppThemeSettings.isDarkThemeEnabled
     val interactionSource = remember { MutableInteractionSource() }
 
 
 
 
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .wrapContentHeight()
+            .padding(5.dp)
+    ) {
+
+        val root = surahModelList!!.root_a
+        // indexval = surahModelList!!.chapterid
+        // indexval = surahModelList!!.chapterid
+        /*     ClickableText(
+                 text = AnnotatedString(root.toString()),
+
+                 onClick = {
+                     navController.navigate(
+
+                         "roots/$root"
+                     )
+
+                 })*/
+
+        var selected by remember { mutableStateOf(false) }
+
+       val highlightColor: Color = Color(0xFFE91E63)
+        ElevatedFilterChip(
+            modifier = Modifier.padding(all = 6.dp)
+                .wrapContentHeight(),
+            selected = selected,
+            onClick = { selected = !selected
+
+                navController.navigate(
+
+                    "roots/$root"
+                )
+            },
+
+
+            label = {
+                val item = root
+                Text(
+                    text = root.toString(),
+                    fontWeight =  FontWeight.Medium,
+
+
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(8.dp)
+                )
+            },
+
+            leadingIcon = if (selected) {
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        contentDescription = "Localized Description",
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                }
+            } else {
+                null
+            },
+            colors = FilterChipDefaults.elevatedFilterChipColors(
+                labelColor = highlightColor,
+                selectedLabelColor = highlightColor,
+                selectedLeadingIconColor = highlightColor
+                //selectedContainerColor = highlightColor.copy(alpha = 0.1f)
+            ),
+            elevation = FilterChipDefaults.elevatedFilterChipElevation(
+
+            ),
+            border = null
+   /*     border = FilterChipDefaults.filterChipBorder(
+            selectedBorderColor = highlightColor,
+            selectedBorderWidth = 0.3.dp,
+            borderColor = highlightColor
+        )*/
+        )
+
+
+
+
+
+
+
+
+/*
+
+        ElevatedFilterChip(
+
+            elevation= FilterChipDefaults.elevatedFilterChipElevation(),
+
+            colors = FilterChipDefaults.elevatedFilterChipColors(Color.Red),
+            modifier = Modifier.wrapContentHeight(),
+
+            selected = true, onClick = {
+            navController.navigate(
+
+                "roots/$root"
+            )
+
+        }, label = {
+
+            if (root != null) {
+                androidx.compose.material.Text(root)
+            }
+
+            *//*TODO*//*
+        })*/
+
+        /*         AssistChip(
+                     elevation = AssistChipDefaults.assistChipElevation(
+                         elevation = 16.dp
+                     ),
+                     modifier=Modifier.padding(10.dp),
+                     onClick = {
+                         navController.navigate(
+
+                             "roots/$root"
+                         )
+                     },
+                     label = {
+                         if (root != null) {
+                             androidx.compose.material.Text( root)
+                         }
+
+                     },
+
+                     leadingIcon = {
+                         androidx.compose.material.Icon(
+                             Icons.Filled.Settings,
+                             contentDescription = "Localized description",
+                             Modifier.size(AssistChipDefaults.IconSize)
+                         )
+                     }
+                 )
+     */
+
+
+    }
+
+
+    /*
+
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.wrapContentHeight()
         ) {
-            val root=        surahModelList!!.root_a
-           // indexval = surahModelList!!.chapterid
+            val root = surahModelList!!.root_a
+            // indexval = surahModelList!!.chapterid
 
             ElevatedCard(onClick = {
                 navController.navigate(
 
-                    "roots/$root")
+                    "roots/$root"
+                )
             }) {
-                Icon(Icons.Filled.ShoppingCart, "")
+                //     Icon(R.id.construction, "")
                 Spacer(Modifier.padding(20.dp))
                 Text(text = surahModelList!!.root_a.toString())
+
+
             }
-
-
-
-
-
-
-
-    }
+        }
+    */
 
 
     @Suppress("DEPRECATION")
@@ -245,7 +382,10 @@ fun GridList(
                                         tint = Color.White
                                     )
                                     Spacer(modifier = Modifier.padding(8.dp))
-                                    androidx.compose.material.Text(text = bottomSheetItems[it].title, color = Color.White)
+                                    androidx.compose.material.Text(
+                                        text = bottomSheetItems[it].title,
+                                        color = Color.White
+                                    )
                                 }
 
                             })
@@ -311,7 +451,7 @@ fun ElevatedCard(
 
     Row(
         modifier = modifier
-            .defaultMinSize(minWidth = 76.dp, minHeight = 48.dp)
+
 
             .clickable(
                 enabled = enabled,
@@ -321,7 +461,7 @@ fun ElevatedCard(
             )
             .border(width = 2.dp, color = Color.Blue, shape = shape)
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )
@@ -472,6 +612,7 @@ object ScaleIndication : Indication {
         }
     }
 }
+
 @Composable
 fun HoverButton(
     onClick: () -> Unit,

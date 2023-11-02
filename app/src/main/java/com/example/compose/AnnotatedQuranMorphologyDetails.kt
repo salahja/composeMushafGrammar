@@ -7,12 +7,11 @@ import androidx.compose.ui.text.AnnotatedString
 import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.utility.AnnotationUtility
-import com.example.utility.AnnotationUtility.Companion.AnnotatedSetWordSpanTag
-import com.example.utility.AnnotationUtility.Companion.AnnotatedWordSpan
-import com.example.utility.CorpusConstants
-import com.example.utility.CorpusConstants.verbfeaturesenglisharabic
-import com.example.utility.CorpusUtilityorig.Companion.NewSetWordSpan
+import com.corpusutility.AnnotationUtility
+import com.corpusutility.AnnotationUtility.Companion.AnnotatedSetWordSpanTag
+import com.corpusutility.AnnotationUtility.Companion.AnnotatedWordSpan
+import com.corpusutility.CorpusConstants
+import com.corpusutility.CorpusConstants.verbfeaturesenglisharabic
 
 import java.util.Objects
 
