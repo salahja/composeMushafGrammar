@@ -49,6 +49,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -171,8 +172,9 @@ private fun LibraryTopBar(navController: NavHostController,scrollBehavior: TopAp
                 Icon(Icons.Filled.Favorite, contentDescription = null)
             }
         },
-      /*  colors = TopAppBarDefaults.mediumTopAppBarColors(
-         //   containerColor = md_theme_light_primaryContainer,
+
+      colors = TopAppBarDefaults.mediumTopAppBarColors(
+           containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp),
            // scrolledContainerColor = MaterialTheme.colorScheme.background,
             titleContentColor = if (isCollapsed) {
                 MaterialTheme.colorScheme.onBackground
@@ -180,7 +182,7 @@ private fun LibraryTopBar(navController: NavHostController,scrollBehavior: TopAp
                 MaterialTheme.colorScheme.onPrimary
             },
         ),
-*/
+
         scrollBehavior = scrollBehavior,
     )
 

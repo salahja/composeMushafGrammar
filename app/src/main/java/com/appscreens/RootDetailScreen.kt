@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
@@ -43,6 +44,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
@@ -68,6 +71,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -149,35 +155,61 @@ fun GridList(
 
     val interactionSource = remember { MutableInteractionSource() }
 
+    Card(
 
 
+        /*      colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+        ),*/
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ),
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
+
         modifier = Modifier
-            .wrapContentHeight()
-            .padding(5.dp)
-    ) {
+            .fillMaxWidth()
 
-        val root = surahModelList!!.root_a
-        // indexval = surahModelList!!.chapterid
-        // indexval = surahModelList!!.chapterid
-        /*     ClickableText(
-                 text = AnnotatedString(root.toString()),
+            .padding(
+                horizontal = 10.dp,
+                vertical = 8.dp
+            )
+    ){
 
-                 onClick = {
-                     navController.navigate(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(5.dp)
+        ) {
 
-                         "roots/$root"
-                     )
+            val root = surahModelList!!.root_a
+            // indexval = surahModelList!!.chapterid
+            // indexval = surahModelList!!.chapterid
+            ClickableText(
+                text = AnnotatedString(root.toString()),
 
-                 })*/
+                onClick = {
+                    navController.navigate(
 
-        var selected by remember { mutableStateOf(false) }
+                        "roots/$root"
+                    )
 
-       val highlightColor: Color = Color(0xFFE91E63)
-        ElevatedFilterChip(
+                },style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
+            )
+
+            var selected by remember { mutableStateOf(false) }
+
+            val highlightColor: Color = Color(0xFFE91E63)
+    }
+
+
+
+       /* ElevatedFilterChip(
             modifier = Modifier.padding(all = 6.dp)
                 .wrapContentHeight(),
             selected = selected,
@@ -223,14 +255,10 @@ fun GridList(
 
             ),
             border = null
-   /*     border = FilterChipDefaults.filterChipBorder(
-            selectedBorderColor = highlightColor,
-            selectedBorderWidth = 0.3.dp,
-            borderColor = highlightColor
-        )*/
+
         )
 
-
+*/
 
 
 

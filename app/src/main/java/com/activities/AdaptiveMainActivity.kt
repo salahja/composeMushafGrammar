@@ -93,10 +93,11 @@ import androidx.navigation.navigation
 import com.appscreens.HomeScreen
 import com.viewmodels.HomeViewModel
 import com.appscreens.RootDetailScreen
-import com.adaptive.theme.BottomSheetWordDetails
+
 import com.adaptive.theme.ComposeSettingsTheme
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
+import com.appscreens.BottomSheetWordDetails
 
 import com.viewmodels.CardsViewModel
 import com.corpusutility.NewQuranMorphologyDetails
