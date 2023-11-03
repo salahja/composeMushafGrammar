@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SettingsInputComponent
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -158,13 +159,45 @@ fun VerbRootGridList(
     ) {
 
     val interactionSource = remember { MutableInteractionSource() }
+    val root = surahModelList!!.root_a
+    Row(
+            verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceEvenly,
+    modifier = Modifier
+        .wrapContentHeight()
+        .padding(5.dp)
+    ) {
+        PressIconButton(
+            onClick = {
+                navController.navigate(
 
+                    "roots/$root",
+                )
+            },
+
+
+            icon = { Icon(Icons.Filled.SettingsInputComponent, contentDescription = null) },
+            text = {
+                Text(
+                    root.toString(),
+                    fontSize = 20.sp,
+                )
+
+
+                   },
+            colors =MaterialTheme.colorScheme.primary,
+
+        )
+
+    }
+
+/*
     Card(
 
 
-        /*      colors = CardDefaults.cardColors(
+        *//*      colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
-        ),*/
+        ),*//*
         elevation = CardDefaults.cardElevation(
             defaultElevation = 16.dp
         ),
@@ -213,7 +246,7 @@ fun VerbRootGridList(
 
 
 
-       /* ElevatedFilterChip(
+       *//* ElevatedFilterChip(
             modifier = Modifier.padding(all = 6.dp)
                 .wrapContentHeight(),
             selected = selected,
@@ -262,94 +295,15 @@ fun VerbRootGridList(
 
         )
 
-*/
+*//*
 
 
 
 
 
 
-/*
 
-        ElevatedFilterChip(
-
-            elevation= FilterChipDefaults.elevatedFilterChipElevation(),
-
-            colors = FilterChipDefaults.elevatedFilterChipColors(Color.Red),
-            modifier = Modifier.wrapContentHeight(),
-
-            selected = true, onClick = {
-            navController.navigate(
-
-                "roots/$root"
-            )
-
-        }, label = {
-
-            if (root != null) {
-                androidx.compose.material.Text(root)
-            }
-
-            *//*TODO*//*
-        })*/
-
-        /*         AssistChip(
-                     elevation = AssistChipDefaults.assistChipElevation(
-                         elevation = 16.dp
-                     ),
-                     modifier=Modifier.padding(10.dp),
-                     onClick = {
-                         navController.navigate(
-
-                             "roots/$root"
-                         )
-                     },
-                     label = {
-                         if (root != null) {
-                             androidx.compose.material.Text( root)
-                         }
-
-                     },
-
-                     leadingIcon = {
-                         androidx.compose.material.Icon(
-                             Icons.Filled.Settings,
-                             contentDescription = "Localized description",
-                             Modifier.size(AssistChipDefaults.IconSize)
-                         )
-                     }
-                 )
-     */
-
-
-    }
-
-
-    /*
-
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.wrapContentHeight()
-        ) {
-            val root = surahModelList!!.root_a
-            // indexval = surahModelList!!.chapterid
-
-            ElevatedCard(onClick = {
-                navController.navigate(
-
-                    "roots/$root"
-                )
-            }) {
-                //     Icon(R.id.construction, "")
-                Spacer(Modifier.padding(20.dp))
-                Text(text = surahModelList!!.root_a.toString())
-
-
-            }
-        }
-    */
+    }*/
 
 
     @Suppress("DEPRECATION")
@@ -478,15 +432,49 @@ fun NounRootGridList(
 
     ) {
 
+
     val interactionSource = remember { MutableInteractionSource() }
+    val root = surahModelList!!.root_a
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .wrapContentHeight()
+            .padding(5.dp)
+    ) {
+        PressIconButton(
+            onClick = {
+                navController.navigate(
+
+                    "nounroot/$root"
+                )
+            },
+
+            icon = { Icon(Icons.Filled.SettingsInputComponent, contentDescription = null) },
 
 
+            text = {       Text(
+                root.toString(),
+                fontSize = 20.sp,
+            )
+
+
+            },
+            colors =MaterialTheme.colorScheme.secondary,
+        )
+
+    }
+
+
+/*
     Card(
 
 
-        /*      colors = CardDefaults.cardColors(
+        */
+/*      colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
-        ),*/
+        ),*//*
+
         elevation = CardDefaults.cardElevation(
             defaultElevation = 16.dp
         ),
@@ -532,6 +520,8 @@ fun NounRootGridList(
 
             val highlightColor: Color = Color(0xFFE91E63)
         }
+    }
+*/
 
 
 
@@ -644,7 +634,7 @@ fun NounRootGridList(
      */
 
 
-    }
+
 
 
     /*
@@ -989,3 +979,84 @@ fun HoverButton(
         text()
     }
 }
+
+
+
+/*
+
+        ElevatedFilterChip(
+
+            elevation= FilterChipDefaults.elevatedFilterChipElevation(),
+
+            colors = FilterChipDefaults.elevatedFilterChipColors(Color.Red),
+            modifier = Modifier.wrapContentHeight(),
+
+            selected = true, onClick = {
+            navController.navigate(
+
+                "roots/$root"
+            )
+
+        }, label = {
+
+            if (root != null) {
+                androidx.compose.material.Text(root)
+            }
+
+            *//*TODO*//*
+        })*/
+
+/*         AssistChip(
+             elevation = AssistChipDefaults.assistChipElevation(
+                 elevation = 16.dp
+             ),
+             modifier=Modifier.padding(10.dp),
+             onClick = {
+                 navController.navigate(
+
+                     "roots/$root"
+                 )
+             },
+             label = {
+                 if (root != null) {
+                     androidx.compose.material.Text( root)
+                 }
+
+             },
+
+             leadingIcon = {
+                 androidx.compose.material.Icon(
+                     Icons.Filled.Settings,
+                     contentDescription = "Localized description",
+                     Modifier.size(AssistChipDefaults.IconSize)
+                 )
+             }
+         )
+*/
+
+/*
+
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier.wrapContentHeight()
+    ) {
+        val root = surahModelList!!.root_a
+        // indexval = surahModelList!!.chapterid
+
+        ElevatedCard(onClick = {
+            navController.navigate(
+
+                "roots/$root"
+            )
+        }) {
+            //     Icon(R.id.construction, "")
+            Spacer(Modifier.padding(20.dp))
+            Text(text = surahModelList!!.root_a.toString())
+
+
+        }
+    }
+*/
+

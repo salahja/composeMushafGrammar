@@ -10,15 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NounRootScreens.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/previews.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NounRootScreens.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NounRootScreens.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/NounCorpusDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/DAO/NounCorpusDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -662,7 +658,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698977191985</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Initial commit">
+      <created>1699029075543</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1699029075543</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -853,12 +856,12 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt</url>
-          <line>390</line>
+          <line>344</line>
           <option name="timeStamp" value="304" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt</url>
-          <line>389</line>
+          <line>343</line>
           <option name="timeStamp" value="305" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -901,8 +904,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootDetailScreen.kt</url>
-          <line>520</line>
+          <line>508</line>
           <option name="timeStamp" value="329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt</url>
+          <line>95</line>
+          <option name="timeStamp" value="331" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
