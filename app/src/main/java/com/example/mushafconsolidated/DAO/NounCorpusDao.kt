@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import com.example.mushafconsolidated.Entities.NounCorpus
+import com.example.mushafconsolidated.Entities.VerbCorpus
 
 
 @Dao
@@ -33,8 +34,14 @@ interface NounCorpusDao {
     @Query("SELECT count(root_a) as count,root_a,lemma_a,araword,surah,ayah,wordno,token,words,tag,propone,proptwo,form,lemma,root,gendernumber,type,cases,details,id  FROM nouncorpus where root_a=:root group by root_a,form order by surah,ayah")
     fun getNounBreakup(root: String): List<NounCorpus>
 
-/*    @RawQuery(observedEntities = arrayOf(CorpusExpandWbwPOJO::class))
-    fun getALL(query: SupportSQLiteQuery?): LiveData<List<CorpusExpandWbwPOJO>>*/
+    @Query("select * from nouncorpus where root_a  LIKE  :arg  group by root_a order by root_a  ")
+    fun getQuranNounByfirstletter(arg: String?): List<NounCorpus>
+
+
+
+
+    /*    @RawQuery(observedEntities = arrayOf(CorpusExpandWbwPOJO::class))
+        fun getALL(query: SupportSQLiteQuery?): LiveData<List<CorpusExpandWbwPOJO>>*/
 
 
     //   List<NounCorpus> getNounBreakUp(String verbroot);

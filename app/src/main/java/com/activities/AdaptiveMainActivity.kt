@@ -79,6 +79,7 @@ import com.appscreens.NewQuranVerseScreen
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.appscreens.MatTab
+import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.RootViewModelFactory
@@ -544,10 +545,6 @@ fun MainContent(
                         root = root.replace("ء", "ا")
                     }
                     val rootmodel: RootModel = viewModel(factory = RootViewModelFactory(root))
-
-
-
-
                     RootScreens(
                         rootmodel, isOnlyDetailScreen = isOnlyDetailScreen,
                         navigationType = navigationType,
@@ -555,13 +552,39 @@ fun MainContent(
                         onDetailBackPressed = closeUserDetail,
                         navController
                     )
-
-
                 }
 
+                composable(
+
+                    "nounroot/{root}",
+                    arguments = listOf(
+
+                        navArgument("root") {
+                            type = NavType.StringType
+                            defaultValue = "نصر"
+                        },
+
+                        )
 
 
+                ) { backStackEntry ->
 
+                    var root = backStackEntry.arguments?.getString("root")
+
+
+                    val indexOf = root!!.indexOf("ء")
+                    if (indexOf != -1) {
+                        root = root!!.replace("ء", "ا")
+                    }
+                    val rootmodel: RootModel = viewModel(factory = RootViewModelFactory(root!!))
+                    NounRootScreens(
+                        rootmodel, isOnlyDetailScreen = isOnlyDetailScreen,
+                        navigationType = navigationType,
+                        goToUserDetail = goToUserDetail,
+                        onDetailBackPressed = closeUserDetail,
+                        navController
+                    )
+                }
 
 
 

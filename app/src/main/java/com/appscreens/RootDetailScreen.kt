@@ -35,7 +35,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MailOutline
@@ -46,9 +45,7 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -79,6 +76,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mushafconsolidated.Entities.NounCorpus
 
 import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.Entities.qurandictionary
@@ -100,7 +98,8 @@ fun RootDetailScreen(
     ) {
     val util = Utils(QuranGrammarApplication.context!!)
     val searchs = "$userId%";
-    val letter: List<VerbCorpus> = util.getQuranVerbsByfirstletter(searchs!!)
+    val verbs: List<VerbCorpus> = util.getQuranVerbsByfirstletter(searchs!!)
+    val nouns: List<NounCorpus> = util.getQuranNounByfirstletter(searchs!!)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -132,11 +131,16 @@ fun RootDetailScreen(
             columns = GridCells.Fixed(4),
 
             ) {
-            items(letter!!.size) { index ->
+            items(verbs!!.size) { index ->
                 //          indexval=index
-                GridList(letter[index], navController)
+                VerbRootGridList(verbs[index], navController)
+            }
+            items(nouns!!.size) { index ->
+                //          indexval=index
+                NounRootGridList(nouns[index], navController)
             }
         }
+
     }
 
 }
@@ -147,7 +151,7 @@ fun GridLists(qurandictionary: qurandictionary) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GridList(
+fun VerbRootGridList(
     surahModelList: VerbCorpus,
     navController: NavHostController,
 
@@ -465,6 +469,332 @@ fun GridList(
         }
     }
 }
+
+
+@Composable
+fun NounRootGridList(
+    surahModelList: NounCorpus,
+    navController: NavHostController,
+
+    ) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+
+
+    Card(
+
+
+        /*      colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+        ),*/
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ),
+
+
+        modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(
+                horizontal = 10.dp,
+                vertical = 8.dp
+            )
+    ){
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(5.dp)
+        ) {
+
+            val root = surahModelList!!.root_a
+            // indexval = surahModelList!!.chapterid
+            // indexval = surahModelList!!.chapterid
+            ClickableText(
+                text = AnnotatedString(root.toString()),
+
+                onClick = {
+                    navController.navigate(
+
+                        "nounroot/$root"
+                    )
+
+                },style = TextStyle(
+                    color = MaterialTheme.colorScheme.surfaceBright,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
+            )
+
+            var selected by remember { mutableStateOf(false) }
+
+            val highlightColor: Color = Color(0xFFE91E63)
+        }
+
+
+
+        /* ElevatedFilterChip(
+             modifier = Modifier.padding(all = 6.dp)
+                 .wrapContentHeight(),
+             selected = selected,
+             onClick = { selected = !selected
+
+                 navController.navigate(
+
+                     "roots/$root"
+                 )
+             },
+
+
+             label = {
+                 val item = root
+                 Text(
+                     text = root.toString(),
+                     fontWeight =  FontWeight.Medium,
+
+
+                     style = MaterialTheme.typography.bodyLarge,
+                     modifier = Modifier.padding(8.dp)
+                 )
+             },
+
+             leadingIcon = if (selected) {
+                 {
+                     Icon(
+                         imageVector = Icons.Filled.Done,
+                         contentDescription = "Localized Description",
+                         modifier = Modifier.size(FilterChipDefaults.IconSize)
+                     )
+                 }
+             } else {
+                 null
+             },
+             colors = FilterChipDefaults.elevatedFilterChipColors(
+                 labelColor = highlightColor,
+                 selectedLabelColor = highlightColor,
+                 selectedLeadingIconColor = highlightColor
+                 //selectedContainerColor = highlightColor.copy(alpha = 0.1f)
+             ),
+             elevation = FilterChipDefaults.elevatedFilterChipElevation(
+
+             ),
+             border = null
+
+         )
+
+ */
+
+
+
+
+
+
+        /*
+
+                ElevatedFilterChip(
+
+                    elevation= FilterChipDefaults.elevatedFilterChipElevation(),
+
+                    colors = FilterChipDefaults.elevatedFilterChipColors(Color.Red),
+                    modifier = Modifier.wrapContentHeight(),
+
+                    selected = true, onClick = {
+                    navController.navigate(
+
+                        "roots/$root"
+                    )
+
+                }, label = {
+
+                    if (root != null) {
+                        androidx.compose.material.Text(root)
+                    }
+
+                    *//*TODO*//*
+        })*/
+
+        /*         AssistChip(
+                     elevation = AssistChipDefaults.assistChipElevation(
+                         elevation = 16.dp
+                     ),
+                     modifier=Modifier.padding(10.dp),
+                     onClick = {
+                         navController.navigate(
+
+                             "roots/$root"
+                         )
+                     },
+                     label = {
+                         if (root != null) {
+                             androidx.compose.material.Text( root)
+                         }
+
+                     },
+
+                     leadingIcon = {
+                         androidx.compose.material.Icon(
+                             Icons.Filled.Settings,
+                             contentDescription = "Localized description",
+                             Modifier.size(AssistChipDefaults.IconSize)
+                         )
+                     }
+                 )
+     */
+
+
+    }
+
+
+    /*
+
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.wrapContentHeight()
+        ) {
+            val root = surahModelList!!.root_a
+            // indexval = surahModelList!!.chapterid
+
+            ElevatedCard(onClick = {
+                navController.navigate(
+
+                    "roots/$root"
+                )
+            }) {
+                //     Icon(R.id.construction, "")
+                Spacer(Modifier.padding(20.dp))
+                Text(text = surahModelList!!.root_a.toString())
+
+
+            }
+        }
+    */
+
+
+    @Suppress("DEPRECATION")
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+    @ExperimentalFoundationApi
+    @Composable
+    fun BottomDialog() {
+        //Lets create list to show in bottom sheet
+        data class BottomSheetItem(val title: String, val icon: ImageVector)
+
+        val bottomSheetItems = listOf(
+            BottomSheetItem(title = "Notification", icon = Icons.Default.Notifications),
+            BottomSheetItem(title = "Mail", icon = Icons.Default.MailOutline),
+            BottomSheetItem(title = "Scan", icon = Icons.Default.Search),
+            BottomSheetItem(title = "Edit", icon = Icons.Default.Edit),
+            BottomSheetItem(title = "Favorite", icon = Icons.Default.Favorite),
+            BottomSheetItem(title = "Settings", icon = Icons.Default.Settings)
+        )
+
+        //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
+        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+            bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+        )
+        val coroutineScope = rememberCoroutineScope()
+        BottomSheetScaffold(
+            scaffoldState = bottomSheetScaffoldState,
+            sheetShape = RoundedCornerShape(topEnd = 30.dp),
+            sheetContent = {
+                //Ui for bottom sheet
+                Column(
+                    content = {
+
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        androidx.compose.material.Text(
+                            text = "Bottom Sheet",
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 21.sp,
+                            color = Color.White
+                        )
+                        LazyVerticalGrid(
+                            //cells = GridCells.Fixed(3)
+                            columns = GridCells.Fixed(3), //https://developer.android.com/jetpack/compose/lists
+                        ) {
+                            items(bottomSheetItems.size, itemContent = {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 24.dp)
+                                        .clickable {
+
+
+                                        },
+                                ) {
+                                    Spacer(modifier = Modifier.padding(8.dp))
+                                    androidx.compose.material.Icon(
+                                        bottomSheetItems[it].icon,
+                                        bottomSheetItems[it].title,
+                                        tint = Color.White
+                                    )
+                                    Spacer(modifier = Modifier.padding(8.dp))
+                                    androidx.compose.material.Text(
+                                        text = bottomSheetItems[it].title,
+                                        color = Color.White
+                                    )
+                                }
+
+                            })
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(350.dp)
+
+                        //.background(Color(0xFF6650a4))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFDBCEE7),
+                                    Color(0xFFBDB9C5)
+                                )
+                            ),
+                            // shape = RoundedCornerShape(cornerRadius)
+                        )
+                        .padding(16.dp),
+
+                    )
+            },
+            sheetPeekHeight = 0.dp,
+
+            ) {
+
+
+            //Add button to open bottom sheet
+            Column(modifier = Modifier.fillMaxSize()) {
+                Button(
+                    modifier = Modifier
+                        .padding(20.dp),
+                    onClick = {
+                        coroutineScope.launch {
+                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            } else {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                    }
+                ) {
+                    androidx.compose.material.Text(
+                        text = "Click to show Bottom Sheet"
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+
+
 
 @Composable
 fun ElevatedCard(
