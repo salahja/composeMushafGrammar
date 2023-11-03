@@ -177,12 +177,9 @@ fun SeetingScreen(navController: NavHostController) {
             }
             Row(Modifier.height(100.dp)) {
 
-
-                val selectTranslationStateCallback = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
-                    defaultValue = false,
-                )
                 val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
+
+              //  val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
                 SettingsList(
                     enabled = enabledState.value,
                     state = selectTranslation,
@@ -240,7 +237,7 @@ fun SeetingScreen(navController: NavHostController) {
             Row(Modifier.height(100.dp)) {
 
 
-                val ArabicFontChoice = rememberPreferenceIntSettingState(key = "list_pref_1")
+                val ArabicFontChoice = rememberPreferenceIntSettingState(key = "arabicfont")
                 SettingsList(
                     enabled = enabledState.value,
                     state = ArabicFontChoice,
@@ -268,10 +265,7 @@ fun SeetingScreen(navController: NavHostController) {
             Row(Modifier.height(100.dp)) {
 
 
-                val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
-                    defaultValue = false,
-                )
+
                 val themeSelectionChoice = rememberPreferenceIntSettingState(key = "list_pref_1")
                 SettingsList(
                     enabled = enabledState.value,

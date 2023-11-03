@@ -10,11 +10,15 @@ import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import com.example.Constant
+import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValueState
+import com.corpusutility.AnnotationUtility
+import com.example.ComposeConstant
 import com.example.viewmodels.ExpandableCardModelSpannableLists
 import com.example.compose.QuranMorphologyDetails
 import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
@@ -23,8 +27,6 @@ import com.example.mushafconsolidated.Entities.NounCorpusBreakup
 import com.example.mushafconsolidated.Entities.VerbCorpusBreakup
 import com.example.mushafconsolidated.Utils
 
-import com.example.utility.CorpusUtilityorig
-import com.example.utility.CorpusUtilityorig.Companion.getSpannableVerses
 import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,7 +41,8 @@ class CardsViewModel(
 
     verbroot: String,
     nounroot: String,
-    isharf: Boolean
+    isharf: Boolean,
+    selectTranslation: IntPreferenceSettingValueState?
 ) : ViewModel() {
     val builder = AlertDialog.Builder(QuranGrammarApplication.context!!)
     var listss: ArrayList<String> = ArrayList<String>()
@@ -64,17 +67,22 @@ class CardsViewModel(
 
     init {
         shared = PreferenceManager.getDefaultSharedPreferences(QuranGrammarApplication.context!!)
+
         var job = Job()
         util = Utils(QuranGrammarApplication.context!!)
         if (isharf) {
-            getZarf(nounroot, isharf)
+            getZarf(nounroot, isharf,selectTranslation)
         } else
-            getNounData(nounroot, verbroot)
+            getNounData(nounroot, verbroot,selectTranslation)
 
 
     }
 
-    private fun getZarf(nounroot: String, isharf: Boolean) {
+    private fun getZarf(
+        nounroot: String,
+        isharf: Boolean,
+        selectTranslation: IntPreferenceSettingValueState?
+    ) {
         viewModelScope.launch {
             loading.value = true
             withContext(Dispatchers.Default) {
@@ -90,32 +98,33 @@ class CardsViewModel(
                         lemma = ""
                     }
                     //   lemma = vers.lemma!!
-                    val lists: ArrayList<SpannableString> = ArrayList<SpannableString>()
+                    val lists: ArrayList<AnnotatedString> = ArrayList<AnnotatedString>()
                     var titlspan: String = ""
                     val sb = StringBuilder()
-                    val spannableVerses = getSpannableVerses(
+                    val annotatedVerse = AnnotationUtility.getAnnotedVerse(
                         vers.araone + vers.aratwo + vers.arathree + vers.arafour + vers.arafive,
                         vers.qurantext!!
                     )
                     sb.append(vers.surah).append(":").append(vers.ayah).append(":")
                         .append(vers.wordno).append("-").append(vers.en).append("-")
-                    val ref = SpannableString(sb.toString())
-                    ref.setSpan(
-                        Constant.particlespanDark,
-                        0,
-                        sb.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    val which = shared.getString("selecttranslation", "en_sahih")
-                    var trans: String? = null
-                    when (which) {
-                        "en_sahih" -> trans = SpannableString.valueOf(vers.translation).toString()
-                        "ur_jalalayn" -> trans =
-                            SpannableString.valueOf(vers.ur_jalalayn).toString()
+                    val ref = AnnotatedString(sb.toString())
+                    val builder = AnnotatedString.Builder()
+                    val source = ref
+                    builder.append(source)
+                    ref.length
 
-                        "en_jalalayn" -> trans =
-                            SpannableString.valueOf(vers.en_jalalayn).toString()
-                    }
+
+                    val start = source.indexOf(sb.toString())
+                    val end = start + sb.toString().length
+
+
+                    val tagonecolor = ComposeConstant.particlespanDark
+                    val tagonestyle = SpanStyle(
+                        color = tagonecolor!!,
+                        // textDecoration = TextDecoration.Underline
+                    )
+                    builder.addStyle(tagonestyle, start, end)
+
 
                     val istimeadverb =
                         vers.tagone.equals("T") || vers.tagtwo.equals("T") || vers.tagthree.equals("T") || vers.tagfour.equals(
@@ -154,8 +163,8 @@ class CardsViewModel(
                     //      lists.add(trans)
                     //  }
 
-                    val charSequence = TextUtils.concat(ref, "\n ", spannableVerses)
-                    val contentText = SpannableString(charSequence)
+                    val charSequence = TextUtils.concat(ref, "\n ", annotatedVerse)
+                    val contentText = AnnotatedString(charSequence.toString())
                     lists.add(contentText)
 
                     testList += ExpandableCardModelSpannableLists(
@@ -180,7 +189,12 @@ class CardsViewModel(
 
     }
 
-    private fun getNounData(nounroot: String, verbroot: String) {
+    private fun getNounData(
+        nounroot: String,
+        verbroot: String,
+        selectTranslation: IntPreferenceSettingValueState?
+    ) {
+
         viewModelScope.launch {
             loading.value = true
             withContext(Dispatchers.Default) {
@@ -200,22 +214,35 @@ class CardsViewModel(
                     val verses: ArrayList<CorpusNounWbwOccurance> =
                         util.getNounOccuranceBreakVerses(noun.lemma_a!!)
                                 as ArrayList<CorpusNounWbwOccurance>
-                    val lists: ArrayList<SpannableString> = ArrayList<SpannableString>()
+                    val lists: ArrayList<AnnotatedString> = ArrayList<AnnotatedString>()
+
 
                     for (nounverse in verses) {
                         val nounverseBuilder = StringBuilder()
-                        val which = shared.getString(
-                            "selecttranslation",
-                            "en_sahih"
+
+                        NounVerseBuilder(nounverse, nounverseBuilder,  lists,selectTranslation!!.value)
+                        val span = AnnotatedString(nounverseBuilder.toString())
+                     //   val ref = AnnotatedString(sb.toString())
+                        val builder = AnnotatedString.Builder()
+                        val source = span
+                        builder.append(source)
+                        span.length
+
+
+                        val start = source.indexOf(nounverseBuilder.toString())
+                        val end = start + nounverseBuilder.toString().length
+
+
+                        val tagonecolor = ComposeConstant.particlespanDark
+                        val tagonestyle = SpanStyle(
+                            color = tagonecolor!!,
+                            // textDecoration = TextDecoration.Underline
                         )
-                        NounVerseBuilder(nounverse, nounverseBuilder, which, lists)
-                        val span = SpannableString(nounverseBuilder)
-                        span.setSpan(
-                            ForegroundColorSpan(Color.CYAN),
-                            0,
-                            nounverseBuilder.length,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+                        builder.addStyle(tagonestyle, start, end)
+
+
+
+
 
                         lists.add(span)
                     }
@@ -240,23 +267,19 @@ class CardsViewModel(
                         )
                     }
 
-                    val lists: ArrayList<SpannableString> = ArrayList<SpannableString>()
+                    val lists: ArrayList<AnnotatedString> = ArrayList<AnnotatedString>()
                     lemma = verbbreakup.lemma_a.toString()
                     if (verses != null) {
                         for (ver in verses) {
                             val verbversBuilder = StringBuilder()
-                            val which = shared.getString(
-                                "selecttranslation",
-                                "en_sahih"
-                            )
 
 
-                            VerseVerseBuilder(verbversBuilder, ver, which)
+                            VerseVerseBuilder(verbversBuilder, ver,  selectTranslation!!.value)
 
 
 
 
-                            lists.add(SpannableString.valueOf(verbversBuilder))
+                            lists.add(AnnotatedString(verbversBuilder.toString()))
 
 
                         }
@@ -293,32 +316,27 @@ class CardsViewModel(
     private fun VerseVerseBuilder(
         verbversBuilder: StringBuilder,
         ver: CorpusVerbWbwOccurance?,
-        which: String?,
+        which: Int?,
     ) {
         //     val s = ver?.araone + ver?.aratwo + ver.arathree + ver.arafour + ver.arafive
-        val spannableVerses =
-            CorpusUtilityorig.getSpannableVerses(
+        val spannableVerses: AnnotatedString =
+            AnnotationUtility.getAnnotedVerse(
                 ver!!.araone + ver.aratwo + ver.arathree + ver.arafour + ver.arafive,
                 ver.qurantext!!
             )
+
         verbversBuilder.append(ver.surah).append(":").append(ver.ayah)
             .append(":").append(ver.wordno).append("-")
             .append(ver.en).append("-").append("\n").append("\n")
         verbversBuilder.append(spannableVerses).append("\n").append("\n")
 
+        when (which) {
+            0 ->    verbversBuilder.append(ver.translation).append("\n").append("\n")
+            1 -> verbversBuilder.append(ver.en_arberry).append("\n").append("\n")
 
-        if (which.equals("en_sahh")) {
-            verbversBuilder.append(ver.translation).append("\n").append("\n")
-        } else if (which.equals("ur_jalalayn")) {
-
-            verbversBuilder.append(ver.ur_jalalayn).append("\n").append("\n")
-        } else if (which.equals("en_jalalayn")) {
-
-            verbversBuilder.append(ver.en_jalalayn).append("\n").append("\n")
-        } else if (which.equals("en_arberry")) {
-
-            verbversBuilder.append(ver.en_arberry).append("\n").append("\n")
+            2 ->             verbversBuilder.append(ver.en_jalalayn).append("\n").append("\n")
         }
+      //  lists.add(SpannableString.valueOf(verbversBuilder))
     }
 
     private fun stringBuilder1(
@@ -354,8 +372,9 @@ class CardsViewModel(
     private fun NounVerseBuilder(
         nounverse: CorpusNounWbwOccurance,
         nounverseBuilder: StringBuilder,
-        which: String?,
-        lists: ArrayList<SpannableString>,
+
+        lists: ArrayList<AnnotatedString>,
+        value: Int,
     ) {
         val s =
             nounverse.araone + nounverse.aratwo + nounverse.arathree + nounverse.arafour + nounverse.arafive
@@ -364,21 +383,15 @@ class CardsViewModel(
 
             .append(nounverse.en).append("-").append("\n").append("\n")
         nounverseBuilder.append(nounverse.qurantext).append("\n").append("\n")
+        when (value) {
+            0 ->    nounverseBuilder.append(nounverse.translation).append("\n").append("\n")
+            1 -> nounverseBuilder.append(nounverse.en_arberry).append("\n").append("\n")
 
-        if (which.equals("en_sahh")) {
-            nounverseBuilder.append(nounverse.translation).append("\n").append("\n")
-        } else if (which.equals("ur_jalalayn")) {
-
-            nounverseBuilder.append(nounverse.ur_jalalayn).append("\n").append("\n")
-        } else if (which.equals("en_jalalayn")) {
-
-            nounverseBuilder.append(nounverse.en_jalalayn).append("\n").append("\n")
-        } else if (which.equals("en_arberry")) {
-
-            nounverseBuilder.append(nounverse.en_arberry).append("\n").append("\n")
-            lists.add(SpannableString.valueOf(nounverseBuilder))
-
+            2 ->             nounverseBuilder.append(nounverse.en_jalalayn).append("\n").append("\n")
         }
+        lists.add((AnnotatedString(nounverseBuilder.toString())))
+
+
     }
 
     private fun stringBuilder(

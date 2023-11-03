@@ -1,13 +1,18 @@
 package com.corpusutility
 
 import android.content.Context
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.core.content.ContextCompat
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.example.ComposeConstant
+import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.utility.CorpusUtilityorig.Companion.dark
 import com.example.utility.QuranGrammarApplication.Companion.context
@@ -21,6 +26,49 @@ class AnnotationUtility(private var context: Context?) {
 
     companion object {
       //  val dark = false
+      @JvmStatic
+      fun getAnnotedVerse(arabicword: String, quranverses: String): AnnotatedString {
+
+          val wordlen = arabicword.length
+          val str: AnnotatedString
+          val indexOf = quranverses.indexOf(arabicword)
+
+
+
+
+          val builder = AnnotatedString.Builder()
+          val source = quranverses
+          builder.append(source)
+          if (indexOf != -1) {
+
+
+
+              if (dark) {
+                  val start = source.indexOf(arabicword)
+                  val end = start + arabicword.length
+
+
+                  val tagonecolor = Color.Cyan
+                  val tagonestyle = SpanStyle(
+                      color = tagonecolor!!,
+                      // textDecoration = TextDecoration.Underline
+                  )
+                  builder.addStyle(tagonestyle, start, end)
+              } else {
+                  val start = source.indexOf(arabicword)
+                  val end = start + arabicword.length
+
+
+                  val tagonecolor = Color.Magenta
+                  val tagonestyle = SpanStyle(
+                      color = tagonecolor!!,
+                      // textDecoration = TextDecoration.Underline
+                  )
+                  builder.addStyle(tagonestyle, start, end)
+              }
+          }
+          return builder.toAnnotatedString()
+      }
 
 
         @JvmStatic

@@ -1,8 +1,10 @@
 package com.modelfactory
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValueState
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.viewmodels.CardsViewModel
 import com.viewmodels.RootModel
@@ -17,12 +19,16 @@ class newViewModelFactory(private val dbname: Int) :
 class CardViewModelFactory(
     private val dbname: String,
     private val nounroot: String,
-    private val isharf: Boolean
+    private val isharf: Boolean,
+ private val  selectTranslation: IntPreferenceSettingValueState
 ) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
-        CardsViewModel(dbname, nounroot, isharf) as T
+        CardsViewModel(dbname, nounroot, isharf,selectTranslation) as T
 }
+
+
+
 
 
 class RootViewModelFactory(

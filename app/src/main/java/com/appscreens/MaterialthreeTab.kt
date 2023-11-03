@@ -226,7 +226,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
 
             contentColor = Color.Black,
 
-            containerColor = MaterialTheme.colorScheme.inversePrimary
+            containerColor =  MaterialTheme.colorScheme.primaryContainer,
 
 
         ) {

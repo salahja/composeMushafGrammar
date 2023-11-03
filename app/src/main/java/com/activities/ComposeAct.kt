@@ -10,6 +10,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
+import com.modelfactory.CardViewModelFactory
 import com.viewmodels.CardsViewModel
 import com.skyyo.expandablelist.theme.AppTheme
 
@@ -55,11 +57,12 @@ class ComposeAct : AppCompatActivity() {
 
             AppTheme {
                 Surface(color = MaterialTheme.colors.background) {
+                    val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
                     if (root == "ACC" || root == "LOC" || root == "T") {
                         val viewModel: CardsViewModel by viewModels {
-                            MyViewModelFactory(
-                                application, verbroot!!,
-                                nounroot!!, true
+                            CardViewModelFactory(
+                                 verbroot!!,
+                                nounroot!!, true,selectTranslation
 
                             )
                         }
@@ -68,9 +71,9 @@ class ComposeAct : AppCompatActivity() {
                         CardsScreen(viewModel)
                     } else {
                         val viewModel: CardsViewModel by viewModels {
-                            MyViewModelFactory(
-                                application, verbroot!!,
-                                nounroot!!, false
+                            CardViewModelFactory(
+                                 verbroot!!,
+                                nounroot!!, false,selectTranslation
                             )
                         }
                         nounroot = root
@@ -88,18 +91,6 @@ class ComposeAct : AppCompatActivity() {
 
     }
 
-    class MyViewModelFactory(
-        private val mApplication: Application,
-        private val verbroot: String,
-        private val nounroot: String,
-        private val isharf: Boolean
-    ) :
-        ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
-            return CardsViewModel( verbroot, nounroot, isharf) as T
-        }
-    }
 
 }
 

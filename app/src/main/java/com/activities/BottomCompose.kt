@@ -39,6 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.appscreens.MatTab
 
 import com.viewmodels.CardsViewModel
@@ -192,7 +193,7 @@ fun Navigation(
 
 
         ) { backStackEntry ->
-
+            val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
             val root = backStackEntry.arguments?.getString("root")
             val hamzaindex = root!!.indexOf("ء")
             var nounroot: String? = ""
@@ -211,14 +212,24 @@ fun Navigation(
             }
             if (root == "ACC" || root == "LOC" || root == "T") {
                 val myViewModel: CardsViewModel =
-                    viewModel(factory = CardViewModelFactory(verbroot, nounroot, true))
+                    viewModel(factory = CardViewModelFactory(
+                        verbroot,
+                        nounroot,
+                        true,
+                        selectTranslation
+                    ))
 
                 nounroot = root
 
                 CardsScreen(myViewModel)
             } else {
                 val myViewModel: CardsViewModel =
-                    viewModel(factory = CardViewModelFactory(verbroot, nounroot, false))
+                    viewModel(factory = CardViewModelFactory(
+                        verbroot,
+                        nounroot,
+                        false,
+                        selectTranslation
+                    ))
                 nounroot = root
                 CardsScreen(myViewModel)
 

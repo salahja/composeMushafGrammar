@@ -23,6 +23,7 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +60,7 @@ fun BottomSheetWordDetails(
     verseid: Int?,
     wordno: Int?
 ) {
-    val utils = Utils(QuranGrammarApplication.context)
+
 
     val corpusSurahWord = mainViewModel.getQuranCorpusWbw(chapterid!!, verseid!!, wordno!!).value
 
@@ -109,7 +110,7 @@ fun BottomSheetWordDetails(
         scaffoldState = bottomSheetScaffoldState,
         sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
 
-        //  sheetBackgroundColor = MaterialTheme.colorScheme.background,
+          sheetBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
 
         sheetContent = {
             //Ui for bottom sheet

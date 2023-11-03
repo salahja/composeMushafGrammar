@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +43,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.preference.PreferenceManager
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.codelab.basics.ui.theme.cardCollapsedBackgroundColor
 import com.codelab.basics.ui.theme.cardExpandedBackgroundColor
 import com.codelab.basics.ui.theme.qalam
@@ -67,7 +69,7 @@ fun CardsScreen(viewModel: CardsViewModel) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
         context!!
     )
-
+    val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
     var loading = viewModel.loading.value
 
     //grammatically colred word default font
@@ -261,7 +263,7 @@ fun CenterAlignedText() {
 @Preview
 @Composable
 fun MyViewPreview() {
-    ExpandableContent("LIMMA", card = ArrayList<SpannableString>(), true)
+    ExpandableContent("LIMMA", card = ArrayList<AnnotatedString>(), true)
 }
 
 @Composable
@@ -270,7 +272,7 @@ fun ExpandableContent(
 
 
     lemma: String,
-    card: ArrayList<SpannableString>,
+    card: ArrayList<AnnotatedString>,
     visible: Boolean = true,
 //    viewModel: LemmaViewModel = viewModel(),
 

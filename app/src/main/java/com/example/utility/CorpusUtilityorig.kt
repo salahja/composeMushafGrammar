@@ -1209,38 +1209,6 @@ class CorpusUtilityorig(private var context: Context?) {
             }
         }
 
-        @JvmStatic
-        fun getSpannableVerses(arabicword: String, quranverses: String): Spannable {
-            val wordlen = arabicword.length
-            val str: SpannableString
-            val indexOf = quranverses.indexOf(arabicword)
-            if (indexOf != -1) {
-                str = SpannableString(quranverses)
-                if (dark) {
-                    str.setSpan(
-                        ForegroundColorSpan(CYAN),
-                        indexOf,
-                        indexOf + wordlen,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                } else {
-                    str.setSpan(
-                        ForegroundColorSpan(
-                            ContextCompat.getColor(
-                                QuranGrammarApplication.context!!,
-                                R.color.midnightblue
-                            )
-                        ),
-                        indexOf,
-                        indexOf + wordlen,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-            } else {
-                str = SpannableString(quranverses)
-            }
-            return str
-        }
 
         @JvmStatic
         fun getSpannable(text: String): Spannable {
