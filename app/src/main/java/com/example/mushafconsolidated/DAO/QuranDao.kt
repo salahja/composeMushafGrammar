@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.QuranAppDatabase
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+
 import sj.hisnul.entity.hduanamesEnt
 import java.util.concurrent.Flow
 
@@ -28,11 +29,22 @@ interface QuranDao {
 
     fun getQuranCorpusWbwbysurah(surahid: Int): List<QuranCorpusWbw>
 
+
+
     @Transaction
-    @Query("SELECT * FROM CorpusExpand JOIN wbw ON wbw.id = CorpusExpand.id where  CorpusExpand.rootaraone||CorpusExpand.rootaratwo ||CorpusExpand.rootarathree||CorpusExpand.rootarafour||CorpusExpand.rootarafive=:root")
-
-
+    @Query("SELECT * FROM CorpusExpand JOIN wbw ON wbw.id = CorpusExpand.id where  CorpusExpand.rootaraone||CorpusExpand.rootaratwo ||CorpusExpand.rootarathree||CorpusExpand.rootarafour||CorpusExpand.rootarafive=:root ")
     fun getQuranCorpusWbwbyRoot(root: String): List<QuranCorpusWbw>
+
+
+
+
+    @Transaction
+    @Query("SELECT * FROM CorpusExpand JOIN wbw ON wbw.id = CorpusExpand.id where  CorpusExpand.rootaraone||CorpusExpand.rootaratwo ||CorpusExpand.rootarathree||CorpusExpand.rootarafour||CorpusExpand.rootarafive=:root" +
+            " and CorpusExpand.tagone!=:filter and CorpusExpand.tagtwo!=:filter and CorpusExpand.tagthree!=:filter and CorpusExpand.tagfour!=:filter      and CorpusExpand.tagfive!=:filter"              )
+    fun getQuranCorpusWbwbyRootNouns(root: String,filter:String): List<QuranCorpusWbw>
+
+
+
     @Transaction
     @Query("SELECT * FROM CorpusExpand JOIN wbw ON wbw.id = CorpusExpand.id where corpusexpand.surah=:surahid and corpusexpand.ayah=:ayahid")
 
@@ -40,11 +52,12 @@ interface QuranDao {
 
 
 
-/*
-    @Transaction
-    @Query("SELECT * FROM qurans,CorpusExpand,wbw where CorpusExpand.surah=:surahid and CorpusExpand.ayah=:ayahid and CorpusExpand.wordno=:wordno")
-    fun getQuranCorpusWbw(surahid: Int,ayahid: Int,wordno: Int): List<QuranCorpusWbw>
-*/
+
+    /*
+        @Transaction
+        @Query("SELECT * FROM qurans,CorpusExpand,wbw where CorpusExpand.surah=:surahid and CorpusExpand.ayah=:ayahid and CorpusExpand.wordno=:wordno")
+        fun getQuranCorpusWbw(surahid: Int,ayahid: Int,wordno: Int): List<QuranCorpusWbw>
+    */
 
 
 

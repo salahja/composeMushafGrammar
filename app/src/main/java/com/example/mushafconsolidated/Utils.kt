@@ -27,6 +27,7 @@ import com.example.mushafconsolidated.Entities.NounCorpus
 import com.example.mushafconsolidated.Entities.NounCorpusBreakup
 import com.example.mushafconsolidated.Entities.Qari
 import com.example.mushafconsolidated.Entities.QuranEntity
+import com.example.mushafconsolidated.Entities.RootNounDetails
 import com.example.mushafconsolidated.Entities.RootVerbDetails
 import com.example.mushafconsolidated.Entities.RootWordDetails
 import com.example.mushafconsolidated.Entities.SifaEntity
@@ -108,6 +109,11 @@ class Utils {
     fun getQuranCorpusWbwbyroot(id: String): List<QuranCorpusWbw> {
         return database.QuranDao().getQuranCorpusWbwbyRoot(id)
     }
+
+    fun getQuranCorpusWbwbyrootNouns(id: String): List<QuranCorpusWbw> {
+        return database.QuranDao().getQuranCorpusWbwbyRootNouns(id,"V")
+    }
+
 
 
     fun insertBookMark(entity: BookMarks?) {
@@ -377,6 +383,25 @@ class Utils {
         //  List<Book> result = booksDao.getBooks(query);
         return database.RawDao().getverbdetails(query)
     }
+
+    fun getRootNounDetails(tid: String): List<RootNounDetails>? {
+        val sqlverb: String =
+            ("SELECT     \n" +
+                    "\t   nouncorpus.surah,nouncorpus.ayah,nouncorpus.root_a,nouncorpus.wordno,nouncorpus.token,\t   nouncorpus.tag,nouncorpus.lemma_a,\n" +
+                    "\t   nouncorpus.araword,nouncorpus.propone,nouncorpus.proptwo,nouncorpus.gendernumber,nouncorpus.cases,nouncorpus.details,\t\n" +
+                    "\t   chaptersana.abjadname,chaptersana.namearabic,chaptersana.nameenglish,\n" +
+                    "\t   qurans.qurantext,qurans.translation,qurans.ar_irab_two,qurans.en_arberry,qurans.en_jalalayn,qurans.en_transliteration,wbw.en ,qurans.tafsir_kathir  \n" +
+                    "      FROM wbw,chaptersana,nouncorpus,qurans where wbw.surah = nouncorpus.surah AND  wbw.ayah = nouncorpus.ayah  \n" +
+                    "\t \tand wbw.wordno = nouncorpus.wordno  and wbw.surah=qurans.surah and wbw.ayah=qurans.ayah and wbw.surah=chaptersana.chapterid\n" +
+                    "\n" +
+                    " and nouncorpus.root_a=  \""
+                    + tid + "\"")
+        val query: SimpleSQLiteQuery = SimpleSQLiteQuery(sqlverb)
+        //  List<Book> result = booksDao.getBooks(query);
+        return database.RawDao().getnoundetails(query)
+    }
+
+
 
 
 

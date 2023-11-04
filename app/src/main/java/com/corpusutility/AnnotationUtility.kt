@@ -126,11 +126,11 @@ class AnnotationUtility(private var context: Context?) {
             tagthree: String,
             tagfour: String,
             tagfive: String,
-            arafive: String,
-            arafour: String,
-            arathree: String,
-            aratwo: String,
             araone: String,
+            aratwo:  String,
+            arathree: String,
+            arafour: String,
+            arafive: String,
         ): AnnotatedString {
             var arafive = arafive
             var arafour = arafour

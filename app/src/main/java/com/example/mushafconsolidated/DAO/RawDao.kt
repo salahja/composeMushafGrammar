@@ -13,6 +13,7 @@ import com.example.mushafconsolidated.Entities.MudhafPOJO
 import com.example.mushafconsolidated.Entities.NasbPOJO
 import com.example.mushafconsolidated.Entities.NewCorpusExpandWbwPOJO
 import com.example.mushafconsolidated.Entities.NounCorpusBreakup
+import com.example.mushafconsolidated.Entities.RootNounDetails
 import com.example.mushafconsolidated.Entities.RootVerbDetails
 import com.example.mushafconsolidated.Entities.RootWordDetails
 import com.example.mushafconsolidated.Entities.ShartPOJO
@@ -40,7 +41,8 @@ interface RawDao {
 
     @RawQuery
     fun getverbdetails(query: SupportSQLiteQuery): List<RootVerbDetails>?
-
+    @RawQuery
+    fun getnoundetails(query: SupportSQLiteQuery): List<RootNounDetails>?
     @RawQuery
     fun getnounoccurancebysurahayah(query: SupportSQLiteQuery): List<CorpusNounWbwOccurance?>?
 

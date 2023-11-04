@@ -3,9 +3,11 @@ package com.appscreens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
@@ -24,9 +26,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +43,7 @@ import com.example.compose.WordOccuranceLoading
 import com.example.compose.theme.showProgress
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.NounCorpus
+import com.example.mushafconsolidated.Entities.RootNounDetails
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.QuranCorpusWbw
 import com.example.utility.QuranGrammarApplication
@@ -63,10 +69,10 @@ fun NounRootScreens(
     // val collectAsStateWithLifecycle = rootmodel.verbroot.collectAsStateWithLifecycle()
     // val collectAsState = rootmodel.verbroot.collectAsState()
 
-    val verbroots = roots[0].verbrootlist
-    val nounroots = roots[0].corpusSurahWordlist
+    val nounCorpus = roots[0].nouncorpus
+    val nounCorpusWbw = roots[0].corpusSurahWordlist
     val chapters = roots[0].chapterlist
-    val nouns = roots[0].nounlist
+    val nouns = roots[0].nounrootlist
     // loading = rootmodel.loading.value
     //  rootmodel.open.value = true
     showProgress(199)
@@ -116,10 +122,10 @@ fun NounRootScreens(
             ) {
 
 
-                items(nounroots.size) { index ->
-                    //          indexval=index
-                    NounGrid(nounroots[index], navController, chapters, nouns[index])
-                }
+            items(nounCorpusWbw.size) { index ->
+                //          indexval=index
+                NounGrid(nouns!![index], navController, chapters, nounCorpusWbw[index], nounCorpus[index])
+            }
 
 
         }
@@ -128,14 +134,15 @@ fun NounRootScreens(
 
 @Composable
 fun NounGrid(
-    quranCorpusWbw: QuranCorpusWbw,
+    nounRootdetails: RootNounDetails?,
     navController: NavHostController,
     chapters: List<ChaptersAnaEntity?>,
-    nounCorpus: NounCorpus?,
+    quranCorpusWbw: QuranCorpusWbw,
+    nounCorpus1: NounCorpus?,
 
     ) {
     val sb = StringBuilder()
-    val spannableString = AnnotationUtility.AnnotatedSetWordSpanTag(
+    val annotatedString = AnnotationUtility.AnnotatedSetWordSpanTag(
         quranCorpusWbw.corpus.tagone!!,
         quranCorpusWbw.corpus.tagtwo!!,
         quranCorpusWbw.corpus.tagthree!!,
@@ -147,7 +154,7 @@ fun NounGrid(
         quranCorpusWbw.corpus.arafour!!,
         quranCorpusWbw.corpus.arafive!!
     )
-    val nm = NounMorphologyDetails(quranCorpusWbw, nounCorpus)
+    val nm = NounMorphologyDetails(quranCorpusWbw, nounCorpus1)
     var wordbdetail = HashMap<String, AnnotatedString>()
     wordbdetail = nm.wordDetails
     val arabicword: AnnotatedString = wordbdetail["arabicword"]!!
@@ -155,7 +162,24 @@ fun NounGrid(
     sb.append(quranCorpusWbw.corpus.ayah).append("  ")
         .append(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic).append("   ")
         .append(quranCorpusWbw.corpus.surah).append(" ").append(quranCorpusWbw.wbw.en)
+    val sbs = StringBuilder()
+    sbs.append(quranCorpusWbw.corpus.surah.toString()).append(":")
 
+        .append(": " + quranCorpusWbw.corpus.ayah.toString())
+        .append(":" + quranCorpusWbw.corpus.wordno.toString()).append(
+            "    "
+        ).append(quranCorpusWbw.wbw.en)
+    val start = nounRootdetails!!.qurantext!!.indexOf(nounRootdetails.araword!!)
+    val builder = AnnotatedString.Builder()
+    builder.append(nounRootdetails.qurantext)
+    val tagonestyle = SpanStyle(
+
+        textDecoration = TextDecoration.Underline,
+        fontWeight = FontWeight.Bold,
+    )
+    if (start != -1) {
+        builder.addStyle(tagonestyle, start, start + nounRootdetails.araword!!.length)
+    }
     Card(
 
         colors = CardDefaults.cardColors(
@@ -176,6 +200,7 @@ fun NounGrid(
 
     )
     {
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -184,8 +209,9 @@ fun NounGrid(
                 .padding(10.dp)
         ) {
 
+
             ClickableText(
-                text = arabicword,
+                text = annotatedString,
 
                 onClick = {
 
@@ -196,8 +222,48 @@ fun NounGrid(
                     fontFamily = FontFamily.Cursive
                 )
             )
-            Text(
-                text = wordbdetail["noun"].toString(),
+
+
+        }
+
+
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        )
+
+
+        {
+            ClickableText(
+                text = AnnotatedString(chapters[quranCorpusWbw.corpus.surah]!!.namearabic),
+
+                onClick = {
+
+
+                }, style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
+            )
+
+
+
+            ClickableText(
+                text = AnnotatedString(sbs.toString()),
+
+                onClick = {
+
+
+                }, style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
             )
 
 
@@ -210,8 +276,9 @@ fun NounGrid(
                 .padding(10.dp)
         ) {
 
+
             ClickableText(
-                text = AnnotatedString(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic.toString()),
+                text = AnnotatedString(wordbdetail["noun"].toString()),
 
                 onClick = {
 
@@ -220,38 +287,72 @@ fun NounGrid(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp,
                     fontFamily = FontFamily.Cursive
-                ))
-            Text(
-                text = "Ayah  " + quranCorpusWbw.corpus.ayah.toString(),
+                )
             )
-
-            // indexval = surahModelList!!.chapterid
-            ClickableText(
-                text = spannableString,
-
-                onClick = {
-
-
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                ))
-            ClickableText(
-                text = AnnotatedString(quranCorpusWbw.wbw.en.toString()),
-
-                onClick = {
-
-
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                ))
 
 
         }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
 
 
+            ExpandableText(
+                text = builder.toAnnotatedString(),
+
+
+                )
+            Spacer(modifier = Modifier.width(12.dp))
+
+
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            ExpandableText(
+                text = AnnotatedString("Translation :" + nounRootdetails.translation!!)
+
+
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+
+
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+       /*     nounRootdetails.tafsir_kathir?.let {
+                Text(
+
+                    text = it,
+                    fontSize = 20.sp,
+                    color = colorResource(id = R.color.burntamber)
+                )
+            }*/
+           ExpandableText(
+
+                text = AnnotatedString("Tafsir Ibne Kathir:" + nounRootdetails.tafsir_kathir)
+
+
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+
+
+        }
     }
 }

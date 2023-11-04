@@ -91,9 +91,8 @@ fun RootScreens(
     // val collectAsState = rootmodel.verbroot.collectAsState()
 
     val verbroots = roots[0].verbrootlist
-    val nounroots = roots[0].corpusSurahWordlist
-    val chapters = roots[0].chapterlist
-    val nouns = roots[0].nounlist
+
+
     // loading = rootmodel.loading.value
     //  rootmodel.open.value = true
     showProgress(199)
