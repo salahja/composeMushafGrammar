@@ -1047,7 +1047,7 @@ class AnnotationUtility(private var context: Context?) {
 
                 if (dark) {
                     spanhash["mudhaf"] = ComposeConstant.prohibitionspanDark
-                    spanhash["mousuf"] = ComposeConstant.harfshartspanDark
+                    spanhash["mousuf"] = ComposeConstant.adjectivespanDark
                     spanhash["PN"] = ComposeConstant.propernounspanDark
                     spanhash["REL"] = ComposeConstant.relativespanDark
                     spanhash["DEM"] = ComposeConstant.demonstrativespanDark
@@ -1128,7 +1128,7 @@ class AnnotationUtility(private var context: Context?) {
                         ComposeConstant.surprisespanDark // "	Surprise particle	(حرف فجاءة)",
                 } else {
                     spanhash["mudhaf"] = ComposeConstant.certainityspanLight
-                    spanhash["mousuf"] = ComposeConstant.propernounspanLight
+                    spanhash["mousuf"] = ComposeConstant.adjectivespanLight
                     spanhash["PN"] = ComposeConstant.propernounspanLight
                     spanhash["REL"] = ComposeConstant.relativespanLight
                     spanhash["DEM"] = ComposeConstant.demonstrativespanLight

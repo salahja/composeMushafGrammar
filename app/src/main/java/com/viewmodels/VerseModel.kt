@@ -29,6 +29,8 @@ class VerseModel(
  //   application: Application,
 
     chapid: Int,
+    isdark: Boolean?,
+
 
     ) : ViewModel() {
 
@@ -66,12 +68,12 @@ class VerseModel(
         util = Utils(QuranGrammarApplication.context!!)
 
 
-        getZarf(chapid)
+        getZarf(chapid,isdark)
 
 
     }
 
-     fun getZarf(chapid: Int) {
+     fun getZarf(chapid: Int, isdark: Boolean?) {
         viewModelScope.launch {
 
 
@@ -96,9 +98,9 @@ class VerseModel(
 
 
 
-                    corpus.setMudhafss(hashlist, chapid)
-                    corpus.setSifa(hashlist, chapid)
-                    corpus.setShart(hashlist,chapid)
+                    corpus.setMudhafss(hashlist, chapid,isdark)
+                    corpus.setSifa(hashlist, chapid,isdark)
+                    corpus.setShart(hashlist,chapid,isdark)
                     corpus.newnewHarfNasbDb(hashlist,chapid)
 
 

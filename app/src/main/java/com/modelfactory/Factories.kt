@@ -1,6 +1,5 @@
 package com.modelfactory
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -10,10 +9,10 @@ import com.viewmodels.CardsViewModel
 import com.viewmodels.RootModel
 import com.viewmodels.VerseModel
 
-class newViewModelFactory(private val dbname: Int) :
+class newViewModelFactory(private val dbname: Int,private val isdark: Boolean) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
-        VerseModel(dbname) as T
+        VerseModel(dbname,isdark) as T
 }
 
 class CardViewModelFactory(

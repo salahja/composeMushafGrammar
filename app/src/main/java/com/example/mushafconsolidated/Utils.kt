@@ -386,15 +386,19 @@ class Utils {
 
     fun getRootNounDetails(tid: String): List<RootNounDetails>? {
         val sqlverb: String =
-            ("SELECT     \n" +
-                    "\t   nouncorpus.surah,nouncorpus.ayah,nouncorpus.root_a,nouncorpus.wordno,nouncorpus.token,\t   nouncorpus.tag,nouncorpus.lemma_a,\n" +
-                    "\t   nouncorpus.araword,nouncorpus.propone,nouncorpus.proptwo,nouncorpus.gendernumber,nouncorpus.cases,nouncorpus.details,\t\n" +
-                    "\t   chaptersana.abjadname,chaptersana.namearabic,chaptersana.nameenglish,\n" +
-                    "\t   qurans.qurantext,qurans.translation,qurans.ar_irab_two,qurans.en_arberry,qurans.en_jalalayn,qurans.en_transliteration,wbw.en ,qurans.tafsir_kathir  \n" +
-                    "      FROM wbw,chaptersana,nouncorpus,qurans where wbw.surah = nouncorpus.surah AND  wbw.ayah = nouncorpus.ayah  \n" +
-                    "\t \tand wbw.wordno = nouncorpus.wordno  and wbw.surah=qurans.surah and wbw.ayah=qurans.ayah and wbw.surah=chaptersana.chapterid\n" +
-                    "\n" +
-                    " and nouncorpus.root_a=  \""
+            ("SELECT CorpusExpand.araone ||CorpusExpand. aratwo ||CorpusExpand. arathree || CorpusExpand.arafour ||CorpusExpand.arafive as arabic,\n" +
+                    "CorpusExpand.lemaraone ||CorpusExpand. lemaratwo ||CorpusExpand. lemarathree || CorpusExpand.lemarafour ||CorpusExpand. lemarafive as lemma,\n" +
+                    "CorpusExpand.araone,CorpusExpand.aratwo,CorpusExpand.arathree,CorpusExpand.arafour,CorpusExpand.arafive,\n" +
+                    "CorpusExpand.tagone,CorpusExpand.tagtwo,CorpusExpand.tagthree,CorpusExpand.tagfour,CorpusExpand.tagfive,CorpusExpand.surah,CorpusExpand.ayah,CorpusExpand.wordno,CorpusExpand.wordcount, wbw.en,\n" +
+                    "chaptersana.abjadname,chaptersana.namearabic,chaptersana.nameenglish,nouncorpus.tag,nouncorpus.lemma_a,nouncorpus.propone, nouncorpus.proptwo,nouncorpus.gendernumber,nouncorpus.cases,nouncorpus.details,\n" +
+                    "qurans.qurantext,qurans.translation,qurans.ar_irab_two,qurans.en_arberry,qurans.en_jalalayn,qurans.en_transliteration,qurans.tafsir_kathir\n" +
+                    "FROM corpusexpand,qurandictionary,wbw,chaptersana,nouncorpus,qurans\n" +
+                    " where (CorpusExpand.tagone=\"V\" OR CorpusExpand.tagtwo!=\"V\" OR CorpusExpand.tagthree!=\"V\" OR CorpusExpand.tagfour!=\"V\" \n" +
+                    "or CorpusExpand.tagfive!=\"V\" )and qurandictionary.surah = CorpusExpand.surah AND  qurandictionary.ayah = CorpusExpand.ayah  \n" +
+                    "and qurandictionary.wordno = nouncorpus.wordno  AND qurandictionary.surah=nouncorpus.surah and qurandictionary.ayah=nouncorpus.ayah\n" +
+                    "and qurandictionary.wordno = CorpusExpand.wordno  AND qurandictionary.surah=wbw.surah and qurandictionary.ayah=wbw.ayah\n" +
+                    "and qurandictionary.wordno=wbw.wordno and qurandictionary.surah=chaptersana.chapterid and qurans.surah=qurandictionary.surah and qurans.ayah=qurandictionary.ayah\n" +
+                    "and qurandictionary.rootarabic=   \""
                     + tid + "\"")
         val query: SimpleSQLiteQuery = SimpleSQLiteQuery(sqlverb)
         //  List<Book> result = booksDao.getBooks(query);

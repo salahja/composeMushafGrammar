@@ -244,11 +244,25 @@ fun BottomSheetWordDetails(
                             }
                         }
                     }
+                  Row (modifier= Modifier.padding(10.dp)){
+                      //  if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
+                            Text(
+                                text =  corpusSurahWord[0].wbw.en,
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 21.sp,
+
+                                )
+
+                    //    }
+                    }
 
                     Row (modifier= Modifier.padding(10.dp)){
                         if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
                             Text(
-                                text = "Lemma" + worddetails["lemma"].toString(),
+                                text = "Lemma:  " + worddetails["lemma"].toString(),
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 textAlign = TextAlign.Center,
@@ -291,9 +305,9 @@ fun BottomSheetWordDetails(
                         }
                     }
                     Row (modifier= Modifier.padding(10.dp)){
-                        if (worddetails["formnumber"] != null) {
+                        if (vbdetail["formnumber"] != null) {
                             Text(
-                                text = worddetails["form"].toString(),
+                                text = vbdetail["formnumber"].toString(),
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 textAlign = TextAlign.Center,
@@ -322,7 +336,7 @@ fun BottomSheetWordDetails(
 
                         }
                     }
-                    Row (modifier= Modifier.padding(10.dp)){
+               /*     Row (modifier= Modifier.padding(10.dp)){
                         if (vbdetail["form"] != null) {
                             Text(
                                 text = vbdetail["form"].toString(),
@@ -337,7 +351,7 @@ fun BottomSheetWordDetails(
 
                         }
                     }
-
+*/
 
                     Row (modifier= Modifier.padding(10.dp)){
                         if (vbdetail["verbmood"] != null) {

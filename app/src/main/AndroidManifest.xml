@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module dist:instant="true" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.type.watch" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -42,8 +42,11 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
-
+        <activity
+            android:name="com.downloads.DownloadAct"
+            android:exported="false"
+            android:label="@string/title_activity_download"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -72,13 +75,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
-
-
-
         <activity
             android:name=".Activity.MainActivitys"
-            android:launchMode="singleInstance"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
@@ -94,7 +94,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
-
         <activity
             android:name="com.activities.AdaptiveMainActivity"
             android:exported="true"
@@ -104,7 +103,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
-
         <activity
             android:name="com.activities.SettingAct"
             android:exported="true"
@@ -114,11 +112,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
-
-
-
-
-
         <activity
             android:name="com.activities.TwoPane"
             android:exported="true"
@@ -129,9 +122,6 @@
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
 
-
-
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -141,7 +131,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
 
         <activity
             android:name="com.twopane.TwoPaneActivity"
@@ -154,14 +143,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
-
-
-
-
         <!--
      <meta-data
             android:name="com.google.android.gms.version"

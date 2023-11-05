@@ -1,10 +1,6 @@
 package com.example.mushafconsolidated.quranrepo
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,7 +37,6 @@ import database.entity.kov
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sj.hisnul.entity.hcategoryEnt
 import java.util.ArrayList
@@ -504,8 +499,8 @@ class QuranVIewModel(
     fun setspans(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
         loading.value = true
         val corpus = CorpusUtilityorig
-        corpus.setMudhafss(newnewadapterlist, chapid)
-        corpus.setSifa(newnewadapterlist, chapid)
+        corpus.setMudhafss(newnewadapterlist, chapid, true)
+        corpus.setSifa(newnewadapterlist, chapid, true)
 
 
         loading.value = false

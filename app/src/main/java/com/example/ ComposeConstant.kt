@@ -1,9 +1,13 @@
 package com.example
 
 
+import android.graphics.Color.GREEN
+import android.graphics.Color.YELLOW
 import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.core.content.ContextCompat
 import com.example.mushafconsolidated.R
 import com.example.utility.QuranGrammarApplication
@@ -52,7 +56,7 @@ object  ComposeConstant {
         ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.cyan_lightest)
     private val ORANGERED = ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.OrangeRed)
     val GREENYELLOW =
-        ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.DarkMagenta)
+        ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.GreenYellow)
     private val HOTPINK = ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.HotPink)
     private val SALMON = ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.Salmon)
     private val BROWN = ContextCompat.getColor(QuranGrammarApplication.context!!, R.color.LightSlateGray)
@@ -150,17 +154,17 @@ object  ComposeConstant {
         }
     }
     var verbalnounspanDark = Color(WHOTPINK)
-    var nounspanDark = Color(MARIGOLD)
-
+ //   var nounspanDark = Color(MARIGOLD)
+    var nounspanDark = Color(android.graphics.Color.YELLOW)
     //    public static Color nounspanDark = new Color(MARIGOLD);
     var sifaspansDark = BackgroundColorSpan(WBURNTUMBER)
     var sifaspanDark = BackgroundColorSpan(CYANLIGHTEST)
 
     //   public static BackgroundColorSpan mudhafspanDark = new BackgroundColorSpan(CYANLIGHT);
     var mudhafspansDark = BackgroundColorSpan(MIDNIGHTBLUE)
-    var harfinnaspanDark = Color(FORESTGREEN)
+    var harfinnaspanDark = Color(GREEN)
     var harfismspanDark = Color(BCYAN)
-    var harfkhabarspanDark = Color(MARIGOLD)
+    var harfkhabarspanDark = Color(YELLOW)
     var harfshartspanDark = Color(PURPLE)
     var shartspanDark = Color(GREENDARK)
     var jawabshartspanDark = Color(BCYAN)

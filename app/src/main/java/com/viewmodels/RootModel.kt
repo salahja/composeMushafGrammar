@@ -77,19 +77,19 @@ class RootModel(
 
 
 
-                val verblist =   util.getRootVerbDetails(root)
+                val verbrootlist =   util.getRootVerbDetails(root)
 
                               val corpusrootlist=             util.getQuranCorpusWbwbyrootNouns(root)
          //   val corpusrootlist=             util.getQuranCorpusWbwbyroot(root)
-            val chapters=util.getAllAnaChapters()
+
           val nouncorpus=util.getQuranNounsbyroot(root)
-             val nounlist=            util.getRootNounDetails(root)
+             val nounrootlist=            util.getRootNounDetails(root)
 
             testList += AllRootWords(
-                verblist!!,
+                verbrootlist!!,
                 corpusrootlist,
-                chapters!!,
-                nounlist!!,
+
+                nounrootlist!!,
                 nouncorpus!!
 
             )

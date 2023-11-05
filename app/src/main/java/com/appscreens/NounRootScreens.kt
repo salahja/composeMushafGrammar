@@ -71,7 +71,7 @@ fun NounRootScreens(
 
     val nounCorpus = roots[0].nouncorpus
     val nounCorpusWbw = roots[0].corpusSurahWordlist
-    val chapters = roots[0].chapterlist
+
     val nouns = roots[0].nounrootlist
     // loading = rootmodel.loading.value
     //  rootmodel.open.value = true
@@ -124,7 +124,7 @@ fun NounRootScreens(
 
             items(nounCorpusWbw.size) { index ->
                 //          indexval=index
-                NounGrid(nouns!![index], navController, chapters, nounCorpusWbw[index], nounCorpus[index])
+                NounGrid(nouns!![index], navController,  nounCorpusWbw[index], nounCorpus[index])
             }
 
 
@@ -136,40 +136,40 @@ fun NounRootScreens(
 fun NounGrid(
     nounRootdetails: RootNounDetails?,
     navController: NavHostController,
-    chapters: List<ChaptersAnaEntity?>,
+
     quranCorpusWbw: QuranCorpusWbw,
     nounCorpus1: NounCorpus?,
 
     ) {
     val sb = StringBuilder()
     val annotatedString = AnnotationUtility.AnnotatedSetWordSpanTag(
-        quranCorpusWbw.corpus.tagone!!,
-        quranCorpusWbw.corpus.tagtwo!!,
-        quranCorpusWbw.corpus.tagthree!!,
-        quranCorpusWbw.corpus.tagfour!!,
-        quranCorpusWbw.corpus.tagfive!!,
-        quranCorpusWbw.corpus.araone!!,
-        quranCorpusWbw.corpus.aratwo!!,
-        quranCorpusWbw.corpus.arathree!!,
-        quranCorpusWbw.corpus.arafour!!,
-        quranCorpusWbw.corpus.arafive!!
+        nounRootdetails!!.tagone!!,
+         nounRootdetails!!.tagtwo!!,
+         nounRootdetails!!.tagthree!!,
+         nounRootdetails!!.tagfour!!,
+         nounRootdetails!!.tagfive!!,
+         nounRootdetails!!.araone!!,
+         nounRootdetails!!.aratwo!!,
+         nounRootdetails!!.arathree!!,
+         nounRootdetails!!.arafour!!,
+         nounRootdetails!!.arafive!!
     )
     val nm = NounMorphologyDetails(quranCorpusWbw, nounCorpus1)
     var wordbdetail = HashMap<String, AnnotatedString>()
     wordbdetail = nm.wordDetails
     val arabicword: AnnotatedString = wordbdetail["arabicword"]!!
     //  sb.append(lughat.getSurah()).append("   ").append(lughat.getNamearabic()).append(lughat.getAyah()).append(" ").append(lughat.getArabic());
-    sb.append(quranCorpusWbw.corpus.ayah).append("  ")
-        .append(chapters.get(quranCorpusWbw.corpus.surah)!!.namearabic).append("   ")
-        .append(quranCorpusWbw.corpus.surah).append(" ").append(quranCorpusWbw.wbw.en)
+    sb.append( nounRootdetails!!.ayah).append("  ")
+        .append( nounRootdetails!!.namearabic).append("   ")
+        .append( nounRootdetails!!.surah).append(" ").append(nounRootdetails.en)
     val sbs = StringBuilder()
-    sbs.append(quranCorpusWbw.corpus.surah.toString()).append(":")
+    sbs.append( nounRootdetails!!.surah.toString()).append(":")
 
-        .append(": " + quranCorpusWbw.corpus.ayah.toString())
-        .append(":" + quranCorpusWbw.corpus.wordno.toString()).append(
+        .append(": " +  nounRootdetails!!.ayah.toString())
+        .append(":" +  nounRootdetails!!.wordno.toString()).append(
             "    "
-        ).append(quranCorpusWbw.wbw.en)
-    val start = nounRootdetails!!.qurantext!!.indexOf(nounRootdetails.araword!!)
+        ).append(nounRootdetails.en)
+    val start = nounRootdetails!!.qurantext!!.indexOf(nounRootdetails.arabic!!)
     val builder = AnnotatedString.Builder()
     builder.append(nounRootdetails.qurantext)
     val tagonestyle = SpanStyle(
@@ -178,7 +178,7 @@ fun NounGrid(
         fontWeight = FontWeight.Bold,
     )
     if (start != -1) {
-        builder.addStyle(tagonestyle, start, start + nounRootdetails.araword!!.length)
+        builder.addStyle(tagonestyle, start, start + nounRootdetails.arabic!!.length)
     }
     Card(
 
@@ -239,7 +239,7 @@ fun NounGrid(
 
         {
             ClickableText(
-                text = AnnotatedString(chapters[quranCorpusWbw.corpus.surah]!!.namearabic),
+                text = AnnotatedString(nounRootdetails!!.namearabic!!),
 
                 onClick = {
 

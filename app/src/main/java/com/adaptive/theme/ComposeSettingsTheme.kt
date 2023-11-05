@@ -31,9 +31,11 @@ fun ComposeSettingsTheme(
             }
         } else {
             if (darkThemePreference) {
-                DarkColorsNew
+              //  DarkColorsNew
+                DarkThemeColors
             } else {
-                LightColorsNew
+             //   LightColorsNew
+                LightThemeColors
             }
         },
         content = content,

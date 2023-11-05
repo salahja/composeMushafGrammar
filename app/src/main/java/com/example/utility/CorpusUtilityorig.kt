@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.core.content.ContextCompat
 import com.corpusutility.AnnotationUtility
 import com.example.ComposeConstant
 import com.example.ComposeConstant.harfinnaspanDark
@@ -565,6 +564,7 @@ class CorpusUtilityorig(private var context: Context?) {
 
 
     companion object {
+
         var dark = false
 
         @JvmStatic
@@ -1421,10 +1421,16 @@ class CorpusUtilityorig(private var context: Context?) {
             return  newnewadapterlist
 
         }
-        fun setSifa(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+        fun setSifa(
+            newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+            chapid: Int,
+            isdark: Boolean?
+        ) {
+
             var list= ArrayList<AnnotatedString>()
             val utils = Utils(QuranGrammarApplication.context!!)
             val surah = utils.getSifabySurah(chapid)
+
             val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
                 AnnotationUtility.stringForegroundColorSpanMap
             if (surah != null) {
@@ -1436,7 +1442,13 @@ class CorpusUtilityorig(private var context: Context?) {
                         }else if(surahayah.size==1){
                             val builder = AnnotatedString.Builder()
                             var annotatedString: AnnotatedString
-                            val tagonecolor =spanhash["mousuf"]
+                             var tagonecolor: Color
+                            if(isdark == true){
+                             tagonecolor= ComposeConstant.adjectivespanDark
+                            }else{
+                                tagonecolor= ComposeConstant.adjectivespanLight
+                            }
+
                             val tagonestyle = SpanStyle(
                                 color = tagonecolor!!,                                )
 
@@ -1460,10 +1472,15 @@ class CorpusUtilityorig(private var context: Context?) {
 
 
         }
-         fun setMudhafss(newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, chapid: Int) {
+         fun setMudhafss(
+             newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+             chapid: Int,
+             isdark: Boolean?
+         ) {
             var list= ArrayList<AnnotatedString>()
             val utils = Utils(QuranGrammarApplication.context!!)
             val surah = utils.getMudhafSurahNew(chapid)
+             var tagonecolor: Color
             val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
                 AnnotationUtility.stringForegroundColorSpanMap
             if (surah != null) {
@@ -1471,13 +1488,22 @@ class CorpusUtilityorig(private var context: Context?) {
                     val surahayah=utils.getMudhafSurahAyahNew(chapid,indexval)
                     if (surahayah != null) {
                         if(surahayah.size > 1){
-                            seTmultiple(surahayah,newnewadapterlist,chapid,spanhash)
+                            seTmultiple(surahayah,newnewadapterlist,chapid,spanhash,isdark)
                         }else if(surahayah.size==1){
                             val builder = AnnotatedString.Builder()
                             var annotatedString: AnnotatedString
-                            val tagonecolor =spanhash["mudhaf"]
+                        //    var tagonecolor =spanhash["mudhaf"]
+                            if(isdark!!){
+
+                                    tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
+                                } else {
+                                    tagonecolor =  Color(ComposeConstant.GREENYELLOW)
+                                }
+
+
+
                             val tagonestyle = SpanStyle(
-                                color = tagonecolor!!,                                )
+                                color = tagonecolor,                                )
 
                             val annotatedVerse =
                                 newnewadapterlist[surahayah.get(0).ayah - 1]?.get(0)!!.annotatedVerse!!
@@ -1577,13 +1603,23 @@ class CorpusUtilityorig(private var context: Context?) {
             surahayah: List<NewMudhafEntity>,
             newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
             chapid: Int,
-            spanhash: Map<String?, androidx.compose.ui.graphics.Color>
+            spanhash: Map<String?, Color>,
+            isdark: Boolean?
+
         ) {
+            var tagonecolor: Color
            if(surahayah.size==2){
+               if(isdark!!){
+
+                   tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
+               } else {
+                   tagonecolor =  Color(ComposeConstant.GREENYELLOW)
+               }
+
 
                val builder = AnnotatedString.Builder()
                var annotatedString: AnnotatedString
-               val tagonecolor = spanhash["mudhaf"]
+
                val tagonestyle = SpanStyle(
                    color = tagonecolor!!,                                )
 
@@ -1605,10 +1641,17 @@ class CorpusUtilityorig(private var context: Context?) {
 
                println(builder.toAnnotatedString())
            }else        if(surahayah.size==3){
+               if(isdark!!){
+
+                   tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
+               } else {
+                   tagonecolor =  Color(ComposeConstant.GREENYELLOW)
+               }
+
 
                val builder = AnnotatedString.Builder()
                var annotatedString: AnnotatedString
-               val tagonecolor = spanhash["mudhaf"]
+
                val tagonestyle = SpanStyle(
                    color = tagonecolor!!,                                )
 
@@ -1734,7 +1777,11 @@ class CorpusUtilityorig(private var context: Context?) {
 
         }
 
-        fun setShart(hashlist: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>, surah_id: Int) {
+        fun setShart(
+            hashlist: java.util.LinkedHashMap<Int, java.util.ArrayList<NewQuranCorpusWbw>>,
+            surah_id: Int,
+            isdark: Boolean?
+        ) {
             val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
                 AnnotationUtility.stringForegroundColorSpanMap
             val utils = Utils(QuranGrammarApplication.context!!)
@@ -1763,7 +1810,8 @@ class CorpusUtilityorig(private var context: Context?) {
                         shartsindex,
                         sharteindex,
                         jawabstartindex,
-                        jawabendindex
+                        jawabendindex,
+                        isdark!!
                     )
                 }
             }
@@ -1872,22 +1920,29 @@ private fun ColoredShart(
     sharteindex: Int,
     jawabstartindex: Int,
     jawabendindex: Int,
+    isdark: Boolean,
 ) {
     val spannableverse: AnnotatedString
     val spanhash: Map<String?, androidx.compose.ui.graphics.Color> =
         AnnotationUtility.stringForegroundColorSpanMap
-    if (CorpusUtilityorig.dark) {
-        ComposeConstant.harfshartspanDark = Color(Constant.GOLD)
-        ComposeConstant.shartspanDark = Color(Constant.ORANGE400)
-        ComposeConstant.jawabshartspanDark = Color(CYAN)
+
+
+    var tagonecolor: Color
+    var tagtwocolor: Color
+    var tagthreecolor: Color
+
+    if (isdark) {
+        tagonecolor= Color(Constant.GOLD)
+        tagthreecolor= Color(Constant.ORANGE400)
+        tagtwocolor  = Color(CYAN)
     } else {
-        ComposeConstant.harfshartspanDark = Color(ComposeConstant.FORESTGREEN)
-        ComposeConstant.shartspanDark = Color(Constant.KASHMIRIGREEN)
-        ComposeConstant.jawabshartspanDark = Color(Constant.WHOTPINK)
+       tagonecolor = Color(ComposeConstant.FORESTGREEN)
+     tagtwocolor = Color(Constant.KASHMIRIGREEN)
+       tagthreecolor= Color(Constant.WHOTPINK)
     }
     val builder = AnnotatedString.Builder()
     var annotatedString: AnnotatedString
-    val tagonecolor =spanhash["mudhaf"]
+    //val tagonecolor =spanhash["mudhaf"]
   /*  val tagonestyle = SpanStyle(
         color = ComposeConstant.harfshartspanDark!!,
         textDecoration =TextDecoration.Underline)
@@ -1930,7 +1985,7 @@ private fun ColoredShart(
         if (indexstart == 0 || indexstart > 0) {
             builder.  addStyle(
                 style = SpanStyle(
-                    color = ComposeConstant.harfshartspanDark!!,
+                    color = tagonecolor,
                     textDecoration = TextDecoration.Underline
                 ), start = indexstart, end = indexend
             )
@@ -1939,7 +1994,7 @@ private fun ColoredShart(
         if (shartsindex == 0 || shartsindex > 0) {
             builder.  addStyle(
                 style = SpanStyle(
-                    color = ComposeConstant.shartspanDark !!,
+                    color = tagtwocolor,
                     textDecoration = TextDecoration.Underline
                 ), start = shartsindex, end = sharteindex
             )
@@ -1948,7 +2003,7 @@ private fun ColoredShart(
 
             builder.  addStyle(
                 style = SpanStyle(
-                    color = jawabshartspanDark,
+                    color = tagthreecolor,
                     textDecoration = TextDecoration.Underline
                 ), start = jawabstartindex, end = jawabendindex
             )

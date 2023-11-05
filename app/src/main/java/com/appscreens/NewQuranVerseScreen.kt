@@ -24,6 +24,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -78,7 +79,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 var quranbySurah: List<QuranEntity>? = null
-var surahs: List<ChaptersAnaEntity>?=null
+var surahs: List<ChaptersAnaEntity>? = null
 var scopes: CoroutineScope? = null
 var wordarray: ArrayList<NewQuranCorpusWbw>? = null
 var listState: LazyListState? = null
@@ -87,8 +88,10 @@ var aid: Int = 0
 var cid: Int = 0
 var wid: Int = 0
 val showWordDetails = mutableStateOf(false)
+
 @SuppressLint("CoroutineCreationDuringComposition")
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
+@OptIn(
+    ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class
 )
 @Composable
@@ -99,10 +102,6 @@ fun NewQuranVerseScreen(
     verseModel: VerseModel,
 
 
-
-
-
-
     ) {
 
     // val model = viewModel(modelClass = VerseModel::class.java)
@@ -110,7 +109,9 @@ fun NewQuranVerseScreen(
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-    val showtranslation = rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
+    val showtranslation =
+        rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
+    val showwordbyword = rememberPreferenceBooleanSettingState(key = "wbw", defaultValue = false)
     //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
@@ -154,17 +155,12 @@ fun NewQuranVerseScreen(
 
     val preferencesManager = remember { PreferencesManager(QuranGrammarApplication.context!!) }
     val data = remember { mutableStateOf(preferencesManager.getData("lastread", 1)) }
-
-
-    //  val state = rememberScrollState()
-
-
     preferencesManager.saveData("lastread", chapid.toString())
     data.value = chapid.toString()
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
     val myItems = remember { mutableStateOf(listOf(newnewadapterlist)) }
     val item = (1..100).toList()
-
+    var  wbw:NewQuranCorpusWbw?=null
     LoadingData(isDisplayed = false)
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(3) }
@@ -172,24 +168,14 @@ fun NewQuranVerseScreen(
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-
-        //     itemsIndexed(quranbySurah) { index, item ->
         itemsIndexed(quranbySurah!!.toList()) { index, item ->
             //   val img = imgs.getDrawable(surahs!!.chapid - 2)
-
-
             Card(
-
-
-                /*      colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),*/
-                elevation = CardDefaults.cardElevation(
+                colors = CardDefaults.cardColors(
+                    //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
+                ), elevation = CardDefaults.cardElevation(
                     defaultElevation = 16.dp
-                ),
-
-
-                modifier = Modifier
+                ), modifier = Modifier
                     .fillMaxWidth()
 
                     .padding(
@@ -200,12 +186,9 @@ fun NewQuranVerseScreen(
 
 
             {
+
                 RightToLeftLayout {
-
-
                     FlowRow(
-
-
                         verticalArrangement = Arrangement.Top,
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         maxItemsInEachRow = 6,
@@ -225,7 +208,7 @@ fun NewQuranVerseScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp)
-                           //  .background(MaterialTheme.colorScheme.background)
+                            //  .background(MaterialTheme.colorScheme.background)
                         ) {
                             Text(
 
@@ -294,7 +277,8 @@ fun NewQuranVerseScreen(
                         //   wbw.forEach { indexval
                         var list = LinkedHashMap<AnnotatedString, String>()
                         val lhm = LinkedHashMap<AnnotatedString, String>()
-                        for (wbw: NewQuranCorpusWbw in wordarray!!) {
+
+                        for (wbw in wordarray!!) {
 
 
                             list = AnnotationUtility.AnnotatedStrings(
@@ -305,7 +289,7 @@ fun NewQuranVerseScreen(
                                 wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
                                 wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
                                 wbw.corpus!!.arafive!!,
-                                wbw.wbw!!.en,thememode
+                                wbw.wbw!!.en, thememode
                             )
 
                             val toList = list.toList()
@@ -315,55 +299,123 @@ fun NewQuranVerseScreen(
                             val textChipRememberOneState = remember {
                                 mutableStateOf(false)
                             }
-                            /*
-                                   modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 21.sp,
-                             */
-                            TextChip(
 
-                                isSelected = textChipRememberOneState.value,
-                                text = annotatedStringStringPair!!.first,
-                               
+                                TextChip(
 
-                                selectedColor = Color.DarkGray,
+                                    isSelected = textChipRememberOneState.value,
+                                    text = annotatedStringStringPair!!.first,
 
 
-                                onChecked = {
-                                    cid = wbw.corpus!!.surah
-                                    aid = wbw.corpus!!.ayah
-                                    wid = wbw.corpus!!.wordno
+                                    selectedColor = Color.DarkGray,
 
-                                    textChipRememberOneState.value = it
-                                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                    cid = wbw.corpus!!.surah
-                                    aid = wbw.corpus!!.ayah
-                                    wid = wbw.corpus!!.wordno
 
-                                    showWordDetails.value = false
+                                    onChecked = {
+                                        cid = wbw.corpus!!.surah
+                                        aid = wbw.corpus!!.ayah
+                                        wid = wbw.corpus!!.wordno
 
-                                    navController.navigate(
-                                        "wordalert/$cid/$aid/$wid"
-                                    )
+                                        textChipRememberOneState.value = it
+                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                        cid = wbw.corpus!!.surah
+                                        aid = wbw.corpus!!.ayah
+                                        wid = wbw.corpus!!.wordno
 
+                                        showWordDetails.value = false
+
+                                        navController.navigate(
+                                            "wordalert/$cid/$aid/$wid"
+                                        )
+
+                                    }
+
+                                )
+
+                        }
+                    }
+
+                    FlowRow(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        maxItemsInEachRow = 6,
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                            .padding(
+                                horizontal = 10.dp,
+                                vertical = 8.dp
+                            )
+
+
+                    )
+
+                    {
+
+                        wordarray = newnewadapterlist[index]
+                        val totalItemsCount = listState!!.layoutInfo.totalItemsCount
+                        println(totalItemsCount)
+                        var counter = 0
+                        //  for (counter in wbw.size - 1 downTo 0) {
+                        //   wbw.forEach { indexval
+                        var list = LinkedHashMap<AnnotatedString, String>()
+                        val lhm = LinkedHashMap<AnnotatedString, String>()
+
+                        for (wbw in wordarray!!) {
+
+
+                            if (showwordbyword.value) {
+                                Text(text = wbw!!.wbw!!.en)
+                            }
+
+
+                        }
+
+                    }
+
+
+
+
+
+            /*       FlowRow(
+                       verticalArrangement = Arrangement.Top,
+                       horizontalArrangement = Arrangement.SpaceEvenly,
+                       maxItemsInEachRow = 6,
+                       modifier = Modifier
+                           .fillMaxWidth()
+
+                           .padding(
+                               horizontal = 10.dp,
+                               vertical = 8.dp
+                           )
+
+
+                   )
+
+                        {
+
+                                if (showwordbyword.value) {
+                                    Text(text = wbw!!.wbw!!.en)
                                 }
 
-                            )
-                            Text(text = wbw.wbw!!.en)
+                        }
 
-                            /*            ClickableText(
-                                            text = annotatedStringStringPair!!.first,
+                */
 
-                                            onClick = { position: Int ->
-                                                Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                                cid = wbw.corpus!!.surah
-                                                aid = wbw.corpus!!.ayah
-                                                wid = wbw.corpus!!.wordno
-                                                showWordDetails.value = false
 
-     *//*
+
+                }
+
+
+                    /*            ClickableText(
+                                    text = annotatedStringStringPair!!.first,
+
+                                    onClick = { position: Int ->
+                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                        cid = wbw.corpus!!.surah
+                                        aid = wbw.corpus!!.ayah
+                                        wid = wbw.corpus!!.wordno
+                                        showWordDetails.value = false
+
+*//*
                                            navController.navigate(
                                                 "books/${cid}/${aid}/${wid}"
                                             )*//*
@@ -383,19 +435,13 @@ fun NewQuranVerseScreen(
                                     )*/
 
 
-                        }
+                    //    startDetailActivity(cid,aid, wid!!)
+                    // navController.popBackStack("verses/{id}", true)
+                    //   showWordDetails.value = false
+                    //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
-                        //    startDetailActivity(cid,aid, wid!!)
-                        // navController.popBackStack("verses/{id}", true)
-                        //   showWordDetails.value = false
-                        //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
-
-                    }
-
-
-                }
 
 
 
@@ -421,10 +467,9 @@ fun NewQuranVerseScreen(
 
                             text = it,
                             fontSize = 20.sp,
-                            color = colorResource(id = R.color.burntamber)
+                            // color = colorResource(id = R.color.burntamber)
                         )
                     }
-
 
 
                 }
@@ -439,7 +484,7 @@ fun NewQuranVerseScreen(
                         )
 
                 ) {
-                    if(showtranslation.value) {
+                    if (showtranslation.value) {
                         ExpandableText(
 
                             text = AnnotatedString(quranbySurah!![index].translation)
@@ -463,19 +508,16 @@ fun NewQuranVerseScreen(
                              wordarray!![0].annotatedVerse.toString(),
                              wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
                          )
- */ 
+ */
 
                     ExpandableText(
-                        text = AnnotatedString( "Ibne Kathir :"+         quranbySurah!![0].tafsir_kathir,)
-
-
+                        text = AnnotatedString("Ibne Kathir :" + quranbySurah!![0].tafsir_kathir)
 
 
                     )
 
 
                 }
-
 
 
             }

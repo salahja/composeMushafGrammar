@@ -381,8 +381,12 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 
 
             ExpandableText(
-                text = AnnotatedString("Translation :" + rootdetails.translation!!)
-
+                text = AnnotatedString("Translation :" + rootdetails.translation!!),
+                        style = TextStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
+                fontFamily = FontFamily.Cursive
+            )
 
             )
             Spacer(modifier = Modifier.width(20.dp))
@@ -399,7 +403,12 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 
 
             ExpandableText(
-                text = AnnotatedString("Tafsir Ibne Kathir:" + rootdetails.tafsir_kathir!!)
+                text = AnnotatedString("Tafsir Ibne Kathir:" + rootdetails.tafsir_kathir!!),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
 
 
             )

@@ -380,9 +380,6 @@
     <string name="books">books</string>
 
 
-
-
-
     <string name="default_username">u/johndoe</string>
 
     <string name="subreddits">Subreddits</string>
@@ -455,6 +452,7 @@
     <string name="ic_arrow_forward">Arrow</string>
     <string name="Setting">Setting</string>
     <string name="Topsetting">topsettings</string>
+    <string name="title_activity_download">DownloadAct</string>
 
 
 </resources>
