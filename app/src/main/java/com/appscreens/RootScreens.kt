@@ -382,11 +382,11 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 
             ExpandableText(
                 text = AnnotatedString("Translation :" + rootdetails.translation!!),
-                        style = TextStyle(
-                        color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 18.sp,
-                fontFamily = FontFamily.Cursive
-            )
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.Cursive
+                )
 
             )
             Spacer(modifier = Modifier.width(20.dp))
@@ -497,7 +497,6 @@ fun RootGrid(rootdetails: RootVerbDetails, navController: NavHostController) {
 }
 
 
-
 @Composable
 fun PressIconButton(
     onClick: () -> Unit,
@@ -510,16 +509,19 @@ fun PressIconButton(
     colors: Color,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
-    Button(onClick = onClick, modifier = modifier,
+    Button(
+        onClick = onClick, modifier = modifier,
         colors = ButtonDefaults.buttonColors(colors),
-      //  colors = ButtonConstants.defaultButtonColors(backgroundColor = Color.Yellow)
-        interactionSource = interactionSource) {
+        //  colors = ButtonConstants.defaultButtonColors(backgroundColor = Color.Yellow)
+        interactionSource = interactionSource
+    ) {
         AnimatedVisibility(visible = isPressed) {
             if (isPressed) {
                 Row {
                     icon()
-                    Spacer(Modifier.size(ButtonDefaults.IconSpacing),
-                        )
+                    Spacer(
+                        Modifier.size(ButtonDefaults.IconSpacing),
+                    )
                 }
             }
         }
@@ -528,7 +530,6 @@ fun PressIconButton(
         )
     }
 }
-
 
 
 const val DEFAULT_MINIMUM_TEXT_LINE = 1

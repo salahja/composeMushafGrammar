@@ -160,7 +160,7 @@ fun NewQuranVerseScreen(
     val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
     val myItems = remember { mutableStateOf(listOf(newnewadapterlist)) }
     val item = (1..100).toList()
-    var  wbw:NewQuranCorpusWbw?=null
+    var wbw: NewQuranCorpusWbw? = null
     LoadingData(isDisplayed = false)
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(3) }
@@ -271,10 +271,8 @@ fun NewQuranVerseScreen(
                         }
                         wordarray = newnewadapterlist[index]
                         val totalItemsCount = listState!!.layoutInfo.totalItemsCount
-                        println(totalItemsCount)
-                        var counter = 0
-                        //  for (counter in wbw.size - 1 downTo 0) {
-                        //   wbw.forEach { indexval
+
+
                         var list = LinkedHashMap<AnnotatedString, String>()
                         val lhm = LinkedHashMap<AnnotatedString, String>()
 
@@ -329,39 +327,6 @@ fun NewQuranVerseScreen(
                                     }
 
                                 )
-
-                        }
-                    }
-
-                    FlowRow(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        maxItemsInEachRow = 6,
-                        modifier = Modifier
-                            .fillMaxWidth()
-
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 8.dp
-                            )
-
-
-                    )
-
-                    {
-
-                        wordarray = newnewadapterlist[index]
-                        val totalItemsCount = listState!!.layoutInfo.totalItemsCount
-                        println(totalItemsCount)
-                        var counter = 0
-                        //  for (counter in wbw.size - 1 downTo 0) {
-                        //   wbw.forEach { indexval
-                        var list = LinkedHashMap<AnnotatedString, String>()
-                        val lhm = LinkedHashMap<AnnotatedString, String>()
-
-                        for (wbw in wordarray!!) {
-
-
                             if (showwordbyword.value) {
                                 Text(text = wbw!!.wbw!!.en)
                             }
@@ -369,51 +334,55 @@ fun NewQuranVerseScreen(
 
                         }
 
+
+
+
+
+
+
+
+
                     }
 
 
+                    /*       FlowRow(
+                               verticalArrangement = Arrangement.Top,
+                               horizontalArrangement = Arrangement.SpaceEvenly,
+                               maxItemsInEachRow = 6,
+                               modifier = Modifier
+                                   .fillMaxWidth()
+
+                                   .padding(
+                                       horizontal = 10.dp,
+                                       vertical = 8.dp
+                                   )
 
 
-
-            /*       FlowRow(
-                       verticalArrangement = Arrangement.Top,
-                       horizontalArrangement = Arrangement.SpaceEvenly,
-                       maxItemsInEachRow = 6,
-                       modifier = Modifier
-                           .fillMaxWidth()
-
-                           .padding(
-                               horizontal = 10.dp,
-                               vertical = 8.dp
                            )
 
+                                {
 
-                   )
+                                        if (showwordbyword.value) {
+                                            Text(text = wbw!!.wbw!!.en)
+                                        }
 
-                        {
-
-                                if (showwordbyword.value) {
-                                    Text(text = wbw!!.wbw!!.en)
                                 }
 
-                        }
-
-                */
-
+                        */
 
 
                 }
 
 
-                    /*            ClickableText(
-                                    text = annotatedStringStringPair!!.first,
+                /*            ClickableText(
+                                text = annotatedStringStringPair!!.first,
 
-                                    onClick = { position: Int ->
-                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                        cid = wbw.corpus!!.surah
-                                        aid = wbw.corpus!!.ayah
-                                        wid = wbw.corpus!!.wordno
-                                        showWordDetails.value = false
+                                onClick = { position: Int ->
+                                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                    cid = wbw.corpus!!.surah
+                                    aid = wbw.corpus!!.ayah
+                                    wid = wbw.corpus!!.wordno
+                                    showWordDetails.value = false
 
 *//*
                                            navController.navigate(
@@ -435,14 +404,10 @@ fun NewQuranVerseScreen(
                                     )*/
 
 
-                    //    startDetailActivity(cid,aid, wid!!)
-                    // navController.popBackStack("verses/{id}", true)
-                    //   showWordDetails.value = false
-                    //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-
-
-
-
+                //    startDetailActivity(cid,aid, wid!!)
+                // navController.popBackStack("verses/{id}", true)
+                //   showWordDetails.value = false
+                //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
                 Row(

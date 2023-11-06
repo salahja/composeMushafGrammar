@@ -14,9 +14,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.skyyo.expandablelist.theme.DarkThemeColors
+import com.skyyo.expandablelist.theme.DarkColors
+
 import com.skyyo.expandablelist.theme.LightColors
-import com.skyyo.expandablelist.theme.LightThemeColors
+
 
 /*
 
@@ -51,8 +52,8 @@ fun ComposeTutorial12DifferentScreenSizesSupportTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkThemeColors
-        else -> LightThemeColors
+        darkTheme -> DarkColors
+        else -> LightColors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
