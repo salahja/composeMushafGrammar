@@ -77,7 +77,7 @@ import com.codelab.basics.ui.theme.md_theme_light_surfaceVariant
 import com.codelab.basics.ui.theme.md_theme_light_tertiary
 import com.codelab.basics.ui.theme.md_theme_light_tertiaryContainer
 
-/*
+
 
  val LightColors = lightColorScheme(
     primary = brownmd_theme_light_primary,
@@ -110,7 +110,7 @@ import com.codelab.basics.ui.theme.md_theme_light_tertiaryContainer
     outlineVariant = brownmd_theme_light_outlineVariant,
     scrim = brownmd_theme_light_scrim,
 )
-
+/*
 
 val DarkColors = darkColorScheme(
     primary = brownmd_theme_dark_primary,
@@ -332,7 +332,7 @@ object AppThemeSettings {
 */
 
 
- val LightColors = lightColorScheme(
+ val LightColorss = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,

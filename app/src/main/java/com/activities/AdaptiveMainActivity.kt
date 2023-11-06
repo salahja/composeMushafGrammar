@@ -423,13 +423,14 @@ fun MainContent(
                 }
 
                 composable(Screen.Settings.route) {
-
-     /*                    val intent = Intent(Intent.ACTION_VIEW)
+/*
+                        val intent = Intent(Intent.ACTION_VIEW)
                           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                           val i = Intent(context, DownloadAct::class.java)
                           i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                           context!!.startActivity(i)*/
-             SeetingScreen(navController)
+             SeetingScreen(navController,       darkThemePreference  ,
+                 dynamicThemePreference  )
 
                 }
 
@@ -467,7 +468,7 @@ fun MainContent(
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
                     val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id,thememode.value))
-                    NewQuranVerseScreen(navController, id, myViewModel)
+                    NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
 
 
                 }

@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 
@@ -100,6 +99,7 @@ fun NewQuranVerseScreen(
     chapid: Int,
 
     verseModel: VerseModel,
+    darkThemePreference: BooleanPreferenceSettingValueState,
 
 
     ) {
@@ -108,7 +108,9 @@ fun NewQuranVerseScreen(
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
-    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+    darkThemePreference.value
+    val thememode = darkThemePreference.value
+
     val showtranslation =
         rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
     val showwordbyword = rememberPreferenceBooleanSettingState(key = "wbw", defaultValue = false)

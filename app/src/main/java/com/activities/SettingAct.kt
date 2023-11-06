@@ -49,7 +49,8 @@ class SettingAct : ComponentActivity() {
                     ) {
 
                         composable(Navigation.NAV_TOP_SETTINGS.first) {
-                            SeetingScreen(navController)
+                            SeetingScreen(navController,       darkThemePreference,
+                                dynamicThemePreference )
                          //   ListScreen(navController = navController)
                         }
 

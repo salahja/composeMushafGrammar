@@ -1,18 +1,13 @@
 package com.corpusutility
 
 import android.content.Context
-import android.text.Spannable
 import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.core.content.ContextCompat
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.example.ComposeConstant
-import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.utility.CorpusUtilityorig.Companion.dark
 import com.example.utility.QuranGrammarApplication.Companion.context
@@ -623,7 +618,7 @@ class AnnotationUtility(private var context: Context?) {
             arafour: String,
             arafive: String,
             wordno: String,
-            thememode: BooleanPreferenceSettingValueState,
+            thememode: Boolean,
 
             ): LinkedHashMap<AnnotatedString, String> {
             var list = LinkedHashMap<AnnotatedString, String>()
@@ -853,13 +848,13 @@ class AnnotationUtility(private var context: Context?) {
 
 
         @JvmStatic
-        fun ColorStyleMap(thememode: BooleanPreferenceSettingValueState): Map<String?, androidx.compose.ui.graphics.Color> {
+        fun ColorStyleMap(thememode: Boolean): Map<String?, androidx.compose.ui.graphics.Color> {
 
 
 
             val spanhash: MutableMap<String?, Color> = HashMap()
 
-            if (thememode.value) {
+            if (thememode) {
                 spanhash["mudhaf"] = ComposeConstant.prohibitionspanDark
                 spanhash["mousuf"] = ComposeConstant.harfshartspanDark
                 spanhash["PN"] = ComposeConstant.propernounspanDark

@@ -244,6 +244,7 @@ val md_theme_dark_scrim = Color(0xFF000000)
 val seed = Color(0xFF96CCFF)
 
 //lightbrown
+*/
 
 
 val brownmd_theme_light_primary = Color(0xFFEBE4CD)
@@ -276,7 +277,7 @@ val brownmd_theme_light_shadow = Color(0xFF000000)
 val brownmd_theme_light_surfaceTint = Color(0xFF6A5F00)
 val brownmd_theme_light_outlineVariant = Color(0xFFCCC6B5)
 val brownmd_theme_light_scrim = Color(0xFF000000)
-
+/*
 val brownmd_theme_dark_primary = Color(0xFFDAC84E)
 val brownmd_theme_dark_onPrimary = Color(0xFFB8A930)
 val brownmd_theme_dark_primaryContainer = Color(0xFF504700)

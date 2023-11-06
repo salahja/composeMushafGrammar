@@ -41,12 +41,14 @@ import com.alorma.compose.settings.storage.base.setValue
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 
 
+
 @Composable
 fun AppSettingsScreen(
     navController: NavHostController,
     darkThemePreference: BooleanPreferenceSettingValueState,
     dynamicThemePreference: BooleanPreferenceSettingValueState,
 ) {
+    val enabledState = rememberBooleanSettingState(true)
     AppScaffold(
         navController = navController,
         showSettings = false,
@@ -61,10 +63,12 @@ fun AppSettingsScreen(
 
 
                 val darkmode = rememberPreferenceBooleanSettingState(
-                    key = "switch_2",
+                    key = "Dark",
                     defaultValue = false,
                 )
                 SettingsSwitch(
+                    enabled = enabledState.value,
+                  //  state = darkmode,
                     state = darkThemePreference,
                     title = { Text(text = "Dark theme") },
                     subtitle = { Text(text = "Change between dark and light") },

@@ -1,11 +1,13 @@
 package com.settings.preference
 
 import AppScaffold
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.base.SettingValueState
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.alorma.compose.settings.ui.SettingsList
@@ -38,7 +41,9 @@ import kotlinx.coroutines.launch
 @Composable
 
 
-fun SeetingScreen(navController: NavHostController) {
+fun SeetingScreen(navController: NavHostController,
+                  darkThemePreference: BooleanPreferenceSettingValueState,
+                  dynamicThemePreference: BooleanPreferenceSettingValueState) {
     val state = rememberBooleanSettingState()
     val localContext = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -69,7 +74,7 @@ fun SeetingScreen(navController: NavHostController) {
                 )
                 SettingsSwitch(
                     enabled = enabledState.value,
-                    state = darkmode,
+                    state = darkThemePreference,
                     icon = {
                         Icon(
                             imageVector = Icons.Default.SortByAlpha,
@@ -87,6 +92,28 @@ fun SeetingScreen(navController: NavHostController) {
                 )
                 Divider()
             }
+
+            Row(Modifier.height(100.dp)) {
+
+
+                val darkmode = rememberPreferenceBooleanSettingState(
+                    key = "switch_2",
+                    defaultValue = false,
+                )
+                // Dynamic theme is not supported on lower API levels.
+                if (Build.VERSION.SDK_INT >= 31) {
+                    com.settings.SettingsSwitch(
+                        state = dynamicThemePreference,
+                        title = { Text(text = "Dynamic theme") },
+                        subtitle = { Text(text = "Dynamic theme based on wallpaper") },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
+
+
+
+
             Row(Modifier.height(100.dp)) {
 
 
