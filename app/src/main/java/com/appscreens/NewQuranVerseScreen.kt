@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 
@@ -73,6 +73,7 @@ import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
+import com.example.compose.TextChipWBW
 import com.example.compose.theme.Tooltips
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -126,7 +127,7 @@ fun NewQuranVerseScreen(
     corpus.composeWBWCollection(quranbySurah,corpusSurahWord)*/
     // quranModel.setspans(newnewadapterlist, chapid)
 
-
+    showWordDetails.value=false
     //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
 
     loading = verseModel!!.loading.value
@@ -294,19 +295,22 @@ fun NewQuranVerseScreen(
 
                             val toList = list.toList()
                             var annotatedStringStringPair = toList[0]
+                            val aword=annotatedStringStringPair.first
+                            val ln="\n"
+                            val tra=annotatedStringStringPair.second
+
+                            val fword=aword+AnnotatedString(ln)+ AnnotatedString(tra)
+
 
                             //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
                             val textChipRememberOneState = remember {
                                 mutableStateOf(false)
                             }
 
-                                TextChip(
-
+                            TextChipWBW(
+                                   thememode,
                                     isSelected = textChipRememberOneState.value,
-                                    text = annotatedStringStringPair!!.first,
-
-
-                                    selectedColor = Color.DarkGray,
+                                    text = fword,
 
 
                                     onChecked = {
@@ -322,13 +326,16 @@ fun NewQuranVerseScreen(
 
                                         showWordDetails.value = false
 
-                                        navController.navigate(
+                                      navController.navigate(
                                             "wordalert/$cid/$aid/$wid"
                                         )
 
-                                    }
+                                    },
 
-                                )
+
+                                    selectedColor = Color.DarkGray,
+
+                                    )
                             if (showwordbyword.value) {
                                 Text(text = wbw!!.wbw!!.en)
                             }
@@ -489,18 +496,27 @@ fun NewQuranVerseScreen(
 
             }
             if (showWordDetails.value) {
-
+                BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+             //
+              //  Bottoms()
                 //    extractedtooltips(utils)
+/*
 
                 var openBottomSheet by remember { mutableStateOf(false) }
                 //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
                 ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
 
                 }
+*/
 
             }
         }
     }
+
+
+
+
+
 
     @Composable
     fun extractedtooltips(utils: Utils) {
@@ -584,6 +600,9 @@ fun NewQuranVerseScreen(
         // showWordDetails.value = false
     }
 }
+
+
+
 
 
 @Composable

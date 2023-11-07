@@ -21,19 +21,27 @@ import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+var modecolor: Color?=null
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TextChip(
+    isDarkmode: Boolean,
     isSelected: Boolean,
     text: AnnotatedString,
     onChecked: (Boolean) -> Unit,
-    selectedColor: Color = DarkGray
+    selectedColor: Color = DarkGray,
+    modecolor: Color
 )
  {
+     if(isSelected && isDarkmode){
+
+     }
     FlowRow(
         verticalArrangement = Arrangement.Top,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -47,13 +55,13 @@ fun TextChip(
             .border(
                 width = 1.dp,
                 color = if (isSelected) selectedColor else LightGray,
-                shape = CircleShape
+                shape = RectangleShape
             )
             .background(
                 color = if (isSelected) selectedColor else Transparent,
-                shape = CircleShape
+                shape = RectangleShape
             )
-            .clip( shape = CircleShape)
+            .clip( shape = RectangleShape)
             .clickable {
                 onChecked(!isSelected)
             }
@@ -61,24 +69,33 @@ fun TextChip(
     ) {
         Text(
             text = text,
-            fontSize = 25.sp,
-            color = if (isSelected) White else Unspecified
+            fontSize = 20.sp,
+
+            color = if (isSelected) White else modecolor
         )
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TextChip(
+fun TextChipWBW(
+    isDarkmode: Boolean,
     isSelected: Boolean,
-    text: String,
+    text: AnnotatedString,
     onChecked: (Boolean) -> Unit,
     selectedColor: Color = DarkGray
 ) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+ if(isDarkmode){
+     modecolor= Color.White
+ }else{
+     modecolor=Color.Black
+ }
+    FlowRow(
+        verticalArrangement = Arrangement.Top,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        maxItemsInEachRow = 6,
         modifier = Modifier
-            .fillMaxWidth()
+
             .padding(
                 vertical = 2.dp,
                 horizontal = 4.dp
@@ -86,22 +103,24 @@ fun TextChip(
             .border(
                 width = 1.dp,
                 color = if (isSelected) selectedColor else LightGray,
-                shape = CircleShape
+                shape = RectangleShape
             )
             .background(
                 color = if (isSelected) selectedColor else Transparent,
-                shape = CircleShape
+                shape = RectangleShape
             )
-            .clip( shape = CircleShape)
+            .clip( shape = RectangleShape)
             .clickable {
                 onChecked(!isSelected)
             }
             .padding(4.dp)
-    ) {
-        Text(
-            text = text,
-            color = if (isSelected) White else Unspecified
-        )
+    ){
+        (if (isSelected) White else modecolor)?.let {
+            Text(
+                text = text,
+                color = it
+            )
+        }
     }
 }
 

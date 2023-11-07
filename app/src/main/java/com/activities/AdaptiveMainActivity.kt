@@ -74,11 +74,12 @@ import com.appscreens.SurahListScreen
 import com.viewmodels.VerseModel
 
 
-import com.appscreens.NewQuranVerseScreen
+
 
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.appscreens.MatTab
+import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.modelfactory.CardViewModelFactory
