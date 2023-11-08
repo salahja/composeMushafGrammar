@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -16,8 +17,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,7 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
@@ -79,9 +85,16 @@ fun ExpandableContainerView(
     onClickItem: () -> Unit,
     expanded: Boolean
 ) {
-    Box(
+    Card(
+       // contentAlignment = Alignment.Center,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary)
+            .fillMaxWidth()
+            //  .background(color = Color.White)
+            .border(width = 2.dp, color = Color.Blue, shape = RoundedCornerShape(16.dp))
+            .clickable {
+
+            }
+            .padding(16.dp)
     ) {
         Column {
             HeaderView(questionText = itemModel.grammarrule, onClickItem = onClickItem)
@@ -92,9 +105,9 @@ fun ExpandableContainerView(
 
 @Composable
 fun HeaderView(questionText: String, onClickItem: () -> Unit) {
-    Box(
+    Card(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .clickable(
                 indication = null, // Removes the ripple effect on tap
                 interactionSource = remember { MutableInteractionSource() }, // Removes the ripple effect on tap
@@ -145,40 +158,36 @@ fun ExpandableView(result: List<AnnotatedString>, isExpanded: Boolean) {
         enter = expandTransition,
         exit = collapseTransition
     ) {
-        Column(modifier = Modifier.padding(8.dp))
+        Column(
+            modifier = Modifier.padding(8.dp)
+            //    .background(MaterialTheme.colorScheme.primaryContainer)
+        )
 
 
         {
 
 
             result.forEach { verses ->
-                val annotatedString = buildAnnotatedString {
-                    append(verses)
-
-                }
-
-                androidx.compose.material3.Text(
-                    text = annotatedString, style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Light,
-                        textDirection = TextDirection.ContentOrRtl,
-                        textAlign = TextAlign.Center,
-                        fontFamily = qalam
+                val annotatedString = verses
+                Text(
+                    text = annotatedString!!,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Thin,
+                    fontSize = 18.sp,
 
                     )
 
 
-                )
-
                 // on below line we are specifying
                 // divider for each list item
-                Divider(color = Color.Red, thickness = 3.dp)
+                //  Divider(color = Color.Red, thickness = 3.dp)
             }
             Divider()
         }
     }
 }
-
-
 
 
 //fun HeaderView(questionText: String, onClickItem: () -> Unit) {

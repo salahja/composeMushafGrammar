@@ -72,13 +72,13 @@ class DownloadAct : ComponentActivity() {
 
         requestMultiplePermission = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ){
+        ) {
             var isGranted = false
             it.forEach { s, b ->
                 isGranted = b
             }
 
-            if (!isGranted){
+            if (!isGranted) {
                 Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show()
             }
         }
@@ -91,9 +91,9 @@ class DownloadAct : ComponentActivity() {
                 ) {
                     requestMultiplePermission.launch(
                         /* input = */ arrayOf(
-                           // int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                          android.   Manifest.permission.READ_EXTERNAL_STORAGE,
-                          android.  Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            // int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                         )
                     )
 
@@ -104,13 +104,14 @@ class DownloadAct : ComponentActivity() {
 
 
     }
+
     data class File(
-        val id:String,
-        val name:String,
-        val type:String,
-        val url:String,
-        var downloadedUri:String?=null,
-        var isDownloading:Boolean = false,
+        val id: String,
+        val name: String,
+        val type: String,
+        val url: String,
+        var downloadedUri: String? = null,
+        var isDownloading: Boolean = false,
     )
 
     @Composable
@@ -161,11 +162,11 @@ class DownloadAct : ComponentActivity() {
                 },
                 openFile = {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(it.downloadedUri?.toUri(),"application/pdf")
+                    intent.setDataAndType(it.downloadedUri?.toUri(), "application/pdf")
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     try {
                         startActivity(intent)
-                    }catch (e: ActivityNotFoundException){
+                    } catch (e: ActivityNotFoundException) {
                         Toast.makeText(
                             this@DownloadAct,
                             "Can't open Pdf",
@@ -180,8 +181,8 @@ class DownloadAct : ComponentActivity() {
     @Composable
     fun ItemFile(
         file: File,
-        startDownload:(File) -> Unit,
-        openFile:(File) -> Unit
+        startDownload: (File) -> Unit,
+        openFile: (File) -> Unit
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -190,10 +191,10 @@ class DownloadAct : ComponentActivity() {
                 .background(color = Color.White)
                 .border(width = 2.dp, color = Color.Blue, shape = RoundedCornerShape(16.dp))
                 .clickable {
-                    if (!file.isDownloading){
-                        if (file.downloadedUri.isNullOrEmpty()){
+                    if (!file.isDownloading) {
+                        if (file.downloadedUri.isNullOrEmpty()) {
                             startDownload(file)
-                        }else{
+                        } else {
                             openFile(file)
                         }
                     }
@@ -211,26 +212,26 @@ class DownloadAct : ComponentActivity() {
                 ) {
                     Text(
                         text = file.name,
-                     //   style = Typography.body1,
+                        //   style = Typography.body1,
                         color = Color.Black
                     )
 
                     Row {
-                        val description = if (file.isDownloading){
+                        val description = if (file.isDownloading) {
                             "Downloading..."
-                        }else{
+                        } else {
                             if (file.downloadedUri.isNullOrEmpty()) "Tap to download the file" else "Tap to open file"
                         }
                         Text(
                             text = description,
-                         //   style = Typography.body2,
+                            //   style = Typography.body2,
                             color = Color.DarkGray
                         )
                     }
 
                 }
 
-                if (file.isDownloading){
+                if (file.isDownloading) {
                     CircularProgressIndicator(
                         color = Color.Blue,
                         modifier = Modifier
@@ -243,11 +244,12 @@ class DownloadAct : ComponentActivity() {
 
         }
     }
+
     private fun startDownloadingFile(
         file: File,
-        success:(String) -> Unit,
-        failed:(String) -> Unit,
-        running:() -> Unit
+        success: (String) -> Unit,
+        failed: (String) -> Unit,
+        running: () -> Unit
     ) {
         val data = Data.Builder()
         val workManager = WorkManager.getInstance(applicationContext)
@@ -276,18 +278,24 @@ class DownloadAct : ComponentActivity() {
 
 
         workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
-            .observe(this){ info->
+            .observe(this) { info ->
                 info?.let {
                     when (it.state) {
                         WorkInfo.State.SUCCEEDED -> {
-                            success(it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI) ?: "")
+                            success(
+                                it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI)
+                                    ?: ""
+                            )
                         }
+
                         WorkInfo.State.FAILED -> {
                             failed("Downloading failed!")
                         }
+
                         WorkInfo.State.RUNNING -> {
                             running()
                         }
+
                         else -> {
                             failed("Something went wrong")
                         }
@@ -300,17 +308,14 @@ class DownloadAct : ComponentActivity() {
 }
 
 
-
-
-
-object FileParams{
+object FileParams {
     const val KEY_FILE_URL = "key_file_url"
     const val KEY_FILE_TYPE = "key_file_type"
     const val KEY_FILE_NAME = "key_file_name"
     const val KEY_FILE_URI = "key_file_uri"
 }
 
-object NotificationConstants{
+object NotificationConstants {
     const val CHANNEL_NAME = "download_file_worker_demo_channel"
     const val CHANNEL_DESCRIPTION = "download_file_worker_demo_description"
     const val CHANNEL_ID = "download_file_worker_demo_channel_123456"
@@ -318,88 +323,82 @@ object NotificationConstants{
 }
 
 
+/*  private val url: String = "https://i.imgur.com/ayo3pHA.mp4"
+  var scanUri = "content://downloads/my_downloads"
+  var seekBarValue: MutableState<Float> = mutableStateOf(0F)
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      setContent {
+          val scope: CoroutineScope = rememberCoroutineScope()
+          MushafApplicationTheme {
+              seekBarValue = remember {
+                  mutableStateOf(0F)
+              }
+
+              // A surface container using the 'background' color from the theme
+              Column(
+                  modifier = Modifier.fillMaxSize(),
+
+              ) {
 
 
+                  Slider(value = (seekBarValue.value)/100, onValueChange = {
+                      seekBarValue.value = it
+                  } )
 
+                  Button(onClick = {
+                 downLoadMedia(scope)
 
-
-
-        /*  private val url: String = "https://i.imgur.com/ayo3pHA.mp4"
-          var scanUri = "content://downloads/my_downloads"
-          var seekBarValue: MutableState<Float> = mutableStateOf(0F)
-
-          override fun onCreate(savedInstanceState: Bundle?) {
-              super.onCreate(savedInstanceState)
-              setContent {
-                  val scope: CoroutineScope = rememberCoroutineScope()
-                  MushafApplicationTheme {
-                      seekBarValue = remember {
-                          mutableStateOf(0F)
-                      }
-
-                      // A surface container using the 'background' color from the theme
-                      Column(
-                          modifier = Modifier.fillMaxSize(),
-
-                      ) {
-
-
-                          Slider(value = (seekBarValue.value)/100, onValueChange = {
-                              seekBarValue.value = it
-                          } )
-
-                          Button(onClick = {
-                         downLoadMedia(scope)
-
-                          }) {
-                          Text(text="Download")
-                          }
-                      }
+                  }) {
+                  Text(text="Download")
                   }
               }
           }
+      }
+  }
 
-          private fun downLoadMedia(scope: CoroutineScope) {
+  private fun downLoadMedia(scope: CoroutineScope) {
 
 
-              val downloadManager =getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-              val request = DownloadManager.Request(Uri.parse(url)).apply {
-                  setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-                      .setAllowedOverRoaming(false)
-                      .setTitle(url.substring(url.lastIndexOf("/") + 1))
-                      .setDescription("")
-                      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                      // Notifications for DownloadManager are optional and can be removed
-                      .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"filename.mp4"
+      val downloadManager =getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+      val request = DownloadManager.Request(Uri.parse(url)).apply {
+          setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+              .setAllowedOverRoaming(false)
+              .setTitle(url.substring(url.lastIndexOf("/") + 1))
+              .setDescription("")
+              .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+              // Notifications for DownloadManager are optional and can be removed
+              .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"filename.mp4"
 
-                      )
-              }
+              )
+      }
 
-            val  downloadId = downloadManager.enqueue(request)
-              val query = DownloadManager.Query().setFilterById(downloadId)
-           val observer=object :ContentObserver(
-               Handler(Looper.getMainLooper() ) ){
+    val  downloadId = downloadManager.enqueue(request)
+      val query = DownloadManager.Query().setFilterById(downloadId)
+   val observer=object :ContentObserver(
+       Handler(Looper.getMainLooper() ) ){
 
-               override fun onChange(selfChange: Boolean) {
-                   super.onChange(selfChange)
+       override fun onChange(selfChange: Boolean) {
+           super.onChange(selfChange)
 
-                   val cursor: Cursor = downloadManager.query(query)
-                   cursor.moveToFirst()
+           val cursor: Cursor = downloadManager.query(query)
+           cursor.moveToFirst()
 
-                   if(cursor!=null && cursor.moveToFirst()){
-                       val total  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                       // Progress ->
+           if(cursor!=null && cursor.moveToFirst()){
+               val total  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+               // Progress ->
 
-                       val downloaded  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                       val currentProgress: Int = downloaded.toInt()
-                       seekBarValue.value=currentProgress.toFloat()
-                   }
-
-               }
+               val downloaded  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+               val currentProgress: Int = downloaded.toInt()
+               seekBarValue.value=currentProgress.toFloat()
            }
-              contentResolver.registerContentObserver(
-                  Uri.parse(scanUri),true,observer
-              )*/
+
+       }
+   }
+      contentResolver.registerContentObserver(
+          Uri.parse(scanUri),true,observer
+      )*/
 /*
         scope.launch(Dispatchers.IO) {
 

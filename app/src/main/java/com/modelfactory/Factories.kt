@@ -45,7 +45,7 @@ class VerseAnalysisFctory(
     private val chapterid:Int,
     private val verseid:Int,
     private val thememode: Boolean,
-    private val wbwchoice: IntPreferenceSettingValueState
+    private val wbwchoice: Int
 
 
     ) :

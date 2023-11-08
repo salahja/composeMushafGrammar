@@ -120,7 +120,7 @@ fun NewQuranVerseScreen(
     val showtranslation =
         rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
     val showwordbyword = rememberPreferenceBooleanSettingState(key = "wbw", defaultValue = false)
-     val wbwchoice=                      rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
+    val wbwchoice = rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
     //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
@@ -133,7 +133,7 @@ fun NewQuranVerseScreen(
     corpus.composeWBWCollection(quranbySurah,corpusSurahWord)*/
     // quranModel.setspans(newnewadapterlist, chapid)
 
-    showWordDetails.value=false
+    showWordDetails.value = false
     //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
 
     loading = verseModel!!.loading.value
@@ -301,11 +301,11 @@ fun NewQuranVerseScreen(
 
                             val toList = list.toList()
                             var annotatedStringStringPair = toList[0]
-                            val aword=annotatedStringStringPair.first
-                            val ln="\n"
-                            val tra=annotatedStringStringPair.second
+                            val aword = annotatedStringStringPair.first
+                            val ln = "\n"
+                            val tra = annotatedStringStringPair.second
 
-                            val fword=aword+AnnotatedString(ln)+ AnnotatedString(tra)
+                            val fword = aword + AnnotatedString(ln) + AnnotatedString(tra)
 
 
                             //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
@@ -314,47 +314,40 @@ fun NewQuranVerseScreen(
                             }
 
                             TextChipWBW(
-                                   thememode,
-                                    isSelected = textChipRememberOneState.value,
-                                    text = fword,
+                                thememode,
+                                isSelected = textChipRememberOneState.value,
+                                text = fword,
 
 
-                                    onChecked = {
-                                        cid = wbw.corpus!!.surah
-                                        aid = wbw.corpus!!.ayah
-                                        wid = wbw.corpus!!.wordno
+                                onChecked = {
+                                    cid = wbw.corpus!!.surah
+                                    aid = wbw.corpus!!.ayah
+                                    wid = wbw.corpus!!.wordno
 
-                                        textChipRememberOneState.value = it
-                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                        cid = wbw.corpus!!.surah
-                                        aid = wbw.corpus!!.ayah
-                                        wid = wbw.corpus!!.wordno
+                                    textChipRememberOneState.value = it
+                                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                    cid = wbw.corpus!!.surah
+                                    aid = wbw.corpus!!.ayah
+                                    wid = wbw.corpus!!.wordno
 
-                                        showWordDetails.value = false
+                                    showWordDetails.value = false
 
-                                      navController.navigate(
-                                            "wordalert/$cid/$aid/$wid"
-                                        )
-
-                                    },
-
-
-                                    selectedColor = Color.DarkGray,
-
+                                    navController.navigate(
+                                        "wordalert/$cid/$aid/$wid"
                                     )
+
+                                },
+
+
+                                selectedColor = Color.DarkGray,
+
+                                )
                             if (showwordbyword.value) {
                                 Text(text = wbw!!.wbw!!.en)
                             }
 
 
                         }
-
-
-
-
-
-
-
 
 
                     }
@@ -441,33 +434,50 @@ fun NewQuranVerseScreen(
                          )
  */
                     wordarray = newnewadapterlist[index]
+                   // quranbySurah!![index].surah
+                   // quranbySurah!![index].ayah
 
-                    wordarray!![0].annotatedVerse?.let {
+                    ClickableText(
+                        text = wordarray!![0].annotatedVerse!!,
+
+                        onClick = {
+                            val cid =  quranbySurah!![index].surah
+                            val aid =        quranbySurah!![index].ayah
+                            navController.navigate(
+                                "versealert/${cid}/${aid}"
+                            )
+
+                        }, style = TextStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily.Cursive
+                        )
+                    )
+
+              /*      wordarray!![0].annotatedVerse?.let { annotatedString ->
                         ClickableText(
 
-                            text = AnnotatedString(it.toString()),
+                            text = AnnotatedString(annotatedString),
                             onClick = {
                                 Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
                                 //   navController.navigate(NavigationItem.Books.route)
-                              //  navController.navigate("versealert/" ${cid}/${cid})
-                            val cid=    wordarray!![0].corpus!!.surah
-                           val aid=     wordarray!![0].corpus!!.ayah
+                                //  navController.navigate("versealert/" ${cid}/${cid})
+                                val cid = wordarray!![0].corpus!!.surah
+                                val aid = wordarray!![0].corpus!!.ayah
                                 navController.navigate(
                                     "versealert/${cid}/${aid}"
                                 )
 
 
-
-
-                            },style = TextStyle(
+                            }, style = TextStyle(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 18.sp,
                                 fontFamily = FontFamily.Cursive
                             )
                         )
-                            // color = colorResource(id = R.color.burntamber)
+                        // color = colorResource(id = R.color.burntamber)
 
-                    }
+                    }*/
 
 
                 }
@@ -521,17 +531,17 @@ fun NewQuranVerseScreen(
             }
             if (showWordDetails.value) {
                 BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-             //
-              //  Bottoms()
+                //
+                //  Bottoms()
                 //    extractedtooltips(utils)
-/*
+                /*
 
-                var openBottomSheet by remember { mutableStateOf(false) }
-                //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-                ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
+                                var openBottomSheet by remember { mutableStateOf(false) }
+                                //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                                ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
 
-                }
-*/
+                                }
+                */
 
             }
         }
@@ -624,9 +634,6 @@ fun NewQuranVerseScreen(
         // showWordDetails.value = false
     }
 }
-
-
-
 
 
 @Composable

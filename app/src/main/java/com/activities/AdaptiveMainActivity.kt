@@ -685,7 +685,7 @@ fun MainContent(
                     val thememode = darkThemePreference.value
                     val wbwchoice=                      rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
                     //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
-                    val versemodel: ExpandableVerseViewModel = viewModel(factory = VerseAnalysisFctory(chapterid!!,verseid!!,thememode,wbwchoice))
+                    val versemodel: ExpandableVerseViewModel = viewModel(factory = VerseAnalysisFctory(chapterid!!,verseid!!,thememode,wbwchoice.value))
                     VerseAnalysisScreen(versemodel,navController,  chapterid, verseid,)
 
                 }
