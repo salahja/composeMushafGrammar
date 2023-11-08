@@ -1497,7 +1497,7 @@ class CorpusUtilityorig(private var context: Context?) {
 
                                     tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
                                 } else {
-                                    tagonecolor =  Color(ComposeConstant.GREENYELLOW)
+                                    tagonecolor =  Color(ComposeConstant.WBURNTUMBER)
                                 }
 
 
@@ -1613,7 +1613,7 @@ class CorpusUtilityorig(private var context: Context?) {
 
                    tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
                } else {
-                   tagonecolor =  Color(ComposeConstant.GREENYELLOW)
+                   tagonecolor =  Color(ComposeConstant.WBURNTUMBER)
                }
 
 

@@ -104,7 +104,7 @@ class QuranRepository(
     fun getGrammarRulesByHarf(harf: String) : List<GrammarRules>? = grammarrulesDao.getGrammarRulesByHarf(harf)
     fun getGrammarRulesByHarf() : List<GrammarRules>? = grammarrulesDao.grammarRules
 
-    fun getwbwQuranTranslationRange(surahid: Int, ayahid: Int, startindex: Int,endindex:Int) : List<wbwentity> = wbwdao.getwbwQuranbTranslation(surahid,ayahid,startindex,endindex)
+    fun getwbwQuranTranslationRange(surahid: Int, ayahid: Int, startindex: Int,endindex:Int) : List<wbwentity> = wbwdao.getwbwQuranbTranslationbyrange(surahid,ayahid,startindex,endindex)
 
     fun getRootWordDictionary(root: String?): List<lughat> = lughatdao.getRootWordDictionary(root)
 

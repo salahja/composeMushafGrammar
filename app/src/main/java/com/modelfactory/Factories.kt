@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValueState
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.viewmodels.CardsViewModel
+import com.viewmodels.ExpandableVerseViewModel
 import com.viewmodels.RootModel
 import com.viewmodels.VerseModel
 
@@ -38,6 +39,19 @@ class RootViewModelFactory(
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         RootModel(dbname) as T
+}
+
+class VerseAnalysisFctory(
+    private val chapterid:Int,
+    private val verseid:Int,
+    private val thememode: Boolean,
+    private val wbwchoice: IntPreferenceSettingValueState
+
+
+    ) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        ExpandableVerseViewModel(chapterid,verseid,thememode,wbwchoice) as T
 }
 
 

@@ -21,9 +21,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -42,6 +44,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
@@ -55,6 +59,7 @@ import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
+import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 
 import com.example.compose.TextChip
 import com.viewmodels.VerseModel
@@ -115,6 +120,7 @@ fun NewQuranVerseScreen(
     val showtranslation =
         rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
     val showwordbyword = rememberPreferenceBooleanSettingState(key = "wbw", defaultValue = false)
+     val wbwchoice=                      rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
     //   val chapteritems by quranModel.chapteritems.collectAsState(initial = listOf())
     val utils = Utils(QuranGrammarApplication.context)
     val corpus = CorpusUtilityorig
@@ -437,12 +443,30 @@ fun NewQuranVerseScreen(
                     wordarray = newnewadapterlist[index]
 
                     wordarray!![0].annotatedVerse?.let {
-                        Text(
+                        ClickableText(
 
-                            text = it,
-                            fontSize = 20.sp,
-                            // color = colorResource(id = R.color.burntamber)
+                            text = AnnotatedString(it.toString()),
+                            onClick = {
+                                Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                //   navController.navigate(NavigationItem.Books.route)
+                              //  navController.navigate("versealert/" ${cid}/${cid})
+                            val cid=    wordarray!![0].corpus!!.surah
+                           val aid=     wordarray!![0].corpus!!.ayah
+                                navController.navigate(
+                                    "versealert/${cid}/${aid}"
+                                )
+
+
+
+
+                            },style = TextStyle(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.Cursive
+                            )
                         )
+                            // color = colorResource(id = R.color.burntamber)
+
                     }
 
 

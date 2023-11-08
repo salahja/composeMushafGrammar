@@ -21,7 +21,7 @@ interface wbwDao {
     fun getwbwQuranBySurahAyahWord(chapterno: Int, aya: Int, word: Int): List<wbwentity>
 
     @Query("SELECT * FROM wbw WHERE surah=:chapterno and ayah=:aya and wordno>=:fw and wordno<=:lw")
-    fun getwbwQuranbTranslation(chapterno: Int, aya: Int, fw: Int, lw: Int): List<wbwentity>
+    fun getwbwQuranbTranslationbyrange(chapterno: Int, aya: Int, fw: Int, lw: Int): List<wbwentity>
 
     @Query("SELECT * FROM wbw WHERE surah=:id and ayah=:aid ")
     fun getwbwQuranBySurahAyah(id: Int, aid: Int): List<wbwentity>

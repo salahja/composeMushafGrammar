@@ -508,7 +508,7 @@ class Utils {
         firstwordindex: Int,
         lastwordindex: Int,
     ): List<wbwentity>? {
-        return database.wbwDao().getwbwQuranbTranslation(sid, aid, firstwordindex, lastwordindex)
+        return database.wbwDao().getwbwQuranbTranslationbyrange(sid, aid, firstwordindex, lastwordindex)
     }
 
     fun getNounBreakup(tid: String): List<NounCorpusBreakup>? {
@@ -557,9 +557,13 @@ class Utils {
         return database.QuranDao().getsurahayahVerses(id, aid)
     }
 
+
+
     fun getQuranbySurahAyahrange(surahid: Int, from: Int, to: Int): List<QuranEntity?>? {
         return  database.QuranDao().getQuranbySurahAyahrange(surahid, from, to)
     }
+
+
 
     val names: ArrayList<AllahNames>
         get() {
@@ -630,7 +634,9 @@ class Utils {
     }
 
 
-
+    fun getQuranCorpusWbwSurhAyah(cid: Int,aid:Int,wid:Int): List<QuranCorpusWbw> {
+        return  database.QuranDao().getQuranCorpusWbw(cid,aid,wid)
+    }
     companion object {
         private const val TAG: String = "Utils"
         private lateinit var database: QuranAppDatabase

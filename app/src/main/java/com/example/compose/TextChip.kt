@@ -52,6 +52,7 @@ fun TextChip(
                 vertical = 2.dp,
                 horizontal = 4.dp
             )
+
             .border(
                 width = 1.dp,
                 color = if (isSelected) selectedColor else LightGray,
@@ -100,11 +101,11 @@ fun TextChipWBW(
                 vertical = 2.dp,
                 horizontal = 4.dp
             )
-            .border(
-                width = 1.dp,
+  /*          .border(
+                width = 0.3.dp,
                 color = if (isSelected) selectedColor else LightGray,
                 shape = RectangleShape
-            )
+            )*/
             .background(
                 color = if (isSelected) selectedColor else Transparent,
                 shape = RectangleShape

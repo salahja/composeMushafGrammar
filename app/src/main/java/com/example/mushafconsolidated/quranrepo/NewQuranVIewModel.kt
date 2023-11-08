@@ -108,7 +108,7 @@ class NewQuranVIewModel(
     fun getwbwQuranTranslationRange(surahid: Int, ayahid: Int, startindex: Int, endindex: Int):
             LiveData<List<wbwentity>> {
         wbw.value =
-            this.newrepository.wbwdao.getwbwQuranbTranslation(surahid, ayahid, startindex, endindex)
+            this.newrepository.wbwdao.getwbwQuranbTranslationbyrange(surahid, ayahid, startindex, endindex)
         return wbw
 
     }

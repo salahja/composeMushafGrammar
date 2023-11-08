@@ -82,12 +82,15 @@ import com.appscreens.MatTab
 import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
+import com.appscreens.VerseAnalysisScreen
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.RootViewModelFactory
+import com.modelfactory.VerseAnalysisFctory
 import com.modelfactory.newViewModelFactory
 import com.modelfactory.surahViewModelFactory
 import com.settings.AppSettingsScreen
 import com.settings.preference.SeetingScreen
+import com.viewmodels.ExpandableVerseViewModel
 
 
 val showbootomsheet = mutableStateOf(false)
@@ -655,6 +658,37 @@ fun MainContent(
 
                 }
 
+                //
+
+
+                composable("versealert/{chapterid}/{verseid}",
+                    arguments = listOf(
+                        navArgument("chapterid") {
+                            type = NavType.IntType
+                            defaultValue = 2
+                        },
+                        navArgument("verseid") {
+                            type = NavType.IntType
+                            defaultValue = 3
+                        },
+
+                    )
+
+
+                ) { backStackEntry ->
+                    val chapterid = backStackEntry.arguments?.getInt("chapterid")
+                    val verseid = backStackEntry.arguments?.getInt("verseid")
+
+                    val openDialogCustom: MutableState<Boolean> = remember {
+                        mutableStateOf(true)
+                    }
+                    val thememode = darkThemePreference.value
+                    val wbwchoice=                      rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
+                    //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
+                    val versemodel: ExpandableVerseViewModel = viewModel(factory = VerseAnalysisFctory(chapterid!!,verseid!!,thememode,wbwchoice))
+                    VerseAnalysisScreen(versemodel,navController,  chapterid, verseid,)
+
+                }
 
             }
         }

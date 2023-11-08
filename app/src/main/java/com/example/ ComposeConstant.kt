@@ -121,7 +121,7 @@ object  ComposeConstant {
     var supplementspanLight = Color(WHOTPINK)
     var sifaspansLight = BackgroundColorSpan(WBURNTUMBER)
     var sifaspanLight = BackgroundColorSpan(CYANLIGHTEST)
-    var mudhafspanLight = BackgroundColorSpan(CYANLIGHT)
+    var mudhafspanLight = Color(CYANLIGHT)
     var mudhafspansLight = BackgroundColorSpan(MIDNIGHTBLUE)
     var harfinnaspanLight = Color(FORESTGREEN)
     var harfismspanLight = Color(BCYAN)
@@ -161,7 +161,7 @@ object  ComposeConstant {
     var sifaspanDark = BackgroundColorSpan(CYANLIGHTEST)
 
     //   public static BackgroundColorSpan mudhafspanDark = new BackgroundColorSpan(CYANLIGHT);
-    var mudhafspansDark = BackgroundColorSpan(MIDNIGHTBLUE)
+    var mudhafspansDark = Color(MIDNIGHTBLUE)
     var harfinnaspanDark = Color(GREEN)
     var harfismspanDark = Color(BCYAN)
     var harfkhabarspanDark = Color(YELLOW)

@@ -235,13 +235,13 @@ fun SeetingScreen(navController: NavHostController,
 
 
 
-                val wbwchoice = rememberPreferenceIntSettingState(key = "list_pref_1")
+                val wbwchoice = rememberPreferenceIntSettingState(key = "wbwtranslation")
                 SettingsList(
                     enabled = enabledState.value,
                     state = wbwchoice,
                     title = { androidx.compose.material3.Text(text = "WBW Translation") },
                     subtitle = { androidx.compose.material3.Text(text = "Select Word By Word Translation") },
-                    items = listOf("English", "Urdu", "Indonesian,Bangla"),
+                    items = listOf("English", "Urdu", "Indonesian","Bangla"),
                     action = { enabled ->
                         IconButton(
                             enabled = enabled,
@@ -270,7 +270,7 @@ fun SeetingScreen(navController: NavHostController,
                     state = ArabicFontChoice,
                     title = { androidx.compose.material3.Text(text = "Arabic Font Selction") },
                     subtitle = { androidx.compose.material3.Text(text = "Select a fruit") },
-                    items = listOf("English", "Urdu", "Indonesian,Bangla"),
+                    items = listOf("English", "Urdu", "Indonesian","Bangla"),
                     action = { enabled ->
                         IconButton(
                             enabled = enabled,
@@ -299,7 +299,7 @@ fun SeetingScreen(navController: NavHostController,
                     state = themeSelectionChoice,
                     title = { androidx.compose.material3.Text(text = "Arabic Font Selction") },
                     subtitle = { androidx.compose.material3.Text(text = "Select a fruit") },
-                    items = listOf("English", "Urdu", "Indonesian,Bangla"),
+                    items = listOf("English", "Urdu", "Indonesian","Bangla"),
                     action = { enabled ->
                         IconButton(
                             enabled = enabled,
