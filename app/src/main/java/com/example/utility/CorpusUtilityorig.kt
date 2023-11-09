@@ -15,6 +15,7 @@ import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.runtime.sourceInformation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -24,7 +25,6 @@ import com.example.ComposeConstant
 import com.example.ComposeConstant.harfinnaspanDark
 import com.example.ComposeConstant.harfismspanDark
 import com.example.ComposeConstant.harfkhabarspanDark
-import com.example.ComposeConstant.jawabshartspanDark
 import com.example.Constant
 import com.example.justJava.FrameSpan
 import com.example.mushafconsolidated.Entities.NewMudhafEntity
@@ -35,6 +35,7 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.model.QuranCorpusWbw
+import com.example.utility.QuranGrammarApplication.Companion.context
 import java.util.regex.Pattern
 
 class CorpusUtilityorig(private var context: Context?) {
@@ -367,69 +368,6 @@ class CorpusUtilityorig(private var context: Context?) {
                 //System.out.println(e.getMessage());
             }
    
-    }
-
-    fun setKana(
-        corpusayahWordArrayList: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
-        surah_id: Int,
-        ayah: Int,
-        size: Int,
-    ) {
-        val utils = Utils(
-            context!!.applicationContext
-        )
-        val kanalist = utils.getKananewSurahAyah(surah_id,ayah)
-        val harfkana: ForegroundColorSpan
-        val kanaism: ForegroundColorSpan
-        val kanakhbar: ForegroundColorSpan
-        if (dark) {
-            harfkana = ForegroundColorSpan(Constant.GOLD)
-            kanaism = ForegroundColorSpan(Constant.ORANGE400)
-            kanakhbar = ForegroundColorSpan(CYAN)
-        } else {
-            harfkana = ForegroundColorSpan(Constant.FORESTGREEN)
-            kanaism = ForegroundColorSpan(Constant.KASHMIRIGREEN)
-            kanakhbar = ForegroundColorSpan(Constant.WHOTPINK)
-        }
-        if (surah_id in 2..10 || surah_id in 59..114) {
-            for (kana in kanalist!!) {
-                //     val spannableverse = corpusayahWordArrayList[kana!!.ayah - 1].spannableverse
-                val spannableverse =
-                    corpusayahWordArrayList[size- 1]!![0].spannableverse!!
-                try {
-                    if (spannableverse != null) {
-                        spannableverse.setSpan(
-                            harfkana,
-                            kana.indexstart,
-                            kana.indexend,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    }
-                    //    shart.setSpannedverse(spannableverse);
-                    if (spannableverse != null) {
-                        spannableverse.setSpan(
-                            kanakhbar,
-                            kana.khabarstart,
-                            kana.khabarend,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    }
-                    //   shart.setSpannedverse(spannableverse);
-                    if (spannableverse != null) {
-                        spannableverse.setSpan(
-                            kanaism,
-                            kana.ismkanastart,
-                            kana.ismkanaend,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    }
-                    //   shart.setSpannedverse(spannableverse);
-                }
-                catch (e: IndexOutOfBoundsException) {
-                    //System.out.println(e.getMessage());
-                }
-            }
-        }
     }
 
 
@@ -1817,7 +1755,11 @@ class CorpusUtilityorig(private var context: Context?) {
             }
         }
 
-        fun newnewHarfNasbDb(hashlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>, surah_id: Int) {
+        fun newnewHarfNasbDb(
+            hashlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+            surah_id: Int,
+            isdark: Boolean?
+        ) {
 
             val utils = Utils(QuranGrammarApplication.context!!)
             val harfnasb = utils.getHarfNasbIndexesnew(surah_id)
@@ -1836,7 +1778,7 @@ class CorpusUtilityorig(private var context: Context?) {
                     var annotatedString: AnnotatedString
 
 
-               val     annotatedVerse =
+                         val     annotatedVerse =
                         hashlist[nasb.ayah - 1]!![0].annotatedVerse!!
 
                         if (dark) {
@@ -1902,6 +1844,81 @@ class CorpusUtilityorig(private var context: Context?) {
         }
 
 
+        fun setKana(
+            hashlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+            surah_id: Int,
+            isdark: Boolean?,
+        ) {
+            val utils = Utils(context!!.applicationContext)
+            val kanalist = utils.getKananew(surah_id)
+            val harfkana: Color
+            val kanaism: Color
+            val kanakhbar: Color
+            if (dark) {
+                harfkana = Color(ComposeConstant.GOLD)
+                kanaism = Color(ComposeConstant.ORANGE400)
+                kanakhbar = Color(android.graphics.Color.CYAN)
+            } else {
+                harfkana = Color(ComposeConstant.FORESTGREEN)
+                kanaism = Color(ComposeConstant.KASHMIRIGREEN)
+                kanakhbar = Color(ComposeConstant.WHOTPINK)
+            }
+            val builder=AnnotatedString.Builder()
+            if (surah_id in 2..10 || surah_id in 59..114) {
+                for (kana in kanalist!!) {
+                    //     val spannableverse = corpusayahWordArrayList[kana!!.ayah - 1].spannableverse
+                    val spannableverse =
+                        hashlist[kana.ayah - 1]!![0].annotatedVerse!!
+                    builder.append(spannableverse)
+
+
+
+                    try {
+                        if (spannableverse != null) {
+                            builder.addStyle(
+                                style = SpanStyle(
+                                    color = harfkana,
+                                    textDecoration = TextDecoration.Underline
+                                ), start = kana.indexstart, end = kana.indexend
+                            )
+                        }
+                        if (spannableverse != null) {
+                            //    shart.setSpannedverse(spannableverse);
+
+                            builder.addStyle(
+                                style = SpanStyle(
+                                    color = kanaism,
+                                    textDecoration = TextDecoration.Underline
+                                ), start = kana.ismkanastart, end = kana.ismkanaend
+                            )
+                        }
+                        if (spannableverse != null) {
+                            builder.addStyle(
+                                style = SpanStyle(
+                                    color = kanakhbar,
+                                    textDecoration = TextDecoration.Underline
+                                ), start = kana.khabarstart, end = kana.khabarend
+                            )
+                        }
+
+                        //   shart.setSpannedverse(spannableverse);
+
+                        //   shart.setSpannedverse(spannableverse);
+                    }
+                    catch (e: IndexOutOfBoundsException) {
+                   //    System.out.println(e.getMessage());
+                    }
+                    try {
+                        hashlist[kana.ayah - 1]!!.get(0).setAnootedStr(builder.toAnnotatedString())
+                    }catch (e: IllegalArgumentException){
+                        println(e.message)
+                    }
+                }
+            }
+        }
+
+
+
     }
 
 
@@ -1930,6 +1947,10 @@ private fun ColoredShart(
     var tagonecolor: Color
     var tagtwocolor: Color
     var tagthreecolor: Color
+
+
+
+
 
     if (isdark) {
         tagonecolor= Color(Constant.GOLD)

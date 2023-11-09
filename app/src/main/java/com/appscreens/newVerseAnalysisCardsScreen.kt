@@ -287,7 +287,7 @@ fun ExpandableVerseContent(
 
                 // on below line we are specifying
                 // divider for each list item
-                Divider(color = Color.Red, thickness = 3.dp)
+                Divider(color = Color.Red, thickness = 0.5.dp)
             }
             Divider()
         }

@@ -82,7 +82,6 @@ import com.appscreens.MatTab
 import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
-import com.appscreens.VerseAnalysisScreen
 import com.appscreens.newVerseAnalysisCardsScreen
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.RootViewModelFactory
@@ -472,7 +471,7 @@ fun MainContent(
                     val id = backStackEntry.arguments!!.getInt("id")
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-                    val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id,thememode.value))
+                    val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id,darkThemePreference))
                     NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
 
 

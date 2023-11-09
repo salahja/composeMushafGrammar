@@ -137,6 +137,9 @@ class ExpandableVerseViewModel(
                 val harfnasbarray: MutableList<AnnotatedString> = ArrayList()
                 setNewNasb(harfnasbarray,thememode, wbwchoice, chapterid, verseid)
 
+                val kanaarray: MutableList<AnnotatedString> =  ArrayList()
+                newsetKana(kanaarray,thememode, wbwchoice, chapterid, verseid)
+
 
         val verse: MutableList<AnnotatedString> = ArrayList()
         val translation: MutableList<AnnotatedString> = ArrayList()
@@ -165,7 +168,7 @@ class ExpandableVerseViewModel(
         itemsList.emit(testList)
         testList += VerseAnalysisModel(
             3,
-            "mudhaf",
+            "Possessive Construction (إضافَة)",
             mudhafarray!!
 
 
@@ -187,7 +190,7 @@ class ExpandableVerseViewModel(
 
         testList += VerseAnalysisModel(
             5,
-            "Conditional(مرکب توصیفی)",
+            "Condition/ (جُمْلةُ الشَّرْطِ)",
             shartarray!!
 
 
@@ -199,8 +202,20 @@ class ExpandableVerseViewModel(
 
                 testList += VerseAnalysisModel(
                     6,
-                    "Accusative",
+                    "The Particle inna (ان واخواتها",
                     harfnasbarray!!
+
+
+                )
+
+
+                itemsList.emit(testList)
+
+
+                testList += VerseAnalysisModel(
+                    7,
+                    "Verb kāna/كان واخواتها",
+                    kanaarray!!
 
 
                 )
@@ -212,6 +227,380 @@ class ExpandableVerseViewModel(
 }
 }
 
+
+
+    private fun newsetKana(
+        kanaarray: MutableList<AnnotatedString>,
+        thememode: Boolean,
+        wbwchoice: Int,
+        chapterid: Int,
+        ayanumber: Int
+    ) {
+        val utils = Utils(QuranGrammarApplication.context)
+        //  val kanaSurahAyahnew: List<NewKanaEntity?>? =
+      //   utils.getKanaSurahAyahnew(chapterid, ayanumber)
+        val kanaSurahAyahnew=        utils.getKananewSurahAyah(chapterid,ayanumber)
+
+     //   val kanaSurahAyahnew=     utils.getkana(chapterid,ayanumber).value
+
+
+        var harfkana: Color? = null
+        var kanaism: Color? = null
+        var kanakhbar: Color? = null
+        val builder = AnnotatedString.Builder()
+        val builder1=AnnotatedString.Builder()
+        val builder2=AnnotatedString.Builder()
+        if (dark) {
+            harfkana = Color(Constant.GOLD)
+            kanaism = Color(Constant.ORANGE400)
+            kanakhbar = Color(android.graphics.Color.CYAN)
+        } else {
+            harfkana = Color(Constant.FORESTGREEN)
+            kanaism = Color(Constant.KASHMIRIGREEN)
+            kanakhbar =  Color(Constant.WHOTPINK)
+        }
+        if (kanaSurahAyahnew != null) {
+            for (kana in kanaSurahAyahnew) {
+                //System.out.println("CHECK");
+                var harfofverse: String
+                var ismofverse: String
+                var khabarofverse: String
+                val start = kana.indexstart
+                val end = kana.indexend
+                val isstart = kana.ismkanastart
+                val issend = kana.ismkanaend
+                val khabarstart = kana.khabarstart
+                val khabarend = kana.khabarend
+                val quranverses: String = quran!![0].qurantext
+                harfofverse = quranverses.substring(start, end)
+                ismofverse = if (issend > isstart) {
+                    quranverses.substring(isstart, issend)
+                } else {
+                    ""
+                }
+                khabarofverse = quranverses.substring(khabarstart, khabarend)
+                val isharfb = start >= 0 && end > 0
+                val isism = isstart >= 0 && issend > 0
+                val isjawab = khabarstart >= 0 && khabarend > 0
+                val a = isharfb && isism && isjawab
+                val d = isharfb && isjawab
+                val b = isharfb && isism
+                val harfword = kana.harfwordno
+                val ismSword = kana.ismwordo
+                val ismEword = kana.ismendword
+                val khabarSword = kana.khabarstartwordno
+                val habarEword = kana.khabarendwordno
+                var harfspannble: AnnotatedString
+                var harfismspannable: AnnotatedString
+                var khabarofversespannable: AnnotatedString
+                if (a) {
+                    harfspannble = AnnotatedString(harfofverse)
+                    harfismspannable = AnnotatedString(ismofverse)
+                    khabarofversespannable = AnnotatedString(khabarofverse)
+
+                    val sourceone=harfspannble
+                    val sourcetwo=harfismspannable
+                    val sourcethree=khabarofversespannable
+                    val tagonestyle = SpanStyle(
+                        color = harfkana!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+                    val tagtwostyle = SpanStyle(
+                        color = kanaism!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+                    val tagthreestyle = SpanStyle(
+                        color = kanakhbar!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+                    val space=AnnotatedString(" ")
+
+                    builder.append(sourceone)
+                    builder.addStyle(tagonestyle, 0,  harfofverse.length)
+                    builder.append(space)
+                    builder1.append(sourcetwo)
+                    builder1.addStyle(tagthreestyle, 0,  harfismspannable.length)
+
+                    builder2.append(sourcethree)
+                    builder2.addStyle(tagthreestyle, 0,  khabarofversespannable.length)
+
+
+
+                    val annotatedString = builder.toAnnotatedString() +space+ builder1.toAnnotatedString()+builder2.toAnnotatedString()
+
+
+                    if (kana.ismkanastart > kana.khabarstart) {
+
+                        val annotatedString = builder.toAnnotatedString() +space+ builder2.toAnnotatedString()+builder1.toAnnotatedString()
+
+                /*        val charSequence = TextUtils.concat(
+                            harfspannble,
+                            " ",
+                            khabarofversespannable,
+                            " ",
+                            harfismspannable
+                        )*/
+                        kanaarray.add(annotatedString)
+                    } else {
+
+                        val annotatedString = builder.toAnnotatedString() +space+ builder1.toAnnotatedString()+builder2.toAnnotatedString()
+
+                   /*     val charSequence = TextUtils.concat(
+                            harfspannble,
+                            " ",
+                            harfismspannable,
+                            " ",
+                            khabarofversespannable
+                        )*/
+                        kanaarray.add(annotatedString)
+                    }
+                    val sb = StringBuilder()
+                    val ismorkhabarsb = StringBuilder()
+
+                    val wbwayah: List<wbwentity?>? = utils.getwbwQuranBySurahAyah(
+                        corpusSurahWord!![0].corpus.surah,
+                        corpusSurahWord!![0].corpus.ayah
+                    )
+                    if (wbwayah != null) {
+                        for (w in wbwayah) {
+                            StringBuilder()
+                            val temp: StringBuilder = getSelectedTranslation(w!!,wbwchoice)
+                            if (w.wordno == harfword) {
+                                sb.append(temp.append(" "))
+                            } else if (w.wordno in ismSword..ismEword) {
+                                sb.append(temp).append(" ")
+                            } else if (w.wordno in khabarSword..habarEword) {
+                                ismorkhabarsb.append(temp).append(" ")
+                            }
+                        }
+                    }
+                    sb.append("... ")
+                    sb.append(ismorkhabarsb)
+                    kanaarray.add(AnnotatedString(sb.toString()))
+
+                    //  CharSequence first = TextUtils.concat(harfspannble," ",shartofverse);
+                } else if (d) {
+
+                    harfspannble = AnnotatedString(harfofverse)
+                    khabarofversespannable = AnnotatedString(khabarofverse)
+
+
+                    val sourceone=harfspannble
+
+                    val sourcethree=khabarofversespannable
+                    val tagonestyle = SpanStyle(
+                        color = harfkana!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagthreestyle = SpanStyle(
+                        color = kanakhbar!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+                    val space=AnnotatedString(" ")
+
+                    builder.append(sourceone)
+                    builder.addStyle(tagonestyle, 0,  harfofverse.length)
+                    builder.append(space)
+
+
+                    builder2.append(sourcethree)
+                    builder2.addStyle(tagthreestyle, 0,  khabarofversespannable.length)
+
+
+
+                    val annotatedString = builder.toAnnotatedString() +space+ builder2.toAnnotatedString()
+
+
+
+                    val charSequence = TextUtils.concat(harfspannble, " ", khabarofversespannable)
+                    kanaarray.add(annotatedString)
+                    val sb = StringBuilder()
+                    val wordfrom = kana.harfwordno
+                    var wordto: Int
+                    val split = khabarofverse.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }
+                        .toTypedArray()
+                    wordto = if (split.size == 1) {
+                        kana.khabarstartwordno
+                    } else {
+                        kana.khabarendwordno
+                    }
+                    val isconnected = kana.khabarstartwordno - kana.harfwordno
+                    if (isconnected == 1) {
+
+                        val list: List<wbwentity?>? = utils.getwbwQuranbTranslation(
+                            corpusSurahWord!![0].corpus.surah,
+                            corpusSurahWord!![0].corpus.ayah,
+                            wordfrom,
+                            wordto
+                        )
+                        if (list != null) {
+                            for (w in list) {
+                                StringBuilder()
+                                val temp: StringBuilder = getSelectedTranslation(w!!,wbwchoice)
+                                sb.append(temp).append(" ")
+                            }
+                        }
+                        kanaarray.add(AnnotatedString(sb.toString()))
+                    } else {
+                        val wordfroms = kana.harfwordno
+
+                        val list =       utils.getwbwQuranbTranslation(
+                            corpusSurahWord!![0].corpus.surah,
+                            corpusSurahWord!![0].corpus.ayah,
+                            wordfrom,
+                            wordfroms
+                        )
+                        val from = kana.khabarstartwordno
+                        var to = kana.khabarendwordno
+                        if (to == 0) {
+                            to = from
+                        }
+
+                        wbwselection(wbwchoice, sb, list)
+
+                        //    sb.append(list).append("----");
+
+                        val lists: List<wbwentity>? = utils.getwbwQuranbTranslation(
+                            corpusSurahWord!![0].corpus.surah,
+                            corpusSurahWord!![0].corpus.ayah,
+                            from,
+                            to
+                        )
+                        if (lists != null) {
+                            for (w in lists) {
+                                StringBuilder()
+                                val temp: StringBuilder = getSelectedTranslation(w,wbwchoice)
+                                sb.append(temp).append(" ")
+                            }
+                        }
+                        kanaarray.add(AnnotatedString(sb.toString()))
+                    }
+                } else if (b) {
+
+                    harfspannble = AnnotatedString(harfofverse)
+                    harfismspannable = AnnotatedString(ismofverse)
+
+                    val sourceone=harfspannble
+
+                    val sourcetwo=harfismspannable
+                    val tagonestyle = SpanStyle(
+                        color = harfkana!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+
+                    val tagtwostyle = SpanStyle(
+                        color = kanaism!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+                    val space=AnnotatedString(" ")
+
+                    builder.append(sourceone)
+                    builder.addStyle(tagonestyle, 0,  harfofverse.length)
+                    builder.append(space)
+
+
+                    builder1.append(sourcetwo)
+                    builder1.addStyle(tagtwostyle, 0,  harfismspannable.length)
+
+
+
+                    val annotatedString = builder.toAnnotatedString() +space+ builder1.toAnnotatedString()
+
+
+
+
+
+
+
+
+                    kanaarray.add(annotatedString)
+                    //    kanaarray.add(SpannableString.valueOf(charSequence));
+                    val sb = StringBuilder()
+                    val ismorkhabarsb = StringBuilder()
+                    val ismconnected = kana.ismkanastart - kana.indexend
+                    val wordfrom = kana.harfwordno
+                    val wordto = kana.ismwordo
+                    if (ismconnected == 1) {
+
+                        val list: List<wbwentity>? = utils.getwbwQuranbTranslation(
+                            corpusSurahWord!![0].corpus.surah,
+                            corpusSurahWord!![0].corpus.ayah,
+                            wordfrom,
+                            wordto
+                        )
+                        if (list != null) {
+                            for (w in list) {
+                                StringBuilder()
+                                val temp: StringBuilder = getSelectedTranslation(w,wbwchoice)
+                                sb.append(temp).append(" ")
+                            }
+                        }
+                        kanaarray.add(AnnotatedString(sb.toString()))
+                    } else {
+                        //  ArrayList<wbwentity> list = utils.getwbwQuranbTranslation(corpusSurahWord!!.get(0).corpus.getSurah(), corpusSurahWord!!.get(0).corpus.getAyah(), wordfroms, wordfroms);
+
+                        val wbwayah: List<wbwentity>? = utils.getwbwQuranBySurahAyah(
+                            corpusSurahWord!![0].corpus.surah,
+                            corpusSurahWord!![0].corpus.ayah
+                        )
+                        if (wbwayah != null) {
+                            for (w in wbwayah) {
+                                StringBuilder()
+                                val temp: StringBuilder = getSelectedTranslation(w,wbwchoice)
+                                if (w.wordno == harfword) {
+                                    sb.append(temp).append(" ")
+                                } else if (w.wordno in ismSword..ismEword) {
+                                    ismorkhabarsb.append(temp).append(" ")
+                                }
+                            }
+                        }
+                        sb.append(".....")
+                        sb.append(ismorkhabarsb)
+                        kanaarray.add(AnnotatedString(sb.toString()))
+                    }
+                } else if (isharfb) {
+                    harfspannble = AnnotatedString(harfofverse)
+
+
+
+                    val sourceone=harfspannble
+
+                    val tagonestyle = SpanStyle(
+                        color = harfkana!!,
+                        textDecoration = TextDecoration.Underline
+                    )
+
+
+                    val space=AnnotatedString(" ")
+
+                    builder.append(sourceone)
+                    builder.addStyle(tagonestyle, 0,  harfofverse.length)
+
+
+                    val charSequence = TextUtils.concat(harfspannble)
+                    kanaarray.add(builder.toAnnotatedString())
+                    val wordfroms = kana.harfwordno
+
+                    val list =       utils.getwbwQuranbTranslation(
+                        corpusSurahWord!![0].corpus.surah,
+                        corpusSurahWord!![0].corpus.ayah,
+                        wordfroms,
+                        wordfroms
+                    )
+                    val sb = StringBuffer()
+                    when (wbwchoice) {
+                        0 -> sb.append(list!!.get(0).en).append(".......")
+                        1 -> sb.append(list!![0].ur).append(".......")
+                        2 -> sb.append(list!![0].bn).append(".......")
+                        3 -> sb.append(list!![0].id).append(".......")
+                    }
+
+                    kanaarray.add(AnnotatedString(sb.toString()))
+                }
+            }
+        }
+    }
 
 /*
 
@@ -276,7 +665,7 @@ if (nasabarray != null) {
         val iskhabar = khabarstartindex >= 0 && khabarendindex > 0
         val a = isharfb && isism && iskhabar
         val d = isharfb && iskhabar
-        val b = isharfb && isism
+        val harfismonly = isharfb && isism
         val harfword = nasbEntity.harfwordno
         val shartSword = nasbEntity.ismstartwordno
         val shartEword = nasbEntity.ismendwordno
@@ -511,30 +900,36 @@ if (nasabarray != null) {
                 hasbarray.add(AnnotatedString(sb.toString()))
             }
         }
-        /*
-        else if (b) {
-            Constant.harfshartspanDark = ForegroundColorSpan(Constant.GOLD)
-            Constant.shartspanDark = ForegroundColorSpan(android.graphics.Color.GREEN)
-            Constant.jawabshartspanDark = ForegroundColorSpan(android.graphics.Color.CYAN)
-            harfspannble = SpannableString(harfofverse)
-            harfismspannable = SpannableString(ismofverse)
-            harfspannble.setSpan(
-                Constant.harfshartspanDark,
-                0,
-                harfofverse.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+
+        else if (harfismonly) {
+            harfspannble = AnnotatedString(harfofverse)
+            harfismspannable = AnnotatedString(ismofverse)
+            val sourceone=harfspannble
+            val sourcetwo=harfismspannable
+            val tagonestyle = SpanStyle(
+                color = tagcolorone!!,
+                textDecoration = TextDecoration.Underline
             )
-            harfismspannable.setSpan(
-                Constant.shartspanDark,
-                0,
-                ismofverse.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            val tagtwostyle = SpanStyle(
+                color = tagcolortwo!!,
+                textDecoration = TextDecoration.Underline
             )
-            val charSequences = TextUtils.concat(
-                harfspannble,
-                " $harfismspannable"
+            val tagthreestyle = SpanStyle(
+                color = tagcolorthree!!,
+                textDecoration = TextDecoration.Underline
             )
-            hasbarray.add(SpannableString.valueOf(charSequences))
+            val space=AnnotatedString(" ")
+
+            builder.append(sourceone)
+            builder.addStyle(tagonestyle, 0,  harfofverse.length)
+            builder.append(space)
+            builder1.append(sourcetwo)
+            builder1.addStyle(tagtwostyle, 0,  harfismspannable.length)
+
+
+
+            val annotatedString = builder.toAnnotatedString() +space+ builder1.toAnnotatedString()
+            hasbarray.add(annotatedString)
             //    kanaarray.add(SpannableString.valueOf(charSequence));
             val ismconnected = nasbEntity.ismstart - nasbEntity.indexend
             val wordfrom = nasbEntity.harfwordno
@@ -549,11 +944,11 @@ if (nasabarray != null) {
                 if (list != null) {
                     for (w in list) {
                         StringBuilder()
-                        val temp: StringBuilder = getSelectedTranslation(w!!)
+                        val temp: StringBuilder = getSelectedTranslation(w!!,wbwchoice)
                         sb.append(temp).append(" ")
                     }
                 }
-                hasbarray.add(SpannableString.valueOf(sb.toString()))
+                hasbarray.add(AnnotatedString(sb.toString()))
             } else {
                 //    kanaarray.add(SpannableString.valueOf(list.get(0).getEn()));
                 val from = nasbEntity.harfwordno
@@ -575,7 +970,7 @@ if (nasabarray != null) {
                 if (harf != null) {
                     for (w in harf) {
                         StringBuilder()
-                        val temp: StringBuilder = getSelectedTranslation(w!!)
+                        val temp: StringBuilder = getSelectedTranslation(w!!,wbwchoice)
                         sb.append(temp).append(" ")
                     }
                 }
@@ -583,25 +978,28 @@ if (nasabarray != null) {
                 if (ism != null) {
                     for (w in ism) {
                         StringBuilder()
-                        val temp: StringBuilder = getSelectedTranslation(w!!)
+                        val temp: StringBuilder = getSelectedTranslation(w!!,wbwchoice)
                         sb.append(temp).append(" ")
                     }
                 }
-                hasbarray.add(SpannableString.valueOf(sb.toString()))
+                hasbarray.add(AnnotatedString(sb.toString()))
             }
         } else if (isharfb) {
-            harfspannble = SpannableString(harfofverse)
-            harfspannble.setSpan(
-                Constant.harfshartspanDark,
-                0,
-                harfofverse.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            harfspannble = AnnotatedString(harfofverse)
+           val sourceone=harfspannble
+
+            builder.append(sourceone)
+            val tagonestyle = SpanStyle(
+                color = tagcolorone!!,
+                textDecoration = TextDecoration.Underline
             )
+            builder.addStyle(tagonestyle, 0,  harfofverse.length)
+
             val charSequence = TextUtils.concat(harfspannble)
-            hasbarray.add(SpannableString.valueOf(charSequence))
+            hasbarray.add(builder1.toAnnotatedString())
             val wordfroms = nasbEntity.harfwordno
 
-            val list =       model.getwbwQuranTranslationRange(
+            val list =       utils.getwbwQuranbTranslation(
                 corpusSurahWord!![0].corpus.surah,
                 corpusSurahWord!![0].corpus.ayah,
                 wordfroms,
@@ -610,15 +1008,15 @@ if (nasabarray != null) {
 
 
             val sbss = StringBuffer()
-            when (whichwbw) {
-                "en" -> sbss.append(list.value!![0].en).append(".......")
-                "ur" -> sbss.append(list.value!![0].ur).append(".......")
-                "bn" -> sbss.append(list.value!![0].bn).append(".......")
-                "id" -> sbss.append(list.value!![0].id).append("..........")
+            when (wbwchoice) {
+                0 -> sbss.append(list!![0].en).append(".......")
+               1 -> sbss.append(list!![0].ur).append(".......")
+                2 -> sbss.append(list!![0].bn).append(".......")
+                3 -> sbss.append(list!![0].id).append("..........")
             }
-            hasbarray.add(SpannableString.valueOf(sbss))
+            hasbarray.add(AnnotatedString(sbss.toString()))
         }
-         */
+
         // kanaarray.add(spannable);
     }
 }
@@ -1099,19 +1497,27 @@ if (mudhafSurahAyah != null) {
                 wordto
             )
             if (choice == 0)
-                when (choice) {
-                    0 -> sb.append(list!!.get(0).en).append(".......")
-                    1 -> sb.append(list!![0].ur).append(".......")
-                    2 -> sb.append(list!![0].bn).append(".......")
-                    3 -> sb.append(list!![0].id).append(".......")
-                }
+                wbwselection(choice, sb, list)
        mudhafarray.add(AnnotatedString(sb.toString()))
         }
     }
 }
 }
 
-private fun getSelectedTranslation(tr: wbwentity, value: Int): StringBuilder {
+    private fun wbwselection(
+        wbwchoice: Int,
+        sb: StringBuilder,
+        list: List<wbwentity>?
+    ) {
+        when (wbwchoice) {
+            0 -> sb.append(list!!.get(0).en).append(".......")
+            1 -> sb.append(list!![0].ur).append(".......")
+            2 -> sb.append(list!![0].bn).append(".......")
+            3 -> sb.append(list!![0].id).append(".......")
+        }
+    }
+
+    private fun getSelectedTranslation(tr: wbwentity, value: Int): StringBuilder {
 val sb = StringBuilder()
 when (value) {
     0 -> sb.append(tr.en)

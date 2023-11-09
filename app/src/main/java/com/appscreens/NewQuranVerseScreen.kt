@@ -114,7 +114,7 @@ fun NewQuranVerseScreen(
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     scopes = CoroutineScope(Dispatchers.Main)
-    darkThemePreference.value
+
     val thememode = darkThemePreference.value
 
     val showtranslation =

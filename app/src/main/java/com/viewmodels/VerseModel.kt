@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.example.viewmodels.QuranArrays
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.CorpusNounWbwOccurance
@@ -29,7 +30,7 @@ class VerseModel(
  //   application: Application,
 
     chapid: Int,
-    isdark: Boolean?,
+    themepref: BooleanPreferenceSettingValueState,
 
 
     ) : ViewModel() {
@@ -68,14 +69,14 @@ class VerseModel(
         util = Utils(QuranGrammarApplication.context!!)
 
 
-        getZarf(chapid,isdark)
+        getZarf(chapid,themepref)
 
 
     }
 
-     fun getZarf(chapid: Int, isdark: Boolean?) {
+     fun getZarf(chapid: Int, themepref: BooleanPreferenceSettingValueState) {
         viewModelScope.launch {
-
+       val isdark=     themepref.value
 
                 val testList = arrayListOf<QuranArrays>()
                 val corpus = CorpusUtilityorig
@@ -101,7 +102,8 @@ class VerseModel(
                     corpus.setMudhafss(hashlist, chapid,isdark)
                     corpus.setSifa(hashlist, chapid,isdark)
                     corpus.setShart(hashlist,chapid,isdark)
-                    corpus.newnewHarfNasbDb(hashlist,chapid)
+                    corpus.newnewHarfNasbDb(hashlist,chapid,isdark)
+//                    corpus.setKana(hashlist,chapid,isdark)
 
 
 

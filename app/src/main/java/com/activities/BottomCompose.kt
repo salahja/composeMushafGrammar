@@ -174,7 +174,7 @@ fun Navigation(
                 SurahListScreen(navController, quranmodel)
             } else {
 
-                val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id, true))
+         //       val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id, true))
                 //   NewQuranVerseScreen(navController, id, quranmodel,myViewModel)
 
             }

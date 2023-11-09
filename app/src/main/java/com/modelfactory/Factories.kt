@@ -3,6 +3,7 @@ package com.modelfactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValueState
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.viewmodels.CardsViewModel
@@ -10,7 +11,7 @@ import com.viewmodels.ExpandableVerseViewModel
 import com.viewmodels.RootModel
 import com.viewmodels.VerseModel
 
-class newViewModelFactory(private val dbname: Int,private val isdark: Boolean) :
+class newViewModelFactory(private val dbname: Int, private val isdark: BooleanPreferenceSettingValueState) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         VerseModel(dbname,isdark) as T
