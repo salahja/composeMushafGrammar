@@ -77,9 +77,11 @@ class ExpandableVerseViewModel(
     private var ThulathiMazeedConjugatonList: ArrayList<ArrayList<*>>? = null
     var sarf: SarfSagheerPOJO? = null
     private var dialog: AlertDialog? = null
+    private val _expandedCardIdsList = MutableStateFlow(listOf<Int>())
+    var counter = 0;
+    val expandedCardIdsList: StateFlow<List<Int>> get() = _expandedCardIdsList
 
-
-    data class VerseAnalysisModel(val grammarrule: String, val result: List<AnnotatedString>)
+    data class VerseAnalysisModel(   val id: Int,val grammarrule: String, val result: List<AnnotatedString>)
 
     val items: StateFlow<List<VerseAnalysisModel>> get() = itemsList
 
@@ -147,11 +149,13 @@ class ExpandableVerseViewModel(
 
 
         testList += VerseAnalysisModel(
+            1,
             "verse",
             verse!!
         )
 
         testList += VerseAnalysisModel(
+            2,
             "Translation",
             translation!!
         )
@@ -160,6 +164,7 @@ class ExpandableVerseViewModel(
 
         itemsList.emit(testList)
         testList += VerseAnalysisModel(
+            3,
             "mudhaf",
             mudhafarray!!
 
@@ -169,6 +174,7 @@ class ExpandableVerseViewModel(
 
         itemsList.emit(testList)
         testList += VerseAnalysisModel(
+            4,
             "Adjective Phrases(مرکب توصیفی)",
             mausoofsifaarray!!
 
@@ -180,6 +186,7 @@ class ExpandableVerseViewModel(
 
 
         testList += VerseAnalysisModel(
+            5,
             "Conditional(مرکب توصیفی)",
             shartarray!!
 
@@ -191,6 +198,7 @@ class ExpandableVerseViewModel(
 
 
                 testList += VerseAnalysisModel(
+                    6,
                     "Accusative",
                     harfnasbarray!!
 
@@ -238,6 +246,7 @@ if (nasabarray != null) {
         var tagcolortwo: Color? = null
         var tagcolorthree: Color? = null
         val builder = AnnotatedString.Builder()
+        val builder1=AnnotatedString.Builder()
         if (thememode) {
             tagcolorone= Color(ComposeConstant.GREENDARK)
             tagcolortwo= Color(ComposeConstant.BCYAN)
@@ -305,7 +314,7 @@ if (nasabarray != null) {
             )
 
             builder.append(quranverses)
-            if (indexstart == 0 || indexstart > 0) {
+
                 builder.  addStyle(
                     style = SpanStyle(
                         color = tagcolorone,
@@ -313,15 +322,15 @@ if (nasabarray != null) {
                     ), start = indexstart, end = indexend
                 )
 
-            }
-            if (ismstartindex == 0 || ismendindex > 0) {
+
+
                 builder.  addStyle(
                     style = SpanStyle(
                         color = tagcolortwo,
                         textDecoration = TextDecoration.Underline
                     ), start = ismstartindex, end = ismendindex
                 )
-            }
+
 
 
             builder.  addStyle(
@@ -399,13 +408,13 @@ if (nasabarray != null) {
             builder.append(sourceone)
             builder.addStyle(tagonestyle, 0,  harfofverse.length)
             builder.append(space)
-            builder.append(sourcetwo)
-            builder.addStyle(tagthreestyle, 0,  khabarofversespannable.length)
+            builder1.append(sourcetwo)
+            builder1.addStyle(tagthreestyle, 0,  khabarofversespannable.length)
 
 
 
 
-      //      val annotatedString = harfspannble +space+ khabarofversespannable
+            val annotatedString = builder.toAnnotatedString() +space+ builder1.toAnnotatedString()
 
 
 
@@ -433,7 +442,7 @@ if (nasabarray != null) {
 
 
             val charSequence = TextUtils.concat(harfspannble, " ", khabarofversespannable)
-            hasbarray.add(builder.toAnnotatedString())
+            hasbarray.add(annotatedString)
             //     StringBuilder sb = new StringBuilder();
             val wordfrom = nasbEntity.harfwordno
             var wordto: Int
@@ -863,7 +872,7 @@ if (shart != null) {
                     style = SpanStyle(
                         color = tagcolorthree,
                         textDecoration = TextDecoration.Underline
-                    ), start = jawabstart, end = jawabstart
+                    ), start = jawabstart, end = jawabend
                 )
 
 
@@ -1311,4 +1320,21 @@ itemIdsList.value = itemIdsList.value.toMutableList().also { list ->
     }
 }
 }
+
+    fun onCardArrowClicked(cardId: Int) {
+        _expandedCardIdsList.value = _expandedCardIdsList.value.toMutableList().also { list ->
+            if (list.contains(cardId)) list.remove(cardId) else list.add(cardId)
+        }
+    }
 }
+
+/*
+fun onItemClicked(itemId: Int) {
+    itemIdsList.value = itemIdsList.value.toMutableList().also { list ->
+        if (list.contains(itemId)) {
+            list.remove(itemId)
+        } else {
+            list.add(itemId)
+        }
+    }
+}*/

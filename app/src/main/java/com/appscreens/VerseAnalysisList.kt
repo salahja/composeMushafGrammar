@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -42,9 +43,12 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.activities.TopBar
 import com.codelab.basics.ui.theme.qalam
+import com.example.utility.QuranGrammarApplication.Companion.context
 import com.viewmodels.ExpandableVerseViewModel
 
 @Composable
@@ -56,8 +60,15 @@ fun VerseAnalysisScreen(
 ) {
 
     val itemIds by versemodel.itemIds.collectAsState()
+    val cards by versemodel.items.collectAsStateWithLifecycle()
+
+    val bgColour = remember {
+        Color(ContextCompat.getColor(context!!, com.example.mushafconsolidated.R.color.colorDayNightWhite))
+    }
 
     Scaffold(
+
+        Modifier.background(MaterialTheme.colorScheme.background),
         topBar = { TopBar() }
     ) { padding ->  // We need to pass scaffold's inner padding to the content
         LazyColumn(modifier = Modifier.padding(padding)) {
@@ -71,6 +82,12 @@ fun VerseAnalysisScreen(
         }
     }
 }
+
+
+
+
+
+
 
 /*@Preview(showBackground = true)
 @Composable
@@ -86,15 +103,17 @@ fun ExpandableContainerView(
     expanded: Boolean
 ) {
     Card(
-       // contentAlignment = Alignment.Center,
-        modifier = Modifier
+        colors = CardDefaults.cardColors(
+            //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ), modifier = Modifier
             .fillMaxWidth()
-            //  .background(color = Color.White)
-            .border(width = 2.dp, color = Color.Blue, shape = RoundedCornerShape(16.dp))
-            .clickable {
 
-            }
-            .padding(16.dp)
+            .padding(
+                horizontal = 10.dp,
+                vertical = 8.dp
+            )
     ) {
         Column {
             HeaderView(questionText = itemModel.grammarrule, onClickItem = onClickItem)
@@ -106,8 +125,11 @@ fun ExpandableContainerView(
 @Composable
 fun HeaderView(questionText: String, onClickItem: () -> Unit) {
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+        ),
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.surface)
             .clickable(
                 indication = null, // Removes the ripple effect on tap
                 interactionSource = remember { MutableInteractionSource() }, // Removes the ripple effect on tap
@@ -160,7 +182,7 @@ fun ExpandableView(result: List<AnnotatedString>, isExpanded: Boolean) {
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
-            //    .background(MaterialTheme.colorScheme.primaryContainer)
+             .background(MaterialTheme.colorScheme.onSurface)
         )
 
 
@@ -176,6 +198,7 @@ fun ExpandableView(result: List<AnnotatedString>, isExpanded: Boolean) {
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Thin,
                     fontSize = 18.sp,
+                    color=  MaterialTheme.colorScheme.surface
 
                     )
 

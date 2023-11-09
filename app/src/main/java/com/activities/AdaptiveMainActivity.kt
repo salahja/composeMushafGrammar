@@ -83,6 +83,7 @@ import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.appscreens.VerseAnalysisScreen
+import com.appscreens.newVerseAnalysisCardsScreen
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.RootViewModelFactory
 import com.modelfactory.VerseAnalysisFctory
@@ -686,7 +687,8 @@ fun MainContent(
                     val wbwchoice=                      rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
                     //     CustomDialog(openDialogCustom,navController, viewModel, chapterid, verseid, wordno)
                     val versemodel: ExpandableVerseViewModel = viewModel(factory = VerseAnalysisFctory(chapterid!!,verseid!!,thememode,wbwchoice.value))
-                    VerseAnalysisScreen(versemodel,navController,  chapterid, verseid,)
+                 //   VerseAnalysisScreen(versemodel,navController,  chapterid, verseid,)
+                    newVerseAnalysisCardsScreen(versemodel,navController,  chapterid, verseid,)
 
                 }
 

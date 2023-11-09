@@ -1,12 +1,27 @@
+package com.appscreens
+
+import EXPANSTION_TRANSITION_DURATION
 import android.annotation.SuppressLint
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -18,7 +33,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,53 +49,54 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import androidx.preference.PreferenceManager
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.codelab.basics.ui.theme.cardCollapsedBackgroundColor
 import com.codelab.basics.ui.theme.cardExpandedBackgroundColor
 import com.codelab.basics.ui.theme.qalam
-import com.viewmodels.CardsViewModel
-import com.example.viewmodels.ExpandableCardModelSpannableLists
-import com.viewmodels.VerseOccuranceModel
-import com.example.compose.WordOccuranceLoading
 import com.example.mushafconsolidated.R
-import com.example.utility.QuranGrammarApplication.Companion.context
+import com.example.utility.QuranGrammarApplication
+import com.viewmodels.ExpandableVerseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
-
-var lemmarabic: String? = null
-var words: List<VerseOccuranceModel>? = null
-const val EXPANSTION_TRANSITION_DURATION = 300
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalCoroutinesApi
 @Composable
 
-fun CardsScreen(viewModel: CardsViewModel) {
+fun newVerseAnalysisCardsScreen
+            (
+
+
+    viewModel: ExpandableVerseViewModel,
+    navController: NavHostController,
+    chapterid: Int?,
+    verseid: Int?
+
+) {
 
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-        context!!
+        QuranGrammarApplication.context!!
     )
     val selectTranslation = rememberPreferenceIntSettingState(key = "selecttranslation")
-    var loading = viewModel.loading.value
+  //  var loading = versemodel.loading.value
 
     //grammatically colred word default font
     val arabic_font_selection =
         sharedPreferences.getString("Arabic_Font_Selection", "quranicfontregular.ttf")
     // val words by wordoccuranceModel.words.collectAsStateWithLifecycle()
-    val cards by viewModel.roots.collectAsStateWithLifecycle()
+   // val cards by viewModel.roots.collectAsStateWithLifecycle()
+    val cards by viewModel.items.collectAsStateWithLifecycle()
     val expandedCardIds by viewModel.expandedCardIdsList.collectAsStateWithLifecycle()
-    val collectAsStateWithLifecycle = viewModel.roots.collectAsStateWithLifecycle()
-    val collectAsState = viewModel.roots.collectAsState()
+
+
     val context = LocalContext.current
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-    viewModel.open.value = true
+
 
 
     val bgColour = remember {
@@ -93,11 +108,11 @@ fun CardsScreen(viewModel: CardsViewModel) {
 
     ) { paddingValues ->
         val copyProgress: MutableState<Float> = remember { mutableStateOf(0.0f) }
-        loading = viewModel.loading.value
-        WordOccuranceLoading(isDisplayed = loading)
+     //   loading = viewModel.loading.value
+     //   WordOccuranceLoading(isDisplayed = loading)
         LazyColumn(Modifier.padding(paddingValues)) {
-            items(cards, ExpandableCardModelSpannableLists::id) { card ->
-                ExpandableCard(
+            items(cards, ExpandableVerseViewModel.VerseAnalysisModel::id) { card ->
+                ExpandableVerseCard(
                     card = card,
                     onCardArrowClick = { viewModel.onCardArrowClicked(card.id) },
                     expanded = expandedCardIds.contains(card.id),
@@ -110,31 +125,19 @@ fun CardsScreen(viewModel: CardsViewModel) {
 
     }
 }
-
+/*
+card: ExpandableVerseViewModel.VerseAnalysisModel,
+onCardArrowClick: () -> Unit,
+expanded: Boolean
 @Composable
-@Preview
-fun DetailTopAppBar(onBackPressed: () -> Unit = {}) {
-    TopAppBar(title = {
-        Text(text = "Word Occurance")
-    },
-        navigationIcon = {
-            IconButton(onClick = { onBackPressed() }) {
-                //   Icon(ImageVector = Icons.Default.ArrowBack,contentDescription="" ,Modifier.padding(10.dp),color = Color.Red)
-
-            }
-
-        }
-    )
-
-
-}
-
+fun ExpandableVerseCard(
+*/
 
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 
-fun ExpandableCard(
-    card: ExpandableCardModelSpannableLists,
+fun ExpandableVerseCard(
+    card: ExpandableVerseViewModel.VerseAnalysisModel,
     onCardArrowClick: () -> Unit,
     expanded: Boolean,
 ) {
@@ -205,73 +208,25 @@ fun ExpandableCard(
                     degrees = arrowRotationDegree,
                     onClick = onCardArrowClick
                 )
-                CardTitle(title = card.title)
+                CardTitle(title = card.grammarrule)
             }
 
-            lemmarabic = card.lemma
+
             //   MyScreen(visible = expanded)
-            ExpandableContent(card.lemma, card.vlist, visible = expanded)
+            ExpandableVerseContent( card.result, visible = expanded)
             //     ExpandableContent( visible = expanded)
         }
     }
 }
 
-@Composable
-fun CardTitle(title: String) {
-    Text(
-        text = title,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(3.dp),
-        textAlign = TextAlign.Center,
-    )
-}
+
 
 @Composable
 
-fun CardArrow(
-    degrees: Float,
-    onClick: () -> Unit,
-) {
-    IconButton(
-        onClick = onClick,
-        content = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_expand_less_24),
-                contentDescription = "Expandable Arrow",
-                modifier = Modifier.rotate(degrees),
-            )
-        }
-    )
-}
-
-class MyViewModel : ViewModel() { /*...*/ }
-
-@Composable
-fun CenterAlignedText() {
-    Text(
-        text = "Center",
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .size(100.dp)
-            .background(Color.Cyan)
-            .wrapContentHeight(),
-    )
-}
-
-@Preview
-@Composable
-fun MyViewPreview() {
-    ExpandableContent("LIMMA", card = ArrayList<AnnotatedString>(), true)
-}
-
-@Composable
-
-fun ExpandableContent(
+fun ExpandableVerseContent(
 
 
-    lemma: String,
-    card: ArrayList<AnnotatedString>,
+    card: List<AnnotatedString>,
     visible: Boolean = true,
 //    viewModel: LemmaViewModel = viewModel(),
 
@@ -313,13 +268,10 @@ fun ExpandableContent(
 
 
         {
-            println(lemma)
+
 
             card.forEach { verses ->
-                val annotatedString = buildAnnotatedString {
-                    append(verses)
-
-                }
+                val annotatedString = verses
 
                 Text(
                     text = annotatedString, style = MaterialTheme.typography.headlineSmall.copy(
@@ -354,4 +306,47 @@ fun ExpandableContent(
     }
 
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Composable
+fun CardTitle(title: String) {
+    Text(
+        text = title,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp),
+        textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+
+fun CardArrow(
+    degrees: Float,
+    onClick: () -> Unit,
+) {
+    IconButton(
+        onClick = onClick,
+        content = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_expand_less_24),
+                contentDescription = "Expandable Arrow",
+                modifier = Modifier.rotate(degrees),
+            )
+        }
+    )
 }
