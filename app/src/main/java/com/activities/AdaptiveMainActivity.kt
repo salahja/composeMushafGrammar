@@ -3,6 +3,7 @@ package com.activities
 import CardsScreen
 
 import NavigationActions
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -83,6 +84,8 @@ import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
+import com.example.searchwidgetdemo.SearchActivity
+import com.example.utility.QuranGrammarApplication.Companion.context
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.RootViewModelFactory
 import com.modelfactory.VerseAnalysisFctory
@@ -428,30 +431,28 @@ fun MainContent(
 
                 composable(Screen.Settings.route) {
 /*
-                        val intent = Intent(Intent.ACTION_VIEW)
-                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                          val i = Intent(context, DownloadAct::class.java)
-                          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          context!!.startActivity(i)*/
-             SeetingScreen(navController,       darkThemePreference  ,
-                 dynamicThemePreference  )
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    val i = Intent(context, SearchActivity::class.java)
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context!!.startActivity(i)*/
+
+          SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
 
                 }
 
                 composable(Screen.TopSettings.route) {
 
 
-                    /*       val intent = Intent(Intent.ACTION_VIEW)
-                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                          val i = Intent(context, SettingAct::class.java)
-                          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          context!!.startActivity(i)
-*/
+
+
+
                     AppSettingsScreen(
                         navController = navController,
                         darkThemePreference = darkThemePreference,
                         dynamicThemePreference = dynamicThemePreference,
                     )
+
 
 
 

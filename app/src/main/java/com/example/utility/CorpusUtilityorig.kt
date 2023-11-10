@@ -1381,11 +1381,20 @@ class CorpusUtilityorig(private var context: Context?) {
                             val builder = AnnotatedString.Builder()
                             var annotatedString: AnnotatedString
                              var tagonecolor: Color
-                            if(isdark == true){
+                      /*      if(isdark == true){
                              tagonecolor= ComposeConstant.adjectivespanDark
                             }else{
                                 tagonecolor= ComposeConstant.adjectivespanLight
+                            }*/
+                            if (isdark == true) {
+                                tagonecolor = ComposeConstant.sifaspansDark
+                            } else {
+                                tagonecolor = ComposeConstant.sifaspansLight
+
                             }
+
+
+
 
                             val tagonestyle = SpanStyle(
                                 color = tagonecolor!!,                                )
@@ -1431,13 +1440,19 @@ class CorpusUtilityorig(private var context: Context?) {
                             val builder = AnnotatedString.Builder()
                             var annotatedString: AnnotatedString
                         //    var tagonecolor =spanhash["mudhaf"]
-                            if(isdark!!){
+                     /*       if(isdark!!){
 
                                     tagonecolor=        Color(ComposeConstant.MIDNIGHTBLUE)
                                 } else {
                                     tagonecolor =  Color(ComposeConstant.WBURNTUMBER)
-                                }
+                                }*/
 
+                            if (isdark == true) {
+                                tagonecolor = Color(ComposeConstant.WBURNTUMBER)
+
+                            } else {
+                                tagonecolor = Color(ComposeConstant.MIDNIGHTBLUE)
+                            }
 
 
                             val tagonestyle = SpanStyle(

@@ -119,8 +119,8 @@ object  ComposeConstant {
     var inceptivepartile = Color(WHOTPINK)
     var ammendedparticle = Color(WHOTPINK)
     var supplementspanLight = Color(WHOTPINK)
-    var sifaspansLight = BackgroundColorSpan(WBURNTUMBER)
-    var sifaspanLight = Color(CYANLIGHTEST)
+    var sifaspansLight = Color(WBURNTUMBER)
+   // var sifaspanLight = Color(CYANLIGHTEST)
     var mudhafspanLight = Color(CYANLIGHT)
     var mudhafspansLight = BackgroundColorSpan(MIDNIGHTBLUE)
     var harfinnaspanLight = Color(FORESTGREEN)
@@ -157,7 +157,7 @@ object  ComposeConstant {
  //   var nounspanDark = Color(MARIGOLD)
     var nounspanDark = Color(android.graphics.Color.YELLOW)
     //    public static Color nounspanDark = new Color(MARIGOLD);
-    var sifaspansDark = Color(WBURNTUMBER)
+    var sifaspansDark = Color(CYANLIGHTEST)
     var sifaspanDark = BackgroundColorSpan(CYANLIGHTEST)
 
     //   public static BackgroundColorSpan mudhafspanDark = new BackgroundColorSpan(CYANLIGHT);
