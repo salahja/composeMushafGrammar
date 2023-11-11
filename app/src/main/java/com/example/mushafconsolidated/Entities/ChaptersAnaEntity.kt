@@ -39,9 +39,10 @@ data class ChaptersAnaEntity(
 
     fun doesMatchSearchQuery(query :String) :Boolean{
           val matchingCombinations= listOf(
+              "$chapterid",
               "$abjadname$nameenglish",
               "$abjadname $nameenglish",
-              "${abjadname.first()} ${nameenglish.first()}"
+              "${abjadname.first()} ${nameenglish.first()}   ${chapterid}          "
           )
       return matchingCombinations.any{
           it.contains(query,ignoreCase = true)

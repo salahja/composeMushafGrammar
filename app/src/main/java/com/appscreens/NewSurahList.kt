@@ -122,7 +122,7 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
         ) {
             TextField(value = searchText, onValueChange = viewModel::onSearchTextChange,
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(text = "Search") }
+                placeholder = { Text(text = "Search: Surah#/Surah English Name") }
             )
             Spacer(modifier = Modifier.height(5.dp))
 
