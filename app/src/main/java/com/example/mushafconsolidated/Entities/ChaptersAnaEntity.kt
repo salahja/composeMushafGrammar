@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 //@Entity(indices = {@Index(value = {"chapterid"}, unique = true)})
 // @Entity(tableName = "ChaptersAnaEntity",indices = {@Index(value = {"chapterid"}, unique = true)},foreignKeys = @ForeignKey(entity=ChaptersAnaEntity.class, parentColumns="chapterid", childColumns="muqattatid"))
 @Entity(tableName = "chaptersana")
-class ChaptersAnaEntity(
+data class ChaptersAnaEntity(
     @field:ColumnInfo(defaultValue = "0") var revelationnumber: Int,
     @field:ColumnInfo(
         defaultValue = "0"
@@ -27,14 +27,25 @@ class ChaptersAnaEntity(
     var sajdaverses: String?,
     var cumversescount: Int, // @Entity(indices = chapterid)
     @field:PrimaryKey(autoGenerate = true) var chapterid: Int,
-    part_no: Int
+    var part_no: Int
 ) {
 
-    var part_no: Int
+
 
     init {
         chapterid = chapterid
         this.part_no = part_no
+    }
+
+    fun doesMatchSearchQuery(query :String) :Boolean{
+          val matchingCombinations= listOf(
+              "$abjadname$nameenglish",
+              "$abjadname $nameenglish",
+              "${abjadname.first()} ${nameenglish.first()}"
+          )
+      return matchingCombinations.any{
+          it.contains(query,ignoreCase = true)
+      }
     }
 }
 

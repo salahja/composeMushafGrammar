@@ -1,5 +1,6 @@
 package com.appscreens
 
+
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
@@ -77,21 +78,20 @@ import java.util.ArrayList
 import java.util.Locale
 
 
-var thememode: BooleanPreferenceSettingValueState? = null
-var preff: PreferencesManager? = null
+var thememodes: BooleanPreferenceSettingValueState? = null
+var pref: PreferencesManager? = null
 
-var indexval = 0
-val imgs = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
+var indexvals = 0
+val imgss = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.sura_imgs)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SurahListScreens(navController: NavHostController, quranModel: QuranVIewModel?) {
-    pref = remember { PreferencesManager(QuranGrammarApplication.context!!) }
+fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel?) {
 
 
-    thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
- //   val chapters = quranModel!!.getAllSurah().value
+    thememodes = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+    //   val chapters = quranModel!!.getAllSurah().value
     //   val listState = rememberLazyListState()
     val listState = rememberLazyGridState()
 
@@ -103,317 +103,88 @@ fun SurahListScreens(navController: NavHostController, quranModel: QuranVIewMode
         }
     }
 
+
     val viewModel = viewModel<SearchViewModel>()
     val searchText by viewModel.searchText.collectAsState()
     val chapters by viewModel.chapters.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        TextField(value = searchText, onValueChange = viewModel::onSearchTextChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(text = "Search") }
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-
-
-
-            items(chapters!!.size) { index ->
-                Text(
-                    text = chapters!![index]!!.nameenglish,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                )
-                Text(
-                    text = "${chapters!![index]!!.nameenglish} ${chapters!![index]!!.abjadname}",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                )
-            }
-
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-/*    Scaffold(
+    Scaffold (
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { LibraryTopBar(navController, scrollBehavior, isCollapsed) }
+        topBar = { LibraryTopBars(navController, scrollBehavior, isCollapsed) }
     ) {
-        val textState = remember { mutableStateOf(TextFieldValue("")) }
-        //  SearchView(textState)
-        SurahList(navController = navController, state = textState, chapters, thememode!!)
-        *//*    LazyVerticalGrid(
+
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
+        ) {
+            TextField(value = searchText, onValueChange = viewModel::onSearchTextChange,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(text = "Search") }
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+
+
+            LazyVerticalGrid(
 
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 100.dp),
+                    .padding(top = 40.dp),
 
                 columns = GridCells.Fixed(2),
                 state = listState
             ) {
-                items(allAnaChapters!!.size) { index ->
+                items(chapters!!.size) { index ->
                     //          indexval=index
 
 
-                    VerbRootGridList(allAnaChapters[index], imgs, navController,thememode)
+                    VerbRootGridList(chapters!![index], imgs, navController, thememodes!!)
                 }
-            }*//*
-    }*/
+            }
+
+
+            /* LazyColumn(
+             modifier = Modifier
+                 .fillMaxWidth()
+                 .weight(1f)
+         ) {
+
+
+
+             items(chapters!!.size) { index ->
+                 Text(
+                     text = chapters!![index]!!.nameenglish,
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(vertical = 16.dp)
+                 )
+                 Text(
+                     text = "${chapters!![index]!!.nameenglish} ${chapters!![index]!!.abjadname}",
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(vertical = 16.dp)
+                 )
+             }
+
+         }*/
+        }
+
+    }
+
+
+
+
+
 
 
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SurahList(
-    navController: NavHostController,
-    state: MutableState<TextFieldValue>,
-    chapters: List<ChaptersAnaEntity>?,
-    thememode: BooleanPreferenceSettingValueState
-) {
-    if (chapters != null) {
-        chapters.forEach {
-            it.nameenglish
-        }
-    }
-
-    var filteredCountries: List<ChaptersAnaEntity> = listOf<ChaptersAnaEntity>()
-    val stated = rememberScrollState()
-    val scrollState = rememberLazyGridState()
-    val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(Unit) { stated.animateScrollTo(3) }
-
-
-
-
-    //  extracted(scrollState, state, filteredCountries, chapters, navController)
-
-}
-
-@Composable
-private fun extracted(
-    scrollState: LazyGridState,
-    state: MutableState<TextFieldValue>,
-    filteredCountries: List<ChaptersAnaEntity>,
-    chapters: List<ChaptersAnaEntity>,
-    navController: NavHostController
-) {
-    var filteredCountries1 = filteredCountries
-    LazyVerticalGrid(
-        /*        modifier = Modifier
-
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primary)
-                    .wrapContentSize(Alignment.Center)
-                    .padding(top = 10.dp)
-                    .verticalScroll(rememberScrollState()),*/
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 100.dp),
-
-        columns = GridCells.Fixed(2),
-        state = scrollState
-    )
-    /*    LazyColumn(        modifier = Modifier
-            .fillMaxWidth()
-
-            .padding(
-
-                vertical = 48.dp
-            )
-
-            )*/
-
-    {
-        val searchedText = state.value.text
-
-
-        if (searchedText.isEmpty()) {
-            filteredCountries1 = chapters as ArrayList<ChaptersAnaEntity>
-        } else {
-            val resultList = ArrayList<String>()
-            if (chapters != null) {
-                for (country in chapters) {
-                    if (country.nameenglish.lowercase(Locale.getDefault())
-                            .contains(searchedText.lowercase(Locale.getDefault()))
-                    ) {
-                        resultList.add(country.nameenglish)
-                    }
-
-                    /*   if (country.chapterid==searchedText.toInt())
-                     {
-                        resultList.add(country.nameenglish)
-                    }*/
-
-
-                }
-            }
-            resultList
-        }
-        items(filteredCountries1) { filteredCountry ->
-            CountryListItem(
-                surahModelList = filteredCountry, navController,
-            ) { selectedCountry ->
-                navController.navigate("details/$selectedCountry") {
-                    // Pop up to the start destination of the graph to
-                    // avoid building up a large stack of destinations
-                    // on the back stack as users select items
-                    popUpTo("main") {
-                        saveState = true
-                    }
-                    // Avoid multiple copies of the same destination when
-                    // reselecting the same item
-                    launchSingleTop = true
-                    // Restore state when reselecting a previously selected item
-                    restoreState = true
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun CountryListItem(
-    surahModelList: ChaptersAnaEntity,
-    navController: NavHostController,
-    onItemClick: (String) -> Unit
-) {
-
-    val img = imgs.getDrawable(surahModelList!!.chapterid.toInt() - 1)
-    Card(
-        /*
-                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),*/
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 16.dp
-        ),
-
-
-        modifier = Modifier
-            .fillMaxWidth()
-
-            .padding(
-                horizontal = 10.dp,
-                vertical = 8.dp
-            )
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-
-            modifier = Modifier
-                .clickable(onClick = { onItemClick(surahModelList.nameenglish) })
-                //     .background(colorResource(id = R.color.colorPrimaryDark))
-                .height(50.dp)
-                .fillMaxWidth()
-                .fillMaxSize()
-                .padding(PaddingValues(8.dp, 16.dp))
-
-        ) {
-            //    Text(text = surahModelList.nameenglish, fontSize = 18.sp, color = Color.White)
-
-
-            ClickableText(
-                text = AnnotatedString(surahModelList!!.chapterid.toString()),
-
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    //    navController.navigate(NavigationItem.Books.route)
-
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
-
-
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
-
-
-            )
-            ClickableText(
-                text = AnnotatedString(surahModelList!!.namearabic.toString()),
-
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    //   navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid.toString())
-
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
-            )
-
-            ClickableText(
-                text = AnnotatedString(surahModelList!!.nameenglish.toString()),
-
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    // navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
-
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
-            )
-
-            if (thememode!!.value) {
-                AsyncImage(
-
-                    model = img,
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Cyan),
-                    modifier = Modifier
-                        .height(30.dp)
-                        .width(30.dp),
-
-                    )
-            } else {
-                AsyncImage(
-
-                    model = img,
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Red),
-                    modifier = Modifier
-                        .height(30.dp)
-                        .width(30.dp),
-
-                    )
-            }
-
-
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun LibraryTopBar(
+private fun LibraryTopBars(
     navController: NavHostController,
     scrollBehavior: TopAppBarScrollBehavior,
     isCollapsed: Boolean
@@ -481,9 +252,15 @@ fun VerbRootGridList(
     navController: NavHostController,
     thememode: BooleanPreferenceSettingValueState
 ) {
+
+    val stated = rememberScrollState()
+    val scrollState = rememberLazyGridState()
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) { stated.animateScrollTo(3) }
+
     val img = imgs.getDrawable(surahModelList!!.chapterid.toInt() - 1)
 
-    var filteredCountries: ArrayList<String>
+
     val themestate = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
     Card(
         /*
