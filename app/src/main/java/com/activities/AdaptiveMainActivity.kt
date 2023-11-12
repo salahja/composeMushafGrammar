@@ -85,6 +85,7 @@ import com.appscreens.NounRootScreens
 import com.appscreens.QuranPageScreen
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
+import com.downloads.DownloadAct
 import com.example.searchwidgetdemo.SearchActivity
 import com.example.utility.QuranGrammarApplication.Companion.context
 import com.modelfactory.CardViewModelFactory
@@ -433,14 +434,14 @@ fun MainContent(
                 }
 
                 composable(Screen.Settings.route) {
-/*
+
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    val i = Intent(context, SearchActivity::class.java)
+                    val i = Intent(context, DownloadAct::class.java)
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context!!.startActivity(i)*/
+                    context!!.startActivity(i)
 
-          SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
+       //   SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
 
                 }
 

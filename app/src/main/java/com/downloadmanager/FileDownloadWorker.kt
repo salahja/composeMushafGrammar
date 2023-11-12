@@ -27,13 +27,15 @@ import java.net.URL
 
 class FileDownloadWorker(
     private val context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
+
 ): CoroutineWorker(context, workerParameters) {
     object FileParams{
         const val KEY_FILE_URL = "key_file_url"
         const val KEY_FILE_TYPE = "key_file_type"
         const val KEY_FILE_NAME = "key_file_name"
         const val KEY_FILE_URI = "key_file_uri"
+        const val KEY_FILE_PATH = "key_file_path"
     }
 
     object NotificationConstants{
@@ -50,7 +52,7 @@ class FileDownloadWorker(
         val fileUrl = inputData.getString(FileParams.KEY_FILE_URL) ?: ""
         val fileName = inputData.getString(FileParams.KEY_FILE_NAME) ?: ""
         val fileType = inputData.getString(FileParams.KEY_FILE_TYPE) ?: ""
-
+        val relativePath = inputData.getString(FileParams.KEY_FILE_PATH) ?: ""
         Log.d("TAG", "doWork: $fileUrl | $fileName | $fileType")
 
 
@@ -84,10 +86,12 @@ class FileDownloadWorker(
         NotificationManagerCompat.from(context).notify(NotificationConstants.NOTIFICATION_ID,builder.build())
 
         val uri = getSavedFileUri(
+            relativePath=relativePath,
             fileName = fileName,
             fileType = fileType,
             fileUrl = fileUrl,
-            context = context
+            context = context,
+
         )
 
         NotificationManagerCompat.from(context).cancel(NotificationConstants.NOTIFICATION_ID)
@@ -117,6 +121,7 @@ object NotificationConstants{
 
 
 private fun getSavedFileUri(
+    relativePath:String,
     fileName:String,
     fileType:String,
     fileUrl:String,
@@ -124,6 +129,8 @@ private fun getSavedFileUri(
     val mimeType = when(fileType){
         "PDF" -> "application/pdf"
         "PNG" -> "image/png"
+        "MP3" -> "audio/mp3"
+        "mp3" -> "audio/mp3"
         "MP4" -> "video/mp4"
         else -> ""
     } // different types of files will have different mime type
@@ -134,7 +141,7 @@ private fun getSavedFileUri(
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/DownloaderDemo")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
         }
 
         val resolver = context.contentResolver

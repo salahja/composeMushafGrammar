@@ -2,6 +2,10 @@ package com.appscreens
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Environment
+import android.util.Log
+import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -24,6 +28,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -53,16 +58,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.ListenableWorker.Result.success
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.codelab.basics.ui.theme.indopak
+import com.downloadmanager.FileDownloadWorker
+import com.downloads.DownloadAct
 import com.example.compose.LoadingData
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.Page
+import com.example.mushafconsolidated.Entities.Qari
+import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
+import com.example.mushafconsolidated.receiversimport.AudioAppConstants
+import com.example.mushafconsolidated.receiversimport.QuranValidateSources
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import com.viewmodels.QuranPagesModel
@@ -71,8 +90,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.MessageFormat
 
+var readerID = 20
+lateinit var downloadLink: String
+lateinit var readerName: String
+var startBeforeDownload = false
 var pageArrays: List<Page>? = null
 
 @SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterialScaffoldPaddingParameter")
@@ -168,24 +192,41 @@ fun QuranPageScreen(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun BottomSheet(surahs: List<ChaptersAnaEntity>, chapid: Int) {
-    androidx.compose.material.BottomSheetScaffold(
+    val internetStatus: Int =0
+        androidx.compose.material.BottomSheetScaffold(
         //  scaffoldState = bottomSheetScaffoldState,
-        sheetShape = RoundedCornerShape(topEnd = 30.dp),
+        sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
         sheetContent = {
             //Ui for bottom sheet
             Column(
                 content = {
 
                     Spacer(modifier = Modifier.padding(16.dp))
-                    androidx.compose.material.Text(
-                        text = "Bottom Sheet",
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-                        color = Color.White
-                    )
+                    Button(onClick = { /*TODO*/
+
+                        val Links: List<String>? =           createDownloadLinks()
+                        if (Links!!.isNotEmpty()) {
+                            //check if the internet is opened
+                            DownLoadIfNot(internetStatus, Links as ArrayList<String>)
+                        } else {
+                            //initializePlayer()
+                           // playerFooter.visibility = View.VISIBLE
+                           // audio_settings_bottom.visibility = View.GONE
+                        }
+                    }
+                    ) {
+                        androidx.compose.material.Text(
+                            text = "Play",
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 21.sp,
+                            color = Color.White
+                        )
+
+
+                    }
 
                 },
                 modifier = Modifier
@@ -205,14 +246,170 @@ private fun BottomSheet(surahs: List<ChaptersAnaEntity>, chapid: Int) {
                     .padding(16.dp),
 
                 )
+
         },
         sheetPeekHeight = 40.dp,
 
    )
     {
-       DisplayQuran(surahs, chapid)
+
+    DisplayQuran(surahs, chapid)
     }
 }
+
+fun createDownloadLinks(): List<String>? {
+
+  return  emptyList()
+
+}
+
+
+fun DownLoadIfNot(internetStatus: Int, Links: ArrayList<String>) {
+    val app_folder_path =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            .toString() + "/audio/" + readerID
+    val f = File(app_folder_path)
+    val path = f.absolutePath
+    val file = File(path)
+    if (!file.exists()) file.mkdirs()
+    startBeforeDownload = true
+
+
+
+/*    startDownloadingFiles(
+        file=Links
+
+
+    )*/
+}
+
+/*
+fun startDownloadingFiles(file: java.util.ArrayList<String>,
+                          success: (String) -> Unit,
+                          failed: (String) -> Unit,
+                          running: () -> Unit) {
+    val data = Data.Builder()
+    val workManager = WorkManager.getInstance(QuranGrammarApplication.context!!)
+    */
+/*
+         id = "10",
+                        name = "Pdf File 10 MB",
+                        type = "PDF",
+                        url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
+                        downloadedUri = null
+     *//*
+
+    data.apply {
+        putString(FileDownloadWorker.FileParams.KEY_FILE_NAME, "file.name")
+        putString(FileDownloadWorker.FileParams.KEY_FILE_URL, file.get(0))
+        putString(FileDownloadWorker.FileParams.KEY_FILE_TYPE, "mp3")
+    }
+
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresStorageNotLow(true)
+        .setRequiresBatteryNotLow(true)
+        .build()
+
+    val fileDownloadWorker = OneTimeWorkRequestBuilder<FileDownloadWorker>()
+        .setConstraints(constraints)
+        .setInputData(data.build())
+        .build()
+
+    workManager.enqueueUniqueWork(
+        "oneFileDownloadWork_${System.currentTimeMillis()}",
+        ExistingWorkPolicy.KEEP,
+        fileDownloadWorker
+    )
+
+
+    workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
+        .observe(QuranGrammarApplication.context!!) { info ->
+            info?.let {
+                when (it.state) {
+                    WorkInfo.State.SUCCEEDED -> {
+                        success(
+                            it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI)
+                                ?: ""
+                        )
+                    }
+
+                    WorkInfo.State.FAILED -> {
+                        failed("Downloading failed!")
+                    }
+
+                    WorkInfo.State.RUNNING -> {
+                        running()
+                    }
+
+                    else -> {
+                        failed("Something went wrong")
+                    }
+                }
+            }
+        }
+}
+*/
+
+/*private fun startDownloadingFile(
+    file: DownloadAct.File,
+    success: (String) -> Unit,
+    failed: (String) -> Unit,
+    running: () -> Unit
+) {
+    val data = Data.Builder()
+    val workManager = WorkManager.getInstance(applicationContext)
+    data.apply {
+        putString(FileDownloadWorker.FileParams.KEY_FILE_NAME, file.name)
+        putString(FileDownloadWorker.FileParams.KEY_FILE_URL, file.url)
+        putString(FileDownloadWorker.FileParams.KEY_FILE_TYPE, file.type)
+    }
+
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresStorageNotLow(true)
+        .setRequiresBatteryNotLow(true)
+        .build()
+
+    val fileDownloadWorker = OneTimeWorkRequestBuilder<FileDownloadWorker>()
+        .setConstraints(constraints)
+        .setInputData(data.build())
+        .build()
+
+    workManager.enqueueUniqueWork(
+        "oneFileDownloadWork_${System.currentTimeMillis()}",
+        ExistingWorkPolicy.KEEP,
+        fileDownloadWorker
+    )
+
+
+    workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
+        .observe(this) { info ->
+            info?.let {
+                when (it.state) {
+                    WorkInfo.State.SUCCEEDED -> {
+                        success(
+                            it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI)
+                                ?: ""
+                        )
+                    }
+
+                    WorkInfo.State.FAILED -> {
+                        failed("Downloading failed!")
+                    }
+
+                    WorkInfo.State.RUNNING -> {
+                        running()
+                    }
+
+                    else -> {
+                        failed("Something went wrong")
+                    }
+                }
+            }
+        }
+}*/
+
 
 /*
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)

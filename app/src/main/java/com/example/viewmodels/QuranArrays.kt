@@ -9,7 +9,7 @@ import com.example.mushafconsolidated.model.QuranCorpusWbw
 
 @Immutable
 data class QuranArrays(
- val newnewadapterlist : LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>> =  LinkedHashMap(),
+   val newnewadapterlist : LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>> =  LinkedHashMap(),
     val corpusSurahWord: List<QuranCorpusWbw> =listOf<QuranCorpusWbw>(),
     val quranbySurah: List<QuranEntity> = listOf<QuranEntity>(),
     val chapterlist: List<ChaptersAnaEntity> = listOf<ChaptersAnaEntity>()
