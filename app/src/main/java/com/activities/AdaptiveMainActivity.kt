@@ -82,11 +82,13 @@ import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.appscreens.MatTab
 import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
+import com.appscreens.QuranPageScreen
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
 import com.example.searchwidgetdemo.SearchActivity
 import com.example.utility.QuranGrammarApplication.Companion.context
 import com.modelfactory.CardViewModelFactory
+import com.modelfactory.QuranVMFactory
 import com.modelfactory.RootViewModelFactory
 import com.modelfactory.VerseAnalysisFctory
 import com.modelfactory.newViewModelFactory
@@ -94,6 +96,7 @@ import com.modelfactory.surahViewModelFactory
 import com.settings.AppSettingsScreen
 import com.settings.preference.SeetingScreen
 import com.viewmodels.ExpandableVerseViewModel
+import com.viewmodels.QuranPagesModel
 
 
 val showbootomsheet = mutableStateOf(false)
@@ -472,10 +475,10 @@ fun MainContent(
                     val id = backStackEntry.arguments!!.getInt("id")
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-                    val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id,darkThemePreference))
-                    NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
+                    val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(id,darkThemePreference))
+                 //   NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
 
-
+                    QuranPageScreen(navController, id, myViewModel,darkThemePreference)
                 }
 
                 composable(

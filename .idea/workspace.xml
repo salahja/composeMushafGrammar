@@ -10,9 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/SearchWidgetState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels/QuranPageArrays.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/QuranPagesModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/BottomSheetWordDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/BottomSheetWordDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewSurahList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewSurahList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/ChaptersAnaEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/ChaptersAnaEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/modelfactory/Factories.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/modelfactory/Factories.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1036,102 +1043,102 @@
           <line>318</line>
           <option name="timeStamp" value="363" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt</url>
           <line>1562</line>
           <option name="timeStamp" value="373" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>1218</line>
           <option name="timeStamp" value="388" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>1270</line>
           <option name="timeStamp" value="390" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt</url>
           <line>1961</line>
           <option name="timeStamp" value="391" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>1023</line>
           <option name="timeStamp" value="396" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>1341</line>
           <option name="timeStamp" value="399" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>1345</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>676</line>
           <option name="timeStamp" value="402" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>669</line>
           <option name="timeStamp" value="403" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>796</line>
           <option name="timeStamp" value="404" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>633</line>
           <option name="timeStamp" value="406" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>703</line>
           <option name="timeStamp" value="407" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>800</line>
           <option name="timeStamp" value="408" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>263</line>
           <option name="timeStamp" value="420" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt</url>
           <line>283</line>
           <option name="timeStamp" value="422" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/search/SearchScreen.kt</url>
           <line>53</line>
           <option name="timeStamp" value="423" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt</url>
           <line>485</line>
           <option name="timeStamp" value="429" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/ChaptersAnaEntity.kt</url>
           <line>47</line>
           <option name="timeStamp" value="432" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/ChaptersAnaEntity.kt</url>
           <line>44</line>
           <option name="timeStamp" value="433" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/search/SearchViewModel.kt</url>
           <line>37</line>
           <properties>
@@ -1139,7 +1146,7 @@
           </properties>
           <option name="timeStamp" value="437" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/search/SearchViewModel.kt</url>
           <line>38</line>
           <properties>
@@ -1147,15 +1154,23 @@
           </properties>
           <option name="timeStamp" value="438" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/ChaptersAnaEntity.kt</url>
           <line>42</line>
           <option name="timeStamp" value="439" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
+        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/SurahListScreen.kt</url>
           <line>108</line>
           <option name="timeStamp" value="440" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt</url>
+          <line>212</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="444" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1178,6 +1193,7 @@
         <watch expression="verses" />
         <watch expression="thememode.value" />
         <watch expression="chapterss" />
+        <watch expression="quran!!.qurantext" />
       </configuration>
     </watches-manager>
   </component>

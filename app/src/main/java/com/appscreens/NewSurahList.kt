@@ -88,7 +88,7 @@ val imgss = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel?) {
-
+    pref = remember { PreferencesManager(QuranGrammarApplication.context!!) }
 
     thememodes = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
     //   val chapters = quranModel!!.getAllSurah().value
@@ -108,9 +108,18 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
     val searchText by viewModel.searchText.collectAsState()
     val chapters by viewModel.chapters.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
+    val searchWidgetState by viewModel.searchWidgetState
     Scaffold (
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { LibraryTopBars(navController, scrollBehavior, isCollapsed) }
+
+
+
+
+
+
+
+
     ) {
 
 

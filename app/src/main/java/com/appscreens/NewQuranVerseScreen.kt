@@ -2,6 +2,7 @@ package com.appscreens
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -37,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -80,20 +82,26 @@ import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
 import com.example.compose.TextChipWBW
 import com.example.compose.theme.Tooltips
+import com.example.mushafconsolidated.Entities.Page
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
+import java.text.MessageFormat
 
 var quranbySurah: List<QuranEntity>? = null
 var surahs: List<ChaptersAnaEntity>? = null
 var scopes: CoroutineScope? = null
 var wordarray: ArrayList<NewQuranCorpusWbw>? = null
+
 var listState: LazyListState? = null
 var annotatedStringStringPair: Pair<AnnotatedString, Int>? = null
 var aid: Int = 0
 var cid: Int = 0
 var wid: Int = 0
 val showWordDetails = mutableStateOf(false)
-
+val prefrence by lazy{QuranGrammarApplication.context!!.getSharedPreferences("prefs",MODE_PRIVATE)}
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(
     ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
@@ -160,8 +168,8 @@ fun NewQuranVerseScreen(
 
     listState = rememberLazyListState()
     // corpusSurahWord = utils.getQuranCorpusWbwbysurah(chapid);
-
-
+    val coroutineScope = rememberCoroutineScope()
+ val scrollpos= prefrence.getInt("scroll_position",0)
     val preferencesManager = remember { PreferencesManager(QuranGrammarApplication.context!!) }
     val data = remember { mutableStateOf(preferencesManager.getData("lastread", 1)) }
     preferencesManager.saveData("lastread", chapid.toString())
@@ -173,11 +181,35 @@ fun NewQuranVerseScreen(
     LoadingData(isDisplayed = false)
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(3) }
+
+    LaunchedEffect(key1 = Unit) {
+        listState!!.animateScrollToItem(index = scrollpos)
+    }
+    LaunchedEffect(listState){
+         snapshotFlow {
+             listState!!.firstVisibleItemIndex
+         }
+             .debounce(500L)
+             .collectLatest { index->
+                 prefrence.edit()
+                     .putInt("scroll_position",index)
+                     .apply()
+             }
+    }
     //  LazyColumn(state = listState!!,      modifier = Modifier.fillMaxSize(),
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        state = listState!!
     ) {
         itemsIndexed(quranbySurah!!.toList()) { index, item ->
+/*
+
+            coroutineScope.launch {
+                listState!!.animateScrollToItem(26)
+                state.animateScrollTo(36)
+            }
+*/
+
             //   val img = imgs.getDrawable(surahs!!.chapid - 2)
             Card(
                 colors = CardDefaults.cardColors(
@@ -265,10 +297,26 @@ fun NewQuranVerseScreen(
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
+                                modifier = Modifier.align(Alignment.BottomStart),
+                                textAlign = TextAlign.Center,
+                                fontSize = 15.sp
+                            )
+                            val builder = StringBuilder()
+                            wordarray = newnewadapterlist[index]
+                         //    builder.append("{").append(wordarray!![0].corpus!!.ayah  ).append("} ")
+                         builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", "", wordarray!![0].corpus!!.ayah))
+                            Text(
+                                text = builder.toString(),
+
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black,
                                 modifier = Modifier.align(Alignment.BottomCenter),
                                 textAlign = TextAlign.Center,
                                 fontSize = 15.sp
                             )
+
+
+
                             /*     AsyncImage(
                                      modifier = Modifier.align(Alignment.TopStart),
                                      model = img,

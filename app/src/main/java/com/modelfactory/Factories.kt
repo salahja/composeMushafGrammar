@@ -8,6 +8,7 @@ import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValue
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.viewmodels.CardsViewModel
 import com.viewmodels.ExpandableVerseViewModel
+import com.viewmodels.QuranPagesModel
 import com.viewmodels.RootModel
 import com.viewmodels.VerseModel
 
@@ -15,6 +16,11 @@ class newViewModelFactory(private val dbname: Int, private val isdark: BooleanPr
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         VerseModel(dbname,isdark) as T
+}
+class QuranVMFactory(private val dbname: Int, private val isdark: BooleanPreferenceSettingValueState) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        QuranPagesModel(dbname,isdark) as T
 }
 
 class CardViewModelFactory(

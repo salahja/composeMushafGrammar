@@ -1,5 +1,6 @@
 package com.appscreens
 
+import android.text.SpannableStringBuilder
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -72,6 +73,14 @@ fun BottomSheetWordDetails(
         mainViewModel.getVerbRootBySurahAyahWord(chapterid!!, verseid!!, wordno!!).value
 
 
+    val mafoolbihi = mainViewModel.getMafoolbihiword(chapterid, verseid, wordno).value
+    val haliaSentence = mainViewModel.gethalsurahayah(chapterid, verseid).value
+    val tameezWord = mainViewModel.getTameezword(chapterid, verseid, wordno).value
+    val liajlihiEntArrayList = mainViewModel.getAjlihiword(chapterid, verseid, wordno).value
+    val mutlaqword = mainViewModel.getMutlaqWOrd(chapterid, verseid, wordno).value
+
+
+
     /*  val am = NewQuranMorphologyDetails(
           corpusSurahWord!!,
           corpusNounWord as ArrayList<NounCorpus>?,
@@ -96,6 +105,33 @@ fun BottomSheetWordDetails(
         }
     }
 
+    if (tameezWord != null) {
+        if (tameezWord.isNotEmpty()) {
+            val tameezwordspan=StringBuilder()
+            tameezwordspan.append("(").append("تمييز").append(")")
+            tameezwordspan.append(tameezWord!![0].word)
+            worddetails["tameez"] = AnnotatedString(tameezwordspan.toString())
+        }
+    }
+    if (liajlihiEntArrayList != null) {
+        if (liajlihiEntArrayList.isNotEmpty()) {
+            val ajlihiwordspan=StringBuilder()
+            ajlihiwordspan.append("(").append("مفعول لأجله").append(")")
+            ajlihiwordspan.append(liajlihiEntArrayList[0].word)
+            worddetails["liajlihi"] = AnnotatedString(ajlihiwordspan.toString())
+
+
+        }
+    }
+
+    if (mutlaqword != null) {
+        if (mutlaqword.isNotEmpty()) {
+            val ajlihiwordspan=StringBuilder()
+            ajlihiwordspan.append("(").append("مفعول المطلق").append(")")
+            ajlihiwordspan.append(mutlaqword[0].word)
+            worddetails["mutlaqword"] = AnnotatedString(ajlihiwordspan.toString())
+        }
+    }
 
     //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
     val coroutineScope = rememberCoroutineScope()
@@ -148,6 +184,202 @@ fun BottomSheetWordDetails(
                     ) {
                         if (worddetails["word"] != null) {
                             val annotatedString=      worddetails["word"]
+                            if (annotatedString != null) {
+                                /*         Text(
+                                             text = annotatedString,
+                                             modifier = Modifier
+                                                 .fillMaxWidth(),
+                                             textAlign = TextAlign.Center,
+                                             fontWeight = FontWeight.Bold,
+                                             fontSize = 21.sp,
+
+                                             )*/
+
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+                                    modifier=Modifier.padding(10.dp),
+                                    onClick = {
+
+                                    },
+                                    label = {
+                                        Text( annotatedString)
+
+                                    },
+
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+
+
+
+
+
+
+
+
+
+
+                            }
+                        }
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 2.dp,
+                                horizontal = 4.dp
+                            )
+
+                            .clip(shape = CircleShape)
+
+                            .padding(4.dp)
+
+
+                    ) {
+                        if (worddetails["liajlihi"] != null) {
+                            val annotatedString=      worddetails["liajlihi"]
+                            if (annotatedString != null) {
+                                /*         Text(
+                                             text = annotatedString,
+                                             modifier = Modifier
+                                                 .fillMaxWidth(),
+                                             textAlign = TextAlign.Center,
+                                             fontWeight = FontWeight.Bold,
+                                             fontSize = 21.sp,
+
+                                             )*/
+
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+                                    modifier=Modifier.padding(10.dp),
+                                    onClick = {
+
+                                    },
+                                    label = {
+                                        Text( annotatedString)
+
+                                    },
+
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+
+
+
+
+
+
+
+
+
+
+                            }
+                        }
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 2.dp,
+                                horizontal = 4.dp
+                            )
+
+                            .clip(shape = CircleShape)
+
+                            .padding(4.dp)
+
+
+                    ) {
+                        if (worddetails["tameez"] != null) {
+                            val annotatedString=      worddetails["tameez"]
+                            if (annotatedString != null) {
+                                /*         Text(
+                                             text = annotatedString,
+                                             modifier = Modifier
+                                                 .fillMaxWidth(),
+                                             textAlign = TextAlign.Center,
+                                             fontWeight = FontWeight.Bold,
+                                             fontSize = 21.sp,
+
+                                             )*/
+
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+                                    modifier=Modifier.padding(10.dp),
+                                    onClick = {
+
+                                    },
+                                    label = {
+                                        Text( annotatedString)
+
+                                    },
+
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+
+
+
+
+
+
+
+
+
+
+                            }
+                        }
+                    }
+
+
+
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 2.dp,
+                                horizontal = 4.dp
+                            )
+
+                            .clip(shape = CircleShape)
+
+                            .padding(4.dp)
+
+
+                    ) {
+                        if (worddetails["mutlaqword"] != null) {
+                            val annotatedString=      worddetails["mutlaqword"]
                             if (annotatedString != null) {
                                 /*         Text(
                                              text = annotatedString,
