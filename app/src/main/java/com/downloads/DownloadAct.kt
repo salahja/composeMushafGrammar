@@ -29,6 +29,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -61,6 +62,7 @@ import java.io.File
 
 class DownloadAct : ComponentActivity() {
 
+    private lateinit var data: MutableState<File>
     private lateinit var testList: ArrayList<DownloadAct.File>
     private lateinit var requestMultiplePermission: ActivityResultLauncher<Array<String>>
     private lateinit var permissionHelper : PermissionHelper
@@ -261,19 +263,24 @@ class DownloadAct : ComponentActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val data = remember {
-                mutableStateOf(
-               testList.get(0)
-               /*      File(
+
+          //  for(links in testList) {
+                data =remember{ mutableStateOf(testList.get(0)) }
+
+
+              /* data = remember {
+                    mutableStateOf(
+                       links
+                        *//*      File(
                         id = "10",
                         name = "Pdf File 10 MB",
                         type = "PDF",
                         url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
                         downloadedUri = null
-                    )*/
-                )
-            }
-
+                    )*//*
+                    )
+                }*/
+         //   }
             ItemFile(
            file = data.value,
               //   file=testList.get(0),
@@ -327,22 +334,20 @@ class DownloadAct : ComponentActivity() {
         startDownload: (File) -> Unit,
         openFile: (File) -> Unit
     ) {
+        if (!file.isDownloading) {
+            if (file.downloadedUri.isNullOrEmpty()) {
+                startDownload(file)
+            } else {
+                openFile(file)
+            }
+        }
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.White)
                 .border(width = 2.dp, color = Color.Blue, shape = RoundedCornerShape(16.dp))
-                .clickable {
-                    if (!file.isDownloading) {
-                        if (file.downloadedUri.isNullOrEmpty()) {
-                            startDownload(file)
-                        } else {
-                            openFile(file)
-                        }
-                    }
-                }
-                .padding(16.dp)
+
         ) {
             Row(
                 modifier = Modifier
@@ -360,7 +365,7 @@ class DownloadAct : ComponentActivity() {
                     )
 
                     Row {
-                        val description = if (file.isDownloading) {
+                      /*  val description = if (file.isDownloading) {
                             "Downloading..."
                         } else {
                             if (file.downloadedUri.isNullOrEmpty()) "Tap to download the file" else "Tap to open file"
@@ -369,7 +374,7 @@ class DownloadAct : ComponentActivity() {
                             text = description,
                             //   style = Typography.body2,
                             color = Color.DarkGray
-                        )
+                        )*/
                     }
 
                 }
@@ -405,6 +410,9 @@ class DownloadAct : ComponentActivity() {
             putString(FileDownloadWorker.FileParams.KEY_FILE_NAME, file.name)
             putString(FileDownloadWorker.FileParams.KEY_FILE_URL, file.url)
             putString(FileDownloadWorker.FileParams.KEY_FILE_TYPE, file.type)
+            putString(FileDownloadWorker.FileParams.KEY_FILE_PATH,   "Download/audio/" + readerID)
+
+//  put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/Audio")
         }
 
         val constraints = Constraints.Builder()
