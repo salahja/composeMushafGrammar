@@ -10,15 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/receivers/QuranValidateSources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/receivers/QuranValidateSources.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -766,7 +760,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699837224567</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Initial commit">
+      <created>1699939605745</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1699939605745</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -1226,6 +1227,29 @@
           </properties>
           <option name="timeStamp" value="496" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt</url>
+          <line>183</line>
+          <option name="timeStamp" value="510" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt</url>
+          <line>118</line>
+          <option name="timeStamp" value="518" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt</url>
+          <line>123</line>
+          <option name="timeStamp" value="519" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt</url>
+          <line>131</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="521" />
+        </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
           <line>92</line>
@@ -1252,6 +1276,7 @@
         <watch expression="fileDownloadWorker.id" />
         <watch expression="request" />
         <watch expression="downloadUri" />
+        <watch expression="loadings" />
       </configuration>
     </watches-manager>
   </component>

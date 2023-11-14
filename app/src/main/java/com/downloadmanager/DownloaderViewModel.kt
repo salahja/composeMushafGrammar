@@ -1,12 +1,15 @@
 package com.downloadmanager
 
 import android.app.DownloadManager
+import android.app.NotificationManager
 import android.content.Context
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,22 +21,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class DownloaderViewModel : ViewModel(){
+class DownloaderViewModel : ViewModel() {
 
+    private lateinit var downloadUri: Uri
+    private var notificationManager: NotificationManager? = null
+    private var builder: NotificationCompat.Builder? = null
+    private var notificationDownloaderFlag: Boolean?=null
+    private var notificationDivider = 0
     // This will be updated on the basis of the
-    private val _status : MutableLiveData<String> = MutableLiveData()
-    val status : LiveData<String> = _status
+    private val _status: MutableLiveData<String> = MutableLiveData()
+    val status: LiveData<String> = _status
+    val loading = mutableStateOf(false)
 
     // LiveData for progress
-    private val _progress : MutableLiveData<List<Int>> = MutableLiveData()
-    val progress : LiveData<List<Int>> = _progress
+    private val _progress: MutableLiveData<List<Int>> = MutableLiveData()
+    val progress: LiveData<List<Int>> = _progress
 
     // This is just to keep track of statuses when the download is running
-    private var lastMsg : String = ""
+    private var lastMsg: String = ""
 
-    private lateinit var directory : File
-    private lateinit var url : String
-    private var downloadId : Long = -1L
+    private lateinit var directory: File
+    private lateinit var url: String
+    private var downloadId: Long = -1L
 
     /**
      * This function is the entry point for all downloads and decides
@@ -42,7 +51,10 @@ class DownloaderViewModel : ViewModel(){
      * @param url -> file URL
      * @param requestCode -> to either start or cancel the download {0 for start & 1 for cancel}
      **/
-    fun downloadMedia(list: ArrayList<DownloadActThree.File>, url: String, requestCode: Int){
+    fun downloadMedia(list: ArrayList<DownloadActThree.File>, url: String, requestCode: Int) {
+        loading.value = true
+
+
         // setting the url as top level property for later use ->
         this.url = url
         val app_folder_path =
@@ -51,16 +63,23 @@ class DownloaderViewModel : ViewModel(){
         val f = File(app_folder_path)
         val path = f.absolutePath
         val files = File(path)
-        if (!files.exists()){ files.mkdirs()}
+        if (!files.exists()) {
+            files.mkdirs()
+        }
         // Setting up the target Directory ->
-      directory = File(Environment.DIRECTORY_DOWNLOADS,"/20/")
+        directory = File(Environment.DIRECTORY_DOWNLOADS, "/20/")
         if (!directory.exists()) {
             directory.mkdirs()
         }
 
-        val downloadUri = Uri.parse(url) // parse url to uri
+     //   for (ln in list) {
 
-        when(requestCode) {
+            downloadUri = Uri.parse(url)
+     //   }
+
+        // parse url to uri
+
+        when (requestCode) {
             0 -> {
                 // Creating a request with all necessary methods for the details
                 val request = DownloadManager.Request(downloadUri).apply {
@@ -70,13 +89,18 @@ class DownloaderViewModel : ViewModel(){
                         .setDescription("")
                         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                         // Notifications for DownloadManager are optional and can be removed
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"20/"+url.substring(url.lastIndexOf("/") + 1)
+                        .setDestinationInExternalPublicDir(
+                            Environment.DIRECTORY_DOWNLOADS,
+                            "20/" + url.substring(url.lastIndexOf("/") + 1)
 
                         )
                 }
-                startDownload( request)
+                startDownload(request)
             }
-            1 -> {cancelDownload()}
+
+            1 -> {
+                cancelDownload()
+            }
         }
     }
 
@@ -87,8 +111,9 @@ class DownloaderViewModel : ViewModel(){
      * **/
     private fun cancelDownload() {
         // Calling the DownloadManagerService
-        val downloadManager = context!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        if(downloadId != -1L) {
+        val downloadManager =
+            context!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        if (downloadId != -1L) {
             downloadManager.remove(downloadId)
         } else {
             Toast.makeText(context, "Cancel Failed", Toast.LENGTH_SHORT).show()
@@ -100,9 +125,10 @@ class DownloaderViewModel : ViewModel(){
      * @param context to get the DownloadManager
      * @param request -> This is passed into the DownloadManager as this has all the file details
      */
-    private fun startDownload( request : DownloadManager.Request) {
+    private fun startDownload(request: DownloadManager.Request) {
         // Calling the DownloadManagerService
-        val downloadManager = context!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadManager =
+            context!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
         // starting the download
         downloadId = downloadManager.enqueue(request)
@@ -115,10 +141,12 @@ class DownloaderViewModel : ViewModel(){
                 while (downloading) {
                     val cursor: Cursor = downloadManager.query(query)
                     cursor.moveToFirst()
-                    val total : Long = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                    val total: Long =
+                        cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
                     // Progress ->
                     if (total >= 0) {
-                        val downloaded : Long = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                        val downloaded: Long =
+                            cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                         val currentProgress: Int = downloaded.toInt()
                         _progress.postValue(listOf(currentProgress, total.toInt()))
                     }
@@ -129,7 +157,8 @@ class DownloaderViewModel : ViewModel(){
                     }
 
                     // Changing statuses ->
-                    val status = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS))
+                    val status =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS))
                     val msg = statusMessage(url, directory, status)
                     if (msg != lastMsg) {
                         _status.postValue(msg!!)
@@ -142,6 +171,7 @@ class DownloaderViewModel : ViewModel(){
                 _progress.postValue(listOf(0, 0))
             }
         }
+        loading.value = false
     }
 
     /**
@@ -157,6 +187,7 @@ class DownloaderViewModel : ViewModel(){
             DownloadManager.STATUS_SUCCESSFUL -> "Media downloaded successfully in $directory" + File.separator + url.substring(
                 url.lastIndexOf("/") + 1
             )
+
             else -> "There's nothing to download"
         }
         return msg

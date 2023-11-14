@@ -10,24 +10,40 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.appscreens.downloadLink
 import com.appscreens.readerID
 import com.downloadmanager.DownloaderViewModel
 import com.downloads.ui.theme.MushafApplicationTheme
+import com.example.compose.WordOccuranceLoading
 import com.example.mushafconsolidated.Entities.Qari
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.Utils
@@ -52,9 +68,22 @@ class DownloadActThree : ComponentActivity() {
     private val url: String = "https://i.imgur.com/ayo3pHA.mp4"
     var scanUri = "content://downloads/my_downloads"
     var seekBarValue: MutableState<Float> = mutableStateOf(0F)
-    private val downloaderViewModel by viewModels<DownloaderViewModel>()
+
+    var loading = mutableStateOf(true)
+    private var builder: NotificationCompat.Builder? = null
+    private var notificationDownloaderFlag: Boolean=false
+    /*
+     if (notificationDownloaderFlag) {
+            //remoteViews.setProgressBar(R.id.progressBar2, , , false);
+            builder!!.setProgress(values[1]!!.toInt(), values[0]!!.toInt(), false)
+            notificationManager!!.notify(0, builder!!.build())
+        }
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+         val downloaderViewModel by viewModels<DownloaderViewModel>()
+        var loadings = downloaderViewModel.loading.value
+        //var loading = downloaderViewModel.loading.value
         val Links: List<String>? =           createDownloadLinks()
         val links = Links
        val arr= listOf<File>()
@@ -62,7 +91,9 @@ class DownloadActThree : ComponentActivity() {
 
         setContent {
             setContent {
+                val localContext = LocalContext.current
                 val scope: CoroutineScope = rememberCoroutineScope()
+                displaybar()
                 MushafApplicationTheme {
                     seekBarValue = remember {
                         mutableStateOf(0F)
@@ -70,10 +101,10 @@ class DownloadActThree : ComponentActivity() {
 
                     // A surface container using the 'background' color from the theme
                     Column(
-                        modifier = Modifier.fillMaxSize(),
-
+                        horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth(),
                         ) {
-
+                        loadings = downloaderViewModel.loading.value
+                        WordOccuranceLoading(isDisplayed = loadings)
 
                         Slider(value = (seekBarValue.value)/100, onValueChange = {
                             seekBarValue.value = it
@@ -83,9 +114,31 @@ class DownloadActThree : ComponentActivity() {
 
                                 for (ln in testLists) {
                                //     downLoadMedia(scope,ln.url,ln.name)
+                                   loading.value=true
+
                                     downloaderViewModel.downloadMedia(testLists, ln.url, 0)
+                                    loading.value=false
                                 }
 
+                            downloaderViewModel.status.observe(this@DownloadActThree, Observer {
+                                if(!it.isNullOrEmpty()) {
+                                    Toast.makeText(localContext, "Selected Item: $it", Toast.LENGTH_SHORT)
+                                        .show()
+
+                                }
+                            })
+
+                            downloaderViewModel.progress.observe(this@DownloadActThree, {
+                                it?.let {
+                                    val percentage=(it[1]/100)
+                                    println(it)
+                                 //   val currentProgress: Int = downloaded.toInt()
+                                    seekBarValue.value=percentage.toFloat()
+                                    Log.d("Crying", "Progress is being set")
+                                  //  binding.progressBar.progress = it[0]
+                                  //  binding.progressBar.max = it[1]
+                                }
+                            })
 
 
                         }) {
@@ -98,116 +151,23 @@ class DownloadActThree : ComponentActivity() {
             }
             }
         }
-///
-private fun downLoadMedia(scope: CoroutineScope, url: String, filename: String) {
-    val app_folder_path =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            .toString() + "/audio/" + readerID
-    val f = File(app_folder_path)
-    val path = f.absolutePath
-    val files = File(path)
-    if (!files.exists()){ files.mkdirs()}
 
-
-    val downloadManager =getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-    val request = DownloadManager.Request(Uri.parse(url)).apply {
-        setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-            .setAllowedOverRoaming(false)
-            .setTitle(url.substring(url.lastIndexOf("/") + 1))
-            .setDescription("")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            // Notifications for DownloadManager are optional and can be removed
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"afasy/"+filename
+    @Composable
+    private fun displaybar() {
+        if (loading.value) {
+            CircularProgressIndicator(
+                color = Color.Blue,
+                modifier = Modifier
+                    .size(32.dp)
 
             )
-    }
-
-    val  downloadId = downloadManager.enqueue(request)
-    val query = DownloadManager.Query().setFilterById(downloadId)
-    val observer=object : ContentObserver(
-        Handler(Looper.getMainLooper() ) ){
-
-        override fun onChange(selfChange: Boolean) {
-            super.onChange(selfChange)
-
-            val cursor: Cursor = downloadManager.query(query)
-            cursor.moveToFirst()
-
-            if(cursor!=null && cursor.moveToFirst()){
-                val total  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                // Progress ->
-
-                val downloaded  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                val currentProgress: Int = downloaded.toInt()
-                seekBarValue.value=currentProgress.toFloat()
-            }
-
         }
     }
-    contentResolver.registerContentObserver(
-        Uri.parse(scanUri),true,observer
-    )
 
-            scope.launch(Dispatchers.IO) {
-
-                    var downloading = true
+    ///
 
 
 
-
-
-                    // The following is to set statuses for the present download
-
-                        val cursor: Cursor = downloadManager.query(query)
-                        cursor.moveToFirst()
-
-                        if(cursor!=null && cursor.moveToFirst()){
-                            val total  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                            // Progress ->
-
-                            val downloaded  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                            val currentProgress: Int = downloaded.toInt()
-                            seekBarValue.value=currentProgress.toFloat()
-                        }
-
-
-                        // Download finished
-                        if (cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
-                            downloading = false
-                        }
-
-                        // Changing statuses ->
-
-
-
-
-            }
-
-
-
-    //
-}
-
-    private fun createPath() {
-        ///storage/emulated/0/Documents/audio/20
-        /*
-        file = {File@26060} "/storage/emulated/0/Documents/audio/20"
- 0 = {File@26201} "/storage/emulated/0/Documents/audio/20/020001.mp3"
- 1 = {File@26202} "/storage/emulated/0/Documents/audio/20/020002.mp3"
- 2 = {File@26203} "/storage/emulated/0/Documents/audio/20/020003.mp3"
- 3 = {File@26204} "/storage/emulated/0/Documents/audio/20/020004.mp3"
-         */
-        val app_folder_path =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .toString() + "/audio/" + readerID
-
-        val app=    (Environment.DIRECTORY_DOWNLOADS).toString()+ "/audio/" + 20
-        val f = File(app_folder_path)
-        val path = f.absolutePath
-        val file = File(path)
-        if (!file.exists()) file.mkdirs()
-
-    }
 
     fun createDownloadLinks(): List<String> {
         lateinit var readersList: List<Qari>
@@ -219,8 +179,8 @@ private fun downLoadMedia(scope: CoroutineScope, url: String, filename: String) 
    //     val testList = arrayListOf<DownloadFileListArray>()
         val repository= Utils(QuranGrammarApplication.context)
         readersList = repository.qaris
-        val chap = repository.getSingleChapter(101)
-        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(101)
+        val chap = repository.getSingleChapter(60)
+        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(60)
         //   surahselected = surah
         //   int ayaID=0;
         var counter = 0

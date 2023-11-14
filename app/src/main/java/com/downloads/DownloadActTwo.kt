@@ -132,8 +132,9 @@ private fun downLoadMedia(scope: CoroutineScope, url: String, filename: String) 
                 // Progress ->
 
                 val downloaded  = cursor.getLong(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+               val percentage=(downloaded*100)/total
                 val currentProgress: Int = downloaded.toInt()
-                seekBarValue.value=currentProgress.toFloat()
+                seekBarValue.value=percentage.toFloat()
             }
 
         }
@@ -142,7 +143,7 @@ private fun downLoadMedia(scope: CoroutineScope, url: String, filename: String) 
         Uri.parse(scanUri),true,observer
     )
 
-            scope.launch(Dispatchers.IO) {
+ /*           scope.launch(Dispatchers.IO) {
 
                     var downloading = true
 
@@ -176,7 +177,7 @@ private fun downLoadMedia(scope: CoroutineScope, url: String, filename: String) 
 
 
             }
-
+*/
 
 
     //
