@@ -86,6 +86,8 @@ import com.appscreens.QuranPageScreen
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
 import com.downloads.DownloadAct
+import com.downloads.DownloadActThree
+import com.downloads.DownloadActTwo
 import com.example.searchwidgetdemo.SearchActivity
 import com.example.utility.QuranGrammarApplication.Companion.context
 import com.modelfactory.CardViewModelFactory
@@ -437,7 +439,7 @@ fun MainContent(
 
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    val i = Intent(context, DownloadAct::class.java)
+                    val i = Intent(context, DownloadActThree::class.java)
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context!!.startActivity(i)
 

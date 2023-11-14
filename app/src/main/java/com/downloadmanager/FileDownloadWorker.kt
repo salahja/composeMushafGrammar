@@ -53,7 +53,7 @@ class FileDownloadWorker(
         val fileName = inputData.getString(FileParams.KEY_FILE_NAME) ?: ""
         val fileType = inputData.getString(FileParams.KEY_FILE_TYPE) ?: ""
         val relativePath = inputData.getString(FileParams.KEY_FILE_PATH) ?: ""
-        Log.d("TAG", "doWork: $fileUrl | $fileName | $fileType")
+        Log.d("TAG", "doWork: $fileUrl | $fileName | $fileType  |$relativePath")
 
 
         if (fileName.isEmpty()
@@ -79,6 +79,7 @@ class FileDownloadWorker(
 
         val builder = NotificationCompat.Builder(context,NotificationConstants.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentText("Downloading")
             .setContentTitle("Downloading your file...")
             .setOngoing(true)
             .setProgress(0,0,true)
@@ -141,7 +142,7 @@ private fun getSavedFileUri(
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/Audio")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
         }
 
         val resolver = context.contentResolver

@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -62,6 +63,7 @@ import java.io.File
 
 class DownloadAct : ComponentActivity() {
 
+    private lateinit var datas: DownloadAct.File
     private lateinit var data: MutableState<File>
     private lateinit var testList: ArrayList<DownloadAct.File>
     private lateinit var requestMultiplePermission: ActivityResultLauncher<Array<String>>
@@ -72,18 +74,6 @@ class DownloadAct : ComponentActivity() {
         val links = Links
        val arr= listOf<File>()
         handlePerms()
-/*        requestMultiplePermission = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-            var isGranted = false
-            it.forEach { s, b ->
-                isGranted = b
-            }
-
-            if (!isGranted) {
-                Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show()
-            }
-        }*/
 
         setContent {
             AppTheme {
@@ -91,15 +81,12 @@ class DownloadAct : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-             /*       requestMultiplePermission.launch(
-                        *//* input = *//* arrayOf(
-                            // int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    )*/
-                    createPath()
-                    Home()
+                  if(Links!!.isNotEmpty()) {
+                        createPath()
+                        Home()
+                    }else{
+
+                    }
                 }
             }
         }
@@ -123,7 +110,7 @@ class DownloadAct : ComponentActivity() {
         val path = f.absolutePath
         val file = File(path)
         if (!file.exists()) file.mkdirs()
-        val data = Data.Builder()
+
     }
 
     private fun handlePerms() {
@@ -153,8 +140,8 @@ class DownloadAct : ComponentActivity() {
    //     val testList = arrayListOf<DownloadFileListArray>()
         val repository= Utils(QuranGrammarApplication.context)
         readersList = repository.qaris
-        val chap = repository.getSingleChapter(9)
-        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(9)
+        val chap = repository.getSingleChapter(1)
+        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(1)
         //   surahselected = surah
         //   int ayaID=0;
         var counter = 0
@@ -264,47 +251,36 @@ class DownloadAct : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-          //  for(links in testList) {
-                data =remember{ mutableStateOf(testList.get(0)) }
+            for (i in 0 until testList.size) {
 
 
-              /* data = remember {
-                    mutableStateOf(
-                       links
-                        *//*      File(
-                        id = "10",
-                        name = "Pdf File 10 MB",
-                        type = "PDF",
-                        url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
-                        downloadedUri = null
-                    )*//*
-                    )
-                }*/
-         //   }
+          //  for (links in testList) {
+             datas =testList[i]
+
+          //  }
             ItemFile(
-           file = data.value,
-              //   file=testList.get(0),
+                file = datas,
+                //   file=testList.get(0),
                 startDownload = {
                     startDownloadingFile(
-                  //   file=testList.get(0),
-                       file = data.value,
-                        success = {
-                            data.value = data.value.copy().apply {
+                        //   file=testList.get(0),
+                        file = datas,
+                       success = {
+
+                           datas= datas.copy().apply {
                                 isDownloading = false
                                 downloadedUri = it
                             }
                         },
                         failed = {
-                            val apply = testList.get(0).copy().apply {
 
-                            }
-                            data.value = data.value.copy().apply {
+                            datas = datas.copy().apply {
                                 isDownloading = false
                                 downloadedUri = null
                             }
                         },
                         running = {
-                            data.value = data.value.copy().apply {
+                            datas = datas.copy().apply {
                                 isDownloading = true
                             }
                         }
@@ -325,6 +301,8 @@ class DownloadAct : ComponentActivity() {
                     }
                 }
             )
+
+        }//for
         }
     }
 
@@ -397,12 +375,19 @@ class DownloadAct : ComponentActivity() {
         file: File,
         success: (String) -> Unit,
         failed: (String) -> Unit,
-        running: () -> Unit
+         running: () -> Unit
     ) {
 
 
-
-
+    //    val workManager = WorkManager.getInstance(this)
+     //   val workRequest = OneTimeWorkRequestBuilder<ForegroundWorker>().build()
+        val app_folder_path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString() + "/audio/" + readerID
+        val f = File(app_folder_path)
+        val path = f.absolutePath
+        val files = File(path)
+        if (!files.exists()){ files.mkdirs()}
 
         val data = Data.Builder()
         val workManager = WorkManager.getInstance(applicationContext)
@@ -426,11 +411,16 @@ class DownloadAct : ComponentActivity() {
             .setInputData(data.build())
             .build()
 
+      //  workManager.enqueue(fileDownloadWorker)
+
+
         workManager.enqueueUniqueWork(
             "oneFileDownloadWork_${System.currentTimeMillis()}",
             ExistingWorkPolicy.KEEP,
             fileDownloadWorker
         )
+
+
 
 
         workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
@@ -454,6 +444,9 @@ class DownloadAct : ComponentActivity() {
                         WorkInfo.State.FAILED->{
                             println("WorkInfo")
                         }
+                        WorkInfo.State.BLOCKED->{
+                            println("WorkInfo")
+                        }
                         else -> {
                             failed("Something went wrong")
                         }
@@ -466,19 +459,6 @@ class DownloadAct : ComponentActivity() {
 }
 
 
-object FileParams {
-    const val KEY_FILE_URL = "key_file_url"
-    const val KEY_FILE_TYPE = "key_file_type"
-    const val KEY_FILE_NAME = "key_file_name"
-    const val KEY_FILE_URI = "key_file_uri"
-}
-
-object NotificationConstants {
-    const val CHANNEL_NAME = "download_file_worker_demo_channel"
-    const val CHANNEL_DESCRIPTION = "download_file_worker_demo_description"
-    const val CHANNEL_ID = "download_file_worker_demo_channel_123456"
-    const val NOTIFICATION_ID = 1
-}
 
 
 /*  private val url: String = "https://i.imgur.com/ayo3pHA.mp4"
@@ -597,3 +577,15 @@ object NotificationConstants {
 
 
 
+/* data = remember {
+                  mutableStateOf(
+                     links
+                      *//*      File(
+                        id = "10",
+                        name = "Pdf File 10 MB",
+                        type = "PDF",
+                        url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
+                        downloadedUri = null
+                    )*//*
+                    )
+                }*/

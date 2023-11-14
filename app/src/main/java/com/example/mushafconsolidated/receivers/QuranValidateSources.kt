@@ -2,6 +2,7 @@ package com.example.mushafconsolidated.receiversimport
 
 import android.content.Context
 import android.os.Environment
+import com.appscreens.readerID
 import com.example.mushafconsolidated.R.string
 
 import java.io.File
@@ -46,9 +47,10 @@ object QuranValidateSources {
 
         //Audio file path
         ///storage/emulated/0/Mushafapplication/Audio/1/8.mp3
+        val appfolder:String="Download/" +reader+ "/" + suraID+ ayaID + AudioAppConstants.Extensions.Companion.MP3
         val app_folder_path: String =
-            (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                .toString() + "/audio/" + reader + "/"
+            (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString()  + "/" + reader + "/"
                     + suraID
                     + ayaID + AudioAppConstants.Extensions.Companion.MP3)
         val filePath: String = (Environment
@@ -59,9 +61,14 @@ object QuranValidateSources {
                 + AudioAppConstants.Extensions.Companion.MP3)
 
         //check file found or not
-        val file: File = File(app_folder_path)
-        if (!file.exists()) return false
-        return true
+        val file: File = File(appfolder)
+        val filet: File = File(app_folder_path)
+
+        if (!filet.exists()) {
+            return false
+        }else {
+            return true
+        }
     }
 
     fun validateSurahAudio(context: Context, reader: Int, sura: Int): Boolean {

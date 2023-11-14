@@ -10,8 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/receivers/QuranValidateSources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/receivers/QuranValidateSources.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +100,7 @@
     &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/SearchWidgetDemo-master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/WorkManager-Samples-master&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -106,11 +113,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/search" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/settings" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/adaptive" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme" />
     </key>
     <key name="android.template.-1557561774">
       <recent name="com.downloads" />
@@ -123,6 +130,7 @@
       <recent name="$PROJECT_DIR$/app/src/main/java/com/settings/preference" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="com.downloads" />
       <recent name="com.viewmodels" />
       <recent name="com.example.tabcompose" />
     </key>
@@ -134,11 +142,11 @@
       <recent name="com.models" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="com.downloads" />
       <recent name="com.appscreens" />
       <recent name="com.example.mushafconsolidated.Entities" />
       <recent name="com.example.mushafconsolidated.model" />
       <recent name="com.example.compose" />
-      <recent name="com.example.tabcompose" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -744,7 +752,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699776299778</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Initial commit">
+      <created>1699812582446</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1699812582446</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Initial commit">
+      <created>1699837224567</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1699837224567</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -901,7 +923,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt</url>
-          <line>359</line>
+          <line>361</line>
           <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -984,7 +1006,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt</url>
-          <line>745</line>
+          <line>747</line>
           <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1172,9 +1194,37 @@
           <option name="timeStamp" value="444" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt</url>
-          <line>475</line>
-          <option name="timeStamp" value="445" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt</url>
+          <line>277</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt</url>
+          <line>450</line>
+          <option name="timeStamp" value="468" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt</url>
+          <line>165</line>
+          <option name="timeStamp" value="476" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloadmanager/FileDownloadWorker.kt</url>
+          <line>101</line>
+          <option name="timeStamp" value="481" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt</url>
+          <line>266</line>
+          <option name="timeStamp" value="495" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadAct.kt</url>
+          <line>269</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="496" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1198,6 +1248,10 @@
         <watch expression="thememode.value" />
         <watch expression="chapterss" />
         <watch expression="quran!!.qurantext" />
+        <watch expression="testList" />
+        <watch expression="fileDownloadWorker.id" />
+        <watch expression="request" />
+        <watch expression="downloadUri" />
       </configuration>
     </watches-manager>
   </component>
