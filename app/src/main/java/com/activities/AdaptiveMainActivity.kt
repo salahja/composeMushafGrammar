@@ -439,8 +439,8 @@ fun  MainContent(
 */
           //     SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
                   //  VideoPlayer()
-                  //  AudioPlayer()
-                    CustomPlayer()
+                  AudioPlayer()
+                  //  CustomPlayer()
                 }
 
                 composable(Screen.TopSettings.route) {
@@ -486,6 +486,26 @@ fun  MainContent(
                      val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
                       QuranPageScreen(navController, 4, myViewModel,darkThemePreference)
                 }
+
+             //   composable(Screen.Mushaf.route,
+                      composable("play",
+                    arguments = listOf(
+                        navArgument(name = "id") {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        }
+                    )
+                ) { backStackEntry ->
+                    val id = backStackEntry.arguments!!.getInt("id")
+
+                    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+
+                    val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
+                    AudioPlayer()
+                }
+
+
+
 
 
                 composable(

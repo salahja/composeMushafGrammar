@@ -2,11 +2,12 @@ package com.appscreens
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Environment
-import android.util.Log
 import android.view.View
-import androidx.activity.compose.BackHandler
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,18 +28,23 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetState
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,39 +58,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.ListenableWorker.Result.success
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.codelab.basics.ui.theme.indopak
-import com.downloadmanager.FileDownloadWorker
-import com.downloads.DownloadAct
 import com.example.compose.LoadingData
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.Page
-import com.example.mushafconsolidated.Entities.Qari
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.databinding.XoPlayerBinding
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
-import com.example.mushafconsolidated.receiversimport.AudioAppConstants
-import com.example.mushafconsolidated.receiversimport.QuranValidateSources
+import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.material.textview.MaterialTextView
 import com.viewmodels.QuranPagesModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -182,84 +188,275 @@ fun QuranPageScreen(
     //  LazyColumn(state = listState!!,      modifier = Modifier.fillMaxSize(),
     Scaffold {
 
-    //    DisplayQuran(surahs, chapid)
-        BottomSheet(surahs, chapid)
+        //    DisplayQuran(surahs, chapid)
+        fb(surahs, chapid, navController)
     }
 
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
-private fun BottomSheet(surahs: List<ChaptersAnaEntity>, chapid: Int) {
-    val internetStatus: Int =0
-        androidx.compose.material.BottomSheetScaffold(
-        //  scaffoldState = bottomSheetScaffoldState,
-        sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
-        sheetContent = {
-            //Ui for bottom sheet
-            Column(
-                content = {
 
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Button(onClick = { /*TODO*/
+fun fb(
+    surahs: List<ChaptersAnaEntity>,
+    chapid: Int,
+    navController: NavHostController
+) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val internetStatus: Int = 0
 
-                        val Links: List<String>? =           createDownloadLinks()
-                        if (Links!!.isNotEmpty()) {
-                            //check if the internet is opened
-                            DownLoadIfNot(internetStatus, Links as ArrayList<String>)
-                        } else {
-                            //initializePlayer()
-                           // playerFooter.visibility = View.VISIBLE
-                           // audio_settings_bottom.visibility = View.GONE
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text("Show bottom sheet") },
+                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+                onClick = {
+                    showBottomSheet = true
+                }
+            )
+        }
+    ) {
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                sheetState = sheetState
+
+            ) {
+                Box(modifier = Modifier.wrapContentHeight()) {
+                    AudioPlayer()
+                }
+                Column(
+                    content = {
+
+                        Spacer(modifier = Modifier.padding(16.dp))
+
+
+
+                    },
+
+
+                    )
+
+
+
+
+
+
+
+
+
+
+                // Sheet content
+                Button(onClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            showBottomSheet = false
                         }
                     }
-                    ) {
-                        androidx.compose.material.Text(
-                            text = "Play",
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 21.sp,
-                            color = Color.White
-                        )
+                }) {
+
+                    Text("Hide bottom sheet")
+                }
+            }
+        }
+        BottomSheetScaffold(
+            //  scaffoldState = bottomSheetScaffoldState,
+            sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
+            sheetContent = {
+             /*   Box(modifier = Modifier.wrapContentHeight()) {
+                    AudioPlayer()
+                }*/
+                //Ui for bottom sheet
+                Column(
+                    content = {
+
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        Button(onClick = {
+
+                            val Links: List<String>? = createDownloadLinks()
+                            if (Links!!.isNotEmpty()) {
+                                //check if the internet is opened
+                                DownLoadIfNot(internetStatus, Links as ArrayList<String>)
+                            } else {
+                                navController.navigate(
+                                    "play"
+                                )
+                            }
 
 
-                    }
-
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-
-                    //.background(Color(0xFF6650a4))
-                    .background(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFFCEE7E4),
-                                Color(0xFFBDB9C5)
+                        }
+                        ) {
+                            androidx.compose.material.Text(
+                                text = "Play",
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 21.sp,
+                                color = Color.White
                             )
-                        ),
-                        // shape = RoundedCornerShape(cornerRadius)
-                    )
-                    .padding(16.dp),
 
+
+                        }
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+
+                        //.background(Color(0xFF6650a4))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFCEE7E4),
+                                    Color(0xFFBDB9C5)
+                                )
+                            ),
+                            // shape = RoundedCornerShape(cornerRadius)
+                        )
+                        .padding(16.dp),
+
+                    )
+
+            },
+            sheetPeekHeight = 40.dp,
+
+            )
+        {
+
+            DisplayQuran(surahs, chapid)
+        }
+    }
+}
+
+@SuppressLint("OpaqueUnitKey")
+@Composable
+@Preview
+fun AudioPlayer(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val mediaItems = arrayListOf<MediaItem>()
+    val ayaLocations: MutableList<String> = ArrayList()
+    var marray: MutableList<MediaItem> = arrayListOf()
+    lateinit var binding: XoPlayerBinding
+    val repository = Utils(QuranGrammarApplication.context)
+    val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
+        70
+    )
+    for (ayaItem in quranbySurah!!) {
+        ayaLocations.add(
+            FileManager.createAyaAudioLinkLocation(
+                QuranGrammarApplication.context,
+                readerID,
+                ayaItem!!.ayah,
+                ayaItem.surah
+            )
+        )
+        val location = FileManager.createAyaAudioLinkLocation(
+            QuranGrammarApplication.context,
+            readerID,
+            ayaItem.ayah,
+            ayaItem.surah
+        )
+        marray.add(MediaItem.fromUri(location))
+    }
+
+
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItems(
+                marray
+
+            )
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
+            playWhenReady = true
+            prepare()
+            play()
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    Column(modifier = Modifier
+        .wrapContentHeight()
+        .padding(horizontal = 16.dp)) {
+
+        DisposableEffect(AndroidViewBinding(
+            modifier = modifier,
+            factory = XoPlayerBinding::inflate
+         //           qariname = findViewById<TextView>(R.id.lqari)
+        ) {
+            val visible = this.playerView.isVisible
+
+            this.playerView.apply {
+
+                //  hide()
+                //   useController = true
+                //  resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                player = exoPlayer
+
+                layoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
                 )
 
-        },
-        sheetPeekHeight = 40.dp,
 
-   )
-    {
+            }
+        }) {
+            onDispose {
 
-    DisplayQuran(surahs, chapid)
+                exoPlayer.pause()
+                exoPlayer.release()
+
+            }
+        }
+     /*   val state = remember { mutableStateOf(0) }
+        AndroidView(factory = { context->
+            View.inflate(context, R.layout.xo_player,null)
+        }, update = { view ->
+
+            // Here we bind a variable with findviewbyid to access compose
+
+            val composeView: MaterialTextView = view.findViewById(R.id.lqari)
+            composeView.text="alasafy"
+
+        })*/
+
     }
+
+
+}
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+private fun BottomSheet(
+    surahs: List<ChaptersAnaEntity>,
+    chapid: Int,
+    navController: NavHostController
+) {
+    val internetStatus: Int = 0
+
+
 }
 
 fun createDownloadLinks(): List<String>? {
 
-  return  emptyList()
+    return emptyList()
 
 }
 
@@ -275,12 +472,11 @@ fun DownLoadIfNot(internetStatus: Int, Links: ArrayList<String>) {
     startBeforeDownload = true
 
 
+    /*    startDownloadingFiles(
+            file=Links
 
-/*    startDownloadingFiles(
-        file=Links
 
-
-    )*/
+        )*/
 }
 
 /*
@@ -608,6 +804,64 @@ private fun DisplayQuran(
 
 
             }
+
+        }
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+@Preview
+fun PickerExample() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val utils= Utils(QuranGrammarApplication.context)
+            val chapters = utils.getAllAnaChapters()
+            val cnames=mutableStateOf("")
+            val surah = QuranGrammarApplication.context!!.resources.obtainTypedArray(R.array.surahdetails)
+            val ayaLocations: MutableList<String> = ArrayList()
+            if (chapters != null) {
+                for( cha in chapters){
+                    val sb=StringBuilder()
+                    sb.append(cha!!.chapterid).append(" ").append(cha!!.nameenglish).append("  ").append(cha!!.namearabic)
+                    ayaLocations.add(sb.toString())
+                }
+            }
+            val values = remember { (1..144).map { it.toString() } }
+            val valuesPickerState = rememberPickerState()
+
+            val units = remember { ayaLocations }
+            val unitsPickerState = rememberPickerState()
+
+            Text(text = "Example Picker", modifier = Modifier.padding(top = 16.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                /*   Picker(
+                       state = valuesPickerState,
+                       items = values,
+                       visibleItemsCount = 3,
+                       modifier = Modifier.weight(0.3f),
+                       textModifier = Modifier.padding(8.dp),
+                       textStyle = TextStyle(fontSize = 32.sp)
+                   )*/
+                Picker(
+                    state = valuesPickerState,
+                    items = units,
+                    visibleItemsCount = 3,
+                    modifier = Modifier.weight(0.7f),
+                    textModifier = Modifier.padding(8.dp),
+                    textStyle = TextStyle(fontSize = 32.sp)
+                )
+            }
+
+            Text(
+                text = "Interval: ${valuesPickerState.selectedItem} ${unitsPickerState.selectedItem}",
+
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
 
         }
     }

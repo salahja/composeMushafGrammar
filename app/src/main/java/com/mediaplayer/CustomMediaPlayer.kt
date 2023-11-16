@@ -39,10 +39,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.appscreens.readerID
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.databinding.XoPlayerBinding
 import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.utility.QuranGrammarApplication
 import com.google.android.exoplayer2.ExoPlayer
@@ -155,7 +158,34 @@ fun CustomPlayer(modifier: Modifier = Modifier) {
             }
         }
 
-        AndroidView(
+ /*       Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)) {
+
+           AndroidViewBinding(
+                modifier = modifier,
+                factory = XoPlayerBinding::inflate
+            ) {
+                this.playerView.apply {
+                    //  hide()
+                    //   useController = true
+                    //  resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                    player = exoPlayer
+
+                    layoutParams = ConstraintLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT
+                    )
+
+                }
+            }
+
+
+        }
+*/
+
+
+         AndroidView(
             modifier =
             Modifier.clickable {
                 shouldShowControls = shouldShowControls.not()
