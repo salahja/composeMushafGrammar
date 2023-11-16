@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -31,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetScaffold
@@ -186,11 +189,11 @@ fun QuranPageScreen(
             }
     }
     //  LazyColumn(state = listState!!,      modifier = Modifier.fillMaxSize(),
-    Scaffold {
+
 
         //    DisplayQuran(surahs, chapid)
         fb(surahs, chapid, navController)
-    }
+
 
 
 }
@@ -220,6 +223,7 @@ fun fb(
             )
         }
     ) {
+
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = {
@@ -652,172 +656,190 @@ fun BottomSheetScaffold(
 }
 */
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 private fun DisplayQuran(
     surahs: List<ChaptersAnaEntity>,
     chapid: Int
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .wrapContentHeight()
-            .wrapContentWidth(),
-        state = listState!!
+    Scaffold(
+
     ) {
-        itemsIndexed(pageArrays!!.toList()) { index, item ->
-            val pages = pageArrays!![index].ayahItemsquran
-            val quranEntity = pageArrays!!!!.get(index)
-            val pageNum = quranEntity.pageNum
-            var qtext = ""
+        Column(
 
-            //   val img = imgs.getDrawable(surahs!!.chapid - 2)
-            Card(
-                colors = CardDefaults.cardColors(
-                    //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
-                ), elevation = CardDefaults.cardElevation(
-                    defaultElevation = 16.dp
-                )
-            )
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
+        ) {
+           PickerExample()
+            Spacer(modifier = Modifier.height(5.dp))
 
+            LazyColumn(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(10.dp)
+                    .wrapContentWidth(),
+                state = listState!!
+            ) {
+                itemsIndexed(pageArrays!!.toList()) { index, item ->
+                    val pages = pageArrays!![index].ayahItemsquran
+                    val quranEntity = pageArrays!!!!.get(index)
+                    val pageNum = quranEntity.pageNum
+                    var qtext = ""
 
-            {
-                Row(
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 8.dp
+                    //   val img = imgs.getDrawable(surahs!!.chapid - 2)
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
+                        ), elevation = CardDefaults.cardElevation(
+                            defaultElevation = 16.dp
                         )
-
-
-                )
-
-                {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                        //  .background(MaterialTheme.colorScheme.background)
-                    ) {
-                        Text(
-
-                            text = surahs!![chapid - 1]!!.abjadname,
-
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red,
-                            modifier = Modifier.align(Alignment.TopCenter),
-                            textAlign = TextAlign.Center,
-                            fontFamily = indopak,
-                            fontSize = 20.sp
-                        )
-                        if (surahs!![chapid - 1]!!.ismakki == 1) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                modifier = Modifier.align(Alignment.TopEnd),
-                                //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                contentDescription = "contentDescription",
-                                contentScale = ContentScale.Crop
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                modifier = Modifier.align(Alignment.TopEnd),
-                                //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                contentDescription = "contentDescription",
-                                contentScale = ContentScale.Crop,
-                            )
-
-
-                        }
-
-                        Text(
-                            text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
-                            color = Color.Black,
-                            fontWeight = FontWeight.Bold,
-
-                            modifier = Modifier.align(Alignment.TopStart),
-                            textAlign = TextAlign.Center,
-                            fontSize = 15.sp
-                        )
-                        Text(
-                            text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
-
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier.align(Alignment.BottomStart),
-                            textAlign = TextAlign.Center,
-                            fontSize = 15.sp
-                        )
-                        Text(
-                            text = "Page  " + pageNum,
-
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier.align(Alignment.BottomCenter),
-                            textAlign = TextAlign.Center,
-                            fontSize = 15.sp
-                        )
-                    }
-
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 4.dp,
-                            vertical = 4.dp
-                        )
-                ) {
-
-                    if (pages != null) {
-                        for (quran in pages) {
-                            val builder = StringBuilder()
-
-                            builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", "", quran!!.ayah))
-                            quran.ayah
-                            qtext += quran!!.qurantext + builder
-
-
-                        }
-                    }
-                    Text(
-                        text = qtext,
-                        fontWeight = FontWeight.Normal,
-                        // color = Color.Black,
-
-                        textAlign = TextAlign.Justify,
-                        fontSize = 20.sp,
-
-                        fontFamily = indopak
-
-
                     )
 
 
+                    {
+                        Row(
+                            verticalAlignment = Alignment.Top,
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
+                                )
+
+
+                        )
+
+                        {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                                //  .background(MaterialTheme.colorScheme.background)
+                            ) {
+                                Text(
+
+                                    text = surahs!![chapid - 1]!!.abjadname,
+
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Red,
+                                    modifier = Modifier.align(Alignment.TopCenter),
+                                    textAlign = TextAlign.Center,
+                                    fontFamily = indopak,
+                                    fontSize = 20.sp
+                                )
+                                if (surahs!![chapid - 1]!!.ismakki == 1) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                                        modifier = Modifier.align(Alignment.TopEnd),
+                                        //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                                        contentDescription = "contentDescription",
+                                        contentScale = ContentScale.Crop
+                                    )
+                                } else {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                                        modifier = Modifier.align(Alignment.TopEnd),
+                                        //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                                        contentDescription = "contentDescription",
+                                        contentScale = ContentScale.Crop,
+                                    )
+
+
+                                }
+
+                                Text(
+                                    text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Bold,
+
+                                    modifier = Modifier.align(Alignment.TopStart),
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 15.sp
+                                )
+                                Text(
+                                    text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
+
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    modifier = Modifier.align(Alignment.BottomStart),
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 15.sp
+                                )
+                                Text(
+                                    text = "Page  " + pageNum,
+
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    modifier = Modifier.align(Alignment.BottomCenter),
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 15.sp
+                                )
+                            }
+
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 4.dp,
+                                    vertical = 4.dp
+                                )
+                        ) {
+
+                            if (pages != null) {
+                                for (quran in pages) {
+                                    val builder = StringBuilder()
+
+                                    builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", "", quran!!.ayah))
+                                    quran.ayah
+                                    qtext += quran!!.qurantext + builder
+
+
+                                }
+                            }
+                            Text(
+                                text = qtext,
+                                fontWeight = FontWeight.Normal,
+                                // color = Color.Black,
+
+                                textAlign = TextAlign.Justify,
+                                fontSize = 20.sp,
+
+                                fontFamily = indopak
+
+
+                            )
+
+
+                        }
+
+
+                    }
+
                 }
-
-
             }
 
         }
     }
+
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
 fun PickerExample() {
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = Modifier.wrapContentHeight()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.wrapContentHeight()
         ) {
             val utils= Utils(QuranGrammarApplication.context)
             val chapters = utils.getAllAnaChapters()
@@ -837,7 +859,7 @@ fun PickerExample() {
             val units = remember { ayaLocations }
             val unitsPickerState = rememberPickerState()
 
-            Text(text = "Example Picker", modifier = Modifier.padding(top = 16.dp))
+          //  Text(text = "Example Picker", modifier = Modifier.padding(top = 5.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 /*   Picker(
                        state = valuesPickerState,
@@ -850,18 +872,18 @@ fun PickerExample() {
                 Picker(
                     state = valuesPickerState,
                     items = units,
-                    visibleItemsCount = 3,
+                    visibleItemsCount = 1,
                     modifier = Modifier.weight(0.7f),
                     textModifier = Modifier.padding(8.dp),
                     textStyle = TextStyle(fontSize = 32.sp)
                 )
             }
-
+/*
             Text(
                 text = "Interval: ${valuesPickerState.selectedItem} ${unitsPickerState.selectedItem}",
 
                 modifier = Modifier.padding(vertical = 16.dp)
-            )
+            )*/
 
         }
     }

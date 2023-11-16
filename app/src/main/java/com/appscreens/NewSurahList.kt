@@ -113,16 +113,7 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { LibraryTopBars(navController, scrollBehavior, isCollapsed) }
 
-
-
-
-
-
-
-
     ) {
-
-
         Column(
 
             modifier = Modifier
@@ -153,31 +144,6 @@ fun SurahListScreen(navController: NavHostController, quranModel: QuranVIewModel
                 }
             }
 
-
-            /* LazyColumn(
-             modifier = Modifier
-                 .fillMaxWidth()
-                 .weight(1f)
-         ) {
-
-
-
-             items(chapters!!.size) { index ->
-                 Text(
-                     text = chapters!![index]!!.nameenglish,
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(vertical = 16.dp)
-                 )
-                 Text(
-                     text = "${chapters!![index]!!.nameenglish} ${chapters!![index]!!.abjadname}",
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(vertical = 16.dp)
-                 )
-             }
-
-         }*/
         }
 
     }
