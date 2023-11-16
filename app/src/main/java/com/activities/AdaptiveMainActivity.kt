@@ -1,14 +1,17 @@
 package com.activities
 
+import AudioPlayer
 import CardsScreen
 
 import NavigationActions
+import VideoPlayer
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -90,6 +93,7 @@ import com.downloads.DownloadActThree
 import com.downloads.DownloadActTwo
 import com.example.searchwidgetdemo.SearchActivity
 import com.example.utility.QuranGrammarApplication.Companion.context
+import com.mediaplayer.CustomPlayer
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.QuranVMFactory
 import com.modelfactory.RootViewModelFactory
@@ -246,6 +250,7 @@ fun AppNavHost(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TabsNavGraph(
     darkThemePreference: BooleanPreferenceSettingValueState,
@@ -346,10 +351,11 @@ fun TabsNavGraph(
     }
 
 }
-
+@ExperimentalAnimationApi
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainContent(
+fun  MainContent(
     darkThemePreference: BooleanPreferenceSettingValueState,
     dynamicThemePreference: BooleanPreferenceSettingValueState,
     navController: NavHostController,
@@ -421,49 +427,28 @@ fun MainContent(
                         goToUserDetail = goToUserDetail,
                         onDetailBackPressed = closeUserDetail,
                         navController)
-
-
-
-
-
-
-
-
-
-
-
-
                 }
 
                 composable(Screen.Settings.route) {
 
-                    val intent = Intent(Intent.ACTION_VIEW)
+      /*              val intent = Intent(Intent.ACTION_VIEW)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     val i = Intent(context, DownloadActThree::class.java)
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context!!.startActivity(i)
-
-       //   SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
-
+*/
+          //     SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
+                  //  VideoPlayer()
+                  //  AudioPlayer()
+                    CustomPlayer()
                 }
 
                 composable(Screen.TopSettings.route) {
-
-
-
-
-
                     AppSettingsScreen(
                         navController = navController,
                         darkThemePreference = darkThemePreference,
                         dynamicThemePreference = dynamicThemePreference,
                     )
-
-
-
-
-
-
                 }
 
 
@@ -478,11 +463,30 @@ fun MainContent(
                     val id = backStackEntry.arguments!!.getInt("id")
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-                    val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(id,darkThemePreference))
-                 //   NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
+                    val myViewModel: VerseModel = viewModel(factory = newViewModelFactory(id,darkThemePreference))
 
-                    QuranPageScreen(navController, id, myViewModel,darkThemePreference)
+                  NewQuranVerseScreen(navController, id, myViewModel,darkThemePreference)
+               //     val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(id,darkThemePreference))
+               //     QuranPageScreen(navController, id, myViewModel,darkThemePreference)
                 }
+
+                composable(Screen.Mushaf.route,
+                    //   composable("Mushaf/{id}",
+                    arguments = listOf(
+                        navArgument(name = "id") {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        }
+                    )
+                ) { backStackEntry ->
+                    val id = backStackEntry.arguments!!.getInt("id")
+
+                    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+
+                     val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
+                      QuranPageScreen(navController, 4, myViewModel,darkThemePreference)
+                }
+
 
                 composable(
                     "wordoccurance/{root}",
@@ -810,7 +814,8 @@ fun BottomNavBar(
 val items = listOf(
     Screen.Home,
     Screen.Profile,
-    Screen.Settings
+    Screen.Settings,
+    Screen.Mushaf
 )
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
@@ -819,5 +824,6 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object Roots : Screen("roots", R.string.Verb)
     object Settings : Screen("setting", R.string.Setting)
     object TopSettings : Screen("topsetting", R.string.Topsetting)
+    object Mushaf : Screen("mushaf", R.string.Mushaf)
 
 }

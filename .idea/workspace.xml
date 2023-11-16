@@ -10,9 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloadmanager/DownloaderViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActThree.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/downloads/DownloadActTwo.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/app/MushafApplication_.app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +95,7 @@
     &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/WorkManager-Samples-master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/res/drawable&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -107,11 +108,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/mediathree" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/search" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/settings" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/compose" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/adaptive" />
     </key>
     <key name="android.template.-1557561774">
       <recent name="com.downloads" />
@@ -124,16 +125,17 @@
       <recent name="$PROJECT_DIR$/app/src/main/java/com/settings/preference" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="com.mediathree" />
       <recent name="com.downloads" />
       <recent name="com.viewmodels" />
       <recent name="com.example.tabcompose" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.mediathree.models" />
       <recent name="com.corpusutility" />
       <recent name="com.viewmodels" />
       <recent name="com.example.viewmodels" />
       <recent name="com.activities" />
-      <recent name="com.models" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="com.downloads" />
@@ -767,7 +769,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699939605745</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Initial commit">
+      <created>1699980070551</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1699980070552</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -1007,7 +1016,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt</url>
-          <line>747</line>
+          <line>743</line>
           <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
