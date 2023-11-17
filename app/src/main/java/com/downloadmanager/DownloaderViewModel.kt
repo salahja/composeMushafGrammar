@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
@@ -14,14 +15,38 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.appscreens.readerID
+import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
+import com.appscreensn.readerID
 import com.downloads.DownloadActThree
+import com.example.mushafconsolidated.Entities.Qari
+import com.example.mushafconsolidated.Entities.QuranEntity
+import com.example.mushafconsolidated.Utils
+import com.example.mushafconsolidated.receiversimport.AudioAppConstants
+import com.example.mushafconsolidated.receiversimport.FileManager
+import com.example.mushafconsolidated.receiversimport.QuranValidateSources
+import com.example.utility.QuranGrammarApplication
 import com.example.utility.QuranGrammarApplication.Companion.context
+import com.google.android.exoplayer2.MediaItem
+import com.viewmodels.FIleDownloadParam
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
+var downloadlists: List<FIleDownloadParam>?=null
+class DownloaderViewModel(chapterid: Int, isdark: BooleanPreferenceSettingValueState) : ViewModel() {
 
-class DownloaderViewModel : ViewModel() {
+
+    private val _marray = MutableStateFlow(listOf<MediaItem>())
+
+
+    val marray: StateFlow<List<MediaItem>> get() = _marray
+
+
+   // var marray: MutableList<MediaItem> = arrayListOf()
+
+
+
 
     private lateinit var downloadUri: Uri
     private var notificationManager: NotificationManager? = null
@@ -44,14 +69,173 @@ class DownloaderViewModel : ViewModel() {
     private lateinit var url: String
     private var downloadId: Long = -1L
 
-    /**
-     * This function is the entry point for all downloads and decides
-     * whether to start or cancel a download.
-     * @param context -> used for the Toasts and getting the DownloadManagerService
-     * @param url -> file URL
-     * @param requestCode -> to either start or cancel the download {0 for start & 1 for cancel}
-     **/
-    fun downloadMedia(list: ArrayList<DownloadActThree.File>, url: String, requestCode: Int) {
+    val ayaLocations: MutableList<String> = ArrayList()
+
+
+    init {
+     downLoads(chapterid,isdark)
+ }
+
+
+     fun downLoads(chapterid: Int, isdark: BooleanPreferenceSettingValueState) {
+         viewModelScope.launch {
+             val repository = Utils(context)
+
+             downloadlists = arrayListOf<FIleDownloadParam>()
+             val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
+                 chapterid
+             )
+             //get files from dabase to play or create links to download
+             val testList = arrayListOf<MediaItem>()
+             val Links: List<String>? = getAudioLinksOrDownloadlinks(chapterid)
+             if (Links!!.isEmpty()) {
+                 for (ayaItem in quranbySurah!!) {
+
+                     val location = FileManager.createAyaAudioLinkLocation(
+                         QuranGrammarApplication.context,
+                         readerID,
+                         ayaItem!!.ayah,
+                         ayaItem!!.surah
+                     )
+                     testList.add(MediaItem.fromUri(location))
+                     _marray.emit(testList)
+                 }
+
+             } else {
+                 for (ln in downloadlists!!) {
+                     //     downLoadMedia(scope,ln.url,ln.name)
+
+
+                     downloadMedia(downloadlists!!, ln.url, 0)
+
+                 }
+                 for (ayaItem in quranbySurah!!) {
+
+                     val location = FileManager.createAyaAudioLinkLocation(
+                         QuranGrammarApplication.context,
+                         readerID,
+                         ayaItem!!.ayah,
+                         ayaItem!!.surah
+                     )
+                     testList.add(MediaItem.fromUri(location))
+                     _marray.emit(testList)
+                 }
+
+
+             }
+
+         }
+
+    }
+
+    private fun getAudioLinksOrDownloadlinks( chapterid: Int): List<String>? {
+        lateinit var readersList: List<Qari>
+        var files: ArrayList<DownloadActThree.File> = ArrayList<DownloadActThree.File>()
+
+      downloadlists = arrayListOf<FIleDownloadParam>()
+
+        val lists: ArrayList<String> = ArrayList<String>()
+        //     val testList = arrayListOf<DownloadFileListArray>()
+        val repository= Utils(QuranGrammarApplication.context)
+        readersList = repository.qaris
+        val chap = repository.getSingleChapter(chapterid)
+        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(chapterid)
+        //   surahselected = surah
+        //   int ayaID=0;
+        var counter = 0
+        //   quranbySurah.add(0, new QuranEntity(1, 1, 1));
+        val downloadLinks: MutableList<String> = java.util.ArrayList()
+        //   ayaList.add(0, new Aya(1, 1, 1));
+        //loop for all page ayat
+//check if readerID is 0
+        if (com.appscreens.readerID == 0) {
+
+            for (qari in readersList) {
+                val selectedqari = "Mishary Rashed Al-Afasy"
+                if (qari.name_english == selectedqari) {
+                    com.appscreens.readerID = qari.id
+                    //    downloadLink = qari.url
+                    com.appscreens.downloadLink =    "https://mirrors.quranicaudio.com/everyayah/Alafasy_128kbps/"
+                    break
+                }
+            }
+        }
+        com.appscreens.downloadLink =    "https://mirrors.quranicaudio.com/everyayah/Alafasy_128kbps/"
+        if (quranbySurah != null) {
+            for (ayaItem in quranbySurah) {
+                //validate if aya download or not
+                if (!QuranValidateSources.validateAyaAudio(
+                        QuranGrammarApplication.context!!,
+                        com.appscreens.readerID,
+                        ayaItem!!.ayah,
+                        ayaItem.surah
+                    )
+                ) {
+
+                    //create aya link
+
+
+                    //create aya link
+                    val suraLength: Int =
+                        chap!![0]!!.chapterid.toString().trim { it <= ' ' }.length
+                    var suraID: String = chap[0]!!.chapterid.toString() + ""
+
+
+                    val ayaLength = ayaItem.ayah.toString().trim { it <= ' ' }.length
+                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
+                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
+                    var ayaID = java.lang.StringBuilder(
+                        java.lang.StringBuilder().append(ayaItem.ayah).append("").toString()
+                    )
+                    if (suraLength == 1) suraID =
+                        "00" + ayaItem.surah else if (suraLength == 2) suraID = "0" + ayaItem.surah
+
+                    if (ayaLength == 1) {
+                        ayaID = java.lang.StringBuilder("00" + ayaItem.ayah)
+                    } else if (ayaLength == 2) {
+                        ayaID = java.lang.StringBuilder("0" + ayaItem.ayah)
+                    }
+                    counter++
+                    //add aya link to list
+                    //chec
+                    downloadLinks.add(com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3)
+                    /*
+                            val id: String,
+         val name: String,
+         val type: String,
+         val url: String,
+         var downloadedUri: String? = null,
+         var isDownloading: Boolean = false,
+             id = "10",
+                         name = "Pdf File 10 MB",
+                         type = "PDF",
+                         url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
+                         downloadedUri = null
+                     */
+                    val string = counter.toString()
+                    val linkItem = com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
+                    val    fileName = linkItem.substring(linkItem.lastIndexOf('/') + 1, linkItem.length)
+                    var filePath = com.appscreens.downloadLink///storage/emulated/0/Documents/audio/20
+
+                    downloadlists as ArrayList<FIleDownloadParam> += FIleDownloadParam(
+                        string,
+                        fileName,
+                        "MP3",
+                        com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
+
+                    )
+                    Log.d(
+                        "DownloadLinks",
+                        com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
+                    )
+                }
+            }
+        }
+        return downloadLinks
+    }
+
+
+    fun downloadMedia(list: List<FIleDownloadParam>, url: String, requestCode: Int) {
         loading.value = true
 
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.IntPreferenceSettingValueState
+import com.downloadmanager.DownloaderViewModel
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.viewmodels.CardsViewModel
 import com.viewmodels.ExpandableVerseViewModel
@@ -21,6 +22,11 @@ class QuranVMFactory(private val dbname: Int, private val isdark: BooleanPrefere
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         QuranPagesModel(dbname,isdark) as T
+}
+class AudioDownloadFactory(private val chapterid:  Int, private val isdark: BooleanPreferenceSettingValueState) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
+        DownloaderViewModel(chapterid,isdark) as T
 }
 
 class CardViewModelFactory(

@@ -1,14 +1,6 @@
 package com.downloads
 
-import android.app.DownloadManager
-import android.content.Context
-import android.database.ContentObserver
-import android.database.Cursor
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,7 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
@@ -26,18 +17,15 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.appscreens.downloadLink
 import com.appscreens.readerID
@@ -50,10 +38,8 @@ import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.receiversimport.AudioAppConstants
 import com.example.mushafconsolidated.receiversimport.QuranValidateSources
 import com.example.utility.QuranGrammarApplication
+import com.viewmodels.FIleDownloadParam
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.File
 
 class DownloadActThree : ComponentActivity() {
 
@@ -62,7 +48,7 @@ class DownloadActThree : ComponentActivity() {
 
 
     private lateinit var data: MutableState<File>
-    private lateinit var testLists: ArrayList<DownloadActThree.File>
+    private lateinit var testLists: ArrayList<FIleDownloadParam>
     private lateinit var requestMultiplePermission: ActivityResultLauncher<Array<String>>
     private lateinit var permissionHelper : PermissionHelper
     private val url: String = "https://i.imgur.com/ayo3pHA.mp4"
@@ -171,8 +157,8 @@ class DownloadActThree : ComponentActivity() {
 
     fun createDownloadLinks(): List<String> {
         lateinit var readersList: List<Qari>
-         var files: ArrayList<File> = ArrayList<File>()
-        testLists = arrayListOf<File>()
+         var files: ArrayList<FIleDownloadParam> = ArrayList<FIleDownloadParam>()
+        testLists = arrayListOf<FIleDownloadParam>()
 
 
         val lists: ArrayList<String> = ArrayList<String>()
@@ -258,7 +244,7 @@ class DownloadActThree : ComponentActivity() {
                 val    fileName = linkItem.substring(linkItem.lastIndexOf('/') + 1, linkItem.length)
                     var filePath = downloadLink///storage/emulated/0/Documents/audio/20
 
-                    testLists+=File(
+                    testLists += FIleDownloadParam(
                       string,fileName,"MP3", downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
 
                     )
@@ -271,6 +257,7 @@ class DownloadActThree : ComponentActivity() {
         }
         return downloadLinks
     }
+
     data class File(
         val id: String,
         val name: String,
@@ -279,7 +266,6 @@ class DownloadActThree : ComponentActivity() {
         var downloadedUri: String? = null,
         var isDownloading: Boolean = false,
     )
-
 
 
 

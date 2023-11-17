@@ -7,7 +7,6 @@ import NavigationActions
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -88,6 +87,7 @@ import com.appscreens.newVerseAnalysisCardsScreen
 import com.appscreensn.NewQuranPageScreen
 import com.downloadmanager.DownloaderViewModel
 import com.example.myapplication.MainLayout
+import com.modelfactory.AudioDownloadFactory
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.QuranVMFactory
 import com.modelfactory.RootViewModelFactory
@@ -477,8 +477,9 @@ fun  MainContent(
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
                 //    val downloaderViewModel by viewModels<DownloaderViewModel>()
                      val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
+                      val downloadModel: DownloaderViewModel = viewModel(factory = AudioDownloadFactory(9,darkThemePreference))
                       NewQuranPageScreen(navController, 4, myViewModel,darkThemePreference,
-                          viewModel())
+                          downloadModel)
                 }
 
              //   composable(Screen.Mushaf.route,

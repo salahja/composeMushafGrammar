@@ -2,6 +2,7 @@ package com.appscreensn
 
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Environment
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -76,7 +77,6 @@ import com.appscreens.listState
 import com.appscreens.prefrence
 import com.appscreens.rememberPickerState
 import com.appscreens.scopes
-import com.appscreens.worddetails
 import com.codelab.basics.ui.theme.indopak
 import com.downloadmanager.DownloaderViewModel
 import com.downloads.DownloadActThree
@@ -96,16 +96,16 @@ import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.viewmodels.FIleDownloadParam
 import com.viewmodels.QuranPagesModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
 import java.io.File
 import java.text.MessageFormat
 
-var downloadlist: ArrayList<DownloadActThree.File>?=null
+var downloadlist: ArrayList<FIleDownloadParam>?=null
 var readerID = 20
 lateinit var downloadLink: String
 lateinit var readerName: String
@@ -344,15 +344,18 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
     val ayaLocations: MutableList<String> = ArrayList()
     var marray: MutableList<MediaItem> = arrayListOf()
     lateinit var binding: XoPlayerBinding
-   downloadlist = arrayListOf<DownloadActThree.File>()
+   downloadlist = arrayListOf<FIleDownloadParam>()
     val coroutineScope = rememberCoroutineScope()
     val scope:CoroutineScope
     scope= CoroutineScope(Dispatchers.Main)
     val repository = Utils(QuranGrammarApplication.context)
     val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
-        48    )
-    val Links: List<String>? = createDownloadLinks(downloadlist!!,48)
-    if (Links!!.isNotEmpty()) {
+        111    )
+    val Links: List<String>? = createDownloadLinks(downloadlist!!,111)
+
+    val media by downloadModel.marray.collectAsStateWithLifecycle()
+
+ /*   if (Links!!.isNotEmpty()) {
 
         LaunchedEffect(Unit) {
         //check if the internet is opened
@@ -365,45 +368,17 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
                 downloadModel.downloadMedia(downloadlist!!, ln.url, 0)
                 //     loading.value=false
             }
+            extracted(quranbySurah, ayaLocations, marray)
+
         }
 
 
     } else {
-        for (ayaItem in quranbySurah!!) {
-            ayaLocations.add(
-                FileManager.createAyaAudioLinkLocation(
-                    QuranGrammarApplication.context,
-                    readerID,
-                    ayaItem!!.ayah,
-                    ayaItem.surah
-                )
-            )
-            val location = FileManager.createAyaAudioLinkLocation(
-                QuranGrammarApplication.context,
-                readerID,
-                ayaItem.ayah,
-                ayaItem.surah
-            )
-            marray.add(MediaItem.fromUri(location))
-        }
+        extracted(quranbySurah, ayaLocations, marray)
     }
+*/
 
-
-
-
-    val exoPlayer = remember {
-        ExoPlayer.Builder(context).build().apply {
-            setMediaItems(
-                marray
-
-            )
-            repeatMode = ExoPlayer.REPEAT_MODE_ALL
-            playWhenReady = true
-            prepare()
-            play()
-
-        }
-    }
+    val exoPlayer = exoPlayer(context, media)
 
 
 
@@ -456,6 +431,52 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
 }
 
 
+private fun extracted(
+    quranbySurah: List<QuranEntity?>?,
+    ayaLocations: MutableList<String>,
+    marray: MutableList<MediaItem>
+) {
+    for (ayaItem in quranbySurah!!) {
+        ayaLocations.add(
+            FileManager.createAyaAudioLinkLocation(
+                QuranGrammarApplication.context,
+                readerID,
+                ayaItem!!.ayah,
+                ayaItem.surah
+            )
+        )
+        val location = FileManager.createAyaAudioLinkLocation(
+            QuranGrammarApplication.context,
+            readerID,
+            ayaItem.ayah,
+            ayaItem.surah
+        )
+        marray.add(MediaItem.fromUri(location))
+    }
+}
+
+@Composable
+private fun exoPlayer(
+    context: Context,
+    marray: List<MediaItem>
+): ExoPlayer {
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItems(
+                marray
+
+            )
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
+            playWhenReady = true
+            prepare()
+            play()
+
+        }
+    }
+    return exoPlayer
+}
+
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -469,7 +490,7 @@ private fun BottomSheet(
 
 }
 
-fun createDownloadLinks(downloadlist: ArrayList<DownloadActThree.File>, chapid: Int): List<String> {
+fun createDownloadLinks(downloadlist: ArrayList<FIleDownloadParam>, chapid: Int): List<String> {
     lateinit var readersList: List<Qari>
     var files: ArrayList<DownloadActThree.File> = ArrayList<DownloadActThree.File>()
 
@@ -558,7 +579,7 @@ fun createDownloadLinks(downloadlist: ArrayList<DownloadActThree.File>, chapid: 
                 val    fileName = linkItem.substring(linkItem.lastIndexOf('/') + 1, linkItem.length)
                 var filePath = com.appscreens.downloadLink///storage/emulated/0/Documents/audio/20
 
-                downloadlist+= DownloadActThree.File(
+                downloadlist+= FIleDownloadParam(
                     string,
                     fileName,
                     "MP3",
