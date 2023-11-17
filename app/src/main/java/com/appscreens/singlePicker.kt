@@ -151,6 +151,22 @@ fun Picker(
                 )
 
 
+                ClickableText(
+                    text = AnnotatedString(item),
+
+                    onClick = {
+                        println(item)
+
+                    }, style = TextStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.Cursive
+                    ),
+                    modifier = Modifier
+                        .onSizeChanged { size -> itemHeightPixels.value = size.height }
+                        .then(textModifier)
+                )
+
 
             }
         }

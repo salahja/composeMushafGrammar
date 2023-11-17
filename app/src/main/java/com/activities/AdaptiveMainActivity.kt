@@ -4,11 +4,10 @@ import AudioPlayer
 import CardsScreen
 
 import NavigationActions
-import VideoPlayer
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -82,18 +81,13 @@ import com.viewmodels.VerseModel
 
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
-import com.appscreens.MatTab
 import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
-import com.appscreens.QuranPageScreen
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
-import com.downloads.DownloadAct
-import com.downloads.DownloadActThree
-import com.downloads.DownloadActTwo
-import com.example.searchwidgetdemo.SearchActivity
-import com.example.utility.QuranGrammarApplication.Companion.context
-import com.mediaplayer.CustomPlayer
+import com.appscreensn.NewQuranPageScreen
+import com.downloadmanager.DownloaderViewModel
+import com.example.myapplication.MainLayout
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.QuranVMFactory
 import com.modelfactory.RootViewModelFactory
@@ -101,7 +95,6 @@ import com.modelfactory.VerseAnalysisFctory
 import com.modelfactory.newViewModelFactory
 import com.modelfactory.surahViewModelFactory
 import com.settings.AppSettingsScreen
-import com.settings.preference.SeetingScreen
 import com.viewmodels.ExpandableVerseViewModel
 import com.viewmodels.QuranPagesModel
 
@@ -482,9 +475,10 @@ fun  MainContent(
                     val id = backStackEntry.arguments!!.getInt("id")
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-
+                //    val downloaderViewModel by viewModels<DownloaderViewModel>()
                      val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
-                      QuranPageScreen(navController, 4, myViewModel,darkThemePreference)
+                      NewQuranPageScreen(navController, 4, myViewModel,darkThemePreference,
+                          viewModel())
                 }
 
              //   composable(Screen.Mushaf.route,
@@ -501,6 +495,7 @@ fun  MainContent(
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
 
                     val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
+
                     AudioPlayer()
                 }
 
@@ -648,7 +643,8 @@ fun  MainContent(
                     val root = backStackEntry.arguments?.getString("root")
                     val mood = backStackEntry.arguments?.getString("mood")
 
-                    MatTab(navController, conjugation.toString(), root.toString(), mood)
+                 //   MatTab(navController, conjugation.toString(), root.toString(), mood)
+                    MainLayout()
                 }
 
 
