@@ -69,6 +69,7 @@ import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingV
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.appscreens.BottomSheetWordDetails
+import com.appscreens.MatTab
 
 import com.viewmodels.CardsViewModel
 import com.viewmodels.RootModel
@@ -84,7 +85,7 @@ import com.appscreens.NewQuranVerseScreen
 import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
-import com.appscreensn.NewQuranPageScreen
+import com.appscreensn.LineQuranPageScreen
 import com.downloadmanager.DownloaderViewModel
 import com.example.myapplication.MainLayout
 import com.modelfactory.AudioDownloadFactory
@@ -95,6 +96,7 @@ import com.modelfactory.VerseAnalysisFctory
 import com.modelfactory.newViewModelFactory
 import com.modelfactory.surahViewModelFactory
 import com.settings.AppSettingsScreen
+import com.settings.preference.SeetingScreen
 import com.viewmodels.ExpandableVerseViewModel
 import com.viewmodels.QuranPagesModel
 
@@ -430,10 +432,10 @@ fun  MainContent(
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context!!.startActivity(i)
 */
-          //     SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
-                  //  VideoPlayer()
-                  AudioPlayer()
-                  //  CustomPlayer()
+             SeetingScreen(navController,       darkThemePreference  ,                 dynamicThemePreference  )
+
+
+
                 }
 
                 composable(Screen.TopSettings.route) {
@@ -476,10 +478,18 @@ fun  MainContent(
 
                     val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
                 //    val downloaderViewModel by viewModels<DownloaderViewModel>()
-                     val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
-                      val downloadModel: DownloaderViewModel = viewModel(factory = AudioDownloadFactory(9,darkThemePreference))
-                      NewQuranPageScreen(navController, 4, myViewModel,darkThemePreference,
-                          downloadModel)
+                   //  val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
+                     val downloadModel: DownloaderViewModel = viewModel(factory = AudioDownloadFactory(9,darkThemePreference))
+                   // NewQuranPageScreen(navController, 4, myViewModel,darkThemePreference,downloadModel)
+
+
+
+                    val vmodel: VerseModel = viewModel(factory = newViewModelFactory(9,darkThemePreference))
+
+
+
+
+                    LineQuranPageScreen(navController, 9, vmodel,darkThemePreference,downloadModel)
                 }
 
              //   composable(Screen.Mushaf.route,
@@ -644,8 +654,8 @@ fun  MainContent(
                     val root = backStackEntry.arguments?.getString("root")
                     val mood = backStackEntry.arguments?.getString("mood")
 
-                 //   MatTab(navController, conjugation.toString(), root.toString(), mood)
-                    MainLayout()
+               MatTab(navController, conjugation.toString(), root.toString(), mood)
+                   // MainLayout()
                 }
 
 

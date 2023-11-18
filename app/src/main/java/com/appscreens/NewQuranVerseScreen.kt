@@ -475,15 +475,7 @@ fun NewQuranVerseScreen(
                             vertical = 8.dp
                         )
                 ) {
-                    /*     wordarray = newnewadapterlist[index]
-                         val annotedMousuf = AnnotationUtility.AnnotedMousuf(
-                             wordarray!![0].annotatedVerse.toString(),
-                             wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
-                         )
- */
-                    wordarray = newnewadapterlist[index]
-                   // quranbySurah!![index].surah
-                   // quranbySurah!![index].ayah
+                     wordarray = newnewadapterlist[index]
 
                     ClickableText(
                         text = wordarray!![0].annotatedVerse!!,
@@ -501,34 +493,7 @@ fun NewQuranVerseScreen(
                             fontFamily = FontFamily.Cursive
                         )
                     )
-
-              /*      wordarray!![0].annotatedVerse?.let { annotatedString ->
-                        ClickableText(
-
-                            text = AnnotatedString(annotatedString),
-                            onClick = {
-                                Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                //   navController.navigate(NavigationItem.Books.route)
-                                //  navController.navigate("versealert/" ${cid}/${cid})
-                                val cid = wordarray!![0].corpus!!.surah
-                                val aid = wordarray!![0].corpus!!.ayah
-                                navController.navigate(
-                                    "versealert/${cid}/${aid}"
-                                )
-
-
-                            }, style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily.Cursive
-                            )
-                        )
-                        // color = colorResource(id = R.color.burntamber)
-
-                    }*/
-
-
-                }
+                 }
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier

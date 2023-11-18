@@ -3,13 +3,18 @@ package com.appscreensn
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Environment
-import android.util.Log
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -21,11 +26,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
@@ -44,7 +51,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,10 +63,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,57 +79,81 @@ import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
+import com.appscreens.ExpandableText
 import com.appscreens.Picker
-import com.appscreens.listState
-import com.appscreens.prefrence
 import com.appscreens.rememberPickerState
-import com.appscreens.scopes
-import com.codelab.basics.ui.theme.indopak
+
 import com.downloadmanager.DownloaderViewModel
-import com.downloads.DownloadActThree
 import com.example.compose.LoadingData
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.Page
-import com.example.mushafconsolidated.Entities.Qari
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.databinding.XoPlayerBinding
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
-import com.example.mushafconsolidated.receiversimport.AudioAppConstants
 import com.example.mushafconsolidated.receiversimport.FileManager
-import com.example.mushafconsolidated.receiversimport.QuranValidateSources
 import com.example.utility.CorpusUtilityorig
+import com.example.utility.FlowLayout
 import com.example.utility.QuranGrammarApplication
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Tracks
+import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.trackselection.TrackSelectionParameters
+import com.google.android.exoplayer2.ui.PlayerControlView
 import com.viewmodels.FIleDownloadParam
-import com.viewmodels.QuranPagesModel
+import com.viewmodels.VerseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import java.io.File
-import java.text.MessageFormat
 
-var downloadlist: ArrayList<FIleDownloadParam>?=null
-var readerID = 20
-lateinit var downloadLink: String
-lateinit var readerName: String
-var startBeforeDownload = false
-var pageArrays: List<Page>? = null
-var showAudio = mutableStateOf(false)
+
+
+var isplaying = mutableStateOf(false)
+var newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>? = null
+var ldownloadlist: ArrayList<FIleDownloadParam>?=null
+var lreaderID = 20
+lateinit var ldownloadLink: String
+lateinit var lreaderName: String
+var lstartBeforeDownload = false
+var lpageArrays: List<Page>? = null
+var lshowAudio = mutableStateOf(false)
+var lquranbySurah: List<QuranEntity>? = null
+var lsurahs: List<ChaptersAnaEntity>? = null
+var lscopes: CoroutineScope? = null
+var lwordarray: ArrayList<NewQuranCorpusWbw>? = null
+private var currenttrack = 0
+var exoplayer: ExoPlayer? = null
+
+var llistState: LazyListState? = null
+var annotatedStringStringPair: Pair<AnnotatedString, Int>? = null
+var laid: Int = 0
+var lcid: Int = 0
+var lwid: Int = 0
+val showWordDetails = mutableStateOf(false)
+val lprefrence by lazy{QuranGrammarApplication.context!!.getSharedPreferences("prefs",
+    Context.MODE_PRIVATE
+)}
+
+
+
+
+
+
 @SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterialScaffoldPaddingParameter")
 @OptIn(
     ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class, ExperimentalMaterialApi::class
 )
 @Composable
-fun NewQuranPageScreen(
+fun LineQuranPageScreen(
     navController: NavHostController,
     chapid: Int,
 
-    pageModel: QuranPagesModel,
+    pageModel: VerseModel,
     darkThemePreference: BooleanPreferenceSettingValueState,
     downloadModel: DownloaderViewModel,
 
@@ -132,7 +163,7 @@ fun NewQuranPageScreen(
     ///     val downloaderViewModel by viewModels<DownloaderViewModel>()/ val model = viewModel(modelClass = VerseModel::class.java)
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    scopes = CoroutineScope(Dispatchers.Main)
+    //scopes = CoroutineScope(Dispatchers.Main)
 
     val thememode = darkThemePreference.value
 
@@ -151,8 +182,8 @@ fun NewQuranPageScreen(
     loading = pageModel!!.loading.value
     LoadingData(isDisplayed = loading)
     val cardss by pageModel.cards.collectAsStateWithLifecycle()
-    val collectAsStateWithLifecycle = pageModel.cards.collectAsStateWithLifecycle()
-    val collectAsState = pageModel.cards.collectAsState()
+
+
     loading = pageModel!!.loading.value
     LoadingData(isDisplayed = loading)
     /*
@@ -160,15 +191,20 @@ fun NewQuranPageScreen(
         viewModel(factory = ViewModelFactory(chapid))
 */
 
-    pageArrays = cardss[0].qurnaPages
-    val surahs = cardss[0].chapterlist
+    if (cardss.isNotEmpty()) {
+    lsurahs = cardss[0].chapterlist
+      lquranbySurah = cardss[0].quranbySurah
+        newnewadapterlist = cardss[0].newnewadapterlist
+    }
 
 
 
-    listState = rememberLazyListState()
+
+
+    llistState = rememberLazyListState()
     // corpusSurahWord = utils.getQuranCorpusWbwbysurah(chapid);
     val coroutineScope = rememberCoroutineScope()
-    val scrollpos = prefrence.getInt("scroll_position", 0)
+    val scrollpos = lprefrence.getInt("scroll_position", 0)
     val preferencesManager = remember { PreferencesManager(QuranGrammarApplication.context!!) }
     val data = remember { mutableStateOf(preferencesManager.getData("lastread", 1)) }
     preferencesManager.saveData("lastread", chapid.toString())
@@ -181,13 +217,13 @@ fun NewQuranPageScreen(
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(1) }
 
-    LaunchedEffect(listState) {
+    LaunchedEffect(llistState) {
         snapshotFlow {
-            listState!!.firstVisibleItemIndex
+            llistState!!.firstVisibleItemIndex
         }
             .debounce(500L)
             .collectLatest { index ->
-                prefrence.edit()
+                lprefrence.edit()
                     .putInt("scroll_position", index)
                     .apply()
             }
@@ -196,7 +232,7 @@ fun NewQuranPageScreen(
 
 
     //    DisplayQuran(surahs, chapid)
-    fb(surahs, chapid, navController,downloadModel)
+    lfb(lsurahs!!, chapid, navController,downloadModel)
 
 
 }
@@ -205,12 +241,15 @@ fun NewQuranPageScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 
-fun fb(
+fun lfb(
     surahs: List<ChaptersAnaEntity>,
     chapid: Int,
     navController: NavHostController,
     downloadModel: DownloaderViewModel
+
 ) {
+    val showtranslation =
+        rememberPreferenceBooleanSettingState(key = "showtranslation", defaultValue = false)
     //val downloaderViewModel by viewModels<DownloaderViewModel>()
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -234,10 +273,6 @@ fun fb(
             //  scaffoldState = bottomSheetScaffoldState,
             sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
             sheetContent = {
-                /*   Box(modifier = Modifier.wrapContentHeight()) {
-                       AudioPlayer()
-                   }*/
-                //Ui for bottom sheet
 
 
 
@@ -296,7 +331,7 @@ fun fb(
 
                         ){
                             if(showAudio.value) {
-                                AudioPlayer(downloadModel)
+                                lAudioPlayer(downloadModel)
                             }
                         }
 
@@ -330,7 +365,7 @@ fun fb(
             )
         {
 
-            DisplayQuran(surahs, chapid)
+            LDisplayQuran(surahs, chapid,showtranslation,navController)
         }
     }
 }
@@ -338,7 +373,22 @@ fun fb(
 @SuppressLint("OpaqueUnitKey")
 @Composable
 
-fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier,) {
+fun lAudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier,) {
+     lateinit var playerView: PlayerControlView
+
+     lateinit var trackSelectionParameters: TrackSelectionParameters
+     lateinit var lastSeenTracks: Tracks
+     var startAutoPlay = false
+     var startItemIndex = 0
+     var startPosition: Long = 0
+     lateinit var playiv: ImageView
+     var pausePlayFlag = false
+     var surahselected = 0
+     var verselected = 0
+    var versescount = 0
+     lateinit var surahNameEnglish: String
+     lateinit var surahNameArabic: String
+     lateinit var isNightmode: String
     val context = LocalContext.current
     val mediaItems = arrayListOf<MediaItem>()
     val ayaLocations: MutableList<String> = ArrayList()
@@ -351,38 +401,45 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
     val repository = Utils(QuranGrammarApplication.context)
     val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
         111    )
-    val Links: List<String>? = createDownloadLinks(downloadlist!!,111)
+
 
     val media by downloadModel.marray.collectAsStateWithLifecycle()
 
- /*   if (Links!!.isNotEmpty()) {
-
-        LaunchedEffect(Unit) {
-        //check if the internet is opened
+  //  val exoPlayer = exoPlayer(context, media)
 
 
-            for (ln in downloadlist!!) {
-                //     downLoadMedia(scope,ln.url,ln.name)
+   /*  exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItems(
+                media
 
-
-                downloadModel.downloadMedia(downloadlist!!, ln.url, 0)
-                //     loading.value=false
-            }
-            extracted(quranbySurah, ayaLocations, marray)
+            )
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
+            playWhenReady = true
+            prepare()
+            play()
 
         }
+    }*/
+    exoplayer = ExoPlayer.Builder(context).build()
+  //  lastSeenTracks = Tracks.EMPTY
+   // exoPlayer!!.addListener(PlayerEventListener())
+   // exoPlayer!!.trackSelectionParameters = trackSelectionParameters
+    exoplayer!!.addListener(PlayerEventListener())
+   // exoPlayer!!.addAnalyticsListener(EventLogger())
+    exoplayer!!.setAudioAttributes(AudioAttributes.DEFAULT,  /* handleAudioFocus= */true)
+    exoplayer!!.playWhenReady = startAutoPlay
+    exoplayer!!.repeatMode = Player.REPEAT_MODE_ALL
+    exoplayer!!.setMediaItems(media)
+    exoplayer!!. repeatMode = ExoPlayer.REPEAT_MODE_ALL
+    exoplayer!!. playWhenReady = true
+    exoplayer!!. prepare()
+    exoplayer!!. play()
+ //   playerView.repeatToggleModes = RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE
+   // exoPlayer!!.seekTo(ayah, playbackPosition)
+    val currentMediaItemIndex = exoplayer!!.currentMediaItemIndex
 
-
-    } else {
-        extracted(quranbySurah, ayaLocations, marray)
-    }
-*/
-
-    val exoPlayer = exoPlayer(context, marray)
-
-
-
-
+    val currentMediaItemIndexs = exoplayer!!.currentMediaItemIndex+1
 
 
 
@@ -407,20 +464,24 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
                 //  hide()
                 //   useController = true
                 //  resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                player = exoPlayer
+                player = exoplayer
 
                 layoutParams = ConstraintLayout.LayoutParams(
                     ConstraintLayout.LayoutParams.WRAP_CONTENT,
                     ConstraintLayout.LayoutParams.WRAP_CONTENT
                 )
+             
+             val   currenttrack = player!!.currentMediaItemIndex
+                val   nexttrack = player!!.currentMediaItemIndex+1
 
-
+                player!!.addListener(PlayerEventListener())
+                isplaying.value=true
             }
         }) {
             onDispose {
 
-                exoPlayer.pause()
-                exoPlayer.release()
+                exoplayer!!.pause()
+                exoplayer!!.release()
 
             }
         }
@@ -430,7 +491,117 @@ fun AudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier
 
 }
 
+class PlayerEventListener : Player.Listener {
+    override fun onTracksChanged(tracks: Tracks) {
+        currenttrack = exoplayer!!.currentMediaItemIndex
+        currenttrack++
+        sendUpdatesToUI.run()
+        super.onTracksChanged(tracks)
+    }
+}
 
+private val sendUpdatesToUI: Runnable = object : Runnable {
+    override fun run() {
+
+        println("current track"+currenttrack)
+
+    }
+/*        //  rvAyahsPages.post(() -> rvAyahsPages.scrollToPosition((ayah)));
+///musincadapter
+        // RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) rvAyahsPages.findViewHolderForAdapterPosition(currenttrack);
+        val holder = recyclerView.findViewHolderForAdapterPosition(currenttrack)
+        val ab = StringBuilder()
+        ab.append("Aya").append(":").append(currenttrack).append(" ").append("of").append(
+            versescount
+        )
+        ayaprogress.text = ab.toString()
+        if (null != holder) {
+            try {
+                if (holder.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                    if (isNightmode == "light") {
+                        holder.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(
+                                android.graphics.Color.LTGRAY
+                            )
+                        val textViews =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        val str = textViews.text.toString()
+                        val span = SpannableStringBuilder(str)
+                        span.setSpan(
+                            ForegroundColorSpan(android.graphics.Color.CYAN),
+                            0,
+                            str.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    } else if (isNightmode == "brown") {
+                        holder.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(
+                                android.graphics.Color.CYAN
+                            )
+                        val textViews =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        val str = textViews.text.toString()
+                        val span = SpannableStringBuilder(str)
+                        span.setSpan(
+                            ForegroundColorSpan(android.graphics.Color.CYAN),
+                            0,
+                            str.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    } else {
+                        val textView =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        textView.text
+                        val strs = textView.text.toString()
+                        val spans = SpannableStringBuilder(strs)
+                        spans.setSpan(
+                            BackgroundColorSpan(android.graphics.Color.BLUE),
+                            0,
+                            strs.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        textView.text = spans
+                        //  holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.BLUE);
+                        //for vtwoadapter
+                    }
+                }
+            } catch (exception: NullPointerException) {
+                Toast.makeText(
+                    this@ShowMushafActivity,
+                    "null pointer udapte",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        val holderp = recyclerView.findViewHolderForAdapterPosition(currenttrack - 1)
+        if (currenttrack > 1) {
+            if (null != holderp) {
+                try {
+                    val arrayList = ArrayList<String>()
+                    val fl: FlowLayout = FlowLayout(this@ShowMushafActivity, arrayList)
+                    val arrayList1 = fl.arrayList
+                    fl.getChildAt(ayah)
+                    val drawingCacheBackgroundColor =
+                        holderp.itemView.findViewById<View>(R.id.quran_textView).drawingCacheBackgroundColor
+                    if (holderp.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                        //    holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.CYAN);
+                        holderp.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(drawingCacheBackgroundColor)
+                    }
+                } catch (exception: NullPointerException) {
+                    Toast.makeText(
+                        this@ShowMushafActivity,
+                        "UPDATE HIGHLIGHTED",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        recyclerView.post { recyclerView.scrollToPosition(currenttrack) }
+
+        //  handler.postDelayed(this, 1000);
+    }*/
+}
 private fun extracted(
     quranbySurah: List<QuranEntity?>?,
     ayaLocations: MutableList<String>,
@@ -458,7 +629,7 @@ private fun extracted(
 @Composable
 private fun exoPlayer(
     context: Context,
-    marray: MutableList<MediaItem>
+    marray: List<MediaItem>
 ): ExoPlayer {
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -490,333 +661,76 @@ private fun BottomSheet(
 
 }
 
-fun createDownloadLinks(downloadlist: ArrayList<FIleDownloadParam>, chapid: Int): List<String> {
-    lateinit var readersList: List<Qari>
-    var files: ArrayList<DownloadActThree.File> = ArrayList<DownloadActThree.File>()
 
 
-
-    val lists: ArrayList<String> = ArrayList<String>()
-    //     val testList = arrayListOf<DownloadFileListArray>()
-    val repository= Utils(QuranGrammarApplication.context)
-    readersList = repository.qaris
-    val chap = repository.getSingleChapter(chapid)
-    val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(chapid)
-    //   surahselected = surah
-    //   int ayaID=0;
-    var counter = 0
-    //   quranbySurah.add(0, new QuranEntity(1, 1, 1));
-    val downloadLinks: MutableList<String> = java.util.ArrayList()
-    //   ayaList.add(0, new Aya(1, 1, 1));
-    //loop for all page ayat
-//check if readerID is 0
-    if (com.appscreens.readerID == 0) {
-
-        for (qari in readersList) {
-            val selectedqari = "Mishary Rashed Al-Afasy"
-            if (qari.name_english == selectedqari) {
-                com.appscreens.readerID = qari.id
-                //    downloadLink = qari.url
-                com.appscreens.downloadLink =    "https://mirrors.quranicaudio.com/everyayah/Alafasy_128kbps/"
-                break
-            }
-        }
-    }
-    com.appscreens.downloadLink =    "https://mirrors.quranicaudio.com/everyayah/Alafasy_128kbps/"
-    if (quranbySurah != null) {
-        for (ayaItem in quranbySurah) {
-            //validate if aya download or not
-            if (!QuranValidateSources.validateAyaAudio(
-                    QuranGrammarApplication.context!!,
-                    com.appscreens.readerID,
-                    ayaItem!!.ayah,
-                    ayaItem.surah
-                )
-            ) {
-
-                //create aya link
-
-
-                //create aya link
-                val suraLength: Int =
-                    chap!![0]!!.chapterid.toString().trim { it <= ' ' }.length
-                var suraID: String = chap[0]!!.chapterid.toString() + ""
-
-
-                val ayaLength = ayaItem.ayah.toString().trim { it <= ' ' }.length
-                //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
-                //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
-                var ayaID = java.lang.StringBuilder(
-                    java.lang.StringBuilder().append(ayaItem.ayah).append("").toString()
-                )
-                if (suraLength == 1) suraID =
-                    "00" + ayaItem.surah else if (suraLength == 2) suraID = "0" + ayaItem.surah
-
-                if (ayaLength == 1) {
-                    ayaID = java.lang.StringBuilder("00" + ayaItem.ayah)
-                } else if (ayaLength == 2) {
-                    ayaID = java.lang.StringBuilder("0" + ayaItem.ayah)
-                }
-                counter++
-                //add aya link to list
-                //chec
-                downloadLinks.add(com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3)
-                /*
-                        val id: String,
-     val name: String,
-     val type: String,
-     val url: String,
-     var downloadedUri: String? = null,
-     var isDownloading: Boolean = false,
-         id = "10",
-                     name = "Pdf File 10 MB",
-                     type = "PDF",
-                     url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
-                     downloadedUri = null
-                 */
-                val string = counter.toString()
-                val linkItem = com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
-                val    fileName = linkItem.substring(linkItem.lastIndexOf('/') + 1, linkItem.length)
-                var filePath = com.appscreens.downloadLink///storage/emulated/0/Documents/audio/20
-
-                downloadlist+= FIleDownloadParam(
-                    string,
-                    fileName,
-                    "MP3",
-                    com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
-
-                )
-                Log.d(
-                    "DownloadLinks",
-                    com.appscreens.downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
-                )
-            }
-        }
-    }
-    return downloadLinks
-}
-
-fun DownLoadIfNot(internetStatus: Int, Links: ArrayList<String>) {
-    val app_folder_path =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            .toString() + "/audio/" + readerID
-    val f = File(app_folder_path)
-    val path = f.absolutePath
-    val file = File(path)
-    if (!file.exists()) file.mkdirs()
-    startBeforeDownload = true
-
-
-    /*    startDownloadingFiles(
-            file=Links
-
-
-        )*/
-}
-
-/*
-fun startDownloadingFiles(file: java.util.ArrayList<String>,
-                          success: (String) -> Unit,
-                          failed: (String) -> Unit,
-                          running: () -> Unit) {
-    val data = Data.Builder()
-    val workManager = WorkManager.getInstance(QuranGrammarApplication.context!!)
-    */
-/*
-         id = "10",
-                        name = "Pdf File 10 MB",
-                        type = "PDF",
-                        url = "https://www.learningcontainer.com/wp-content/uploads/2019/09/sample-pdf-download-10-mb.pdf",
-                        downloadedUri = null
-     *//*
-
-    data.apply {
-        putString(FileDownloadWorker.FileParams.KEY_FILE_NAME, "file.name")
-        putString(FileDownloadWorker.FileParams.KEY_FILE_URL, file.get(0))
-        putString(FileDownloadWorker.FileParams.KEY_FILE_TYPE, "mp3")
-    }
-
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresStorageNotLow(true)
-        .setRequiresBatteryNotLow(true)
-        .build()
-
-    val fileDownloadWorker = OneTimeWorkRequestBuilder<FileDownloadWorker>()
-        .setConstraints(constraints)
-        .setInputData(data.build())
-        .build()
-
-    workManager.enqueueUniqueWork(
-        "oneFileDownloadWork_${System.currentTimeMillis()}",
-        ExistingWorkPolicy.KEEP,
-        fileDownloadWorker
-    )
-
-
-    workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
-        .observe(QuranGrammarApplication.context!!) { info ->
-            info?.let {
-                when (it.state) {
-                    WorkInfo.State.SUCCEEDED -> {
-                        success(
-                            it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI)
-                                ?: ""
-                        )
-                    }
-
-                    WorkInfo.State.FAILED -> {
-                        failed("Downloading failed!")
-                    }
-
-                    WorkInfo.State.RUNNING -> {
-                        running()
-                    }
-
-                    else -> {
-                        failed("Something went wrong")
-                    }
-                }
-            }
-        }
-}
-*/
-
-/*private fun startDownloadingFile(
-    file: DownloadAct.File,
-    success: (String) -> Unit,
-    failed: (String) -> Unit,
-    running: () -> Unit
-) {
-    val data = Data.Builder()
-    val workManager = WorkManager.getInstance(applicationContext)
-    data.apply {
-        putString(FileDownloadWorker.FileParams.KEY_FILE_NAME, file.name)
-        putString(FileDownloadWorker.FileParams.KEY_FILE_URL, file.url)
-        putString(FileDownloadWorker.FileParams.KEY_FILE_TYPE, file.type)
-    }
-
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresStorageNotLow(true)
-        .setRequiresBatteryNotLow(true)
-        .build()
-
-    val fileDownloadWorker = OneTimeWorkRequestBuilder<FileDownloadWorker>()
-        .setConstraints(constraints)
-        .setInputData(data.build())
-        .build()
-
-    workManager.enqueueUniqueWork(
-        "oneFileDownloadWork_${System.currentTimeMillis()}",
-        ExistingWorkPolicy.KEEP,
-        fileDownloadWorker
-    )
-
-
-    workManager.getWorkInfoByIdLiveData(fileDownloadWorker.id)
-        .observe(this) { info ->
-            info?.let {
-                when (it.state) {
-                    WorkInfo.State.SUCCEEDED -> {
-                        success(
-                            it.outputData.getString(FileDownloadWorker.FileParams.KEY_FILE_URI)
-                                ?: ""
-                        )
-                    }
-
-                    WorkInfo.State.FAILED -> {
-                        failed("Downloading failed!")
-                    }
-
-                    WorkInfo.State.RUNNING -> {
-                        running()
-                    }
-
-                    else -> {
-                        failed("Something went wrong")
-                    }
-                }
-            }
-        }
-}*/
-
-
-/*
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun LoginScreen(
-    loginViewModel: LoginViewModel = hiltViewModel(),
-    screen: @Composable (() -> Unit)
-) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
-    )
-    val coroutineScope = rememberCoroutineScope()
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            //The Login Content needs to be here
-
-
-            BackHandler(enabled = true) {
-                coroutineScope.launch {
-                    bottomSheetScaffoldState.bottomSheetState.collapse()
-                }
-            }
-
-        },
-        sheetPeekHeight = 400.dp,
-        sheetShape = RoundedCornerShape(topEnd = 52.dp, topStart = 52.dp),
-        backgroundColor = Color.Transparent
-    ) {
-        screen() //Adds the content which is shown on the Screen behind bottomsheet
-    }
-}
-
-fun BottomSheetScaffold(
-    scaffoldState: BottomSheetScaffoldState,
-    sheetContent: ColumnScope.() -> Unit,
-    sheetPeekHeight: Dp,
-    sheetShape: RoundedCornerShape,
-    backgroundColor: Color,
-    content: (PaddingValues) -> Unit
-) {
-
-}
-*/
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-private fun DisplayQuran(
+private fun LDisplayQuran(
     surahs: List<ChaptersAnaEntity>,
-    chapid: Int
+    chapid: Int,
+    showtranslation: BooleanPreferenceSettingValueState,
+    navController: NavHostController
 ) {
     Scaffold(
 
     ) {
+
+
+
+
         Column(
 
             modifier = Modifier
                 .fillMaxSize()
                 .padding(5.dp)
         ) {
-            PickerExample()
+            lPickerExample()
             Spacer(modifier = Modifier.height(5.dp))
+
+            val state = rememberLazyListState()
+            val fullyVisibleIndices: List<Int> by remember {
+                derivedStateOf {
+                    val layoutInfo = state.layoutInfo
+                    val visibleItemsInfo = layoutInfo.visibleItemsInfo
+                    if (visibleItemsInfo.isEmpty()) {
+                        emptyList()
+                    } else {
+                        val fullyVisibleItemsInfo = visibleItemsInfo.toMutableList()
+
+                        val lastItem = fullyVisibleItemsInfo.last()
+
+                        val viewportHeight = layoutInfo.viewportEndOffset + layoutInfo.viewportStartOffset
+
+                        if (lastItem.offset + lastItem.size > viewportHeight) {
+                            fullyVisibleItemsInfo.removeLast()
+                        }
+
+                        val firstItemIfLeft = fullyVisibleItemsInfo.firstOrNull()
+                        if (firstItemIfLeft != null && firstItemIfLeft.offset < layoutInfo.viewportStartOffset) {
+                            fullyVisibleItemsInfo.removeFirst()
+                        }
+
+                        fullyVisibleItemsInfo.map { it.index }
+                    }
+                }
+            }
+
+
+
+
 
             LazyColumn(
                 modifier = Modifier
                     .wrapContentHeight()
                     .padding(10.dp)
                     .wrapContentWidth(),
-                state = listState!!
+                state = state!!
             ) {
-                itemsIndexed(pageArrays!!.toList()) { index, item ->
-                    val pages = pageArrays!![index].ayahItemsquran
-                    val quranEntity = pageArrays!!!!.get(index)
-                    val pageNum = quranEntity.pageNum
-                    var qtext = ""
+                itemsIndexed(lquranbySurah!!.toList()) { index, item ->
+
+
+
 
                     //   val img = imgs.getDrawable(surahs!!.chapid - 2)
                     Card(
@@ -846,7 +760,7 @@ private fun DisplayQuran(
                         )
 
                         {
-                            Box(
+                          /*  Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(50.dp)
@@ -903,53 +817,97 @@ private fun DisplayQuran(
                                     textAlign = TextAlign.Center,
                                     fontSize = 15.sp
                                 )
-                                Text(
-                                    text = "Page  " + pageNum,
 
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Black,
-                                    modifier = Modifier.align(Alignment.BottomCenter),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 15.sp
+                            }*/
+
+                        }
+                        val isVisible by remember(index) {
+                            derivedStateOf {
+                                fullyVisibleIndices.contains(index)
+                            }
+                        }
+                        val infiniteTransition = rememberInfiniteTransition()
+
+
+                        /*       Text(
+                                   index.toString(),
+                                   modifier = Modifier
+                                       .background(if (isVisible) Color.Green else Color.Transparent)
+                                       .padding(30.dp)
+                               )*/
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
+                                )
+                        ) {
+                            lwordarray = newnewadapterlist?.get(index)
+
+                            ClickableText(
+                                text =  lwordarray!![0].annotatedVerse!!,
+
+                                onClick = {
+                                    val cid =  lquranbySurah!![index].surah
+                                    val aid =         lquranbySurah!![index].ayah
+                                    navController.navigate(
+                                        "versealert/${cid}/${aid}"
+                                    )
+
+                                }, style = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Cursive
+                                ),
+                                        modifier = Modifier
+                                            .background(if (isVisible&& isplaying.value) Color.Cyan else Color.Transparent)
+                                            .padding(30.dp)
+
+
+                            )
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
+                                )
+
+                        ) {
+
+                            if (showtranslation.value) {
+                                ExpandableText(
+
+                                    text = AnnotatedString( lquranbySurah!![index].translation)
+                                    /*    fontSize = 20.sp,
+                                fontFamily = indopak,
+                                color = colorResource(id = R.color.kashmirigreen)*/
                                 )
                             }
-
                         }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+
                                 .padding(
-                                    horizontal = 4.dp,
-                                    vertical = 4.dp
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
                                 )
                         ) {
+                            /*     wordarray = newnewadapterlist[index]
+                                 val annotedMousuf = AnnotationUtility.AnnotedMousuf(
+                                     wordarray!![0].annotatedVerse.toString(),
+                                     wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
+                                 )
+         */
 
-                            if (pages != null) {
-                                for (quran in pages) {
-                                    val builder = StringBuilder()
-
-                                    builder.append(
-                                        MessageFormat.format(
-                                            "{0} ﴿ {1} ﴾ ",
-                                            "",
-                                            quran!!.ayah
-                                        )
-                                    )
-                                    quran.ayah
-                                    qtext += quran!!.qurantext + builder
-
-
-                                }
-                            }
-                            Text(
-                                text = qtext,
-                                fontWeight = FontWeight.Normal,
-                                // color = Color.Black,
-
-                                textAlign = TextAlign.Justify,
-                                fontSize = 20.sp,
-
-                                fontFamily = indopak
+                            ExpandableText(
+                                text = AnnotatedString("Ibne Kathir :" +  lquranbySurah!![0].tafsir_kathir)
 
 
                             )
@@ -971,7 +929,7 @@ private fun DisplayQuran(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun PickerExample() {
+fun lPickerExample() {
     Surface(
         modifier = Modifier.height(40.dp),
         color = MaterialTheme.colorScheme.primary
