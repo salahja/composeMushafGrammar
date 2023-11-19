@@ -3,16 +3,12 @@ package com.appscreensn
 import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.view.View
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -36,14 +33,10 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,6 +44,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,6 +58,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -82,7 +77,6 @@ import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSett
 import com.appscreens.ExpandableText
 import com.appscreens.Picker
 import com.appscreens.rememberPickerState
-
 import com.downloadmanager.DownloaderViewModel
 import com.example.compose.LoadingData
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
@@ -94,7 +88,6 @@ import com.example.mushafconsolidated.databinding.XoPlayerBinding
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.utility.CorpusUtilityorig
-import com.example.utility.FlowLayout
 import com.example.utility.QuranGrammarApplication
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -107,14 +100,17 @@ import com.viewmodels.FIleDownloadParam
 import com.viewmodels.VerseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 
 
-
+var msecond: Long=0L
+var isTrackchanged: MutableState<Boolean>?=null
+var fullyVisibleItemsInfo: MutableList<LazyListItemInfo>? = null
 var isplaying = mutableStateOf(false)
 var newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>? = null
-var ldownloadlist: ArrayList<FIleDownloadParam>?=null
+var ldownloadlist: ArrayList<FIleDownloadParam>? = null
 var lreaderID = 20
 lateinit var ldownloadLink: String
 lateinit var lreaderName: String
@@ -134,13 +130,12 @@ var laid: Int = 0
 var lcid: Int = 0
 var lwid: Int = 0
 val showWordDetails = mutableStateOf(false)
-val lprefrence by lazy{QuranGrammarApplication.context!!.getSharedPreferences("prefs",
-    Context.MODE_PRIVATE
-)}
-
-
-
-
+val lprefrence by lazy {
+    QuranGrammarApplication.context!!.getSharedPreferences(
+        "prefs",
+        Context.MODE_PRIVATE
+    )
+}
 
 
 @SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterialScaffoldPaddingParameter")
@@ -192,8 +187,8 @@ fun LineQuranPageScreen(
 */
 
     if (cardss.isNotEmpty()) {
-    lsurahs = cardss[0].chapterlist
-      lquranbySurah = cardss[0].quranbySurah
+        lsurahs = cardss[0].chapterlist
+        lquranbySurah = cardss[0].quranbySurah
         newnewadapterlist = cardss[0].newnewadapterlist
     }
 
@@ -232,7 +227,7 @@ fun LineQuranPageScreen(
 
 
     //    DisplayQuran(surahs, chapid)
-    lfb(lsurahs!!, chapid, navController,downloadModel)
+    lfb(lsurahs!!, chapid, navController, downloadModel)
 
 
 }
@@ -257,23 +252,24 @@ fun lfb(
     val internetStatus: Int = 0
 
     Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text("Show bottom sheet") },
-                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                onClick = {
-                    showBottomSheet = true
-                }
-            )
-        }
+        /*        floatingActionButton = {
+                    ExtendedFloatingActionButton(
+                        text = { Text("Show bottom sheet") },
+                        icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+                        onClick = {
+                            showBottomSheet = true
+                        }
+                    )
+                }*/
     ) {
 
 
         BottomSheetScaffold(
             //  scaffoldState = bottomSheetScaffoldState,
-            sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
-            sheetContent = {
 
+            sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
+            sheetContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            sheetContent = {
 
 
                 Column(
@@ -295,11 +291,11 @@ fun lfb(
                                 .padding(4.dp)
 
 
-                        ){
+                        ) {
 
                             Button(onClick = {
 
-                                showAudio.value=true;
+                                showAudio.value = true;
                             }) {
                                 androidx.compose.material.Text(
                                     text = "Play",
@@ -307,8 +303,8 @@ fun lfb(
                                         .wrapContentHeight(),
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 21.sp,
-                                    color = Color.White
+                                    fontSize = 21.sp
+                                    //      color = Color.White
                                 )
                             }
 
@@ -329,15 +325,11 @@ fun lfb(
                                 .padding(4.dp)
 
 
-                        ){
-                            if(showAudio.value) {
+                        ) {
+                            if (showAudio.value) {
                                 lAudioPlayer(downloadModel)
                             }
                         }
-
-
-
-
 
 
                     },
@@ -365,7 +357,7 @@ fun lfb(
             )
         {
 
-            LDisplayQuran(surahs, chapid,showtranslation,navController)
+            LDisplayQuran(surahs, chapid, showtranslation, navController)
         }
     }
 }
@@ -373,77 +365,83 @@ fun lfb(
 @SuppressLint("OpaqueUnitKey")
 @Composable
 
-fun lAudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifier,) {
-     lateinit var playerView: PlayerControlView
+fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifier) {
+    lateinit var playerView: PlayerControlView
 
-     lateinit var trackSelectionParameters: TrackSelectionParameters
-     lateinit var lastSeenTracks: Tracks
-     var startAutoPlay = false
-     var startItemIndex = 0
-     var startPosition: Long = 0
-     lateinit var playiv: ImageView
-     var pausePlayFlag = false
-     var surahselected = 0
-     var verselected = 0
+    lateinit var trackSelectionParameters: TrackSelectionParameters
+    lateinit var lastSeenTracks: Tracks
+    var startAutoPlay = false
+    var startItemIndex = 0
+    var startPosition: Long = 0
+    lateinit var playiv: ImageView
+    var pausePlayFlag = false
+    var surahselected = 0
+    var verselected = 0
     var versescount = 0
-     lateinit var surahNameEnglish: String
-     lateinit var surahNameArabic: String
-     lateinit var isNightmode: String
+    lateinit var surahNameEnglish: String
+    lateinit var surahNameArabic: String
+    lateinit var isNightmode: String
     val context = LocalContext.current
     val mediaItems = arrayListOf<MediaItem>()
     val ayaLocations: MutableList<String> = ArrayList()
     var marray: MutableList<MediaItem> = arrayListOf()
     lateinit var binding: XoPlayerBinding
-   downloadlist = arrayListOf<FIleDownloadParam>()
+    downloadlist = arrayListOf<FIleDownloadParam>()
     val coroutineScope = rememberCoroutineScope()
-    val scope:CoroutineScope
-    scope= CoroutineScope(Dispatchers.Main)
+    val scope: CoroutineScope
+    scope = CoroutineScope(Dispatchers.Main)
     val repository = Utils(QuranGrammarApplication.context)
     val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
-        111    )
+        111
+    )
 
 
     val media by downloadModel.marray.collectAsStateWithLifecycle()
 
-  //  val exoPlayer = exoPlayer(context, media)
+    //  val exoPlayer = exoPlayer(context, media)
 
 
-   /*  exoPlayer = remember {
-        ExoPlayer.Builder(context).build().apply {
-            setMediaItems(
-                media
+    /*  exoPlayer = remember {
+         ExoPlayer.Builder(context).build().apply {
+             setMediaItems(
+                 media
 
-            )
-            repeatMode = ExoPlayer.REPEAT_MODE_ALL
-            playWhenReady = true
-            prepare()
-            play()
+             )
+             repeatMode = ExoPlayer.REPEAT_MODE_ALL
+             playWhenReady = true
+             prepare()
+             play()
 
-        }
-    }*/
+         }
+     }*/
     exoplayer = ExoPlayer.Builder(context).build()
-  //  lastSeenTracks = Tracks.EMPTY
-   // exoPlayer!!.addListener(PlayerEventListener())
-   // exoPlayer!!.trackSelectionParameters = trackSelectionParameters
+    //  lastSeenTracks = Tracks.EMPTY
+    // exoPlayer!!.addListener(PlayerEventListener())
+    // exoPlayer!!.trackSelectionParameters = trackSelectionParameters
     exoplayer!!.addListener(PlayerEventListener())
-   // exoPlayer!!.addAnalyticsListener(EventLogger())
+    // exoPlayer!!.addAnalyticsListener(EventLogger())
     exoplayer!!.setAudioAttributes(AudioAttributes.DEFAULT,  /* handleAudioFocus= */true)
     exoplayer!!.playWhenReady = startAutoPlay
     exoplayer!!.repeatMode = Player.REPEAT_MODE_ALL
     exoplayer!!.setMediaItems(media)
-    exoplayer!!. repeatMode = ExoPlayer.REPEAT_MODE_ALL
-    exoplayer!!. playWhenReady = true
-    exoplayer!!. prepare()
-    exoplayer!!. play()
- //   playerView.repeatToggleModes = RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE
-   // exoPlayer!!.seekTo(ayah, playbackPosition)
+    exoplayer!!.repeatMode = ExoPlayer.REPEAT_MODE_ALL
+    exoplayer!!.playWhenReady = true
+    exoplayer!!.prepare()
+    exoplayer!!.play()
+    //   playerView.repeatToggleModes = RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE
+    // exoPlayer!!.seekTo(ayah, playbackPosition)
     val currentMediaItemIndex = exoplayer!!.currentMediaItemIndex
 
-    val currentMediaItemIndexs = exoplayer!!.currentMediaItemIndex+1
+    val currentMediaItemIndexs = exoplayer!!.currentMediaItemIndex + 1
 
+    val playbackProperties = exoplayer!!.currentMediaItem!!.playbackProperties
+    playbackProperties.toString()
 
-
-
+    val uri = Uri.parse(playbackProperties!!.uri.toString())
+    val mmr = MediaMetadataRetriever()
+    mmr.setDataSource(context, uri)
+    val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+     msecond = durationStr!!.toLong()
 
 
     Column(
@@ -470,12 +468,12 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifie
                     ConstraintLayout.LayoutParams.WRAP_CONTENT,
                     ConstraintLayout.LayoutParams.WRAP_CONTENT
                 )
-             
-             val   currenttrack = player!!.currentMediaItemIndex
-                val   nexttrack = player!!.currentMediaItemIndex+1
+
+                val currenttrack = player!!.currentMediaItemIndex
+                val nexttrack = player!!.currentMediaItemIndex + 1
 
                 player!!.addListener(PlayerEventListener())
-                isplaying.value=true
+                isplaying.value = true
             }
         }) {
             onDispose {
@@ -491,117 +489,129 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel,modifier: Modifier = Modifie
 
 }
 
+
 class PlayerEventListener : Player.Listener {
     override fun onTracksChanged(tracks: Tracks) {
+
+
         currenttrack = exoplayer!!.currentMediaItemIndex
         currenttrack++
-        sendUpdatesToUI.run()
-        super.onTracksChanged(tracks)
+        isTrackchanged!!.value=true
+      //  sendUpdatesToUI
+
+
+
+      //  super.onTracksChanged(tracks)
+
     }
+
+
 }
 
 private val sendUpdatesToUI: Runnable = object : Runnable {
     override fun run() {
 
-        println("current track"+currenttrack)
+        println("current track" + currenttrack)
 
     }
-/*        //  rvAyahsPages.post(() -> rvAyahsPages.scrollToPosition((ayah)));
-///musincadapter
-        // RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) rvAyahsPages.findViewHolderForAdapterPosition(currenttrack);
-        val holder = recyclerView.findViewHolderForAdapterPosition(currenttrack)
-        val ab = StringBuilder()
-        ab.append("Aya").append(":").append(currenttrack).append(" ").append("of").append(
-            versescount
-        )
-        ayaprogress.text = ab.toString()
-        if (null != holder) {
-            try {
-                if (holder.itemView.findViewById<View?>(R.id.quran_textView) != null) {
-                    if (isNightmode == "light") {
-                        holder.itemView.findViewById<View>(R.id.quran_textView)
-                            .setBackgroundColor(
-                                android.graphics.Color.LTGRAY
-                            )
-                        val textViews =
-                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                        val str = textViews.text.toString()
-                        val span = SpannableStringBuilder(str)
-                        span.setSpan(
-                            ForegroundColorSpan(android.graphics.Color.CYAN),
-                            0,
-                            str.length,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    } else if (isNightmode == "brown") {
-                        holder.itemView.findViewById<View>(R.id.quran_textView)
-                            .setBackgroundColor(
-                                android.graphics.Color.CYAN
-                            )
-                        val textViews =
-                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                        val str = textViews.text.toString()
-                        val span = SpannableStringBuilder(str)
-                        span.setSpan(
-                            ForegroundColorSpan(android.graphics.Color.CYAN),
-                            0,
-                            str.length,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    } else {
-                        val textView =
-                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                        textView.text
-                        val strs = textView.text.toString()
-                        val spans = SpannableStringBuilder(strs)
-                        spans.setSpan(
-                            BackgroundColorSpan(android.graphics.Color.BLUE),
-                            0,
-                            strs.length,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        textView.text = spans
-                        //  holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.BLUE);
-                        //for vtwoadapter
-                    }
-                }
-            } catch (exception: NullPointerException) {
-                Toast.makeText(
-                    this@ShowMushafActivity,
-                    "null pointer udapte",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-        val holderp = recyclerView.findViewHolderForAdapterPosition(currenttrack - 1)
-        if (currenttrack > 1) {
-            if (null != holderp) {
+}
+    /*        //  rvAyahsPages.post(() -> rvAyahsPages.scrollToPosition((ayah)));
+    ///musincadapter
+            // RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) rvAyahsPages.findViewHolderForAdapterPosition(currenttrack);
+            val holder = recyclerView.findViewHolderForAdapterPosition(currenttrack)
+            val ab = StringBuilder()
+            ab.append("Aya").append(":").append(currenttrack).append(" ").append("of").append(
+                versescount
+            )
+            ayaprogress.text = ab.toString()
+            if (null != holder) {
                 try {
-                    val arrayList = ArrayList<String>()
-                    val fl: FlowLayout = FlowLayout(this@ShowMushafActivity, arrayList)
-                    val arrayList1 = fl.arrayList
-                    fl.getChildAt(ayah)
-                    val drawingCacheBackgroundColor =
-                        holderp.itemView.findViewById<View>(R.id.quran_textView).drawingCacheBackgroundColor
-                    if (holderp.itemView.findViewById<View?>(R.id.quran_textView) != null) {
-                        //    holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.CYAN);
-                        holderp.itemView.findViewById<View>(R.id.quran_textView)
-                            .setBackgroundColor(drawingCacheBackgroundColor)
+                    if (holder.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                        if (isNightmode == "light") {
+                            holder.itemView.findViewById<View>(R.id.quran_textView)
+                                .setBackgroundColor(
+                                    android.graphics.Color.LTGRAY
+                                )
+                            val textViews =
+                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                            val str = textViews.text.toString()
+                            val span = SpannableStringBuilder(str)
+                            span.setSpan(
+                                ForegroundColorSpan(android.graphics.Color.CYAN),
+                                0,
+                                str.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        } else if (isNightmode == "brown") {
+                            holder.itemView.findViewById<View>(R.id.quran_textView)
+                                .setBackgroundColor(
+                                    android.graphics.Color.CYAN
+                                )
+                            val textViews =
+                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                            val str = textViews.text.toString()
+                            val span = SpannableStringBuilder(str)
+                            span.setSpan(
+                                ForegroundColorSpan(android.graphics.Color.CYAN),
+                                0,
+                                str.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        } else {
+                            val textView =
+                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                            textView.text
+                            val strs = textView.text.toString()
+                            val spans = SpannableStringBuilder(strs)
+                            spans.setSpan(
+                                BackgroundColorSpan(android.graphics.Color.BLUE),
+                                0,
+                                strs.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            textView.text = spans
+                            //  holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.BLUE);
+                            //for vtwoadapter
+                        }
                     }
                 } catch (exception: NullPointerException) {
                     Toast.makeText(
                         this@ShowMushafActivity,
-                        "UPDATE HIGHLIGHTED",
+                        "null pointer udapte",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-        }
-        recyclerView.post { recyclerView.scrollToPosition(currenttrack) }
+            val holderp = recyclerView.findViewHolderForAdapterPosition(currenttrack - 1)
+            if (currenttrack > 1) {
+                if (null != holderp) {
+                    try {
+                        val arrayList = ArrayList<String>()
+                        val fl: FlowLayout = FlowLayout(this@ShowMushafActivity, arrayList)
+                        val arrayList1 = fl.arrayList
+                        fl.getChildAt(ayah)
+                        val drawingCacheBackgroundColor =
+                            holderp.itemView.findViewById<View>(R.id.quran_textView).drawingCacheBackgroundColor
+                        if (holderp.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                            //    holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.CYAN);
+                            holderp.itemView.findViewById<View>(R.id.quran_textView)
+                                .setBackgroundColor(drawingCacheBackgroundColor)
+                        }
+                    } catch (exception: NullPointerException) {
+                        Toast.makeText(
+                            this@ShowMushafActivity,
+                            "UPDATE HIGHLIGHTED",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+            recyclerView.post { recyclerView.scrollToPosition(currenttrack) }
 
-        //  handler.postDelayed(this, 1000);
-    }*/
-}
+            //  handler.postDelayed(this, 1000);
+        }*/
+
+
 private fun extracted(
     quranbySurah: List<QuranEntity?>?,
     ayaLocations: MutableList<String>,
@@ -648,23 +658,10 @@ private fun exoPlayer(
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-private fun BottomSheet(
-    surahs: List<ChaptersAnaEntity>,
-    chapid: Int,
-    navController: NavHostController
-) {
-    val internetStatus: Int = 0
-
-
-}
 
 
 
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 private fun LDisplayQuran(
     surahs: List<ChaptersAnaEntity>,
@@ -677,8 +674,6 @@ private fun LDisplayQuran(
     ) {
 
 
-
-
         Column(
 
             modifier = Modifier
@@ -687,7 +682,7 @@ private fun LDisplayQuran(
         ) {
             lPickerExample()
             Spacer(modifier = Modifier.height(5.dp))
-
+            val scope = rememberCoroutineScope()
             val state = rememberLazyListState()
             val fullyVisibleIndices: List<Int> by remember {
                 derivedStateOf {
@@ -696,28 +691,47 @@ private fun LDisplayQuran(
                     if (visibleItemsInfo.isEmpty()) {
                         emptyList()
                     } else {
-                        val fullyVisibleItemsInfo = visibleItemsInfo.toMutableList()
+                        fullyVisibleItemsInfo = visibleItemsInfo.toMutableList()
 
-                        val lastItem = fullyVisibleItemsInfo.last()
+                        val lastItem = fullyVisibleItemsInfo!!.last()
 
-                        val viewportHeight = layoutInfo.viewportEndOffset + layoutInfo.viewportStartOffset
+                        val viewportHeight =
+                            layoutInfo.viewportEndOffset + layoutInfo.viewportStartOffset
 
                         if (lastItem.offset + lastItem.size > viewportHeight) {
-                            fullyVisibleItemsInfo.removeLast()
+                            fullyVisibleItemsInfo!!.removeLast()
                         }
 
-                        val firstItemIfLeft = fullyVisibleItemsInfo.firstOrNull()
+                        val firstItemIfLeft = fullyVisibleItemsInfo!!.firstOrNull()
                         if (firstItemIfLeft != null && firstItemIfLeft.offset < layoutInfo.viewportStartOffset) {
-                            fullyVisibleItemsInfo.removeFirst()
+                            fullyVisibleItemsInfo!!.removeFirst()
                         }
 
-                        fullyVisibleItemsInfo.map { it.index }
+                     fullyVisibleItemsInfo!!.map { it.index }
+
+
+
                     }
                 }
             }
 
+             isTrackchanged= remember {
+                mutableStateOf(false)
+            }
 
 
+            val corroutineScope = rememberCoroutineScope()
+            val listState = rememberLazyListState()
+            val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
+            val scrollPos =   state.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
+            LaunchedEffect (Unit){ //Won't be called upon item deletion
+                if(isTrackchanged!!.value) {
+                    listState.animateScrollToItem(currenttrack)
+                }
+
+
+            }
+            Text(text = "scroll: $scrollPos")
 
 
             LazyColumn(
@@ -727,8 +741,18 @@ private fun LDisplayQuran(
                     .wrapContentWidth(),
                 state = state!!
             ) {
-                itemsIndexed(lquranbySurah!!.toList()) { index, item ->
 
+
+                itemsIndexed(lquranbySurah!!.toList()) { index, item ->
+                    val backgroundColor = if (index % 2 == 0) {
+
+                        Color.LightGray
+
+                    } else {
+
+                        Color.Red
+
+                    }
 
 
 
@@ -760,65 +784,65 @@ private fun LDisplayQuran(
                         )
 
                         {
-                          /*  Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                                //  .background(MaterialTheme.colorScheme.background)
-                            ) {
-                                Text(
+                            /*  Box(
+                                  modifier = Modifier
+                                      .fillMaxWidth()
+                                      .height(50.dp)
+                                  //  .background(MaterialTheme.colorScheme.background)
+                              ) {
+                                  Text(
 
-                                    text = surahs!![chapid - 1]!!.abjadname,
+                                      text = surahs!![chapid - 1]!!.abjadname,
 
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Red,
-                                    modifier = Modifier.align(Alignment.TopCenter),
-                                    textAlign = TextAlign.Center,
-                                    fontFamily = indopak,
-                                    fontSize = 20.sp
-                                )
-                                if (surahs!![chapid - 1]!!.ismakki == 1) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_makkah_48),
+                                      fontWeight = FontWeight.Bold,
+                                      color = Color.Red,
+                                      modifier = Modifier.align(Alignment.TopCenter),
+                                      textAlign = TextAlign.Center,
+                                      fontFamily = indopak,
+                                      fontSize = 20.sp
+                                  )
+                                  if (surahs!![chapid - 1]!!.ismakki == 1) {
+                                      Image(
+                                          painter = painterResource(id = R.drawable.ic_makkah_48),
 
-                                        modifier = Modifier.align(Alignment.TopEnd),
-                                        //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                        contentDescription = "contentDescription",
-                                        contentScale = ContentScale.Crop
-                                    )
-                                } else {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_makkah_48),
+                                          modifier = Modifier.align(Alignment.TopEnd),
+                                          //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                                          contentDescription = "contentDescription",
+                                          contentScale = ContentScale.Crop
+                                      )
+                                  } else {
+                                      Image(
+                                          painter = painterResource(id = R.drawable.ic_makkah_48),
 
-                                        modifier = Modifier.align(Alignment.TopEnd),
-                                        //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                        contentDescription = "contentDescription",
-                                        contentScale = ContentScale.Crop,
-                                    )
+                                          modifier = Modifier.align(Alignment.TopEnd),
+                                          //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                                          contentDescription = "contentDescription",
+                                          contentScale = ContentScale.Crop,
+                                      )
 
 
-                                }
+                                  }
 
-                                Text(
-                                    text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
-                                    color = Color.Black,
-                                    fontWeight = FontWeight.Bold,
+                                  Text(
+                                      text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
+                                      color = Color.Black,
+                                      fontWeight = FontWeight.Bold,
 
-                                    modifier = Modifier.align(Alignment.TopStart),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 15.sp
-                                )
-                                Text(
-                                    text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
+                                      modifier = Modifier.align(Alignment.TopStart),
+                                      textAlign = TextAlign.Center,
+                                      fontSize = 15.sp
+                                  )
+                                  Text(
+                                      text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
 
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Black,
-                                    modifier = Modifier.align(Alignment.BottomStart),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 15.sp
-                                )
+                                      fontWeight = FontWeight.Bold,
+                                      color = Color.Black,
+                                      modifier = Modifier.align(Alignment.BottomStart),
+                                      textAlign = TextAlign.Center,
+                                      fontSize = 15.sp
+                                  )
 
-                            }*/
+                              }*/
 
                         }
                         val isVisible by remember(index) {
@@ -847,11 +871,11 @@ private fun LDisplayQuran(
                             lwordarray = newnewadapterlist?.get(index)
 
                             ClickableText(
-                                text =  lwordarray!![0].annotatedVerse!!,
+                                text = lwordarray!![0].annotatedVerse!!,
 
                                 onClick = {
-                                    val cid =  lquranbySurah!![index].surah
-                                    val aid =         lquranbySurah!![index].ayah
+                                    val cid = lquranbySurah!![index].surah
+                                    val aid = lquranbySurah!![index].ayah
                                     navController.navigate(
                                         "versealert/${cid}/${aid}"
                                     )
@@ -861,9 +885,9 @@ private fun LDisplayQuran(
                                     fontSize = 18.sp,
                                     fontFamily = FontFamily.Cursive
                                 ),
-                                        modifier = Modifier
-                                            .background(if (isVisible&& isplaying.value) Color.Cyan else Color.Transparent)
-                                            .padding(30.dp)
+                                modifier = Modifier
+                                    .background(if (isVisible && isplaying.value) Color.Cyan else Color.Transparent)
+                                    .padding(30.dp)
 
 
                             )
@@ -883,7 +907,7 @@ private fun LDisplayQuran(
                             if (showtranslation.value) {
                                 ExpandableText(
 
-                                    text = AnnotatedString( lquranbySurah!![index].translation)
+                                    text = AnnotatedString(lquranbySurah!![index].translation)
                                     /*    fontSize = 20.sp,
                                 fontFamily = indopak,
                                 color = colorResource(id = R.color.kashmirigreen)*/
@@ -907,7 +931,7 @@ private fun LDisplayQuran(
          */
 
                             ExpandableText(
-                                text = AnnotatedString("Ibne Kathir :" +  lquranbySurah!![0].tafsir_kathir)
+                                text = AnnotatedString("Ibne Kathir :" + lquranbySurah!![0].tafsir_kathir)
 
 
                             )
@@ -921,11 +945,37 @@ private fun LDisplayQuran(
                 }
             }
 
+            LaunchedEffect(Unit) {
+
+                  autoScroll(state)
+            }
         }
     }
 
 }
 
+
+ private const val DELAY_BETWEEN_SCROLL_MS =90L
+
+
+private const val SCROLL_DX = 1f
+private tailrec suspend fun autoScroll(
+    lazyListState: LazyListState,
+
+) {
+   // lazyListState.animateScrollToItem(currenttrack+1)
+   lazyListState.scroll(MutatePriority.PreventUserInput) {
+
+        scrollBy(SCROLL_DX)
+    }
+    delay(DELAY_BETWEEN_SCROLL_MS)
+    autoScroll(lazyListState)
+/*    if(isTrackchanged!!.value==false)
+        autoScroll(lazyListState)
+    if(isTrackchanged!!.value)
+     autoScroll(lazyListState)*/
+
+}
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
