@@ -10,11 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/activities/AdaptiveMainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/NewQuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/NewQuranPageScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -813,7 +810,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700235560979</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Initial commit">
+      <created>1700298126947</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1700298126947</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Initial commit">
+      <created>1700418526435</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1700418526435</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -1308,7 +1319,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>410</line>
+          <line>402</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
@@ -1316,36 +1327,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>441</line>
-          <option name="timeStamp" value="576" />
+          <line>982</line>
+          <option name="timeStamp" value="629" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>474</line>
-          <option name="timeStamp" value="577" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>498</line>
-          <option name="timeStamp" value="578" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>495</line>
-          <option name="timeStamp" value="579" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>505</line>
-          <option name="timeStamp" value="580" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>713</line>
+          <line>855</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
-          <option name="timeStamp" value="586" />
+          <option name="timeStamp" value="630" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1376,11 +1367,17 @@
         <watch expression="loadings" />
         <watch expression="quran.ayah" />
         <watch expression="_marray" />
+        <watch expression="isTrackchanged" />
+        <watch expression="msecond" />
+        <watch expression="l" />
       </configuration>
       <configuration name="ComposePreviewRunConfiguration">
         <watch expression="state" />
         <watch expression="PickerState" />
       </configuration>
+      <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" line="713">
+        <watch expression="fullyVisibleItemsInfo" />
+      </inline-watch>
     </watches-manager>
   </component>
 </project>

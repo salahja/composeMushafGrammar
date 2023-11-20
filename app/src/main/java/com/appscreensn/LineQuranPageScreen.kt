@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.MutatePriority
@@ -67,6 +69,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -84,11 +87,12 @@ import com.example.mushafconsolidated.Entities.Page
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
-import com.example.mushafconsolidated.databinding.XoPlayerBinding
+import com.example.mushafconsolidated.databinding.NewFragmentReadingBinding
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
+import com.example.utility.QuranGrammarApplication.Companion.context
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -103,7 +107,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-
+import com.example.mushafconsolidated.databinding.XoPlayerBinding as XoPlayerBinding
+lateinit var binding: XoPlayerBinding
 
 var msecond: Long=0L
 var isTrackchanged: MutableState<Boolean>?=null
@@ -385,7 +390,7 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
     val mediaItems = arrayListOf<MediaItem>()
     val ayaLocations: MutableList<String> = ArrayList()
     var marray: MutableList<MediaItem> = arrayListOf()
-    lateinit var binding: XoPlayerBinding
+
     downloadlist = arrayListOf<FIleDownloadParam>()
     val coroutineScope = rememberCoroutineScope()
     val scope: CoroutineScope
@@ -428,32 +433,38 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
     exoplayer!!.playWhenReady = true
     exoplayer!!.prepare()
     exoplayer!!.play()
+
     //   playerView.repeatToggleModes = RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE
     // exoPlayer!!.seekTo(ayah, playbackPosition)
     val currentMediaItemIndex = exoplayer!!.currentMediaItemIndex
 
     val currentMediaItemIndexs = exoplayer!!.currentMediaItemIndex + 1
 
-    val playbackProperties = exoplayer!!.currentMediaItem!!.playbackProperties
-    playbackProperties.toString()
+    lateinit var binding: XoPlayerBinding
 
-    val uri = Uri.parse(playbackProperties!!.uri.toString())
-    val mmr = MediaMetadataRetriever()
-    mmr.setDataSource(context, uri)
-    val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-     msecond = durationStr!!.toLong()
+   /* AndroidView(
+        factory = { context ->
+            val view = LayoutInflater.from(context).inflate(R.layout.custom_xo_player, null, false)
+            val textView = view.findViewById<TextView>(R.id.lqari)
 
+            // do whatever you want...
+            view // return the view
+        },
+        update = { view ->
 
+        }
+    )*/
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .padding(horizontal = 16.dp)
     ) {
 
-        DisposableEffect(AndroidViewBinding(
+        DisposableEffect(key1 = AndroidViewBinding(XoPlayerBinding::inflate,
             modifier = modifier,
-            factory = XoPlayerBinding::inflate
-            //           qariname = findViewById<TextView>(R.id.lqari)
+
+
+
         ) {
             val visible = this.playerView.isVisible
 
@@ -474,6 +485,15 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
 
                 player!!.addListener(PlayerEventListener())
                 isplaying.value = true
+                val playbackProperties = exoplayer!!.currentMediaItem!!.playbackProperties
+                playbackProperties.toString()
+
+                val uri = Uri.parse(playbackProperties!!.uri.toString())
+                val mmr = MediaMetadataRetriever()
+                mmr.setDataSource(context, uri)
+                val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+
+
             }
         }) {
             onDispose {
@@ -493,7 +513,14 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
 class PlayerEventListener : Player.Listener {
     override fun onTracksChanged(tracks: Tracks) {
 
+        val playbackProperties = exoplayer!!.currentMediaItem!!.playbackProperties
+        playbackProperties.toString()
 
+        val uri = Uri.parse(playbackProperties!!.uri.toString())
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(context, uri)
+        val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        msecond = durationStr!!.toLong()
         currenttrack = exoplayer!!.currentMediaItemIndex
         currenttrack++
         isTrackchanged!!.value=true
@@ -672,6 +699,9 @@ private fun LDisplayQuran(
     Scaffold(
 
     ) {
+        isTrackchanged= remember {
+            mutableStateOf(true)
+        }
 
 
         Column(
@@ -715,9 +745,6 @@ private fun LDisplayQuran(
                 }
             }
 
-             isTrackchanged= remember {
-                mutableStateOf(false)
-            }
 
 
             val corroutineScope = rememberCoroutineScope()
@@ -725,7 +752,7 @@ private fun LDisplayQuran(
             val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
             val scrollPos =   state.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
             LaunchedEffect (Unit){ //Won't be called upon item deletion
-                if(isTrackchanged!!.value) {
+                if(isTrackchanged!!.value==true) {
                     listState.animateScrollToItem(currenttrack)
                 }
 
@@ -753,7 +780,8 @@ private fun LDisplayQuran(
                         Color.Red
 
                     }
-
+                    Text(text = "current: $currenttrack")
+                    Text(text = "index: $index")
 
 
                     //   val img = imgs.getDrawable(surahs!!.chapid - 2)
@@ -886,11 +914,13 @@ private fun LDisplayQuran(
                                     fontFamily = FontFamily.Cursive
                                 ),
                                 modifier = Modifier
-                                    .background(if (isVisible && isplaying.value) Color.Cyan else Color.Transparent)
+                                    .background(if (isVisible && isplaying.value && currenttrack==index) Color.Cyan else Color.Transparent)
                                     .padding(30.dp)
 
 
                             )
+                            Text(text = "current: $currenttrack")
+                            Text(text = "index: $index")
                         }
                         Row(
                             horizontalArrangement = Arrangement.End,
@@ -947,7 +977,8 @@ private fun LDisplayQuran(
 
             LaunchedEffect(Unit) {
 
-                  autoScroll(state)
+                    autoScroll(state)
+
             }
         }
     }
@@ -955,10 +986,10 @@ private fun LDisplayQuran(
 }
 
 
- private const val DELAY_BETWEEN_SCROLL_MS =90L
+ private const val DELAY_BETWEEN_SCROLL_MS =390L
 
 
-private const val SCROLL_DX = 1f
+private const val SCROLL_DX = 4f
 private tailrec suspend fun autoScroll(
     lazyListState: LazyListState,
 
@@ -968,8 +999,19 @@ private tailrec suspend fun autoScroll(
 
         scrollBy(SCROLL_DX)
     }
-    delay(DELAY_BETWEEN_SCROLL_MS)
-    autoScroll(lazyListState)
+    val l = msecond / 1000
+    if(msecond== 0.toLong()){
+        delay(DELAY_BETWEEN_SCROLL_MS)
+    }else {
+        delay(DELAY_BETWEEN_SCROLL_MS )
+
+    }
+    if(isTrackchanged!!.value==true) {
+        autoScroll(lazyListState)
+        isTrackchanged!!.value=false
+    }
+
+
 /*    if(isTrackchanged!!.value==false)
         autoScroll(lazyListState)
     if(isTrackchanged!!.value)
