@@ -10,9 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -52,6 +54,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -59,8 +62,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -80,6 +85,7 @@ import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSett
 import com.appscreens.ExpandableText
 import com.appscreens.Picker
 import com.appscreens.rememberPickerState
+import com.codelab.basics.ui.theme.indopak
 import com.downloadmanager.DownloaderViewModel
 import com.example.compose.LoadingData
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
@@ -108,10 +114,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import com.example.mushafconsolidated.databinding.XoPlayerBinding as XoPlayerBinding
+
 lateinit var binding: XoPlayerBinding
 
-var msecond: Long=0L
-var isTrackchanged: MutableState<Boolean>?=null
+var msecond: Long = 0L
+
+var isTrackchanged: MutableState<Boolean>? = null
 var fullyVisibleItemsInfo: MutableList<LazyListItemInfo>? = null
 var isplaying = mutableStateOf(false)
 var newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>? = null
@@ -127,6 +135,8 @@ var lsurahs: List<ChaptersAnaEntity>? = null
 var lscopes: CoroutineScope? = null
 var lwordarray: ArrayList<NewQuranCorpusWbw>? = null
 private var currenttrack = 0
+
+
 var exoplayer: ExoPlayer? = null
 
 var llistState: LazyListState? = null
@@ -164,7 +174,9 @@ fun LineQuranPageScreen(
     var loading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     //scopes = CoroutineScope(Dispatchers.Main)
-
+    var isplaying by remember { mutableStateOf(false) }
+    var hasTrackedChanged by remember { mutableStateOf(false) }
+    var currenttrack: Int by remember { mutableStateOf(0) }
     val thememode = darkThemePreference.value
 
     val showtranslation =
@@ -442,30 +454,30 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
 
     lateinit var binding: XoPlayerBinding
 
-   /* AndroidView(
-        factory = { context ->
-            val view = LayoutInflater.from(context).inflate(R.layout.custom_xo_player, null, false)
-            val textView = view.findViewById<TextView>(R.id.lqari)
+    /* AndroidView(
+         factory = { context ->
+             val view = LayoutInflater.from(context).inflate(R.layout.custom_xo_player, null, false)
+             val textView = view.findViewById<TextView>(R.id.lqari)
 
-            // do whatever you want...
-            view // return the view
-        },
-        update = { view ->
+             // do whatever you want...
+             view // return the view
+         },
+         update = { view ->
 
-        }
-    )*/
+         }
+     )*/
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .padding(horizontal = 16.dp)
     ) {
 
-        DisposableEffect(key1 = AndroidViewBinding(XoPlayerBinding::inflate,
+        DisposableEffect(key1 = AndroidViewBinding(
+            XoPlayerBinding::inflate,
             modifier = modifier,
 
 
-
-        ) {
+            ) {
             val visible = this.playerView.isVisible
 
             this.playerView.apply {
@@ -523,12 +535,11 @@ class PlayerEventListener : Player.Listener {
         msecond = durationStr!!.toLong()
         currenttrack = exoplayer!!.currentMediaItemIndex
         currenttrack++
-        isTrackchanged!!.value=true
-      //  sendUpdatesToUI
+        isTrackchanged!!.value = true
+        //  sendUpdatesToUI
 
 
-
-      //  super.onTracksChanged(tracks)
+        //  super.onTracksChanged(tracks)
 
     }
 
@@ -542,101 +553,101 @@ private val sendUpdatesToUI: Runnable = object : Runnable {
 
     }
 }
-    /*        //  rvAyahsPages.post(() -> rvAyahsPages.scrollToPosition((ayah)));
-    ///musincadapter
-            // RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) rvAyahsPages.findViewHolderForAdapterPosition(currenttrack);
-            val holder = recyclerView.findViewHolderForAdapterPosition(currenttrack)
-            val ab = StringBuilder()
-            ab.append("Aya").append(":").append(currenttrack).append(" ").append("of").append(
-                versescount
-            )
-            ayaprogress.text = ab.toString()
-            if (null != holder) {
+/*        //  rvAyahsPages.post(() -> rvAyahsPages.scrollToPosition((ayah)));
+///musincadapter
+        // RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) rvAyahsPages.findViewHolderForAdapterPosition(currenttrack);
+        val holder = recyclerView.findViewHolderForAdapterPosition(currenttrack)
+        val ab = StringBuilder()
+        ab.append("Aya").append(":").append(currenttrack).append(" ").append("of").append(
+            versescount
+        )
+        ayaprogress.text = ab.toString()
+        if (null != holder) {
+            try {
+                if (holder.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                    if (isNightmode == "light") {
+                        holder.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(
+                                android.graphics.Color.LTGRAY
+                            )
+                        val textViews =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        val str = textViews.text.toString()
+                        val span = SpannableStringBuilder(str)
+                        span.setSpan(
+                            ForegroundColorSpan(android.graphics.Color.CYAN),
+                            0,
+                            str.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    } else if (isNightmode == "brown") {
+                        holder.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(
+                                android.graphics.Color.CYAN
+                            )
+                        val textViews =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        val str = textViews.text.toString()
+                        val span = SpannableStringBuilder(str)
+                        span.setSpan(
+                            ForegroundColorSpan(android.graphics.Color.CYAN),
+                            0,
+                            str.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    } else {
+                        val textView =
+                            holder.itemView.findViewById<TextView>(R.id.quran_textView)
+                        textView.text
+                        val strs = textView.text.toString()
+                        val spans = SpannableStringBuilder(strs)
+                        spans.setSpan(
+                            BackgroundColorSpan(android.graphics.Color.BLUE),
+                            0,
+                            strs.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        textView.text = spans
+                        //  holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.BLUE);
+                        //for vtwoadapter
+                    }
+                }
+            } catch (exception: NullPointerException) {
+                Toast.makeText(
+                    this@ShowMushafActivity,
+                    "null pointer udapte",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        val holderp = recyclerView.findViewHolderForAdapterPosition(currenttrack - 1)
+        if (currenttrack > 1) {
+            if (null != holderp) {
                 try {
-                    if (holder.itemView.findViewById<View?>(R.id.quran_textView) != null) {
-                        if (isNightmode == "light") {
-                            holder.itemView.findViewById<View>(R.id.quran_textView)
-                                .setBackgroundColor(
-                                    android.graphics.Color.LTGRAY
-                                )
-                            val textViews =
-                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                            val str = textViews.text.toString()
-                            val span = SpannableStringBuilder(str)
-                            span.setSpan(
-                                ForegroundColorSpan(android.graphics.Color.CYAN),
-                                0,
-                                str.length,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
-                        } else if (isNightmode == "brown") {
-                            holder.itemView.findViewById<View>(R.id.quran_textView)
-                                .setBackgroundColor(
-                                    android.graphics.Color.CYAN
-                                )
-                            val textViews =
-                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                            val str = textViews.text.toString()
-                            val span = SpannableStringBuilder(str)
-                            span.setSpan(
-                                ForegroundColorSpan(android.graphics.Color.CYAN),
-                                0,
-                                str.length,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
-                        } else {
-                            val textView =
-                                holder.itemView.findViewById<TextView>(R.id.quran_textView)
-                            textView.text
-                            val strs = textView.text.toString()
-                            val spans = SpannableStringBuilder(strs)
-                            spans.setSpan(
-                                BackgroundColorSpan(android.graphics.Color.BLUE),
-                                0,
-                                strs.length,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
-                            textView.text = spans
-                            //  holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.BLUE);
-                            //for vtwoadapter
-                        }
+                    val arrayList = ArrayList<String>()
+                    val fl: FlowLayout = FlowLayout(this@ShowMushafActivity, arrayList)
+                    val arrayList1 = fl.arrayList
+                    fl.getChildAt(ayah)
+                    val drawingCacheBackgroundColor =
+                        holderp.itemView.findViewById<View>(R.id.quran_textView).drawingCacheBackgroundColor
+                    if (holderp.itemView.findViewById<View?>(R.id.quran_textView) != null) {
+                        //    holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.CYAN);
+                        holderp.itemView.findViewById<View>(R.id.quran_textView)
+                            .setBackgroundColor(drawingCacheBackgroundColor)
                     }
                 } catch (exception: NullPointerException) {
                     Toast.makeText(
                         this@ShowMushafActivity,
-                        "null pointer udapte",
+                        "UPDATE HIGHLIGHTED",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-            val holderp = recyclerView.findViewHolderForAdapterPosition(currenttrack - 1)
-            if (currenttrack > 1) {
-                if (null != holderp) {
-                    try {
-                        val arrayList = ArrayList<String>()
-                        val fl: FlowLayout = FlowLayout(this@ShowMushafActivity, arrayList)
-                        val arrayList1 = fl.arrayList
-                        fl.getChildAt(ayah)
-                        val drawingCacheBackgroundColor =
-                            holderp.itemView.findViewById<View>(R.id.quran_textView).drawingCacheBackgroundColor
-                        if (holderp.itemView.findViewById<View?>(R.id.quran_textView) != null) {
-                            //    holder.itemView.findViewById(R.id.quran_textView).setBackgroundColor(Color.CYAN);
-                            holderp.itemView.findViewById<View>(R.id.quran_textView)
-                                .setBackgroundColor(drawingCacheBackgroundColor)
-                        }
-                    } catch (exception: NullPointerException) {
-                        Toast.makeText(
-                            this@ShowMushafActivity,
-                            "UPDATE HIGHLIGHTED",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-            recyclerView.post { recyclerView.scrollToPosition(currenttrack) }
+        }
+        recyclerView.post { recyclerView.scrollToPosition(currenttrack) }
 
-            //  handler.postDelayed(this, 1000);
-        }*/
+        //  handler.postDelayed(this, 1000);
+    }*/
 
 
 private fun extracted(
@@ -685,9 +696,6 @@ private fun exoPlayer(
 }
 
 
-
-
-
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 private fun LDisplayQuran(
@@ -699,7 +707,7 @@ private fun LDisplayQuran(
     Scaffold(
 
     ) {
-        isTrackchanged= remember {
+        isTrackchanged = remember {
             mutableStateOf(true)
         }
 
@@ -737,8 +745,7 @@ private fun LDisplayQuran(
                             fullyVisibleItemsInfo!!.removeFirst()
                         }
 
-                     fullyVisibleItemsInfo!!.map { it.index }
-
+                        fullyVisibleItemsInfo!!.map { it.index }
 
 
                     }
@@ -746,19 +753,73 @@ private fun LDisplayQuran(
             }
 
 
-
             val corroutineScope = rememberCoroutineScope()
             val listState = rememberLazyListState()
             val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
-            val scrollPos =   state.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
-            LaunchedEffect (Unit){ //Won't be called upon item deletion
-                if(isTrackchanged!!.value==true) {
-                    listState.animateScrollToItem(currenttrack)
+            val scrollPos =
+                state.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
+            //  scrollToCurrentTrack(state)
+           // Text(text = "scroll: $scrollPos")
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+               .background(MaterialTheme.colorScheme.primary)
+            ) {
+                Text(
+
+                    text = surahs!![chapid - 1]!!.abjadname,
+
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Red,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    textAlign = TextAlign.Center,
+                    fontFamily = indopak,
+                    fontSize = 20.sp
+                )
+                if (surahs!![chapid - 1]!!.ismakki == 1) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                        contentDescription = "contentDescription",
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                        contentDescription = "contentDescription",
+                        contentScale = ContentScale.Crop,
+                    )
+
+
                 }
 
+                Text(
+                    text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+
+                    modifier = Modifier.align(Alignment.TopStart),
+                    textAlign = TextAlign.Center,
+                    fontSize = 15.sp
+                )
+                Text(
+                    text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
+
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    modifier = Modifier.align(Alignment.BottomStart),
+                    textAlign = TextAlign.Center,
+                    fontSize = 15.sp
+                )
 
             }
-            Text(text = "scroll: $scrollPos")
+
 
 
             LazyColumn(
@@ -769,22 +830,23 @@ private fun LDisplayQuran(
                 state = state!!
             ) {
 
-
                 itemsIndexed(lquranbySurah!!.toList()) { index, item ->
-                    val backgroundColor = if (index % 2 == 0) {
 
-                        Color.LightGray
+                    /*      val backgroundColor = if (index % 2 == 0) {
 
-                    } else {
+                              Color.LightGray
 
-                        Color.Red
+                          } else {
 
-                    }
-                    Text(text = "current: $currenttrack")
-                    Text(text = "index: $index")
+                              Color.Red
+
+                          }*/
+                 //   Text(text = "current: $currenttrack")
+                 //   Text(text = "index: $index")
 
 
                     //   val img = imgs.getDrawable(surahs!!.chapid - 2)
+
                     Card(
                         colors = CardDefaults.cardColors(
                             //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
@@ -812,65 +874,7 @@ private fun LDisplayQuran(
                         )
 
                         {
-                            /*  Box(
-                                  modifier = Modifier
-                                      .fillMaxWidth()
-                                      .height(50.dp)
-                                  //  .background(MaterialTheme.colorScheme.background)
-                              ) {
-                                  Text(
 
-                                      text = surahs!![chapid - 1]!!.abjadname,
-
-                                      fontWeight = FontWeight.Bold,
-                                      color = Color.Red,
-                                      modifier = Modifier.align(Alignment.TopCenter),
-                                      textAlign = TextAlign.Center,
-                                      fontFamily = indopak,
-                                      fontSize = 20.sp
-                                  )
-                                  if (surahs!![chapid - 1]!!.ismakki == 1) {
-                                      Image(
-                                          painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                          modifier = Modifier.align(Alignment.TopEnd),
-                                          //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                          contentDescription = "contentDescription",
-                                          contentScale = ContentScale.Crop
-                                      )
-                                  } else {
-                                      Image(
-                                          painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                          modifier = Modifier.align(Alignment.TopEnd),
-                                          //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                          contentDescription = "contentDescription",
-                                          contentScale = ContentScale.Crop,
-                                      )
-
-
-                                  }
-
-                                  Text(
-                                      text = "No.Of Aya's :" + surahs!![chapid - 1]!!.versescount.toString(),
-                                      color = Color.Black,
-                                      fontWeight = FontWeight.Bold,
-
-                                      modifier = Modifier.align(Alignment.TopStart),
-                                      textAlign = TextAlign.Center,
-                                      fontSize = 15.sp
-                                  )
-                                  Text(
-                                      text = "No.Of Ruku's :" + surahs!![chapid - 1]!!.rukucount.toString(),
-
-                                      fontWeight = FontWeight.Bold,
-                                      color = Color.Black,
-                                      modifier = Modifier.align(Alignment.BottomStart),
-                                      textAlign = TextAlign.Center,
-                                      fontSize = 15.sp
-                                  )
-
-                              }*/
 
                         }
                         val isVisible by remember(index) {
@@ -914,13 +918,14 @@ private fun LDisplayQuran(
                                     fontFamily = FontFamily.Cursive
                                 ),
                                 modifier = Modifier
-                                    .background(if (isVisible && isplaying.value && currenttrack==index) Color.Cyan else Color.Transparent)
-                                    .padding(30.dp)
+
+                                    .background(if (isVisible && isplaying.value && currenttrack == index) Color.Cyan else Color.Transparent)
+                                    .padding(3.dp)
 
 
                             )
-                            Text(text = "current: $currenttrack")
-                            Text(text = "index: $index")
+                          //  Text(text = "current: $currenttrack")
+                        //    Text(text = "index: $index")
                         }
                         Row(
                             horizontalArrangement = Arrangement.End,
@@ -974,50 +979,64 @@ private fun LDisplayQuran(
 
                 }
             }
+     /*     if(isplaying.value) {
+              LaunchedEffect(Unit) {
+                  scrollToCurrentTrack(state)
+                  //    autoScroll(state)
 
-            LaunchedEffect(Unit) {
-
-                    autoScroll(state)
-
-            }
+              }
+          }*/
         }
     }
 
 }
 
 
- private const val DELAY_BETWEEN_SCROLL_MS =390L
+private tailrec suspend fun scrollToCurrentTrack(state: LazyListState) {
+
+    var key = currenttrack > 1
+
+    if (key && isplaying.value) {
+        state.animateScrollToItem(currenttrack)
+    }
+
+    scrollToCurrentTrack(state)
+}
+
+
+private const val DELAY_BETWEEN_SCROLL_MS = 390L
 
 
 private const val SCROLL_DX = 4f
 private tailrec suspend fun autoScroll(
     lazyListState: LazyListState,
 
-) {
-   // lazyListState.animateScrollToItem(currenttrack+1)
-   lazyListState.scroll(MutatePriority.PreventUserInput) {
+    ) {
+    // lazyListState.animateScrollToItem(currenttrack+1)
+    lazyListState.scroll(MutatePriority.PreventUserInput) {
 
         scrollBy(SCROLL_DX)
     }
     val l = msecond / 1000
-    if(msecond== 0.toLong()){
+    if (msecond == 0.toLong()) {
         delay(DELAY_BETWEEN_SCROLL_MS)
-    }else {
-        delay(DELAY_BETWEEN_SCROLL_MS )
+    } else {
+        delay(DELAY_BETWEEN_SCROLL_MS)
 
     }
-    if(isTrackchanged!!.value==true) {
+    if (isTrackchanged!!.value == true) {
         autoScroll(lazyListState)
-        isTrackchanged!!.value=false
+        isTrackchanged!!.value = false
     }
 
 
-/*    if(isTrackchanged!!.value==false)
-        autoScroll(lazyListState)
-    if(isTrackchanged!!.value)
-     autoScroll(lazyListState)*/
+    /*    if(isTrackchanged!!.value==false)
+            autoScroll(lazyListState)
+        if(isTrackchanged!!.value)
+         autoScroll(lazyListState)*/
 
 }
+
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview

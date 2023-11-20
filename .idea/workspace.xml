@@ -11,6 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -824,7 +825,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700418526435</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Initial commit">
+      <created>1700479210913</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1700479210913</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -1319,24 +1327,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>402</line>
+          <line>414</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
           <option name="timeStamp" value="568" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>982</line>
-          <option name="timeStamp" value="629" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>855</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="630" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1370,12 +1365,13 @@
         <watch expression="isTrackchanged" />
         <watch expression="msecond" />
         <watch expression="l" />
+        <watch expression="currenttrack" />
       </configuration>
       <configuration name="ComposePreviewRunConfiguration">
         <watch expression="state" />
         <watch expression="PickerState" />
       </configuration>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" line="713">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" line="721">
         <watch expression="fullyVisibleItemsInfo" />
       </inline-watch>
     </watches-manager>
