@@ -2,7 +2,9 @@
 <project version="4">
   <component name="AndroidLayouts">
     <shared>
-      <config />
+      <config>
+        <device id="Nexus 7 2013" />
+      </config>
     </shared>
   </component>
   <component name="AutoImportSettings">
@@ -10,9 +12,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/Result.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/newtheme/CraneTheme.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/newtheme/Typography.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_light.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_medium.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_semibold.ttf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_xo_player.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_xo_player.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/xo_player.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/xo_player.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,35 +100,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-ui/2.19.1/1e4a8691b096f1ff34cf8adb9f0f4f3627f5cbad/exoplayer-ui-2.19.1-sources.jar!/com/google/android/exoplayer2/ui/PlayerControlView.java_SELECTED&quot;: &quot;PlayerControlView&quot;,
-    &quot;android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED&quot;: &quot;MaterialButton&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anons/Desktop/jetMvPR/jettMushafVerbConDuaNamesFresh/app/src/main/java/com/appscreensn&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-ui/2.19.1/1e4a8691b096f1ff34cf8adb9f0f4f3627f5cbad/exoplayer-ui-2.19.1-sources.jar!/com/google/android/exoplayer2/ui/PlayerControlView.java_SELECTED": "PlayerControlView",
+    "android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED": "MaterialButton",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "/home/anons/Desktop/codelab-android-compose-end/AccessibilityCodelab/app",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "nele.options"
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/font" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/newtheme" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/appscreensn" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/multiplebottomsheet" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/mediathree" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/example/viewmodels" />
     </key>
     <key name="android.template.-1557561774">
       <recent name="com.downloads" />
@@ -832,7 +848,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700479210913</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Initial commit">
+      <created>1700503072866</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1700503072866</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -855,7 +878,7 @@
       <breakpoints>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt</url>
-          <line>99</line>
+          <line>109</line>
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -888,7 +911,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>104</line>
+          <line>110</line>
           <option name="timeStamp" value="175" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -961,7 +984,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt</url>
-          <line>288</line>
+          <line>285</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1107,12 +1130,12 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>497</line>
+          <line>521</line>
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>498</line>
+          <line>522</line>
           <option name="timeStamp" value="360" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1122,12 +1145,12 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>302</line>
+          <line>326</line>
           <option name="timeStamp" value="362" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>318</line>
+          <line>342</line>
           <option name="timeStamp" value="363" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1253,7 +1276,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt</url>
-          <line>245</line>
+          <line>251</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
@@ -1327,11 +1350,26 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>414</line>
+          <line>449</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
           <option name="timeStamp" value="568" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
+          <line>801</line>
+          <option name="timeStamp" value="572" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
+          <line>406</line>
+          <option name="timeStamp" value="576" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
+          <line>274</line>
+          <option name="timeStamp" value="577" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1371,7 +1409,7 @@
         <watch expression="state" />
         <watch expression="PickerState" />
       </configuration>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" line="721">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" line="750">
         <watch expression="fullyVisibleItemsInfo" />
       </inline-watch>
     </watches-manager>

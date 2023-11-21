@@ -22,6 +22,7 @@ import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -56,6 +57,11 @@ class VerseModel(
     val cards: StateFlow<List<QuranArrays>> get() = _cards
     private val _expandedCardIdsList = MutableStateFlow(listOf<Int>())
     var counter = 0;
+
+    private val _uiState =  MutableStateFlow(DetailsUiState(isLoading =true))
+    val  uistate: StateFlow<DetailsUiState> =_uiState.asStateFlow()
+
+
     val expandedCardIdsList: StateFlow<List<Int>> get() = _expandedCardIdsList
     private var nounCorpusArrayList: ArrayList<NounCorpusBreakup>? = null
     private var verbCorpusArray: ArrayList<VerbCorpusBreakup>? = null
@@ -127,6 +133,11 @@ class VerseModel(
 
 }
 
+data class DetailsUiState(
+    val cityDetails: Any? = null,
+    val isLoading: Boolean = false,
+    val throwError: Boolean = false
+)
 
 
 

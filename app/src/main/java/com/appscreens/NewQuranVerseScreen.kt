@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -23,18 +24,22 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -62,8 +67,8 @@ import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingV
 
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
+import com.appscreens.Result.*
 
-import com.example.compose.TextChip
 import com.viewmodels.VerseModel
 
 import com.example.justJava.MyTextViewZoom
@@ -82,7 +87,8 @@ import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
 import com.example.compose.TextChipWBW
 import com.example.compose.theme.Tooltips
-import com.example.mushafconsolidated.Entities.Page
+import com.example.viewmodels.QuranArrays
+import com.viewmodels.DetailsUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -142,10 +148,13 @@ fun NewQuranVerseScreen(
     // quranModel.setspans(newnewadapterlist, chapid)
 
     showWordDetails.value = false
-    //   val myViewModel: VerseModel    = viewModel(factory = newViewModelFactory(chapid))
+
 
     loading = verseModel!!.loading.value
     LoadingData(isDisplayed = loading)
+
+
+
     val cardss by verseModel.cards.collectAsStateWithLifecycle()
     val collectAsStateWithLifecycle = verseModel.cards.collectAsStateWithLifecycle()
     val collectAsState = verseModel.cards.collectAsState()
@@ -202,15 +211,13 @@ fun NewQuranVerseScreen(
         state = listState!!
     ) {
         itemsIndexed(quranbySurah!!.toList()) { index, item ->
-/*
-
-            coroutineScope.launch {
-                listState!!.animateScrollToItem(26)
-                state.animateScrollTo(36)
+         val showButton by remember {
+                derivedStateOf {
+                    listState!!.firstVisibleItemIndex > 0
+                }
             }
-*/
 
-            //   val img = imgs.getDrawable(surahs!!.chapid - 2)
+
             Card(
                 colors = CardDefaults.cardColors(
                     //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
@@ -251,6 +258,39 @@ fun NewQuranVerseScreen(
                                 .height(50.dp)
                             //  .background(MaterialTheme.colorScheme.background)
                         ) {
+                            if (showButton) {
+                                val coroutineScope = rememberCoroutineScope()
+                                SmallFloatingActionButton(
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                           modifier = Modifier
+                                          .align(Alignment.BottomEnd)
+                                        .navigationBarsPadding()
+                                        .padding(bottom = 1.dp),
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            listState!!.scrollToItem(0)
+                                        }
+                                    }
+                                )
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                {
+                                    Text("Up!")
+                                }
+                            }
+
                             Text(
 
                                 text = surahs!![chapid - 1]!!.abjadname,

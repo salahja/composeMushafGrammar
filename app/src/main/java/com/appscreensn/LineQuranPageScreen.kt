@@ -17,11 +17,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -36,11 +39,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -57,6 +65,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.samples.crane.ui.BottomSheetShape
+import androidx.compose.samples.crane.ui.crane_caption
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,6 +94,7 @@ import com.alorma.compose.settings.storage.preferences.rememberPreferenceBoolean
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.appscreens.ExpandableText
 import com.appscreens.Picker
+import com.appscreens.listState
 import com.appscreens.rememberPickerState
 import com.codelab.basics.ui.theme.indopak
 import com.downloadmanager.DownloaderViewModel
@@ -113,6 +124,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 import com.example.mushafconsolidated.databinding.XoPlayerBinding as XoPlayerBinding
 
 lateinit var binding: XoPlayerBinding
@@ -267,18 +279,22 @@ fun lfb(
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     val internetStatus: Int = 0
-
+    val showButton by remember {
+        derivedStateOf {
+            listState!!.firstVisibleItemIndex > 0
+        }
+    }
     Scaffold(
-        /*        floatingActionButton = {
-                    ExtendedFloatingActionButton(
-                        text = { Text("Show bottom sheet") },
-                        icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                        onClick = {
-                            showBottomSheet = true
-                        }
-                    )
-                }*/
+
+
     ) {
+
+            val listState = rememberLazyListState()
+            //   ExploreList(exploreList, onItemClicked, listState = listState)
+
+            // Show the button if the first visible item is past
+            // the first item. We use a remembered derived state to
+            // minimize unnecessary compositions
 
 
         BottomSheetScaffold(
@@ -319,7 +335,7 @@ fun lfb(
                                     modifier = Modifier
                                         .wrapContentHeight(),
                                     textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold,
+                                    fontWeight = FontWeight.Light,
                                     fontSize = 21.sp
                                     //      color = Color.White
                                 )
@@ -333,8 +349,7 @@ fun lfb(
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .padding(
-                                    vertical = 2.dp,
-                                    horizontal = 4.dp
+                                   2.dp
                                 )
 
                                 .clip(shape = CircleShape)
@@ -373,11 +388,31 @@ fun lfb(
 
             )
         {
+            androidx.compose.material.Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = Color.White,
+                shape = BottomSheetShape
+            ) {
+                Column(modifier = Modifier.padding(start = 24.dp, top = 20.dp, end = 24.dp)) {
+                    androidx.compose.material.Text(
+                        text = "title",
+                        style = androidx.compose.material.MaterialTheme.typography.caption.copy(
+                            color = crane_caption
+                        )
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    // TODO Codelab: derivedStateOf step
+                    // TODO: Show "Scroll to top" button when the first item of the list is not visible
+                    val listState = rememberLazyListState()
+                    LDisplayQuran(surahs, chapid, showtranslation, navController)
+                }
+            }
 
-            LDisplayQuran(surahs, chapid, showtranslation, navController)
         }
     }
 }
+
+
 
 @SuppressLint("OpaqueUnitKey")
 @Composable
@@ -415,26 +450,8 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
 
     val media by downloadModel.marray.collectAsStateWithLifecycle()
 
-    //  val exoPlayer = exoPlayer(context, media)
-
-
-    /*  exoPlayer = remember {
-         ExoPlayer.Builder(context).build().apply {
-             setMediaItems(
-                 media
-
-             )
-             repeatMode = ExoPlayer.REPEAT_MODE_ALL
-             playWhenReady = true
-             prepare()
-             play()
-
-         }
-     }*/
     exoplayer = ExoPlayer.Builder(context).build()
-    //  lastSeenTracks = Tracks.EMPTY
-    // exoPlayer!!.addListener(PlayerEventListener())
-    // exoPlayer!!.trackSelectionParameters = trackSelectionParameters
+
     exoplayer!!.addListener(PlayerEventListener())
     // exoPlayer!!.addAnalyticsListener(EventLogger())
     exoplayer!!.setAudioAttributes(AudioAttributes.DEFAULT,  /* handleAudioFocus= */true)
@@ -446,11 +463,7 @@ fun lAudioPlayer(downloadModel: DownloaderViewModel, modifier: Modifier = Modifi
     exoplayer!!.prepare()
     exoplayer!!.play()
 
-    //   playerView.repeatToggleModes = RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE
-    // exoPlayer!!.seekTo(ayah, playbackPosition)
-    val currentMediaItemIndex = exoplayer!!.currentMediaItemIndex
 
-    val currentMediaItemIndexs = exoplayer!!.currentMediaItemIndex + 1
 
     lateinit var binding: XoPlayerBinding
 
@@ -536,7 +549,7 @@ class PlayerEventListener : Player.Listener {
         currenttrack = exoplayer!!.currentMediaItemIndex
         currenttrack++
         isTrackchanged!!.value = true
-        //  sendUpdatesToUI
+
 
 
         //  super.onTracksChanged(tracks)
@@ -704,9 +717,25 @@ private fun LDisplayQuran(
     showtranslation: BooleanPreferenceSettingValueState,
     navController: NavHostController
 ) {
+
+
+
+
+
+
+
     Scaffold(
 
-    ) {
+    )
+
+
+
+    {
+
+
+
+
+
         isTrackchanged = remember {
             mutableStateOf(true)
         }
@@ -722,6 +751,14 @@ private fun LDisplayQuran(
             Spacer(modifier = Modifier.height(5.dp))
             val scope = rememberCoroutineScope()
             val state = rememberLazyListState()
+            val showButton by remember {
+                derivedStateOf {
+                    state!!.firstVisibleItemIndex > 0
+                }
+            }
+
+
+
             val fullyVisibleIndices: List<Int> by remember {
                 derivedStateOf {
                     val layoutInfo = state.layoutInfo
@@ -754,18 +791,26 @@ private fun LDisplayQuran(
 
 
             val corroutineScope = rememberCoroutineScope()
-            val listState = rememberLazyListState()
+
             val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
             val scrollPos =
-                state.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
-            //  scrollToCurrentTrack(state)
+                state.firstVisibleItemIndex * itemHeight + state.firstVisibleItemScrollOffset
+            LaunchedEffect(state) {
+                snapshotFlow {
+                    state!!.firstVisibleItemIndex
+                }
+                state.scrollToItem(currenttrack!!)
+            }
+
+                //  scrollToCurrentTrack(state)
            // Text(text = "scroll: $scrollPos")
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+                    .height(100.dp)
                .background(MaterialTheme.colorScheme.primary)
             ) {
+
                 Text(
 
                     text = surahs!![chapid - 1]!!.abjadname,
@@ -831,18 +876,9 @@ private fun LDisplayQuran(
             ) {
 
                 itemsIndexed(lquranbySurah!!.toList()) { index, item ->
-
-                    /*      val backgroundColor = if (index % 2 == 0) {
-
-                              Color.LightGray
-
-                          } else {
-
-                              Color.Red
-
-                          }*/
-                 //   Text(text = "current: $currenttrack")
-                 //   Text(text = "index: $index")
+                  scope.launch {
+                        state.scrollToItem(currenttrack!!)
+                    }
 
 
                     //   val img = imgs.getDrawable(surahs!!.chapid - 2)
@@ -919,7 +955,7 @@ private fun LDisplayQuran(
                                 ),
                                 modifier = Modifier
 
-                                    .background(if (isVisible && isplaying.value && currenttrack == index) Color.Cyan else Color.Transparent)
+                                    .background(if (isVisible && isplaying.value && currenttrack == index) Color.LightGray else Color.Transparent)
                                     .padding(3.dp)
 
 

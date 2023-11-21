@@ -1,8 +1,10 @@
 package com.appscreens
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -47,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.mushafconsolidated.Entities.QuranEntity
@@ -87,7 +91,13 @@ lateinit var zmafalun: IsmZarfMafalun
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 
-fun MatTab(navController: NavHostController, conjugation: String, root: String, mood: String?) {
+fun MatTab(
+    navController: NavController,
+    conjugation: String,
+    root: String,
+    mood: String?,
+    modifier: Modifier = Modifier
+) {
     var allofQuran: List<QuranEntity>? = null
 
     val vb = VerbWazan()
@@ -103,27 +113,7 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
     } else {
         root
     }
-    /*
-    5 = {ArrayList@27947}  size = 1
-     0 = {IsmAlaMifalun@27992} org.sj.verbConjugation.IsmAlaMifalun@14684e4
-    6 = {ArrayList@27948}  size = 1
-     0 = {IsmAlaMifalatun@27995} org.sj.verbConjugation.IsmAlaMifalatun@3dc3d4d
-    7 = {ArrayList@27949}  size = 1
-     0 = {IsmAlaMifaalun@27998} org.sj.verbConjugation.IsmAlaMifaalun@601c002
-    8 = {ArrayList@27950}  size = 1
-     0 = {IsmZarfMafilun@28048} org.sj.verbConjugation.IsmZarfMafilun@6cfda4e
-    9 = {ArrayList@27951}  size = 1
-     0 = {IsmZarfMafalatun@28045} org.sj.verbConjugation.IsmZarfMafalatun@3c6149
-    10 = {ArrayList@27952}  size = 1
-     0 = {IsmZarfMafalun@28017} org.sj.verbConjugation.IsmZarfMafalun@d590b50
 
-     lateinit var mifalun: IsmAlaMifaalun
-    lateinit var mialatun : IsmAlaMifalatun
-    lateinit var mifaalun: IsmAlaMifaalun
-    lateinit var zmafilun: IsmZarfMafilun
-    lateinit var zmafalatun : IsmZarfMafalatun
-    lateinit var zmafalun: IsmZarfMafalun
-     */
     vb.wazan = conjugation
     if (isMujarrad) {
         mazeed = GatherAll.instance.getMazeedListing(mood, verbroot, conjugation)
@@ -223,15 +213,22 @@ fun MatTab(navController: NavHostController, conjugation: String, root: String, 
         val backgroundColor = MaterialTheme.colorScheme.background
         TabRow(
             selectedTabIndex = selectedTabIndex,
-
-            contentColor = Color.Black,
-
-            containerColor =  MaterialTheme.colorScheme.primaryContainer,
-
+            modifier = modifier,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            indicator = { },
+            divider = { }
 
         ) {
             // tab items
             tabItems.forEachIndexed { index, item ->
+                val selected = index == selectedTabIndex
+                var textModifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                if (selected) {
+                    textModifier =
+                        Modifier
+                            .border(BorderStroke(2.dp, Color.White), RoundedCornerShape(16.dp))
+                            .then(textModifier)
+                }
 
                 Tab(
                     selected = (index == selectedTabIndex),
