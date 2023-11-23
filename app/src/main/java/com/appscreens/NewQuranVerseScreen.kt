@@ -4,9 +4,12 @@ import Utility.PreferencesManager
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.Movie
+import android.graphics.drawable.Icon
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,14 +29,23 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Surface
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,6 +62,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -58,6 +72,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
@@ -73,6 +89,7 @@ import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSett
 import com.appscreens.Result.*
 import com.corpusutility.AnnotationUtility
 import com.corpusutility.refWordMorphologyDetails
+import com.example.compose.CircularProgress
 import com.example.compose.LoadingData
 import com.example.compose.TextChipWBW
 import com.example.compose.theme.Tooltips
@@ -84,8 +101,8 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
-import com.example.mushafconsolidated.model.QuranCorpusWbw
-import com.example.utility.CorpusUtilityorig
+import com.example.searchwidgetdemo.QuranSearchViewModel
+import com.example.searchwidgetdemo.SearchAppBar
 import com.example.utility.QuranGrammarApplication
 import com.viewmodels.VerseModel
 import kotlinx.coroutines.CoroutineScope
@@ -155,7 +172,11 @@ fun NewQuranVerseScreen(
 
     loading = verseModel.loading.value
     LoadingData(isDisplayed = loading)
-
+    //  val searchViewModel = viewModel<VerseModel>()
+    val searchText by verseModel.searchText.collectAsState()
+ val   isSearching  by verseModel.isSearching.collectAsState()
+    val quranbySurahsearch by verseModel.quransentity.collectAsState()
+    val quranbySurahsearchs by verseModel.quransentity.collectAsStateWithLifecycle()
 
     //val cards by verseModel.cards.collectAsStateWithLifecycle()
     if (cardss.isNotEmpty()) {
@@ -194,7 +215,18 @@ fun NewQuranVerseScreen(
             }
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        Display(chapid, newnewadapterlist, thememode, navController, showwordbyword, showtranslation)
+        Display(
+            chapid,
+            newnewadapterlist,
+            thememode,
+            navController,
+            showwordbyword,
+            showtranslation,
+            quranbySurahsearch,
+            searchText,
+            verseModel,
+            isSearching
+        )
 
 
     }
@@ -296,7 +328,11 @@ private fun Display(
     thememode: Boolean,
     navController: NavHostController,
     showwordbyword: BooleanPreferenceSettingValueState,
-    showtranslation: BooleanPreferenceSettingValueState
+    showtranslation: BooleanPreferenceSettingValueState,
+    quranbySurahsearch: List<QuranEntity>?,
+    searchText: String,
+    verseModel: VerseModel,
+    isSearching: Boolean
 ) {
     val showButton by remember {
         derivedStateOf {
@@ -311,7 +347,11 @@ private fun Display(
             thememode,
             navController,
             showwordbyword,
-            showtranslation
+            showtranslation,
+            quranbySurahsearch,
+            searchText,
+            verseModel,
+            isSearching
         )
         if (showButton) {
             val coroutineScope = rememberCoroutineScope()
@@ -346,107 +386,183 @@ private fun extracted(
     thememode: Boolean,
     navController: NavHostController,
     showwordbyword: BooleanPreferenceSettingValueState,
-    showtranslation: BooleanPreferenceSettingValueState
+    showtranslation: BooleanPreferenceSettingValueState,
+    quranbySurahsearch: List<QuranEntity>?,
+    searchText: String,
+    verseModel: VerseModel,
+    isSearching: Boolean
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        state = listState!!
+    /*
+        shape: Shape =
+        MaterialTheme.shapes.small.copy(bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize),
+     */
+
+
+
+    Column(
+
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 60.dp)
     ) {
-        itemsIndexed(quranbySurah!!.toList()) { index, item ->
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(top = 10.dp)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
 
 
-            Card(
-                colors = CardDefaults.cardColors(
-                    //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
-                ), elevation = CardDefaults.cardElevation(
-                    defaultElevation = 16.dp
-                ), modifier = Modifier
-                    .fillMaxWidth()
+            Text(
 
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 8.dp
-                    )
+                text = surahs!![chapid - 1].abjadname,
+
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+                modifier = Modifier.align(Alignment.TopCenter),
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp
             )
+            if (surahs!![chapid - 1].ismakki == 1) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                    contentDescription = "contentDescription",
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_makkah_48),
+
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
+                    contentDescription = "contentDescription",
+                    contentScale = ContentScale.Crop,
+                )
 
 
-            {
+            }
 
-                RightToLeftLayout {
-                    FlowRow(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        maxItemsInEachRow = 6,
+            Text(
+                text = "No.Of Aya's" + surahs!![chapid - 1].versescount.toString(),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+
+                modifier = Modifier.align(Alignment.TopStart),
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp
+            )
+            Text(
+                text = "No.Of Ruku's" + surahs!![chapid - 1].rukucount.toString(),
+
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.align(Alignment.BottomStart),
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp
+            )
+        }
+        Column {
+            Surface(
+                modifier=Modifier.fillMaxWidth(),
+                color=MaterialTheme.colorScheme.primary,
+                elevation = 10.dp) {
+                Row {
+                 //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
+
+                    TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.9f)
+                            .padding(10.dp),
+                         keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                     leadingIcon = {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Localized description",
+                            Modifier.size(AssistChipDefaults.IconSize)
+                        )
+                    },
+                        placeholder = { Text(text = "Search: Surah#/Surah English Name") }
 
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 8.dp
-                            )
 
 
                     )
 
-                    {
-                        Box(
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                }
+
+            }
+
+        }
+        if(  isSearching){
+           Box(modifier=Modifier.fillMaxSize()){
+              CircularProgressIndicator(modifier=Modifier.align(Alignment.Center))
+           }
+        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 100.dp),
+
+            state = listState!!
+        ) {
+
+
+            /*     AsyncImage(
+                                 modifier = Modifier.align(Alignment.TopStart),
+                                 model = img,
+                                 contentDescription = "",
+                                 colorFilter = ColorFilter.tint(Color.Red),
+                             )*/
+
+
+
+
+            itemsIndexed(quranbySurahsearch!!.toList()) { index, item ->
+
+
+                Card(
+                    colors = CardDefaults.cardColors(
+                        //      containerColor = colorResource(id = R.color.bg_surface_dark_blue),
+                    ), elevation = CardDefaults.cardElevation(
+                        defaultElevation = 16.dp
+                    ), modifier = Modifier
+                        .fillMaxWidth()
+
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 8.dp
+                        )
+                )
+
+
+                {
+
+                    RightToLeftLayout {
+                        FlowRow(
+                            verticalArrangement = Arrangement.Top,
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            maxItemsInEachRow = 6,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(50.dp)
-                            //  .background(MaterialTheme.colorScheme.background)
-                        ) {
 
-
-                            Text(
-
-                                text = surahs!![chapid - 1].abjadname,
-
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Red,
-                                modifier = Modifier.align(Alignment.TopCenter),
-                                textAlign = TextAlign.Center,
-                                fontSize = 20.sp
-                            )
-                            if (surahs!![chapid - 1].ismakki == 1) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                    modifier = Modifier.align(Alignment.TopEnd),
-                                    //   .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                    contentDescription = "contentDescription",
-                                    contentScale = ContentScale.Crop
-                                )
-                            } else {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_makkah_48),
-
-                                    modifier = Modifier.align(Alignment.TopEnd),
-                                    //         .background(Color( QuranGrammarApplication.Companion.context!!!!.getColor(R.color.OrangeRed))),
-                                    contentDescription = "contentDescription",
-                                    contentScale = ContentScale.Crop,
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
                                 )
 
 
-                            }
+                        )
 
-                            Text(
-                                text = "No.Of Aya's" + surahs!![chapid - 1].versescount.toString(),
-                                color = Color.Black,
-                                fontWeight = FontWeight.Bold,
-
-                                modifier = Modifier.align(Alignment.TopStart),
-                                textAlign = TextAlign.Center,
-                                fontSize = 15.sp
-                            )
-                            Text(
-                                text = "No.Of Ruku's" + surahs!![chapid - 1].rukucount.toString(),
-
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black,
-                                modifier = Modifier.align(Alignment.BottomStart),
-                                textAlign = TextAlign.Center,
-                                fontSize = 15.sp
-                            )
+                        {
                             val builder = StringBuilder()
                             wordarray = newnewadapterlist[index]
                             //    builder.append("{").append(wordarray!![0].corpus!!.ayah  ).append("} ")
@@ -458,258 +574,229 @@ private fun extracted(
                                 )
                             )
                             Text(
-                                text = builder.toString(),
+                                text =  wordarray!![0].corpus!!.ayah.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
-                                modifier = Modifier.align(Alignment.BottomCenter),
+                                //   modifier = Modifier.align(Alignment.BottomCenter),
                                 textAlign = TextAlign.Center,
                                 fontSize = 15.sp
                             )
+                            if (showwordbyword.value) {
+                                // Text(text = wbw.wbw!!.en)
 
 
-                            /*     AsyncImage(
-                                         modifier = Modifier.align(Alignment.TopStart),
-                                         model = img,
-                                         contentDescription = "",
-                                         colorFilter = ColorFilter.tint(Color.Red),
-                                     )*/
+                                wordarray = newnewadapterlist[index]
+                                val totalItemsCount = listState!!.layoutInfo.totalItemsCount
 
 
-                        }
-                        wordarray = newnewadapterlist[index]
-                        val totalItemsCount = listState!!.layoutInfo.totalItemsCount
+                                var list = LinkedHashMap<AnnotatedString, String>()
+                                val lhm = LinkedHashMap<AnnotatedString, String>()
+
+                                for (wbw in wordarray!!) {
 
 
-                        var list = LinkedHashMap<AnnotatedString, String>()
-                        val lhm = LinkedHashMap<AnnotatedString, String>()
+                                    list = AnnotationUtility.AnnotatedStrings(
+                                        wbw.corpus!!.tagone, wbw.corpus!!.tagtwo,
+                                        wbw.corpus!!.tagthree, wbw.corpus!!.tagfour,
+                                        wbw.corpus!!.tagfive,
 
-                        for (wbw in wordarray!!) {
-
-
-                            list = AnnotationUtility.AnnotatedStrings(
-                                wbw.corpus!!.tagone, wbw.corpus!!.tagtwo,
-                                wbw.corpus!!.tagthree, wbw.corpus!!.tagfour,
-                                wbw.corpus!!.tagfive,
-
-                                wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
-                                wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
-                                wbw.corpus!!.arafive!!,
-                                wbw.wbw!!.en, thememode
-                            )
-
-                            val toList = list.toList()
-                            val annotatedStringStringPair = toList[0]
-                            val aword = annotatedStringStringPair.first
-                            val ln = "\n"
-                            val tra = annotatedStringStringPair.second
-
-                            val fword = aword + AnnotatedString(ln) + AnnotatedString(tra)
-
-
-                            //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
-                            val textChipRememberOneState = remember {
-                                mutableStateOf(false)
-                            }
-
-                            TextChipWBW(
-                                thememode,
-                                isSelected = textChipRememberOneState.value,
-                                text = fword,
-
-
-                                onChecked = {
-                                    cid = wbw.corpus!!.surah
-                                    aid = wbw.corpus!!.ayah
-                                    wid = wbw.corpus!!.wordno
-
-                                    textChipRememberOneState.value = it
-                                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                    cid = wbw.corpus!!.surah
-                                    aid = wbw.corpus!!.ayah
-                                    wid = wbw.corpus!!.wordno
-
-                                    showWordDetails.value = false
-
-                                    navController.navigate(
-                                        "wordalert/$cid/$aid/$wid"
+                                        wbw.corpus!!.araone!!, wbw.corpus!!.aratwo!!,
+                                        wbw.corpus!!.arathree!!, wbw.corpus!!.arafour!!,
+                                        wbw.corpus!!.arafive!!,
+                                        wbw.wbw!!.en, thememode
                                     )
 
-                                },
+                                    val toList = list.toList()
+                                    val annotatedStringStringPair = toList[0]
+                                    val aword = annotatedStringStringPair.first
+                                    val ln = "\n"
+                                    val tra = annotatedStringStringPair.second
+
+                                    val fword = aword + AnnotatedString(ln) + AnnotatedString(tra)
 
 
-                                selectedColor = Color.DarkGray,
+                                    //    Text(text = "First index: ${listState!!.firstVisibleItemIndex}")
+                                    val textChipRememberOneState = remember {
+                                        mutableStateOf(false)
+                                    }
 
-                                )
-                            if (showwordbyword.value) {
-                                Text(text = wbw.wbw!!.en)
+                                    TextChipWBW(
+                                        thememode,
+                                        isSelected = textChipRememberOneState.value,
+                                        text = fword,
+
+
+                                        onChecked = {
+                                            cid = wbw.corpus!!.surah
+                                            aid = wbw.corpus!!.ayah
+                                            wid = wbw.corpus!!.wordno
+
+                                            textChipRememberOneState.value = it
+                                            Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
+                                            cid = wbw.corpus!!.surah
+                                            aid = wbw.corpus!!.ayah
+                                            wid = wbw.corpus!!.wordno
+
+                                            showWordDetails.value = false
+
+                                            navController.navigate(
+                                                "wordalert/$cid/$aid/$wid"
+                                            )
+
+                                        },
+
+
+                                        selectedColor = Color.DarkGray,
+
+                                        )
+
+
+                                }
+
                             }
-
-
                         }
 
 
                     }
 
 
-                    /*       FlowRow(
-                                   verticalArrangement = Arrangement.Top,
-                                   horizontalArrangement = Arrangement.SpaceEvenly,
-                                   maxItemsInEachRow = 6,
-                                   modifier = Modifier
-                                       .fillMaxWidth()
-
-                                       .padding(
-                                           horizontal = 10.dp,
-                                           vertical = 8.dp
-                                       )
+                    //    startDetailActivity(cid,aid, wid!!)
+                    // navController.popBackStack("verses/{id}", true)
+                    //   showWordDetails.value = false
+                    //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
-                               )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
 
-                                    {
-
-                                            if (showwordbyword.value) {
-                                                Text(text = wbw!!.wbw!!.en)
-                                            }
-
-                                    }
-
-                            */
-
-
-                }
-
-
-                /*            ClickableText(
-                                    text = annotatedStringStringPair!!.first,
-
-                                    onClick = { position: Int ->
-                                        Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                                        cid = wbw.corpus!!.surah
-                                        aid = wbw.corpus!!.ayah
-                                        wid = wbw.corpus!!.wordno
-                                        showWordDetails.value = false
-
-    *//*
-                                           navController.navigate(
-                                                "books/${cid}/${aid}/${wid}"
-                                            )*//*
-
-                                            navController.navigate(
-                                                "wordalert/${cid}/${aid}/${wid}"
-                                            )
-
-
-
-                                        },
-                                        style = TextStyle(
-
-                                            fontSize = 26.sp,
-                                            fontFamily = dejavu
-                                        )
-                                    )*/
-
-
-                //    startDetailActivity(cid,aid, wid!!)
-                // navController.popBackStack("verses/{id}", true)
-                //   showWordDetails.value = false
-                //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 8.dp
-                        )
-                ) {
-                    wordarray = newnewadapterlist[index]
-
-                    ClickableText(
-                        text = wordarray!![0].annotatedVerse!!,
-
-                        onClick = {
-                            val cid = quranbySurah!![index].surah
-                            val aid = quranbySurah!![index].ayah
-                            navController.navigate(
-                                "versealert/${cid}/${aid}"
+                            .padding(
+                                horizontal = 10.dp,
+                                vertical = 8.dp
                             )
+                    ) {
+                        wordarray = newnewadapterlist[index]
 
-                        }, style = TextStyle(
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Cursive
-                        )
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier
-                        .fillMaxWidth()
+                        ClickableText(
+                            text = wordarray!![0].annotatedVerse!!,
 
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 8.dp
-                        )
+                            onClick = {
+                                val cid = quranbySurah!![index].surah
+                                val aid = quranbySurah!![index].ayah
+                                navController.navigate(
+                                    "versealert/${cid}/${aid}"
+                                )
 
-                ) {
-                    if (showtranslation.value) {
-                        ExpandableText(
-
-                            text = AnnotatedString(quranbySurah!![index].translation)
-                            /*    fontSize = 20.sp,
-                            fontFamily = indopak,
-                            color = colorResource(id = R.color.kashmirigreen)*/
+                            }, style = TextStyle(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.Cursive
+                            )
                         )
                     }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
 
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 8.dp
+                            .padding(
+                                horizontal = 10.dp,
+                                vertical = 8.dp
+                            )
+
+                    ) {
+                        if (showtranslation.value) {
+                            ExpandableText(
+
+                                text = AnnotatedString(quranbySurahsearch!![index].translation)
+                                /*    fontSize = 20.sp,
+                                fontFamily = indopak,
+                                color = colorResource(id = R.color.kashmirigreen)*/
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                            .padding(
+                                horizontal = 10.dp,
+                                vertical = 8.dp
+                            )
+                    ) {
+                        ExpandableText(
+                            text = AnnotatedString("Ibne Kathir :" + quranbySurahsearch!![0].tafsir_kathir)
                         )
-                ) {
-                    /*     wordarray = newnewadapterlist[index]
-                             val annotedMousuf = AnnotationUtility.AnnotedMousuf(
-                                 wordarray!![0].annotatedVerse.toString(),
-                                 wordarray!![0].corpus!!.surah, wordarray!![0].corpus!!.ayah
-                             )
-     */
+                    }
+              /*      Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
 
-                    ExpandableText(
-                        text = AnnotatedString("Ibne Kathir :" + quranbySurah!![0].tafsir_kathir)
-
-
-                    )
-
+                            .padding(
+                                horizontal = 10.dp,
+                                vertical = 8.dp
+                            )
+                    ) {
+                        ExpandableText(
+                            text = AnnotatedString("Trans literation :" + quranbySurahsearch!![0].en_transliteration)
+                        )
+                    }
+*/
 
                 }
+                if (showWordDetails.value) {
+                    BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                    //
+                    //  Bottoms()
+                    //    extractedtooltips(utils)
+                    /*
 
+                                        var openBottomSheet by remember { mutableStateOf(false) }
+                                        //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                                        ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
 
-            }
-            if (showWordDetails.value) {
-                BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-                //
-                //  Bottoms()
-                //    extractedtooltips(utils)
-                /*
+                                        }
+                        */
 
-                                    var openBottomSheet by remember { mutableStateOf(false) }
-                                    //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-                                    ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
-
-                                    }
-                    */
-
+                }
             }
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ReplySearchBar(
+    modifier: Modifier = Modifier,
+    searchText: String,
+    searchViewModel: QuranSearchViewModel
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(1.dp)
+            .background(MaterialTheme.colorScheme.background, CircleShape),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+    }
+}
+
+@Composable
+fun ReplyProfileImage(
+    drawableResource: Int,
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(40.dp)
+            .clip(CircleShape),
+        painter = painterResource(id = drawableResource),
+        contentDescription = description,
+    )
 }
 
 
@@ -718,4 +805,32 @@ fun RightToLeftLayout(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         content()
     }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchScreen(
+    searchQuery: String,
+    searchResults: List<Movie>,
+    onSearchQueryChange: (String) -> Unit
+) {
+    SearchBar(
+        query = searchQuery,
+        onQueryChange = onSearchQueryChange,
+        onSearch = {},
+        placeholder = {
+            Text(text = "Search movies")
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = null
+            )
+        },
+        trailingIcon = {},
+        content = {},
+        active = true,
+        onActiveChange = {},
+        tonalElevation = 0.dp
+    )
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "517a71307686f677dc531815b0a14aa2",
+    "identityHash": "7320dc82f840fd5718f71f8b5f39cb86",
     "entities": [
       {
         "tableName": "hduadetails",
@@ -1790,7 +1790,7 @@
       },
       {
         "tableName": "qurans",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`surah` INTEGER NOT NULL, `ayah` INTEGER NOT NULL, `page` INTEGER NOT NULL, `quarter` INTEGER NOT NULL, `hizb` INTEGER NOT NULL, `juz` INTEGER NOT NULL, `qurantext` TEXT NOT NULL, `passage_no` INTEGER NOT NULL, `has_prostration` INTEGER NOT NULL, `translation` TEXT NOT NULL, `en_transliteration` TEXT NOT NULL, `en_jalalayn` TEXT NOT NULL, `en_arberry` TEXT NOT NULL, `ar_irab_two` TEXT NOT NULL, `ur_jalalayn` TEXT NOT NULL, `ur_junagarhi` TEXT NOT NULL, `tafsir_kathir` TEXT NOT NULL, `docid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`surah`) REFERENCES `chaptersana`(`chapterid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`surah` INTEGER NOT NULL, `ayah` INTEGER NOT NULL, `page` INTEGER NOT NULL, `quarter` INTEGER NOT NULL, `hizb` INTEGER NOT NULL, `juz` INTEGER NOT NULL, `qurantext` TEXT NOT NULL, `quranclean` TEXT NOT NULL, `passage_no` INTEGER NOT NULL, `has_prostration` INTEGER NOT NULL, `translation` TEXT NOT NULL, `en_transliteration` TEXT NOT NULL, `en_jalalayn` TEXT NOT NULL, `en_arberry` TEXT NOT NULL, `ar_irab_two` TEXT NOT NULL, `ur_jalalayn` TEXT NOT NULL, `ur_junagarhi` TEXT NOT NULL, `tafsir_kathir` TEXT NOT NULL, `docid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`surah`) REFERENCES `chaptersana`(`chapterid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "surah",
@@ -1831,6 +1831,12 @@
           {
             "fieldPath": "qurantext",
             "columnName": "qurantext",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quranclean",
+            "columnName": "quranclean",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -2345,7 +2351,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '517a71307686f677dc531815b0a14aa2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7320dc82f840fd5718f71f8b5f39cb86')"
     ]
   }
 }

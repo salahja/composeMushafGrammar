@@ -12,23 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/Result.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/newtheme/CraneTheme.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/newtheme/Typography.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_light.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_medium.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/font/raleway_semibold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/qurangrammar.db.zipss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/search/QuranSearchViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/com.example.mushafconsolidated.QuranAppDatabase/1.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/com.example.mushafconsolidated.QuranAppDatabase/1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/qurangrammar.db.zip" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/qurangrammar.db.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/QuranPageScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Color.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/theme/Theme.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/QuranEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mushafconsolidated/Entities/QuranEntity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_xo_player.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_xo_player.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/xo_player.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/xo_player.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,13 +87,16 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2WmNTrFl67RTRgW3GxnPJyGkhHe" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -111,7 +106,7 @@
     "android-custom-view/home/anons/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/button/MaterialButton.java_SELECTED": "MaterialButton",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "/home/anons/Desktop/codelab-android-compose-end/AccessibilityCodelab/app",
+    "last_opened_file_path": "/home/anons/Desktop/SearchBar-app_logic",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
@@ -124,11 +119,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/search" />
       <recent name="$PROJECT_DIR$/app/src/main/res/font" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/newtheme" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/appscreensn" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/multiplebottomsheet" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
     <key name="android.template.-1557561774">
       <recent name="com.downloads" />
@@ -855,7 +850,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700503072866</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Initial commit">
+      <created>1700571745115</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1700571745115</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Initial commit">
+      <created>1700572995412</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1700572995412</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -870,6 +879,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Initial commit" />
     <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
   </component>
@@ -911,7 +921,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>110</line>
+          <line>131</line>
           <option name="timeStamp" value="175" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1129,29 +1139,9 @@
           <option name="timeStamp" value="348" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>521</line>
-          <option name="timeStamp" value="359" />
-        </line-breakpoint>
-        <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>522</line>
-          <option name="timeStamp" value="360" />
-        </line-breakpoint>
-        <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/BottomSheetWordDetails.kt</url>
           <line>64</line>
           <option name="timeStamp" value="361" />
-        </line-breakpoint>
-        <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>326</line>
-          <option name="timeStamp" value="362" />
-        </line-breakpoint>
-        <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>342</line>
-          <option name="timeStamp" value="363" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt</url>
@@ -1358,18 +1348,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>801</line>
-          <option name="timeStamp" value="572" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
           <line>406</line>
           <option name="timeStamp" value="576" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreensn/LineQuranPageScreen.kt</url>
-          <line>274</line>
-          <option name="timeStamp" value="577" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/viewmodels/VerseModel.kt</url>
+          <line>87</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="578" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
+          <line>180</line>
+          <option name="timeStamp" value="579" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/activities/TwoPane.kt</url>
@@ -1384,6 +1377,7 @@
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.viewmodels.ExpandableVerseViewModel$VerseAnalysisModel" memberName="grammarrule" />
+        <PinnedItemInfo parentTag="kotlinx.coroutines.flow.StateFlowImpl" memberName="_state" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
@@ -1404,6 +1398,8 @@
         <watch expression="msecond" />
         <watch expression="l" />
         <watch expression="currenttrack" />
+        <watch expression="searchText" />
+        <watch expression="quranbySurahsearch" />
       </configuration>
       <configuration name="ComposePreviewRunConfiguration">
         <watch expression="state" />

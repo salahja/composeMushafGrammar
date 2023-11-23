@@ -454,6 +454,8 @@
     <string name="Topsetting">topsettings</string>
     <string name="title_activity_download">DownloadAct</string>
     <string name="Mushaf">Mushaf</string>
+    <string name="search_replies">Search Quran</string>
+    <string name="quran">Quran\n</string>
 
 
 </resources>

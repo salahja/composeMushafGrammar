@@ -35,14 +35,39 @@ data class QuranEntity constructor(
     var ur_jalalayn: String,
     var ur_junagarhi: String,
     var tafsir_kathir: String,
+    var quranclean: String,
     @field:PrimaryKey(
         autoGenerate = true
     ) var docid: Int,
 
 
     ) {
-    @Ignore
-    var erabspnabble: SpannableStringBuilder? = null
 
+   /* init {
+        en_transliteration = en_transliteration
+        quranclean=quranclean
+        translation=translation
+        tafsir_kathir=tafsir_kathir
+    }
+*/
+    fun doesMatchSearchQuery(query :String) :Boolean{
+        val matchingCombinations= listOf(
+/*
+          "$chapterid",
+              "$abjadname$nameenglish",
+              "$abjadname $nameenglish",
+              "${abjadname.first()} ${nameenglish.first()}   ${chapterid}
+ */
+
+           // "$ayah",
+          //  "$quranclean$translation",
+          //  "$quranclean$ayah",
+            "$ayah",
+           "${ayah}"
+        )
+        return matchingCombinations.any{
+            it.contains(query,ignoreCase = true)
+        }
+    }
 
 }

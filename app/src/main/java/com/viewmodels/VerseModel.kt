@@ -21,8 +21,14 @@ import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -67,6 +73,40 @@ class VerseModel(
     private var verbCorpusArray: ArrayList<VerbCorpusBreakup>? = null
     private var occurances: ArrayList<CorpusNounWbwOccurance>? = null
     val loading = mutableStateOf(true)
+    private val _searchText= MutableStateFlow("")
+    val searchText =_searchText.asStateFlow()
+
+
+    private val _issearching= MutableStateFlow(value = false)
+    val isSearching =_issearching.asStateFlow()
+    val utils= Utils(QuranGrammarApplication.context)
+
+    val quran=utils.getQuranbySurah(chapid)
+
+    private val _isQuran= MutableStateFlow(quran)
+
+    val quransentity =searchText
+        .debounce(1000L)
+        .onEach { _issearching.update { true } }
+        .combine(_isQuran){ text, qurans->
+            if(text.isBlank()) {
+                qurans
+            } else {
+                qurans!!.filter {
+                    it!!.doesMatchSearchQuery (text)
+                }
+            }
+        }
+        .onEach { _issearching.update { false } }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            _isQuran.value
+
+        )
+    fun onSearchTextChange(text :String){
+        _searchText.value = text
+    }
 
     init {
         loading.value = true
