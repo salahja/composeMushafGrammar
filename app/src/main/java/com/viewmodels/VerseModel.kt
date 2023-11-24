@@ -4,7 +4,9 @@ package com.viewmodels
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +22,7 @@ import com.example.mushafconsolidated.Utils
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -84,6 +87,41 @@ class VerseModel(
     val quran=utils.getQuranbySurah(chapid)
 
     private val _isQuran= MutableStateFlow(quran)
+
+
+    var state by mutableStateOf(ActorsScreenState())
+
+    private var searchJob: Job? = null
+
+
+    fun onAction(userAction: UserAction) {
+        when (userAction) {
+            UserAction.CloseIconClicked -> {
+                state = state.copy(isSearchBarVisible = false)
+            }
+            UserAction.SearchIconClicked -> {
+                state = state.copy(isSearchBarVisible = true)
+            }
+            is UserAction.TextFieldInput -> {
+                state = state.copy(searchText = userAction.text)
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(500L)
+                    searchActorsInList(searchQuery = userAction.text)
+                }
+            }
+
+        }
+    }
+
+    private fun searchActorsInList(
+        searchQuery: String
+    ) {
+        val newList = actorsList.filter {
+            it.contains(searchQuery, ignoreCase = true)
+        }
+        state = state.copy(list = newList)
+    }
 
     val quransentity =searchText
         .debounce(1000L)
@@ -179,6 +217,64 @@ data class DetailsUiState(
     val throwError: Boolean = false
 )
 
+
+val actorsList = listOf(
+    "Leonardo DiCaprio",
+    "Chris Evans",
+    "Brad Pitt",
+    "Elizabeth Olsen",
+    "Kate Winslet",
+    "Tom Holland",
+    "Joseph Gordon-Levitt",
+    "Scarlett Johansson",
+    "Anne Hathaway",
+    "Meryl Streep",
+    "Tom Hardy",
+    "Tom Cruise",
+    "Sandra Bullock",
+    "Charlize Theron",
+    "Dakota Johnson",
+    "James Franco",
+    "Paul Rudd",
+    "Jennifer Lawrence",
+    "Benedict Cumberbatch",
+    "Hugh Jackman",
+    "Tom Hiddleston",
+    "Anna Kendrick",
+    "Daniel Craig",
+    "Shah Rukh Khan",
+    "Will Smith",
+    "George Clooney",
+    "Liam Neeson",
+    "Angelina Jolie",
+    "Michael Fassbender",
+    "Idris Elba",
+    "Russell Crowe",
+    "Ryan Gosling",
+    "Ben Affleck",
+    "Chris Hemsworth",
+    "Margot Robbie",
+    "Emma Stone",
+    "Natalie Portman",
+    "Tom Hanks",
+    "Denzel Washington",
+    "Mark Wahlberg",
+    "Matt Damon",
+    "Chris Pratt",
+    "Samuel L. Jackson",
+    "Johnny Depp",
+    "Robert Downey Jr",
+    "Christian Bale",
+    "Matthew McConaughey",
+    "Morgan Freeman",
+    "Jake Gyllenhaal",
+    "Jeremy Renner",
+    "Dwayne Johnson",
+    "Michael B. Jordan",
+    "Mark Ruffalo",
+    "Jesse Eisenberg",
+    "Keanu Reeves",
+)
 
 
 

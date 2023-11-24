@@ -35,6 +35,12 @@ class SearchViewModel : ViewModel() {
 
     private val _ischapters= MutableStateFlow(chapterlist)
 
+
+
+
+
+
+
     val chapters =searchText
         .combine(_ischapters){text,chapters->
         if(text.isBlank()) {

@@ -60,10 +60,10 @@ data class QuranEntity constructor(
  */
 
            // "$ayah",
-          //  "$quranclean$translation",
-          //  "$quranclean$ayah",
+            "$quranclean$translation$qurantext$tafsir_kathir",
+           "$quranclean $translation",
             "$ayah",
-           "${ayah}"
+           "${quranclean.first()}  ${ayah}  "
         )
         return matchingCombinations.any{
             it.contains(query,ignoreCase = true)
