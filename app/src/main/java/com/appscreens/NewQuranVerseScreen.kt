@@ -26,12 +26,14 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
@@ -222,9 +224,77 @@ fun NewQuranVerseScreen(
             listState!!.firstVisibleItemIndex > 0
         }
     }
-   // extracted(vmstate, verseModel, keyboardController, focusManager)
 
 
+
+    Column {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.primary,
+            elevation = 10.dp
+        ) {
+            Row {
+                //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
+                mysearchbar(
+                    vmstate,
+                    searchText,
+                    verseModel,
+                    keyboardController,
+                    focusManager,
+                    isSearching,
+                    quranbySurahsearch,
+                    newnewadapterlist,
+                    navController,
+                    showwordbyword,
+                    showtranslation
+                )
+
+
+
+            }
+            Row(modifier=Modifier.wrapContentHeight()
+                .padding(top = 10.dp)) {
+                SurahDetails(
+                    chapid,
+                    vmstate,
+                    searchText,
+                    verseModel,
+                    keyboardController,
+                    focusManager,
+                    isSearching,
+                    quranbySurahsearch,
+                    newnewadapterlist,
+                    navController,
+                    showwordbyword,
+                    showtranslation
+                )
+            }
+
+        }
+
+    }
+
+
+
+
+
+}
+
+@Composable
+private fun SurahDetails(
+    chapid: Int,
+    vmstate: ActorsScreenState,
+    searchText: String,
+    verseModel: VerseModel,
+    keyboardController: SoftwareKeyboardController?,
+    focusManager: FocusManager,
+    isSearching: Boolean,
+    quranbySurahsearch: List<QuranEntity>?,
+    newnewadapterlist: LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>,
+    navController: NavHostController,
+    showwordbyword: BooleanPreferenceSettingValueState,
+    showtranslation: BooleanPreferenceSettingValueState
+) {
     Column(
 
         modifier = Modifier
@@ -291,136 +361,10 @@ fun NewQuranVerseScreen(
                 fontSize = 15.sp
             )
         }
-        Column {
-            Surface(
-                modifier=Modifier.fillMaxWidth(),
-                color=MaterialTheme.colorScheme.primary,
-                elevation = 10.dp) {
-                Row {
-                    //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
-                  mysearchbar(vmstate,searchText,verseModel,keyboardController, focusManager,isSearching,quranbySurahsearch,newnewadapterlist,navController,showwordbyword,showtranslation)
-         /*        TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .padding(10.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        leadingIcon = {
-                            Icon(
-                                Icons.Filled.Search,
-                                contentDescription = "Localized description",
-                                Modifier.size(AssistChipDefaults.IconSize)
-                            )
-                        },
-                        placeholder = { Text(text = "Search: Surah#/Surah English Name") }
 
 
-
-                    )
-
-
-                    Spacer(modifier = Modifier.height(5.dp))
-*/
-                }
-
-            }
-
-        }
-
-    }
-
-
-
-
-
-    @Composable
-    fun extractedtooltips(utils: Utils) {
-        //  TooltipOnLongClickExample()
-        val openDialogCustom: MutableState<Boolean> = remember {
-            mutableStateOf(true)
-        }
-
-
-        val tooltipPopupProperties = PopupProperties(focusable = true)
-        val tooltipOffset = DpOffset(0.dp, 0.dp)
-        val corpusNounWord: ArrayList<NounCorpus?> =
-            utils.getQuranNouns(
-                cid,
-                aid,
-                wid
-            ) as ArrayList<NounCorpus?>
-        val verbCorpusRootWord: List<VerbCorpus?> =
-            utils.getQuranRoot(
-                cid,
-                aid,
-                wid
-
-
-            ) as List<VerbCorpus>
-
-        val qm =
-            refWordMorphologyDetails(
-                wordarray!![0].corpus!!,
-                corpusNounWord,
-                verbCorpusRootWord
-            )
-        val workBreakDown = qm.workBreakDown
-        Tooltips(
-            expanded = openDialogCustom,
-            modifier = Modifier,
-            2000L,
-            tooltipOffset,
-            tooltipPopupProperties
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth(),
-
-                ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, Color.Red)
-                ) {
-
-
-                    Text(
-                        text = workBreakDown.toString(),
-                        fontWeight = FontWeight.Bold,
-
-
-                        textAlign = TextAlign.Center,
-                        fontSize = 25.sp
-                    )
-                }
-
-
-            }
-        }
-
-        /*
-
-                                    Tooltips(openDialogCustom, modifier = Modifier,
-                                        200L, TooltipOffset, TooltipPopupProperties,comp
-
-
-
-
-                                    )
-                */
-
-        //    openWordDIalog(cid, aid, wid)
-        //    showWordDetails.value = true
-        // showWordDetails.value = false
     }
 }
-
-
-
-
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
@@ -442,6 +386,7 @@ fun mysearchbar(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .wrapContentHeight()
             .background(MaterialTheme.colorScheme.background)
             //    .background(BackgroundColor)
             .padding(20.dp)
@@ -493,7 +438,7 @@ fun mysearchbar(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 100.dp),
+                .padding(top = 10.dp),
 
             state = listState!!
         ) {
@@ -1411,14 +1356,16 @@ fun TopSearchAppBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .wrapContentHeight()
+            .background(MaterialTheme.colorScheme.primary)
             .padding(top = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Famous Actors",
-            fontSize = 40.sp,
+            text = "Search",
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+          //  color = Color.White,
             fontFamily = FontFamily.Cursive
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -1427,7 +1374,7 @@ fun TopSearchAppBar(
             Icon(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = "Search Icon",
-                tint = Color.White,
+             //   tint = Color.White,
                 modifier = Modifier.size(30.dp)
             )
         }
@@ -1447,20 +1394,24 @@ fun SearchAppBar(
 ) {
     Row {
         //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
-
+        val lightBlue = Color(0xffd8e6ff)
+        val blue = Color(0xff76a9ff)
         TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .padding(10.dp),
+            //    .background(MaterialTheme.colorScheme.inversePrimary)
+                .padding(15.dp),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
+
+            shape = RoundedCornerShape(48.dp),
             placeholder = {
                 Text(
                     text = "Search...",
                     // fontFamily = cairoFont,
-                    color = Color.White.copy(alpha = ContentAlpha.medium)
+                  //  color = Color.White.copy(alpha = ContentAlpha.medium)
                 )
             },
 
@@ -1484,18 +1435,27 @@ fun SearchAppBar(
                     androidx.compose.material.Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "Close Icon",
-                        tint = Color.White
+                        tint = Color.Blue
                     )
                 }
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.White.copy(
-                    alpha = ContentAlpha.medium
-                ),
-                focusedBorderColor = Color.White,
-                cursorColor = Color.White,
+
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = lightBlue,
+                cursorColor = Color.Black,
+                disabledLabelColor = lightBlue,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             ),
 
+         /*   colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Red.copy(
+                    alpha = ContentAlpha.medium
+                ),
+                focusedBorderColor = Color.Red,
+                cursorColor = Color.White,
+            ),
+*/
       /*
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
@@ -1509,60 +1469,74 @@ fun SearchAppBar(
 
     }
 
-/*
-    TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
-        modifier = Modifier.fillMaxWidth(),
-        value = text,
 
-        textStyle = TextStyle(
-            color = Color.White,
-            fontSize = 18.sp
-        ),
-        placeholder = {
-             Text(
-                text = "Search...",
-               // fontFamily = cairoFont,
-                color = Color.White.copy(alpha = ContentAlpha.medium)
-            )
-        },
-        leadingIcon = {
-           Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search Icon",
-                tint = Color.White.copy(
-                    alpha = ContentAlpha.medium
-                )
-            )
-        },
-        trailingIcon = {
-            androidx.compose.material.IconButton(
-                onClick = {
-                    if (text.isNotEmpty()) {
-                        onInputValueChange("")
-                    } else {
-                        onCloseIconClicked()
-                    }
-                }
-            ) {
-                androidx.compose.material.Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = "Close Icon",
-                    tint = Color.White
-                )
-            }
-        },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Color.White.copy(
-                alpha = ContentAlpha.medium
-            ),
-            focusedBorderColor = Color.White,
-            cursorColor = Color.White,
-        ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(
-            onSearch = { onSearchClicked() }
-        )
-    )*/
 }
 
 
+@Composable
+fun Tooltips(utils: Utils) {
+    //  TooltipOnLongClickExample()
+    val openDialogCustom: MutableState<Boolean> = remember {
+        mutableStateOf(true)
+    }
+
+
+    val tooltipPopupProperties = PopupProperties(focusable = true)
+    val tooltipOffset = DpOffset(0.dp, 0.dp)
+    val corpusNounWord: ArrayList<NounCorpus?> =
+        utils.getQuranNouns(
+            cid,
+            aid,
+            wid
+        ) as ArrayList<NounCorpus?>
+    val verbCorpusRootWord: List<VerbCorpus?> =
+        utils.getQuranRoot(
+            cid,
+            aid,
+            wid
+
+
+        ) as List<VerbCorpus>
+
+    val qm =
+        refWordMorphologyDetails(
+            wordarray!![0].corpus!!,
+            corpusNounWord,
+            verbCorpusRootWord
+        )
+    val workBreakDown = qm.workBreakDown
+    Tooltips(
+        expanded = openDialogCustom,
+        modifier = Modifier,
+        2000L,
+        tooltipOffset,
+        tooltipPopupProperties
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth(),
+
+            ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Color.Red)
+            ) {
+
+
+                Text(
+                    text = workBreakDown.toString(),
+                    fontWeight = FontWeight.Bold,
+
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp
+                )
+            }
+
+
+        }
+    }
+
+}
