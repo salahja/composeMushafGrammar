@@ -43,7 +43,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
@@ -99,6 +99,16 @@
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
 
+
+        <activity
+            android:name="com.android.audiomushaf.ShowMushafActivity"
+            android:exported="true"
+            android:parentActivityName=".Activity.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mushafconsolidated.Activity.MainActivity" />
+        </activity>
         <activity
             android:name="com.example.searchwidgetdemo.SearchActivity"
             android:exported="true"
@@ -157,8 +167,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mushafconsolidated.Activity.MainActivity" />
         </activity>
+        <activity
+            android:name="com.activities.ActivitySettings"
+            android:exported="true"
+            android:parentActivityName=".Activity.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mushafconsolidated.Activity.MainActivity" />
+        </activity>
 
-
+        <service
+            android:name="com.android.audiomushaf.DownloadService"
+            android:enabled="true"
+            android:exported="false" />
 
 
         <provider
@@ -171,22 +193,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
-            android:name="com.twopane.TwoPaneActivity"
-            android:exported="true"
-            android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mushafconsolidated.Activity.MainActivity" />
-        </activity>
         <!--
      <meta-data
             android:name="com.google.android.gms.version"

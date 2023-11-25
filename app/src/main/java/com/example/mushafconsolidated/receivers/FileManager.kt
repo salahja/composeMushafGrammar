@@ -31,8 +31,12 @@ object FileManager {
         var ayaID: String = aya.toString() + ""
         if (suraLength == 1) suraID = "00" + sura else if (suraLength == 2) suraID = "0" + sura
         if (ayaLength == 1) ayaID = "00" + aya else if (ayaLength == 2) ayaID = "0" + aya
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            .toString() + "/" + reader + "/" + suraID + ayaID + AudioAppConstants.Extensions.Companion.MP3
+      //  return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+       //     .toString() + "/" + reader + "/" + suraID + ayaID + AudioAppConstants.Extensions.Companion.MP3
+
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            .toString() + "/audio/" + reader + "/" + suraID + ayaID + AudioAppConstants.Extensions.Companion.MP3
+
         //Audio file path
         /*       return Environment
                 .getExternalStorageDirectory()

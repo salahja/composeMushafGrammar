@@ -68,7 +68,7 @@ fun CustomPlayer(modifier: Modifier = Modifier) {
 
     val repository = Utils(QuranGrammarApplication.context)
     val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
-        70
+        9
     )
     for (ayaItem in quranbySurah!!) {
         ayaLocations.add(

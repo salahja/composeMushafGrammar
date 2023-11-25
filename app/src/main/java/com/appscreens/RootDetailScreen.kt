@@ -185,7 +185,7 @@ fun VerbRootGridList(
 
 
                    },
-            colors =MaterialTheme.colorScheme.primary,
+            colors =MaterialTheme.colorScheme.onSurface,
 
         )
 
@@ -460,7 +460,7 @@ fun NounRootGridList(
 
 
             },
-            colors =MaterialTheme.colorScheme.secondary,
+            colors =MaterialTheme.colorScheme.onSurface,
         )
 
     }

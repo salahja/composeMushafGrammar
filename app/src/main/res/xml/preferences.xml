@@ -49,10 +49,7 @@
         android:key="@string/prefs_show_translitration"
         android:title="Show Transliteration"
         app:icon="@drawable/ic_baseline_text_fields_24" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="@string/prefs_show_en_jalalayn"
-        android:title="Show English Jalalayn Tafseer" />
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/prefs_show_translation"
@@ -78,12 +75,7 @@
         android:key="@string/prefs_show_colortag"
         android:title="Color Grammatical Words/Phrases"
         app:icon="@drawable/ic_baseline_color_lens_24" />
-    <Preference
-        android:defaultValue="en"
-        android:dialogTitle="set main action"
-        app:fragment="com.example.mushafconsolidated.fragments.ActivitySettings$SelectQuranFronts"
-        android:key="@string/prefs_wbw"
-        android:title="Select WBW Language" />
+
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/pref_default_device_font"
@@ -166,7 +158,7 @@
 
 
         <Preference
-            android:defaultValue="dark"
+            android:defaultValue="blue"
            android:key="themepref"
             app:fragment="com.example.mushafconsolidated.fragments.ActivitySettings$SelectQuranFronts"
             app:icon="@drawable/ic_baseline_format_paint_34"

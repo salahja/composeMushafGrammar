@@ -176,7 +176,7 @@ fun NewQuranVerseScreen(
     LoadingData(isDisplayed = loading)
     //  val searchViewModel = viewModel<VerseModel>()
     val searchText by verseModel.searchText.collectAsState()
- val   isSearching  by verseModel.isSearching.collectAsState()
+    val isSearching by verseModel.isSearching.collectAsState()
     val quranbySurahsearch by verseModel.quransentity.collectAsState()
     val quranbySurahsearchs by verseModel.quransentity.collectAsStateWithLifecycle()
 
@@ -250,10 +250,12 @@ fun NewQuranVerseScreen(
                 )
 
 
-
             }
-            Row(modifier=Modifier.wrapContentHeight()
-                .padding(top = 10.dp)) {
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(top = 10.dp)
+            ) {
                 SurahDetails(
                     chapid,
                     vmstate,
@@ -273,9 +275,6 @@ fun NewQuranVerseScreen(
         }
 
     }
-
-
-
 
 
 }
@@ -425,16 +424,17 @@ fun mysearchbar(
             }
         }
 
-      Divider(
+        Divider(
             //   color = CardBackgroundColor,
             thickness = 2.dp,
             modifier = Modifier.padding(vertical = 30.dp)
         )
-        if(  isSearching){
-            Box(modifier=Modifier.fillMaxSize()){
-                CircularProgressIndicator(modifier=Modifier.align(Alignment.Center))
+        if (isSearching) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
+        thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -502,7 +502,7 @@ fun mysearchbar(
                                 )
                             )
                             Text(
-                                text =  wordarray!![0].corpus!!.ayah.toString(),
+                                text = wordarray!![0].corpus!!.ayah.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
@@ -721,14 +721,14 @@ fun mysearchbar(
                 }
             }
         }
-   /*     LazyColumn {
-            this.items(vmstate.list) { actor ->
-                SingleItemCard(
-                    actorName = actor
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-            }
-        } */
+        /*     LazyColumn {
+                 this.items(vmstate.list) { actor ->
+                     SingleItemCard(
+                         actorName = actor
+                     )
+                     Spacer(modifier = Modifier.height(15.dp))
+                 }
+             } */
     }
 }
 
@@ -805,11 +805,11 @@ fun SingleItemCard(
 
 
         colors = CardDefaults.cardColors(
-        containerColor = MaterialTheme.colorScheme.primary,
-    ),
-    elevation = CardDefaults.cardElevation(
-        defaultElevation = 16.dp
-    ),
+            containerColor = MaterialTheme.colorScheme.primary,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 16.dp
+        ),
     )
 
 
@@ -828,11 +828,12 @@ fun SingleItemCard(
             androidx.compose.material.Text(
                 text = actorName,
                 fontSize = 20.sp,
-             //   fontFamily = cairoFont
+                //   fontFamily = cairoFont
             )
         }
     }
 }
+
 @Composable
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun Display(
@@ -980,29 +981,29 @@ private fun extracted(
         }
         Column {
             Surface(
-                modifier=Modifier.fillMaxWidth(),
-                color=MaterialTheme.colorScheme.primary,
-                elevation = 10.dp) {
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
+                elevation = 10.dp
+            ) {
                 Row {
-                 //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
+                    //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
 
                     TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
                         modifier = Modifier
                             .fillMaxWidth(0.9f)
                             .padding(10.dp),
-                         keyboardOptions = KeyboardOptions(
+                        keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done
-                    ),
-                     leadingIcon = {
-                        Icon(
-                            Icons.Filled.Search,
-                            contentDescription = "Localized description",
-                            Modifier.size(AssistChipDefaults.IconSize)
-                        )
-                    },
+                            imeAction = ImeAction.Done
+                        ),
+                        leadingIcon = {
+                            Icon(
+                                Icons.Filled.Search,
+                                contentDescription = "Localized description",
+                                Modifier.size(AssistChipDefaults.IconSize)
+                            )
+                        },
                         placeholder = { Text(text = "Search: Surah#/Surah English Name") }
-
 
 
                     )
@@ -1015,10 +1016,10 @@ private fun extracted(
             }
 
         }
-        if(  isSearching){
-           Box(modifier=Modifier.fillMaxSize()){
-              CircularProgressIndicator(modifier=Modifier.align(Alignment.Center))
-           }
+        if (isSearching) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
         LazyColumn(
             modifier = Modifier
@@ -1087,7 +1088,7 @@ private fun extracted(
                                 )
                             )
                             Text(
-                                text =  wordarray!![0].corpus!!.ayah.toString(),
+                                text = wordarray!![0].corpus!!.ayah.toString(),
 
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
@@ -1242,20 +1243,20 @@ private fun extracted(
                             text = AnnotatedString("Ibne Kathir :" + quranbySurahsearch!![0].tafsir_kathir)
                         )
                     }
-              /*      Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
+                    /*      Row(
+                              modifier = Modifier
+                                  .fillMaxWidth()
 
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 8.dp
-                            )
-                    ) {
-                        ExpandableText(
-                            text = AnnotatedString("Trans literation :" + quranbySurahsearch!![0].en_transliteration)
-                        )
-                    }
-*/
+                                  .padding(
+                                      horizontal = 10.dp,
+                                      vertical = 8.dp
+                                  )
+                          ) {
+                              ExpandableText(
+                                  text = AnnotatedString("Trans literation :" + quranbySurahsearch!![0].en_transliteration)
+                              )
+                          }
+      */
 
                 }
                 if (showWordDetails.value) {
@@ -1319,6 +1320,7 @@ fun RightToLeftLayout(content: @Composable () -> Unit) {
         content()
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
@@ -1352,7 +1354,7 @@ fun SearchScreen(
 fun TopSearchAppBar(
     onSearchIconClicked: () -> Unit,
 
-) {
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -1365,7 +1367,7 @@ fun TopSearchAppBar(
             text = "Search",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-          //  color = Color.White,
+            //  color = Color.White,
             fontFamily = FontFamily.Cursive
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -1374,13 +1376,12 @@ fun TopSearchAppBar(
             Icon(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = "Search Icon",
-             //   tint = Color.White,
+                //   tint = Color.White,
                 modifier = Modifier.size(30.dp)
             )
         }
     }
 }
-
 
 
 @Composable
@@ -1396,10 +1397,11 @@ fun SearchAppBar(
         //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
         val lightBlue = Color(0xffd8e6ff)
         val blue = Color(0xff76a9ff)
-        TextField(value = searchText, onValueChange = verseModel::onSearchTextChange,
+        TextField(
+            value = searchText, onValueChange = verseModel::onSearchTextChange,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-            //    .background(MaterialTheme.colorScheme.inversePrimary)
+                //    .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(15.dp),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -1411,7 +1413,7 @@ fun SearchAppBar(
                 Text(
                     text = "Search...",
                     // fontFamily = cairoFont,
-                  //  color = Color.White.copy(alpha = ContentAlpha.medium)
+                    //  color = Color.White.copy(alpha = ContentAlpha.medium)
                 )
             },
 
@@ -1448,19 +1450,19 @@ fun SearchAppBar(
                 unfocusedIndicatorColor = Color.Transparent
             ),
 
-         /*   colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Red.copy(
-                    alpha = ContentAlpha.medium
-                ),
-                focusedBorderColor = Color.Red,
-                cursorColor = Color.White,
-            ),
-*/
-      /*
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(
-                onSearch = { onSearchClicked() }
-            )*/
+            /*   colors = TextFieldDefaults.outlinedTextFieldColors(
+                   unfocusedBorderColor = Color.Red.copy(
+                       alpha = ContentAlpha.medium
+                   ),
+                   focusedBorderColor = Color.Red,
+                   cursorColor = Color.White,
+               ),
+   */
+            /*
+                          keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                  keyboardActions = KeyboardActions(
+                      onSearch = { onSearchClicked() }
+                  )*/
 
         )
 

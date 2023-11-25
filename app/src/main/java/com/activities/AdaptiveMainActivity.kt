@@ -4,6 +4,7 @@ import AudioPlayer
 import CardsScreen
 
 import NavigationActions
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -68,6 +69,7 @@ import com.adaptive.theme.ComposeSettingsTheme
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
+import com.android.audiomushaf.ShowMushafActivity
 import com.appscreens.BottomSheetWordDetails
 import com.appscreens.MatTab
 
@@ -88,6 +90,7 @@ import com.appscreens.newVerseAnalysisCardsScreen
 import com.appscreensn.LineQuranPageScreen
 import com.downloadmanager.DownloaderViewModel
 import com.example.myapplication.MainLayout
+import com.example.utility.QuranGrammarApplication.Companion.context
 import com.modelfactory.AudioDownloadFactory
 import com.modelfactory.CardViewModelFactory
 import com.modelfactory.QuranVMFactory
@@ -508,6 +511,7 @@ fun  MainContent(
                     val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
 
                     AudioPlayer()
+
                 }
 
 
@@ -696,7 +700,20 @@ fun  MainContent(
 
                 }
 
-                //
+                composable(Screen.Audio.route) {
+
+                            val intent = Intent(Intent.ACTION_VIEW)
+                                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                  val i = Intent(context, ShowMushafActivity::class.java)
+                                  i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                  context!!.startActivity(i)
+
+
+
+
+
+                }
+
 
 
                 composable("versealert/{chapterid}/{verseid}",
@@ -842,7 +859,8 @@ val items = listOf(
     Screen.Home,
     Screen.Profile,
     Screen.Settings,
-    Screen.Mushaf
+    Screen.Mushaf,
+    Screen.Audio
 )
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
@@ -852,5 +870,6 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object Settings : Screen("setting", R.string.Setting)
     object TopSettings : Screen("topsetting", R.string.Topsetting)
     object Mushaf : Screen("mushaf", R.string.Mushaf)
+    object Audio : Screen("audio", R.string.audio)
 
 }

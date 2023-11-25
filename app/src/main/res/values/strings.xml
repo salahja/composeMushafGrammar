@@ -35,7 +35,7 @@
     <string name="OK" />
 
 
-    <string name="prefs_select_translaton">selecttranslation</string>
+    <string name="prefs_select_translaton">whichtranslation</string>
     <!-- Strings used for fragments for navigation -->
 
     <string name="app_folder_path">/Mushafapplication</string>
@@ -221,7 +221,7 @@
     <string name="search_title">Search</string>
     <string name="back">◀ </string>
     <string name="jumpto">jumpto</string>
-    <string name="settings">settings</string>
+    <string name="settings">Settings</string>
     <string name="mushafview">mushafview</string>
     <string name="surah">Surah</string>
     <string name="conjugatorS">Conjugator</string>
@@ -456,6 +456,7 @@
     <string name="Mushaf">Mushaf</string>
     <string name="search_replies">Search Quran</string>
     <string name="quran">Quran\n</string>
+    <string name="audio">Audio\n</string>
 
 
 </resources>
