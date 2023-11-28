@@ -1,16 +1,16 @@
 package com.android.audiomushaf
 
 import AudioPlayed
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -18,6 +18,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
+import android.util.ArrayMap
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -26,6 +27,8 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -37,7 +40,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,8 +47,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.activities.ActivitySettings
 import com.example.Constant.CHAPTER
 import com.example.Constant.SURAH_ARABIC_NAME
+
 import com.example.mushafconsolidated.Activityimport.AyahCoordinate
 import com.example.mushafconsolidated.Activityimport.BaseActivity
+
+
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.Page
 import com.example.mushafconsolidated.Entities.Qari
@@ -55,6 +60,7 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.intrfaceimport.OnItemClickListenerOnLong
 import com.example.mushafconsolidated.receiversimport.AudioAppConstants
+
 import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.mushafconsolidated.receiversimport.QuranValidateSources
 import com.example.mushafconsolidated.receiversimport.Settingsss
@@ -62,6 +68,7 @@ import com.example.mushafconsolidated.settingsimport.Constants
 import com.example.utility.ConfigPreferences
 import com.example.utility.FlowLayout
 import com.example.utility.MovableFloatingActionButton
+import com.example.utility.QuranGrammarApplication
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -80,10 +87,19 @@ import com.google.android.exoplayer2.util.RepeatModeUtil
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
+import com.tonyodev.fetch2.AbstractFetchListener
 import com.tonyodev.fetch2.Download
-import com.tonyodev.fetch2.Fetch
+import com.tonyodev.fetch2.Error
+import com.tonyodev.fetch2.FetchConfiguration
+import com.tonyodev.fetch2.FetchListener
+import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Request
+import com.tonyodev.fetch2.getErrorFromThrowable
+import com.tonyodev.fetch2rx.RxFetch
+import io.reactivex.disposables.Disposable
+import timber.log.Timber
 import wheel.OnWheelChangedListener
 import wheel.WheelView
 import java.io.File
@@ -95,6 +111,7 @@ import kotlin.math.max
 
 class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnClickListener,
     FullscreenButtonClickListener {
+    private lateinit var filepath: String
     val isjuz = false
     private lateinit var exo_settings: ImageButton
     private lateinit var exo_close: ImageButton
@@ -109,7 +126,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
     private var onClickOrRange = false
     private lateinit var llStartRange: LinearLayout
     private lateinit var llEndRange: LinearLayout
-    private val mainFetch: Fetch? = null
+
     //  private LinkedHashMap<Integer, Integer> hlights;
     private val hlights: LinkedHashMap<Int, ArrayList<AyahCoordinate>> =
         LinkedHashMap()
@@ -157,15 +174,24 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
     private lateinit var surahNameEnglish: String
     private lateinit var surahNameArabic: String
     private lateinit var isNightmode: String
+    private var mainView: View? = null
+    private var progressTextView: TextView? = null
+    private var progressBar: ProgressBar? = null
+    private var startButton: Button? = null
+    private var labelTextView: TextView? = null
+    private val fileProgressMap = ArrayMap<Int, Int>()
+    private var rxFetch: RxFetch? = null
+    private var enqueueDisposable: Disposable? = null
+    private var resumeDisposable: Disposable? = null
 
     // LinearLayout fabLayout1, fabLayout2,fabLayout3;
     //  FloatingActionButton fab, fab1, fab2, fab3;
     private lateinit var playfb: MovableFloatingActionButton
     override fun onBackPressed() {
 
-        //unregister broadcast for download ayat
-        LocalBroadcastManager.getInstance(this@ShowMushafActivity)
-            .unregisterReceiver(downloadPageAya)
+        /*        //unregister broadcast for download ayat
+                LocalBroadcastManager.getInstance(this@ShowMushafActivity)
+                    .unregisterReceiver(downloadPageAya)*/
         //stop flag of auto start
         startBeforeDownload = false
         if (player != null) {
@@ -178,10 +204,10 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             if (currenttrack == 0) {
                 Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                     hlights[currenttrack + 1]
-                                                                 )[0].passage!!.let {
+                )[0].passage!!.let {
                     editor.putInt(
                         "trackposition", it
-                                 )
+                    )
                 }
             } else {
                 hlights[currenttrack]!![0].passage!!.let { editor.putInt("trackposition", it) }
@@ -201,7 +227,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
     //   val translationBooks: Spinner = TODO()
     private lateinit var readers: Spinner
-    private lateinit var downloadFooter: RelativeLayout
+    private lateinit var downloadFooter: FrameLayout
     private lateinit var normalFooter: LinearLayout
     private lateinit var playerFooter: RelativeLayout
     private lateinit var audio_settings_bottom: RelativeLayout
@@ -224,6 +250,16 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         //    ButterKnife.bind(this);
         //    QuranGrammarApplication.appContext = ShowMushafActivity.this;
         //  intentmyservice = new Intent(this, AudioService.class);
+        val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(this).build()
+        //    rxFetch = RxFetch.Impl.getInstance(fetchConfiguration);
+        RxFetch.setDefaultRxInstanceConfiguration(fetchConfiguration)
+
+        //  rxFetch.Impl.setDefaultFetchConfiguration(config);
+        rxFetch = RxFetch.getDefaultRxInstance()
+        //   rxFetch!!.retry(id = 3)
+        // Links= com.example.compose.createDownloadLinks()
+        setUpViews()
+        reset()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val intent = Intent(BROADCAST_SEEKBAR)
         getpreferences()
@@ -282,8 +318,145 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             }
         }
         initRV()
+        filepath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() + "/audio/" + readerID
     }
 
+    private fun setUpViews() {
+        progressTextView = findViewById(R.id.progressTextView)
+        progressBar = findViewById(R.id.progressBar)
+        startButton = findViewById(R.id.startButton)
+        labelTextView = findViewById(R.id.labelTextView)
+        mainView = findViewById(R.id.activity_loading)
+        labelTextView!!.setText(R.string.fetch_started)
+        //     enqueueFiles(Links)
+        startButton!!.setOnClickListener(View.OnClickListener { v: View? ->
+            val label = startButton!!.getText() as String
+            val context: Context = this@ShowMushafActivity
+            if (label == context.getString(R.string.reset)) {
+                rxFetch!!.deleteAll()
+                reset()
+            } else {
+                startButton!!.setVisibility(View.GONE)
+                labelTextView!!.setText(R.string.fetch_started)
+                checkStoragePermission()
+            }
+        })
+    }
+
+    private fun checkStoragePermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            STORAGE_PERMISSION_CODE
+        )
+        //  enqueueFiles(Links)
+    }
+
+
+    private fun enqueueFiles(Links: ArrayList<String>, filepath: String) {
+        // readerID=getReaderId()
+        val requestList = getFileUrlUpdates(this, Links, filepath,readerID.toString())
+        for (request in requestList) {
+            request.groupId = groupId
+        }
+        enqueueDisposable =
+            rxFetch!!.enqueue(requestList).flowable.subscribe({ updatedRequests: List<Pair<Request, Error?>> ->
+                for ((first) in updatedRequests) {
+                    fileProgressMap[first.id] = 0
+                    updateUIWithProgress()
+                }
+            }) { throwable: Throwable? ->
+                val error = getErrorFromThrowable(
+                    throwable!!
+                )
+                Timber.d("GamesFilesActivity Error: %1\$s", error)
+            }
+    }
+
+
+    fun getFileUrlUpdates(context: Context, Links: List<String>, filepath: String,readerid:String): List<Request> {
+        val requests: MutableList<Request> = ArrayList()
+        val url = "http://speedtest.ftp.otenet.gr/files/test100k.db"
+        for (sampleUrl in Links) {
+            val request = Request(sampleUrl, getFilePath(sampleUrl, context, filepath,readerid))
+            request.priority = Priority.HIGH
+            //val request = Request(sampleUrl, filepath)
+            requests.add(request)
+        }
+        /*       for (i in 0..9) {
+                   val filePath = getSaveDir(context) + "/gameAssets/" + "asset_" + i + ".asset"
+                   val request = Request(url, filePath)
+                   request.priority = Priority.HIGH
+                   requests.add(request)
+               }*/
+        return requests
+    }
+
+
+    private fun getFilePath(url: String, context: Context, filepath: String, readerid: String): String {
+        val uri = Uri.parse(url)
+        val fileName = uri.lastPathSegment
+        val dir = getSaveDirs(context,readerid)
+        return "$dir/$fileName"
+    }
+
+    private fun getSaveDirs(context: Context, readerid: String): Any {
+        return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/fetch/"+readerid
+    }
+
+    private fun updateUIWithProgress() {
+        val totalFiles = fileProgressMap.size
+        val completedFiles = completedFileCount
+        progressTextView!!.text =
+            resources.getString(R.string.complete_over, completedFiles, totalFiles)
+        val progress = downloadProgress
+        progressBar!!.progress = progress
+        if (completedFiles == totalFiles) {
+            labelTextView!!.text = getString(R.string.fetch_done)
+            startButton!!.setText(R.string.reset)
+            startButton!!.visibility = View.VISIBLE
+            downloadFooter.visibility = View.GONE
+            normalFooter.visibility = View.GONE
+
+
+            initializePlayer()
+            playerFooter.visibility = View.VISIBLE
+            audio_settings_bottom.visibility = View.GONE
+
+        }
+    }
+    private val downloadProgress: Int
+        private get() {
+            var currentProgress = 0
+            val totalProgress = fileProgressMap.size * 100
+            val ids: Set<Int> = fileProgressMap.keys
+            for (id in ids) {
+                currentProgress += fileProgressMap[id]!!
+            }
+            currentProgress = (currentProgress.toDouble() / totalProgress.toDouble() * 100).toInt()
+            return currentProgress
+        }
+    private val completedFileCount: Int
+        private get() {
+            var count = 0
+            val ids: Set<Int> = fileProgressMap.keys
+            for (id in ids) {
+                val progress = fileProgressMap[id]!!
+                if (progress == 100) {
+                    count++
+                }
+            }
+            return count
+        }
+    private fun reset() {
+        rxFetch!!.deleteAll()
+        fileProgressMap.clear()
+        progressBar!!.progress = 0
+        progressTextView!!.text = ""
+        labelTextView!!.setText(R.string.start_fetching)
+        startButton!!.setText(R.string.start)
+        startButton!!.visibility = View.VISIBLE
+    }
     private fun getpreferences() {
         val pref: SharedPreferences =
             applicationContext.getSharedPreferences("lastreadmushaf", MODE_PRIVATE)
@@ -458,7 +631,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                 R.layout.spinner_layout_larg,
                 R.id.spinnerText,
                 readersNames
-                                                                                 )
+            )
             readers.adapter = spinnerReaderAdapter
             for (counter in readersNames.indices) {
                 if (readersNames[counter].trim { it <= ' ' } == selectedqari.trim { it <= ' ' }) {
@@ -856,23 +1029,23 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                     Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[currenttrack - 1]
                     )[0].passage!!
-                                                                      )!!
+                )!!
                 if (currenttrack < Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[hlights.size - 1]
-                                                                                    )[0].passage!!
+                    )[0].passage!!
                 ) recyclerView.post {
                     recyclerView.scrollToPosition(
                         Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                             hlights[currenttrack - 1]
                         )[0].passage!!
-                                                 )
+                    )
                 } else {
                     recyclerView.post {
                         recyclerView.scrollToPosition(
                             Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                                 hlights[currenttrack]
                             )[0].passage!!
-                                                     )
+                        )
                     }
                 }
             } else {
@@ -880,16 +1053,16 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                     Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[currenttrack + 1]
                     )[0].passage!!
-                                                                      )!!
+                )!!
                 if (currenttrack < Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[hlights.size - 1]
-                                                                                    )[0].passage!!
+                    )[0].passage!!
                 ) recyclerView.post {
                     recyclerView.scrollToPosition(
                         Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                             hlights[currenttrack + 1]
                         )[0].passage!!
-                                                 )
+                    )
                 }
                 currenttrack++
             }
@@ -996,7 +1169,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                     Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[currenttrack]
                     )[0].passage!!
-                                                                      )
+                )
                 if (currenttrack < Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[hlights.size]
                     )[0].passage!!
@@ -1005,14 +1178,14 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                         Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                             hlights[currenttrack + 1]
                         )[0].passage!!
-                                                 )
+                    )
                 } else {
                     recyclerView.post {
                         recyclerView.scrollToPosition(
                             Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                                 hlights[currenttrack]
                             )[0].passage!!
-                                                     )
+                        )
                     }
                 }
             } else {
@@ -1020,7 +1193,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                     Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[currenttrack + 1]
                     )[0].passage!!
-                                                                      )
+                )
                 if (currenttrack < Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                         hlights[hlights.size]
                     )[0].passage!!
@@ -1029,7 +1202,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                         Objects.requireNonNull<ArrayList<AyahCoordinate>>(
                             hlights[currenttrack + 1]
                         )[0].passage!!
-                                                 )
+                    )
                 }
                 currenttrack++
             }
@@ -1148,6 +1321,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         if (isMusicplaying) {
             releasePlayer()
         }
+        //   player = ExoPlayer.Builder(this).build()
         if (player == null) {
             playerFooter.visibility = View.VISIBLE
             normalFooter.visibility = View.GONE
@@ -1158,7 +1332,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             marray = if (isjuz) {
                 createMediaItemsJuz()
             } else {
-                createMediaItems()
+                createMediaItemsrx()
             }
             //urrah      marray = createMediaItems();
             if (marray.isEmpty()) {
@@ -1308,6 +1482,86 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         return marray
     }
 
+    private fun createMediaItemsrx(): MutableList<MediaItem> {
+        val repository = Utils(this)
+        val chap: List<ChaptersAnaEntity?>? = repository.getSingleChapter(
+            surahselected
+        )
+        println("$versestartrange $verseendrange")
+        val ayaLocations: MutableList<String> = ArrayList()
+        marray = ArrayList()
+        if (isSingle) {
+            val sngleverseplay: List<QuranEntity?>? = repository.getsurahayahVerses(
+                surahselected, verselected
+            )
+            //Create files locations for the all page ayas
+            //Create files locations for the all page ayas
+            for (ayaItem in sngleverseplay!!) {
+                ayaLocations.add(
+                    FileManager.createAyaAudioLinkLocation(
+                        this,
+                        readerID,
+                        ayaItem!!.ayah,
+                        ayaItem.surah
+                    )
+                )
+                val location = FileManager.createAyaAudioLinkLocation(
+                    this,
+                    readerID,
+                    ayaItem.ayah,
+                    ayaItem.surah
+                )
+                marray.add(MediaItem.fromUri(location))
+            }
+        } else if (isStartFrom) {
+            onClickOrRange = true
+            val fromrange: List<QuranEntity?>? = Utils.getQuranbySurahAyahrange(
+                surahselected,
+                verselected, chap!![0]!!.versescount
+            )
+            for (ayaItem in fromrange!!) {
+                ayaLocations.add(
+                    FileManager.createAyaAudioLinkLocation(
+                        this,
+                        readerID,
+                        ayaItem!!.ayah,
+                        ayaItem.surah
+                    )
+                )
+                val location = FileManager.createAyaAudioLinkLocation(
+                    this,
+                    readerID,
+                    ayaItem.ayah,
+                    ayaItem.surah
+                )
+                marray.add(MediaItem.fromUri(location))
+            }
+        } else {
+            val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(
+                surahselected
+            )
+            val dir=getSaveDirs(this, readerID.toString())
+            for (ayaItem in quranbySurah!!) {
+                ayaLocations.add(
+                    FileManager.createAyaAudioLinkLocation(
+                        this,
+                        readerID,
+                        ayaItem!!.ayah,
+                        ayaItem.surah
+                    )
+                )
+                val location = FileManager.createAyaAudioLinkLocationrx(
+                    this,
+                    readerID,
+                    ayaItem.ayah,
+                    ayaItem.surah,
+                    dir.toString()
+                )
+                marray.add(MediaItem.fromUri(location))
+            }
+        }
+        return marray
+    }
     private fun createMediaItems(): MutableList<MediaItem> {
         val repository = Utils(this)
         val chap: List<ChaptersAnaEntity?>? = repository.getSingleChapter(
@@ -1386,7 +1640,6 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         }
         return marray
     }
-
     private fun updateTrackSelectorParameters() {
         if (player != null) {
             trackSelectionParameters = player!!.trackSelectionParameters
@@ -1522,8 +1775,8 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
     @SuppressLint("WrongViewCast", "NotifyDataSetChanged")
     private fun initRV() {
         ayaprogress = findViewById<MaterialTextView>(R.id.ayaprogress)
-        canceldownload = findViewById<MaterialButton>(R.id.canceldownload)
-        canceldownload.setOnClickListener(this)
+//        canceldownload = findViewById<MaterialButton>(R.id.canceldownload)
+        //     canceldownload.setOnClickListener(this)
         qariname = findViewById<TextView>(R.id.lqari)
         //  buffering = findViewById(R.id.exo_buffering) as ImageView
         val chooseDisplaytype: SwitchCompat = findViewById(R.id.chooseDisplaytype)
@@ -1539,7 +1792,6 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         val playresume = findViewById<MaterialButton>(R.id.playresume)
         playresume.setOnClickListener(this)
         val surahselection = findViewById<MaterialButton>(R.id.surahselection)
-
         surahselection.setOnClickListener(this)
         val settings = findViewById<MaterialButton>(R.id.audiosetting)
         settings.setOnClickListener(this)
@@ -1572,9 +1824,9 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         playiv.setOnClickListener(this)
         audio_settings_bottom = findViewById(R.id.audio_settings_bottom)
         normalFooter = findViewById<LinearLayout>(R.id.normalfooter)
-        downloadFooter = findViewById<RelativeLayout>(R.id.footerdownload)
+        downloadFooter = findViewById<FrameLayout>(R.id.activity_loading)
         playerFooter = findViewById<RelativeLayout>(R.id.footerplayer)
-        mediaPlayerDownloadProgress = findViewById<ProgressBar>(R.id.downloadProgress)
+        // mediaPlayerDownloadProgress = findViewById<ProgressBar>(R.id.downloadProgress)
         chooseDisplaytype.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 singleline = true
@@ -1596,11 +1848,14 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         }
         surahselection.setOnClickListener { SurahAyahPicker(isrefresh = true, starttrue = true) }
 
+
+
         settings.setOnClickListener{
 
             val settingint = Intent(this, ActivitySettings::class.java)
             startActivity(settingint)
         }
+
         playfb.setOnClickListener {
             if (audioSettingBottomBehaviour.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 audioSettingBottomBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
@@ -1622,7 +1877,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                 .append("1")
             stt.append(surahNameEnglish).append("-").append(surahselected).append(":").append(
                 versescount
-                                                                                             )
+            )
             startrange.text = st.toString()
             startrange.text = stt.toString()
         }
@@ -1729,14 +1984,14 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             resume = true
             DownloadIfnotPlay()
         }
-        canceldownload.setOnClickListener {
-            downloadFooter.visibility = View.GONE
-            normalFooter.visibility = View.VISIBLE
-            //stop flag of auto start audio after download
-            startBeforeDownload = false
-            //stop download service
-            stopService(Intent(this@ShowMushafActivity, DownloadService::class.java))
-        }
+        /*       canceldownload.setOnClickListener {
+                   downloadFooter.visibility = View.GONE
+                   normalFooter.visibility = View.VISIBLE
+                   //stop flag of auto start audio after download
+                   startBeforeDownload = false
+                   //stop download service
+                   stopService(Intent(this@ShowMushafActivity, DownloadService::class.java))
+               }*/
 
         // to preserver quran direction from right to left
         recyclerView.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -1760,70 +2015,68 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
     override fun onPause() {
 //        mSensorManager.unregisterListener(this);
         super.onPause()
-
+        rxFetch!!.removeListener(fetchListener)
         //unregister broadcast for download ayat
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadPageAya)
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadPageAya)
         //stop flag of auto start
         startBeforeDownload = false
     }
 
     override fun onResume() {
         super.onResume()
-
-        //register broadcast for download ayat
-        LocalBroadcastManager.getInstance(this)
-            .registerReceiver(downloadPageAya, IntentFilter(AudioAppConstants.Download.INTENT))
-
-        //make footer change to normal if audio end in pause
-        if (!Settingsss.isMyServiceRunning(this, DownloadService::class.java)) {
-            playerFooter.visibility = View.GONE
-            normalFooter.visibility = View.GONE
-        } else {
-            if (downloadFooter.visibility != View.VISIBLE) {
-                playerFooter.visibility = View.VISIBLE
-            } else {
-                playerFooter.visibility = View.GONE
-            }
-            normalFooter.visibility = View.GONE
-        }
-
-        //loadPagesReadLoge();
-    }
-
-    private val downloadPageAya: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val value = intent.getLongExtra(AudioAppConstants.Download.NUMBER, 0).toInt()
-            val max = intent.getLongExtra(AudioAppConstants.Download.MAX, 0).toInt()
-            val status = intent.getStringExtra(AudioAppConstants.Download.DOWNLOAD)
-            if (status != null) {
-                if (status == AudioAppConstants.Download.IN_DOWNLOAD) {
-                    downloadFooter.visibility = View.VISIBLE
-                    normalFooter.visibility = View.GONE
-                    playerFooter.visibility = View.GONE
-                    mediaPlayerDownloadProgress.max = max
-                    mediaPlayerDownloadProgress.progress = value
-                } else if (status == AudioAppConstants.Download.FAILED) {
-                    mediaPlayerDownloadProgress.max = 1
-                    mediaPlayerDownloadProgress.progress = 1
-                } else if (status == AudioAppConstants.Download.SUCCESS) {
-                    mediaPlayerDownloadProgress.max = 1
-                    mediaPlayerDownloadProgress.progress = 1
-                    //check if you auto play after download
-                    if (startBeforeDownload) {
-                        //change views
-                        downloadFooter.visibility = View.GONE
-                        normalFooter.visibility = View.GONE
-                        playerFooter.visibility = View.VISIBLE
-                        initializePlayer()
-                    } else {
-                        downloadFooter.visibility = View.GONE
-                        normalFooter.visibility = View.GONE
-                        playerFooter.visibility = View.GONE
+        rxFetch!!.addListener(fetchListener)
+        resumeDisposable = rxFetch!!.getDownloadsInGroup(groupId).flowable.subscribe(
+            { downloads: List<Download> ->
+                for (download in downloads) {
+                    if (fileProgressMap.containsKey(download.id)) {
+                        fileProgressMap[download.id] = download.progress
+                        updateUIWithProgress()
                     }
                 }
             }
+        ) { throwable: Throwable? ->
+            val error = getErrorFromThrowable(
+                throwable!!
+            )
+            Timber.d("GamesFilesActivity Error: %1\$s", error)
         }
     }
+
+
+    /*   private val downloadPageAya: BroadcastReceiver = object : BroadcastReceiver() {
+           override fun onReceive(context: Context, intent: Intent) {
+               val value = intent.getLongExtra(AudioAppConstants.Download.NUMBER, 0).toInt()
+               val max = intent.getLongExtra(AudioAppConstants.Download.MAX, 0).toInt()
+               val status = intent.getStringExtra(AudioAppConstants.Download.DOWNLOAD)
+               if (status != null) {
+                   if (status == AudioAppConstants.Download.IN_DOWNLOAD) {
+                       downloadFooter.visibility = View.VISIBLE
+                       normalFooter.visibility = View.GONE
+                       playerFooter.visibility = View.GONE
+                    //   mediaPlayerDownloadProgress.max = max
+                    //   mediaPlayerDownloadProgress.progress = value
+                   } else if (status == AudioAppConstants.Download.FAILED) {
+                    //   mediaPlayerDownloadProgress.max = 1
+                     //  mediaPlayerDownloadProgress.progress = 1
+                   } else if (status == AudioAppConstants.Download.SUCCESS) {
+                     //  mediaPlayerDownloadProgress.max = 1
+                     //  mediaPlayerDownloadProgress.progress = 1
+                       //check if you auto play after download
+                       if (startBeforeDownload) {
+                           //change views
+                           downloadFooter.visibility = View.GONE
+                           normalFooter.visibility = View.GONE
+                           playerFooter.visibility = View.VISIBLE
+                           initializePlayer()
+                       } else {
+                           downloadFooter.visibility = View.GONE
+                           normalFooter.visibility = View.GONE
+                           playerFooter.visibility = View.GONE
+                       }
+                   }
+               }
+           }
+       }*/
 
     private fun createDownloadLink(): List<String> {
         val chap: List<ChaptersAnaEntity?>? = repository.getSingleChapter(surah)
@@ -1875,7 +2128,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
         if (quranbySurah != null) {
             for (ayaItem in quranbySurah) {
                 //validate if aya download or not
-                if (!QuranValidateSources.validateAyaAudio(
+                if (!QuranValidateSources.validateAyaAudiorx(
                         this,
                         readerID,
                         ayaItem!!.ayah,
@@ -1892,7 +2145,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
                     var suraID: String = chap[0]!!.chapterid.toString() + ""
 
 
-                    val ayaLength = ayaItem.ayah.toString().trim { it <= ' ' }.length
+                    val ayaLength = ayaItem!!.ayah.toString().trim { it <= ' ' }.length
                     //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
                     //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
                     var ayaID = java.lang.StringBuilder(
@@ -1926,116 +2179,25 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
 //https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/
         //check if there is other download in progress
-        if (!Settingsss.isMyServiceRunning(this, DownloadService::class.java)) {
-            //internal media play
 
-            //internal media play
-            val everyayah = true
-            val Links: List<String>? = if (audioType != 2) {
-                createDownloadLinks()
-            } else {
-                createDownloadLink()
-            }
+        //internal media play
 
-            if (Links!!.isNotEmpty()) {
-                //check if the internet is opened
-             //   DownLoadIfNot(internetStatus, Links as ArrayList<String>)
-                FetchDownLoadIfNot(internetStatus, Links as ArrayList<String>)
-
-
-            } else {
-                initializePlayer()
-                playerFooter.visibility = View.VISIBLE
-                audio_settings_bottom.visibility = View.GONE
-            }
+        //internal media play
+        val everyayah = true
+        val Links: List<String>? = if (audioType != 2) {
+            createDownloadLinks()
         } else {
-            //Other thing in download
-            Toast.makeText(this, getString(R.string.download_busy), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getSampleRequests(): List<Request> {
-        val requests= listOf<Request>()
-        val chap = repository.getSingleChapter(surah)
-        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(surah)
-        surahselected = surah
-        //   int ayaID=0;
-        var counter = 0
-        //   quranbySurah.add(0, new QuranEntity(1, 1, 1));
-        val downloadLinks: MutableList<String> = java.util.ArrayList()
-        //   ayaList.add(0, new Aya(1, 1, 1));
-        //loop for all page ayat
-//check if readerID is 0
-        if (readerID == 0) {
-            for (qari in readersList) {
-                if (qari.name_english == selectedqari) {
-                    readerID = qari.id
-                    downloadLink = qari.url
-                    break
-                }
-            }
-        }
-        if (quranbySurah != null) {
-            for (ayaItem in quranbySurah) {
-                //validate if aya download or not
-                if (!QuranValidateSources.validateAyaAudio(
-                        this,
-                        readerID,
-                        ayaItem!!.ayah,
-                        ayaItem.surah
-                    )
-                ) {
-
-                    //create aya link
-
-
-                    //create aya link
-                    val suraLength: Int =
-                        chap!![0]!!.chapterid.toString().trim { it <= ' ' }.length
-                    var suraID: String = chap[0]!!.chapterid.toString() + ""
-
-
-                    val ayaLength = ayaItem.ayah.toString().trim { it <= ' ' }.length
-                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
-                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
-                    var ayaID = java.lang.StringBuilder(
-                        java.lang.StringBuilder().append(ayaItem.ayah).append("").toString()
-                    )
-                    if (suraLength == 1) suraID =
-                        "00" + ayaItem.surah else if (suraLength == 2) suraID = "0" + ayaItem.surah
-
-                    if (ayaLength == 1) {
-                        ayaID = java.lang.StringBuilder("00" + ayaItem.ayah)
-                    } else if (ayaLength == 2) {
-                        ayaID = java.lang.StringBuilder("0" + ayaItem.ayah)
-                    }
-                    counter++
-                    //add aya link to list
-                    //chec
-                    downloadLinks.add(downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3)
-                    Log.d(
-                        "DownloadLinks",
-                        downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
-                    )
-                }
-            }
-        }
-        return TODO("Provide the return value")
-    }
-
-    private fun FetchDownLoadIfNot(internetStatus: Int, strings: ArrayList<String>) {
-
-        val requestList: List<Request> = getSampleRequests()
-        val groupId = "MySampleGroup".hashCode()
-
-        for (i in requestList.indices) {
-            requestList[i].groupId = groupId
+            createDownloadLink()
         }
 
-
-
-
-
+        if (Links!!.isNotEmpty()) {
+            //check if the internet is opened
+            DownLoadIfNot(internetStatus, Links as ArrayList<String>)
+        } else {
+            initializePlayer()
+            playerFooter.visibility = View.VISIBLE
+            audio_settings_bottom.visibility = View.GONE
+        }
 
     }
 
@@ -2047,7 +2209,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             builder.setMessage(resources.getString(R.string.no_internet_alert))
             builder.setPositiveButton(
                 resources.getString(R.string.ok)
-                                     ) { dialog, id -> dialog.cancel() }
+            ) { dialog, id -> dialog.cancel() }
             builder.show()
         } else {
             //change view of footer to media
@@ -2061,17 +2223,49 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
             // String app_folder_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + "/Audio/" + readerID;
             val app_folder_path =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                    .toString() + "/audio/" + readerID
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() + "/audio/" + readerID
             val f = File(app_folder_path)
             val path = f.absolutePath
             val file = File(path)
             if (!file.exists()) file.mkdirs()
             startBeforeDownload = true
-            val intent = Intent(this@ShowMushafActivity, DownloadService::class.java)
-            intent.putStringArrayListExtra(AudioAppConstants.Download.DOWNLOAD_LINKS, Links)
-            intent.putExtra(AudioAppConstants.Download.DOWNLOAD_LOCATION, app_folder_path)
-            startService(intent)
+            startButton!!.setVisibility(View.GONE)
+            labelTextView!!.setText(R.string.fetch_started)
+            progressBar!!.visibility=View.VISIBLE
+            if(rxFetch!!.isClosed){
+                val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(this).build()
+                //    rxFetch = RxFetch.Impl.getInstance(fetchConfiguration);
+                RxFetch.setDefaultRxInstanceConfiguration(fetchConfiguration)
+
+                //  rxFetch.Impl.setDefaultFetchConfiguration(config);
+                rxFetch = RxFetch.getDefaultRxInstance()
+                reset()
+
+            }else{
+                reset()
+            }
+
+
+            enqueueFiles(Links,app_folder_path)
+            /*
+                       startButton!!.setOnClickListener(View.OnClickListener { v: View? ->
+                           val label = startButton!!.getText() as String
+                           val context: Context = this@ShowMushafActivity
+                           if (label == context.getString(R.string.reset)) {
+                               rxFetch!!.deleteAll()
+                               reset()
+                           } else {
+                               startButton!!.setVisibility(View.GONE)
+                               labelTextView!!.setText(R.string.fetch_started)
+                               enqueueFiles(Links,app_folder_path)
+                             //  checkStoragePermission()
+                           }
+                       })*/
+
+            /*      val intent = Intent(this@ShowMushafActivity, DownloadService::class.java)
+                  intent.putStringArrayListExtra(AudioAppConstants.Download.DOWNLOAD_LINKS, Links)
+                  intent.putExtra(AudioAppConstants.Download.DOWNLOAD_LOCATION, app_folder_path)
+                  startService(intent)*/
         }
     }
 
@@ -2090,6 +2284,14 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
     override fun onDestroy() {
         super.onDestroy()
+        rxFetch!!.deleteAll()
+        //   rxFetch!!.close()
+        if (enqueueDisposable != null && !enqueueDisposable!!.isDisposed) {
+            enqueueDisposable!!.dispose()
+        }
+        if (resumeDisposable != null && !resumeDisposable!!.isDisposed) {
+            resumeDisposable!!.dispose()
+        }
         releasePlayer()
         handler.removeCallbacks(sendUpdatesToUI)
         handler.removeCallbacks(sendUpdatesToUIPassage)
@@ -2120,8 +2322,8 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             ConfigPreferences.setLastPlayedAudio(this, ap, surah.toString())
         }
         //unregister broadcast for download ayat
-        LocalBroadcastManager.getInstance(this@ShowMushafActivity)
-            .unregisterReceiver(downloadPageAya)
+        /*     LocalBroadcastManager.getInstance(this@ShowMushafActivity)
+                 .unregisterReceiver(downloadPageAya)*/
         //stop flag of auto start
         startBeforeDownload = false
         if (player != null) {
@@ -2153,13 +2355,43 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             }
         }
     }
+    private val fetchListener: FetchListener = object : AbstractFetchListener() {
+        override fun onCompleted(download: Download) {
+            fileProgressMap[download.id] = download.progress
+            updateUIWithProgress()
+        }
+
+
+        override fun onError(download: Download, error: Error, throwable: Throwable?) {
+            super.onError(download, error, throwable)
+            reset()
+            if(error.name.equals("REQUEST_NOT_SUCCESSFUL")){
+                Snackbar.make(mainView!!, error.name +" "+"RETRY", Snackbar.LENGTH_LONG).show()
+                DownloadIfnotPlay()
+            }
+
+
+        }
+
+        override fun onProgress(
+            download: Download,
+            etaInMilliseconds: Long,
+            downloadedBytesPerSecond: Long
+        ) {
+            super.onProgress(download, etaInMilliseconds, downloadedBytesPerSecond)
+            fileProgressMap[download.id] = download.progress
+            updateUIWithProgress()
+        }
+    }
+
 
     companion object {
         private const val KEY_TRACK_SELECTION_PARAMETERS = "track_selection_parameters"
         private const val KEY_ITEM_INDEX = "item_index"
         private const val KEY_POSITION = "position"
         private const val KEY_AUTO_PLAY = "auto_play"
-
+        private const val STORAGE_PERMISSION_CODE = 400
+        private const val groupId = 12
         // For ad playback only.
         const val BROADCAST_SEEKBAR = "com.example.mushafconsolidated.Activity.sendseekbar"
         var readerID = 0
@@ -2185,3 +2417,20 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
 
 
+private fun getReaderId(): Int {
+    val repository=Utils(QuranGrammarApplication.context)
+    val readersList = repository.qaris
+    var readerID = 0
+    lateinit var downloadLink: String
+    lateinit var readerName: String
+    if (ShowMushafActivity.readerID == 0) {
+        for (qari in readersList) {
+            if (qari.name_english == "Mishary Rashed Al-Afasy") {
+                ShowMushafActivity.readerID = qari.id
+                ShowMushafActivity.downloadLink = qari.url
+                break
+            }
+        }
+    }
+    return readerID
+}

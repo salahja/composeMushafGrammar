@@ -457,6 +457,34 @@
     <string name="search_replies">Search Quran</string>
     <string name="quran">Quran\n</string>
     <string name="audio">Audio\n</string>
+    <string name="start">Start</string>
+    <string name="start_fetching">Fetching</string>
+    <string name="fetch_started">Fetch Started</string>
+    <string name="permission_not_enabled">Please enable the Write External Storage Permission</string>
+    <string name="delete_files">Delete Downloads test files from the file system and try again.</string>
+    <string name="delete_title">Are you sure you want to delete %1$s?</string>
+    <string name="delete">Delete</string>
+    <string name="retry">retry</string>
+    <string name="delete_all_files">Delete Downloaded Files</string>
+    <string name="file_server">FETCH FILE SERVER DEMO</string>
+    <string name="downloaded_files_deleted">Downloads Files Deleted</string>
+    <string name="game_download_error">An error occurred, could not get game files.</string>
+    <string name="failed_multi_enqueue">Failed Multi Enqueue Demo</string>
+    <string name="multi_fragment">MULTI FRAGMENT DEMO</string>
+    <string name="enqueue_error">Could not enqueue this request. Check logcat.</string>
+    <string name="download_eta_sec">%1$ds left</string>
+    <string name="download_eta_min">%1$dm %2$ds left</string>
+    <string name="download_eta_hrs">%1$dh %2$dm %3$ds left</string>
+    <string name="download_speed_bytes">%1$d B/s</string>
+    <string name="download_speed_kb">%1$s KB/s</string>
+    <string name="download_speed_mb">%1$s MB/s</string>
+    <string name="downloading">downloading…</string>
+    <string name="queued">QUEUED</string>
+    <string name="added">ADDED</string>
+    <string name="status_unknown">Status Unknown</string>
 
+    <string name="reset">reset</string>
+    <string name="fetch_done">done</string>
+    <string name="complete_over">%1$d/%2$d</string>
 
 </resources>

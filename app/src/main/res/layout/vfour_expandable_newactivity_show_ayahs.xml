@@ -19,7 +19,7 @@
 
         android:visibility="gone"
         />
-    <include layout="@layout/downloadfooter"
+    <include layout="@layout/rxfetch_progress"
 
 
 
