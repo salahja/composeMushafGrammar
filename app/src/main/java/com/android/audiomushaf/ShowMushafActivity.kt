@@ -47,7 +47,6 @@ import com.example.Constant.CHAPTER
 import com.example.Constant.SURAH_ARABIC_NAME
 import com.example.mushafconsolidated.Activityimport.AyahCoordinate
 import com.example.mushafconsolidated.Activityimport.BaseActivity
-
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.Entities.Page
 import com.example.mushafconsolidated.Entities.Qari
@@ -56,7 +55,6 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.intrfaceimport.OnItemClickListenerOnLong
 import com.example.mushafconsolidated.receiversimport.AudioAppConstants
-
 import com.example.mushafconsolidated.receiversimport.FileManager
 import com.example.mushafconsolidated.receiversimport.QuranValidateSources
 import com.example.mushafconsolidated.receiversimport.Settingsss
@@ -83,6 +81,9 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
+import com.tonyodev.fetch2.Download
+import com.tonyodev.fetch2.Fetch
+import com.tonyodev.fetch2.Request
 import wheel.OnWheelChangedListener
 import wheel.WheelView
 import java.io.File
@@ -90,6 +91,7 @@ import java.text.MessageFormat
 import java.util.Locale
 import java.util.Objects
 import kotlin.math.max
+
 
 class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnClickListener,
     FullscreenButtonClickListener {
@@ -107,7 +109,7 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
     private var onClickOrRange = false
     private lateinit var llStartRange: LinearLayout
     private lateinit var llEndRange: LinearLayout
-
+    private val mainFetch: Fetch? = null
     //  private LinkedHashMap<Integer, Integer> hlights;
     private val hlights: LinkedHashMap<Int, ArrayList<AyahCoordinate>> =
         LinkedHashMap()
@@ -1937,7 +1939,10 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
 
             if (Links!!.isNotEmpty()) {
                 //check if the internet is opened
-                DownLoadIfNot(internetStatus, Links as ArrayList<String>)
+             //   DownLoadIfNot(internetStatus, Links as ArrayList<String>)
+                FetchDownLoadIfNot(internetStatus, Links as ArrayList<String>)
+
+
             } else {
                 initializePlayer()
                 playerFooter.visibility = View.VISIBLE
@@ -1947,6 +1952,91 @@ class ShowMushafActivity : BaseActivity(), OnItemClickListenerOnLong, View.OnCli
             //Other thing in download
             Toast.makeText(this, getString(R.string.download_busy), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getSampleRequests(): List<Request> {
+        val requests= listOf<Request>()
+        val chap = repository.getSingleChapter(surah)
+        val quranbySurah: List<QuranEntity?>? = repository.getQuranbySurah(surah)
+        surahselected = surah
+        //   int ayaID=0;
+        var counter = 0
+        //   quranbySurah.add(0, new QuranEntity(1, 1, 1));
+        val downloadLinks: MutableList<String> = java.util.ArrayList()
+        //   ayaList.add(0, new Aya(1, 1, 1));
+        //loop for all page ayat
+//check if readerID is 0
+        if (readerID == 0) {
+            for (qari in readersList) {
+                if (qari.name_english == selectedqari) {
+                    readerID = qari.id
+                    downloadLink = qari.url
+                    break
+                }
+            }
+        }
+        if (quranbySurah != null) {
+            for (ayaItem in quranbySurah) {
+                //validate if aya download or not
+                if (!QuranValidateSources.validateAyaAudio(
+                        this,
+                        readerID,
+                        ayaItem!!.ayah,
+                        ayaItem.surah
+                    )
+                ) {
+
+                    //create aya link
+
+
+                    //create aya link
+                    val suraLength: Int =
+                        chap!![0]!!.chapterid.toString().trim { it <= ' ' }.length
+                    var suraID: String = chap[0]!!.chapterid.toString() + ""
+
+
+                    val ayaLength = ayaItem.ayah.toString().trim { it <= ' ' }.length
+                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
+                    //   int ayaLength = String.valueOf(ayaItem.ayaID).trim().length();
+                    var ayaID = java.lang.StringBuilder(
+                        java.lang.StringBuilder().append(ayaItem.ayah).append("").toString()
+                    )
+                    if (suraLength == 1) suraID =
+                        "00" + ayaItem.surah else if (suraLength == 2) suraID = "0" + ayaItem.surah
+
+                    if (ayaLength == 1) {
+                        ayaID = java.lang.StringBuilder("00" + ayaItem.ayah)
+                    } else if (ayaLength == 2) {
+                        ayaID = java.lang.StringBuilder("0" + ayaItem.ayah)
+                    }
+                    counter++
+                    //add aya link to list
+                    //chec
+                    downloadLinks.add(downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3)
+                    Log.d(
+                        "DownloadLinks",
+                        downloadLink + suraID + ayaID + AudioAppConstants.Extensions.MP3
+                    )
+                }
+            }
+        }
+        return TODO("Provide the return value")
+    }
+
+    private fun FetchDownLoadIfNot(internetStatus: Int, strings: ArrayList<String>) {
+
+        val requestList: List<Request> = getSampleRequests()
+        val groupId = "MySampleGroup".hashCode()
+
+        for (i in requestList.indices) {
+            requestList[i].groupId = groupId
+        }
+
+
+
+
+
+
     }
 
     private fun DownLoadIfNot(internetStatus: Int, Links: ArrayList<String>) {
