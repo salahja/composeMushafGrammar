@@ -371,14 +371,17 @@ class ExpandableVerseViewModel(
 
                         //  CharSequence first = TextUtils.concat(harfspannble," ",shartofverse);
                     } else if (d) {
-
+                        val builder = AnnotatedString.Builder()
+                        val builder1 = AnnotatedString.Builder()
+                        val builder2 = AnnotatedString.Builder()
+// ismkana && khabarkana
                         harfspannble = AnnotatedString(harfofverse)
                         khabarofversespannable = AnnotatedString(khabarofverse)
 
 
                         val sourceone = harfspannble
 
-                        val sourcethree = khabarofversespannable
+                        val sourcetwo = khabarofversespannable
                         val tagonestyle = SpanStyle(
                             color = harfkana!!,
                             textDecoration = TextDecoration.Underline
@@ -393,10 +396,11 @@ class ExpandableVerseViewModel(
                         builder.append(sourceone)
                         builder.addStyle(tagonestyle, 0, harfofverse.length)
                         builder.append(space)
+                        builder2.append(sourcetwo)
+                        builder2.addStyle(tagthreestyle, 0, khabarofverse.length)
 
-
-                        builder2.append(sourcethree)
-                        builder2.addStyle(tagthreestyle, 0, khabarofversespannable.length)
+                       // builder2.append(sourcethree)
+                       // builder2.addStyle(tagthreestyle, 0, khabarofversespannable.length)
 
 
                         val annotatedString =
@@ -1188,7 +1192,9 @@ class ExpandableVerseViewModel(
                 tagcolorthree = Color(Constant.WHOTPINK)
             }
 
-
+       if(ayanumber==23){
+           println("check")
+       }
             if (shart != null) {
                 for (shartEntity in shart) {
                     var harfofverse: String
@@ -1332,14 +1338,15 @@ class ExpandableVerseViewModel(
                             textDecoration = TextDecoration.Underline
                         )
 
-
+                        val space = AnnotatedString(" ")
+                        val length = space.length
                         builder.append(sourceone)
                         builder.addStyle(tagonestyle, 0, harfofverse.length)
                         builder.append(sourcetwo)
                         builder.addStyle(tagtwostyle, 0, shartofverse.length)
 
 
-                        val annotatedString = harfspannble + shartspoannable
+                        val annotatedString = harfspannble +space+ shartspoannable
 
 
                         val charSequence = TextUtils.concat(harfspannble, " ", shartspoannable)

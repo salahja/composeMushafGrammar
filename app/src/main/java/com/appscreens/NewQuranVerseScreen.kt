@@ -585,6 +585,35 @@ fun mysearchbar(
                             }
                         }
 
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 8.dp
+                                )
+                        ) {
+                            wordarray = newnewadapterlist[index]
+
+                            ClickableText(
+                                text = wordarray!![0].annotatedVerse!!,
+
+                                onClick = {
+                                    val cid = quranbySurah!![index].surah
+                                    val aid = quranbySurah!![index].ayah
+                                    navController.navigate(
+                                        "versealert/${cid}/${aid}"
+                                    )
+
+                                }, style = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontFamily.Cursive
+                                )
+                            )
+                        }
+
 
                     }
 
@@ -595,64 +624,6 @@ fun mysearchbar(
                     //  BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
 
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 8.dp
-                            )
-                    ) {
-                        wordarray = newnewadapterlist[index]
-
-                        ClickableText(
-                            text = wordarray!![0].annotatedVerse!!,
-
-                            onClick = {
-                                val cid = quranbySurah!![index].surah
-                                val aid = quranbySurah!![index].ayah
-                                navController.navigate(
-                                    "versealert/${cid}/${aid}"
-                                )
-
-                            }, style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily.Cursive
-                            )
-                        )
-                    }
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 8.dp
-                            )
-                    ) {
-                        wordarray = newnewadapterlist[index]
-
-                        ClickableText(
-                            text = AnnotatedString(quranbySurahsearch!![index].quranclean),
-
-                            onClick = {
-                                val cid = quranbySurah!![index].surah
-                                val aid = quranbySurah!![index].ayah
-                                navController.navigate(
-                                    "versealert/${cid}/${aid}"
-                                )
-
-                            }, style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily.Cursive
-                            )
-                        )
-                    }
 
                     Row(
                         horizontalArrangement = Arrangement.End,
@@ -675,6 +646,8 @@ fun mysearchbar(
                             )
                         }
                     }
+                     val tafsirKathir = quranbySurahsearch!![0].tafsir_kathir
+                    tafsirKathir.replace("<b>","").replace("</b>","")
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -685,7 +658,7 @@ fun mysearchbar(
                             )
                     ) {
                         ExpandableText(
-                            text = AnnotatedString("Ibne Kathir :" + quranbySurahsearch!![0].tafsir_kathir)
+                            text = AnnotatedString("Ibne Kathir :" + quranbySurahsearch!![0].tafsir_kathir.replace("<b>","").replace("</b>",""))
                         )
                     }
                     /*      Row(

@@ -110,6 +110,7 @@ fun TextChipWBW(
                 color = if (isSelected) selectedColor else Transparent,
                 shape = RectangleShape
             )
+
             .clip( shape = RectangleShape)
             .clickable {
                 onChecked(!isSelected)
@@ -119,7 +120,8 @@ fun TextChipWBW(
         (if (isSelected) White else modecolor)?.let {
             Text(
                 text = text,
-                color = it
+                color = it,
+                fontSize = 18.sp,
             )
         }
     }
