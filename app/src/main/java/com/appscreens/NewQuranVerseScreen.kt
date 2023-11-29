@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -36,7 +37,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.TextField
@@ -44,7 +44,9 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -74,7 +76,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -93,13 +94,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.appscreens.Result.*
 import com.codelab.basics.ui.theme.indopak
+import com.corpusutility.AnnotatedQuranMorphologyDetails
 import com.corpusutility.AnnotationUtility
 import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
@@ -113,6 +114,7 @@ import com.example.mushafconsolidated.Entities.VerbCorpus
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
+import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.searchwidgetdemo.QuranSearchViewModel
 import com.example.utility.QuranGrammarApplication
 import com.previews.nonScaledSp
@@ -171,7 +173,7 @@ fun NewQuranVerseScreen(
     val showwordbyword = rememberPreferenceBooleanSettingState(key = "wbw", defaultValue = false)
     val wbwchoice = rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
-    showWordDetails.value = false
+  //  showWordDetails.value = false
     loading = verseModel.loading.value
     LoadingData(isDisplayed = loading)
     val cardss by verseModel.cards.collectAsStateWithLifecycle()
@@ -551,8 +553,11 @@ fun mysearchbar(
                                     val textChipRememberOneState = remember {
                                         mutableStateOf(false)
                                     }
+                                    showWordDetails.value=true
 
                                     TextChipWBW(
+                                        showWordDetails.value,
+                                        navController,
                                         thememode!!.value,
                                         isSelected = textChipRememberOneState.value,
                                         text = fword ,
@@ -569,9 +574,9 @@ fun mysearchbar(
                                             aid = wbw.corpus!!.ayah
                                             wid = wbw.corpus!!.wordno
 
-                                            showWordDetails.value = false
+                                            showWordDetails.value = true
 
-                                            navController.navigate(
+                                           navController.navigate(
                                                 "wordalert/$cid/$aid/$wid"
                                             )
 
@@ -665,37 +670,14 @@ fun mysearchbar(
                             text = AnnotatedString("Ibne Kathir :" + quranbySurahsearch!![0].tafsir_kathir.replace("<b>","").replace("</b>",""))
                         )
                     }
-                    /*      Row(
-                              modifier = Modifier
-                                  .fillMaxWidth()
+              /*      if (showWordDetails.value) {
+                        //    BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
+                        WordAlertDialog(viewModel(),cid,aid,wid,navController)
 
-                                  .padding(
-                                      horizontal = 10.dp,
-                                      vertical = 8.dp
-                                  )
-                          ) {
-                              ExpandableText(
-                                  text = AnnotatedString("Trans literation :" + quranbySurahsearch!![0].en_transliteration)
-                              )
-                          }
-      */
+                    }*/
 
                 }
-                if (showWordDetails.value) {
-                    BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-                    //
-                    //  Bottoms()
-                    //    extractedtooltips(utils)
-                    /*
 
-                                        var openBottomSheet by remember { mutableStateOf(false) }
-                                        //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
-                                        ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
-
-                                        }
-                        */
-
-                }
             }
         }
         /*     LazyColumn {
@@ -709,6 +691,660 @@ fun mysearchbar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WordAlertDialog(
+    mainViewModel: QuranVIewModel,
+    chapterid: Int?,
+    verseid: Int?,
+    wordno: Int?,
+    navController: NavHostController
+) {
+
+    val corpusSurahWord = mainViewModel.getQuranCorpusWbw(chapterid!!, verseid!!, wordno!!).value
+
+    var vbdetail = HashMap<String, String?>()
+    val quran = mainViewModel.getsurahayahVerseslist(chapterid!!, verseid!!).value
+    val corpusNounWord = mainViewModel.getNouncorpus(chapterid!!, verseid!!, wordno!!).value
+
+    val verbCorpusRootWord =
+        mainViewModel.getVerbRootBySurahAyahWord(chapterid!!, verseid!!, wordno!!).value
+
+    val mafoolbihi = mainViewModel.getMafoolbihiword(chapterid, verseid, wordno).value
+    val haliaSentence = mainViewModel.gethalsurahayah(chapterid, verseid).value
+    val tameezWord = mainViewModel.getTameezword(chapterid, verseid, wordno).value
+    val liajlihiEntArrayList = mainViewModel.getAjlihiword(chapterid, verseid, wordno).value
+    val mutlaqword = mainViewModel.getMutlaqWOrd(chapterid, verseid, wordno).value
+    val am = AnnotatedQuranMorphologyDetails(
+        corpusSurahWord!!,
+        corpusNounWord as ArrayList<NounCorpus>?,
+        verbCorpusRootWord as ArrayList<VerbCorpus>?,
+        QuranGrammarApplication.context
+    )
+
+
+    worddetails = am.wordDetails
+    // wordbdetail = am.wordDetails
+    if (verbCorpusRootWord != null) {
+        if (verbCorpusRootWord.isNotEmpty() && verbCorpusRootWord[0].tag.equals("V")) {
+            vbdetail = am.verbDetails
+            //  isVerb = true
+        }
+    }
+
+    if (tameezWord != null) {
+        if (tameezWord.isNotEmpty()) {
+            val tameezwordspan = StringBuilder()
+            tameezwordspan.append("(").append("تمييز").append(")")
+            tameezwordspan.append(tameezWord!![0].word)
+            worddetails["tameez"] = AnnotatedString(tameezwordspan.toString())
+        }
+    }
+    if (liajlihiEntArrayList != null) {
+        if (liajlihiEntArrayList.isNotEmpty()) {
+            val ajlihiwordspan = StringBuilder()
+            ajlihiwordspan.append("(").append("مفعول لأجله").append(")")
+            ajlihiwordspan.append(liajlihiEntArrayList[0].word)
+            worddetails["liajlihi"] = AnnotatedString(ajlihiwordspan.toString())
+
+        }
+    }
+
+    if (mutlaqword != null) {
+        if (mutlaqword.isNotEmpty()) {
+            val ajlihiwordspan = StringBuilder()
+            ajlihiwordspan.append("(").append("مفعول المطلق").append(")")
+            ajlihiwordspan.append(mutlaqword[0].word)
+            worddetails["mutlaqword"] = AnnotatedString(ajlihiwordspan.toString())
+        }
+    }
+
+    val openDialog = remember { mutableStateOf(true) }
+    var text by remember { mutableStateOf("") }
+
+    if (openDialog.value) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                // button. If you want to disable that functionality, simply use an empty
+                // onDismissRequest.
+                openDialog.value = false
+            }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    content = {
+
+                        //      Spacer(modifier = Modifier.padding(5.dp))
+                        Text(
+                            text = worddetails["surahid"].toString() + ":" + worddetails["ayahid"].toString() + ":" + worddetails["wordno"].toString(),
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 21.sp,
+
+                            )
+
+
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+
+                        ) {
+                            if (worddetails["word"] != null) {
+                                val annotatedString = worddetails["word"]
+                                if (annotatedString != null) {
+                                    AssistChip(
+                                        elevation = AssistChipDefaults.assistChipElevation(
+                                            elevation = 16.dp
+                                        ),
+                                        modifier = Modifier.padding(1.dp),
+                                        onClick = {
+
+                                        },
+                                        label = {
+                                            Text(annotatedString)
+
+                                        },
+
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Filled.Settings,
+                                                contentDescription = "Localized description",
+                                                Modifier.size(AssistChipDefaults.IconSize)
+                                            )
+                                        }
+                                    )
+
+                                }
+                            }
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+
+                        ) {
+                            if (worddetails["liajlihi"] != null) {
+                                val annotatedString = worddetails["liajlihi"]
+                                if (annotatedString != null) {
+                                    AssistChip(
+                                        elevation = AssistChipDefaults.assistChipElevation(
+                                            elevation = 16.dp
+                                        ),
+                                        modifier = Modifier.padding(1.dp),
+                                        onClick = {
+
+                                        },
+                                        label = {
+                                            Text(annotatedString)
+
+                                        },
+
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Filled.Settings,
+                                                contentDescription = "Localized description",
+                                                Modifier.size(AssistChipDefaults.IconSize)
+                                            )
+                                        }
+                                    )
+
+                                }
+                            }
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+
+                        ) {
+                            if (worddetails["tameez"] != null) {
+                                val annotatedString = worddetails["tameez"]
+                                if (annotatedString != null) {
+                                    AssistChip(
+                                        elevation = AssistChipDefaults.assistChipElevation(
+                                            elevation = 16.dp
+                                        ),
+                                        modifier = Modifier.padding(1.dp),
+                                        onClick = {
+
+                                        },
+                                        label = {
+                                            Text(annotatedString)
+
+                                        },
+
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Filled.Settings,
+                                                contentDescription = "Localized description",
+                                                Modifier.size(AssistChipDefaults.IconSize)
+                                            )
+                                        }
+                                    )
+
+                                }
+                            }
+                        }
+
+
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+
+                        ) {
+                            if (worddetails["mutlaqword"] != null) {
+                                val annotatedString = worddetails["mutlaqword"]
+                                if (annotatedString != null) {
+
+                                    AssistChip(
+                                        elevation = AssistChipDefaults.assistChipElevation(
+                                            elevation = 16.dp
+                                        ),
+                                        modifier = Modifier.padding(1.dp),
+                                        onClick = {
+
+                                        },
+                                        label = {
+                                            Text(annotatedString)
+
+                                        },
+
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Filled.Settings,
+                                                contentDescription = "Localized description",
+                                                Modifier.size(AssistChipDefaults.IconSize)
+                                            )
+                                        }
+                                    )
+
+                                }
+                            }
+                        }
+
+
+                        Row(modifier = Modifier.padding(1.dp)) {
+
+                            if (worddetails["PRON"] != null) {
+                                Text(
+                                    text = worddetails["PRON"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+                            }
+                        }
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            val annotatedString = worddetails["worddetails"]
+                            if (worddetails["worddetails"] != null) {
+                                Text(
+                                    text = annotatedString!!,
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Thin,
+                                    fontSize = 18.sp,
+
+                                    )
+                            }
+                        }
+
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (worddetails["noun"] != null) {
+                                val annotatedString = worddetails["noun"];
+                                if (annotatedString != null) {
+                                    Text(
+                                        text = annotatedString,
+                                        modifier = Modifier
+                                            .fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 21.sp,
+
+                                        )
+                                }
+                            }
+                        }
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            //  if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
+                            Text(
+                                text = corpusSurahWord[0].wbw.en,
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 21.sp,
+
+                                )
+
+                            //    }
+                        }
+
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (worddetails["lemma"] != null || worddetails["lemma"]!!.isNotEmpty()) {
+                                Text(
+                                    text = "Lemma:  " + worddetails["lemma"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+                                )
+
+                            }
+                        }
+
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (worddetails["translation"] != null) {
+                                Text(
+                                    text = "Translation" + worddetails["translation"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+                                )
+                            }
+                        }
+
+
+
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (worddetails["root"] != null) {
+                                Text(
+                                    text = "Root:" + worddetails["root"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+
+                            }
+                        }
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (vbdetail["formnumber"] != null) {
+                                Text(
+                                    text = vbdetail["formnumber"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+
+                            }
+                        }
+
+                        //
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (vbdetail["mazeed"] != null) {
+                                Text(
+                                    text = vbdetail["mazeed"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+
+                            }
+                        }
+                        Row(modifier = Modifier.padding(1.dp)) {
+                            if (vbdetail["verbmood"] != null) {
+                                Text(
+                                    text = vbdetail["verbmood"].toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+
+                            }
+                        }
+
+                        val vb: StringBuilder = StringBuilder()
+                        vb.append("V-")
+                        if (vbdetail["thulathi"] != null) {
+                            vb.append(vbdetail["thulathi"])
+                        }
+                        if (vbdetail["png"] != null) {
+                            vb.append(vbdetail["png"])
+                        }
+                        if (vbdetail["tense"] != null) {
+                            vb.append(vbdetail["tense"])
+                        }
+                        if (vbdetail["voice"] != null) {
+                            vb.append(vbdetail["voice"])
+                        }
+                        if (vbdetail["mood"] != null) {
+                            vb.append(vbdetail["mood"])
+                        }
+                        if (vb.length > 2) {
+
+                            Row(modifier = Modifier.padding(1.dp)) {
+
+                                Text(
+                                    text = vb.toString(),
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 21.sp,
+
+                                    )
+
+                            }
+
+                            //  holder.verbdetails.setTextSize(arabicFontsize);
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+                        ) {
+                            if (vbdetail["thulathi"] != null) {
+                                val conjugation = vbdetail["wazan"].toString()
+                                val root = vbdetail["root"].toString()
+                                val mood = vbdetail["verbmood"].toString()
+
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+
+                                    onClick = {
+
+                                        navController.navigate(
+                                            "conjugator/${conjugation}/${root}/${mood}"
+                                        )
+                                    },
+                                    label = { Text("Conjugate" + vbdetail["thulathi"].toString()) },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+                            }
+
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+                        ) {
+                            if (vbdetail["formnumber"] != null) {
+                                val conjugation = vbdetail["form"].toString()
+                                val root = vbdetail["root"].toString()
+                                val mood = vbdetail["verbmood"].toString()
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+
+                                    onClick = {
+
+                                        navController.navigate(
+                                            "conjugator/${conjugation}/${root}/${mood}"
+                                        )
+                                    },
+                                    label = { Text("Conjugate" + vbdetail["formnumber"].toString()) },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+                            }
+                            if (worddetails["form"] != null && worddetails["form"]!!.text != "I") {
+                                val conjugation = worddetails["form"].toString()
+                                val root = worddetails["root"].toString()
+                                val mood = "Indicative"
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+
+                                    onClick = {
+
+                                        navController.navigate(
+                                            "conjugator/${conjugation}/${root}/${mood}"
+                                        )
+                                    },
+                                    label = { Text("Conjugate" + vbdetail["formnumber"].toString()) },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+                            }
+
+                        }
+
+
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 2.dp,
+                                    horizontal = 4.dp
+                                )
+
+                                .clip(shape = CircleShape)
+
+                                .padding(4.dp)
+
+                        ) {
+                            if (worddetails["arabicword"] != null) {
+                                val root = worddetails["root"]
+                                AssistChip(
+                                    elevation = AssistChipDefaults.assistChipElevation(
+                                        elevation = 16.dp
+                                    ),
+
+                                    onClick = {
+
+                                        navController.navigate(
+                                            "wordoccurance/${root}"
+                                        )
+
+                                    },
+                                    label = { Text("Word Occurance" + worddetails["root"].toString()) },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Filled.Settings,
+                                            contentDescription = "Localized description",
+                                            Modifier.size(AssistChipDefaults.IconSize)
+                                        )
+                                    }
+                                )
+
+                                val textChipRememberOneState = remember {
+                                    mutableStateOf(false)
+                                }
+                                /*          Button(
+                                              modifier = Modifier
+                                                  .padding(20.dp),
+                                              onClick = {
+
+                                                  navController.navigate(
+                                                      "wordoccurance/${root}"
+                                                  )
+
+                                    }
+                                ) {
+                                    Text(
+                                        text = "Word Occurance" + worddetails["root"].toString()
+                                    )
+                                }
+                  */
+
+                            }
+
+                        }
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+
+                        //     .background(MaterialTheme.colorScheme.primary)
+                        .padding(16.dp),
+
+                    )
+            }
+        }
+    }
+
+}
 
 /*
 @Composable
@@ -1113,11 +1749,13 @@ private fun extracted(
                                     }
 
                                     TextChipWBW(
+                                        showWordDetails.value,
+                                        navController,
                                         thememode,
+
                                         isSelected = textChipRememberOneState.value,
+
                                         text = fword,
-
-
                                         onChecked = {
                                             cid = wbw.corpus!!.surah
                                             aid = wbw.corpus!!.ayah
@@ -1129,21 +1767,24 @@ private fun extracted(
                                             aid = wbw.corpus!!.ayah
                                             wid = wbw.corpus!!.wordno
 
-                                            showWordDetails.value = false
+                                            showWordDetails.value = true
 
-                                            navController.navigate(
+                                       /*     navController.navigate(
                                                 "wordalert/$cid/$aid/$wid"
-                                            )
+                                            )*/
+
+
+
+
 
                                         },
-
-
                                         selectedColor = Color.DarkGray,
 
                                         )
 
 
                                 }
+
 
                             }
                         }
@@ -1236,21 +1877,21 @@ private fun extracted(
       */
 
                 }
-                if (showWordDetails.value) {
+              /*  if (showWordDetails.value) {
                     BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
                     //
                     //  Bottoms()
                     //    extractedtooltips(utils)
-                    /*
+                    *//*
 
                                         var openBottomSheet by remember { mutableStateOf(false) }
                                         //   BottomSheetWordDetails(navController, viewModel(), cid, aid, wid)
                                         ModalBottomSheet(onDismissRequest = { openBottomSheet = false }) {
 
                                         }
-                        */
+                        *//*
 
-                }
+                }*/
             }
         }
     }

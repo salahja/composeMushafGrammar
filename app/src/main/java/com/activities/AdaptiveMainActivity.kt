@@ -88,6 +88,7 @@ import com.appscreens.NounRootScreens
 import com.appscreens.RootScreens
 import com.appscreens.newVerseAnalysisCardsScreen
 import com.appscreensn.LineQuranPageScreen
+import com.appscreensn.LineQuranPageScreens
 import com.downloadmanager.DownloaderViewModel
 import com.example.myapplication.MainLayout
 import com.example.utility.QuranGrammarApplication.Companion.context
@@ -492,7 +493,7 @@ fun  MainContent(
 
 
 
-                    LineQuranPageScreen(navController, 9, vmodel,darkThemePreference,downloadModel)
+                    LineQuranPageScreens(navController, 9, vmodel,darkThemePreference,downloadModel)
                 }
 
              //   composable(Screen.Mushaf.route,
@@ -702,7 +703,7 @@ fun  MainContent(
 
                 composable(Screen.Audio.route) {
 
-                            val intent = Intent(Intent.ACTION_VIEW)
+                                  val intent = Intent(Intent.ACTION_VIEW)
                                   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                   val i = Intent(context, ShowMushafActivity::class.java)
                                   i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

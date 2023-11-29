@@ -153,32 +153,6 @@ fun SurahListScreens(navController: NavHostController, quranModel: QuranVIewMode
 
 
 
-/*    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { LibraryTopBar(navController, scrollBehavior, isCollapsed) }
-    ) {
-        val textState = remember { mutableStateOf(TextFieldValue("")) }
-        //  SearchView(textState)
-        SurahList(navController = navController, state = textState, chapters, thememode!!)
-        *//*    LazyVerticalGrid(
-
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 100.dp),
-
-                columns = GridCells.Fixed(2),
-                state = listState
-            ) {
-                items(allAnaChapters!!.size) { index ->
-                    //          indexval=index
-
-
-                    VerbRootGridList(allAnaChapters[index], imgs, navController,thememode)
-                }
-            }*//*
-    }*/
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

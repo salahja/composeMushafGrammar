@@ -76,14 +76,6 @@ fun BottomSheetWordDetails(
   val tameezWord = mainViewModel.getTameezword(chapterid, verseid, wordno).value
   val liajlihiEntArrayList = mainViewModel.getAjlihiword(chapterid, verseid, wordno).value
   val mutlaqword = mainViewModel.getMutlaqWOrd(chapterid, verseid, wordno).value
-
-  /*  val am = NewQuranMorphologyDetails(
-        corpusSurahWord!!,
-        corpusNounWord as ArrayList<NounCorpus>?,
-        verbCorpusRootWord as ArrayList<VerbCorpus>?,
-        QuranGrammarApplication.context
-    )*/
-
   val am = AnnotatedQuranMorphologyDetails(
     corpusSurahWord!!,
     corpusNounWord as ArrayList<NounCorpus>?,
@@ -127,6 +119,7 @@ fun BottomSheetWordDetails(
       worddetails["mutlaqword"] = AnnotatedString(ajlihiwordspan.toString())
     }
   }
+
 
   //Lets define bottomSheetScaffoldState which will hold the state of Scaffold
   val coroutineScope = rememberCoroutineScope()
