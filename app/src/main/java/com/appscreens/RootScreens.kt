@@ -67,6 +67,7 @@ import com.example.mushafconsolidated.Entities.RootVerbDetails
 import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.utility.QuranGrammarApplication
+import com.previews.nonScaledSp
 import com.viewmodels.RootModel
 
 
@@ -578,6 +579,7 @@ fun ExpandableText(
                 }
             },
             maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLine,
+            fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
             fontStyle = fontStyle,
             onTextLayout = { textLayoutResult ->
                 if (!isExpanded && textLayoutResult.hasVisualOverflow) {

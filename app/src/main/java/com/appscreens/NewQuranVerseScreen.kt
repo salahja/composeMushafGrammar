@@ -74,6 +74,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -98,6 +99,7 @@ import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingV
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.appscreens.Result.*
+import com.codelab.basics.ui.theme.indopak
 import com.corpusutility.AnnotationUtility
 import com.corpusutility.refWordMorphologyDetails
 import com.example.compose.LoadingData
@@ -113,6 +115,7 @@ import com.example.mushafconsolidated.Utils
 import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.searchwidgetdemo.QuranSearchViewModel
 import com.example.utility.QuranGrammarApplication
+import com.previews.nonScaledSp
 import com.viewmodels.ActorsScreenState
 import com.viewmodels.UserAction
 import com.viewmodels.VerseModel
@@ -552,7 +555,7 @@ fun mysearchbar(
                                     TextChipWBW(
                                         thememode!!.value,
                                         isSelected = textChipRememberOneState.value,
-                                        text = fword,
+                                        text = fword ,
 
 
                                         onChecked = {
@@ -608,8 +611,9 @@ fun mysearchbar(
 
                                 }, style = TextStyle(
                                     color = MaterialTheme.colorScheme.onSurface,
-                                    fontSize = 20.sp,
-                                    fontFamily = FontFamily.Cursive
+                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
+                                   // fontSize = 20.sp,
+                                    fontFamily = indopak
                                 )
                             )
                         }

@@ -607,11 +607,12 @@ open class AnnotatedQuranMorphologyDetails(
                 "",
                 "",
                 "",
-                araone,
-                aratwo,
-                "",
+
+                expandTagsone,
                 expandTagstwo,
-                expandTagsone
+                "",
+                " ",
+               ""
             )
             wordbdetail["word"] = spannableString
             wordbdetail["worddetails"] = tagspannables
@@ -657,12 +658,14 @@ open class AnnotatedQuranMorphologyDetails(
                 tagthree,
                 "",
                 "",
-                " ",
-                " ",
-                expandTagsthree,
+
+                expandTagsone,
                 expandTagstwo,
-                expandTagsone
+                expandTagsthree,"",""
             )
+
+
+
             wordbdetail["word"] = spannableString
             wordbdetail["worddetails"] = tagspannables
             if (corpusSurahWord[0].corpus.detailsone!!.contains("SP:kaAn")) {
@@ -705,11 +708,27 @@ open class AnnotatedQuranMorphologyDetails(
                 arafour,
                 ""
             )
+
             // SpannableString tagspannables = CorpusUtilityorig.AnnotatedSetWordSpanTag(tagone, tagtwo, tagthree, tagfour, tagfive," ", expandTagsfour, expandTagsthree, expandTagstwo, expandTagsone);
             val tagspannables = AnnotatedSetWordSpanTag(
-                tagone, tagtwo, tagthree,
-                tagfour, tagfive, " ", expandTagsfour, expandTagsthree, expandTagstwo, expandTagsone
+                tagone,
+                tagtwo,
+                tagthree,
+                 tagfour,
+                "",
+
+
+
+                expandTagsone,
+                expandTagstwo,
+                expandTagsthree,
+                expandTagsfour,
+                ""
             )
+
+
+
+
             wordbdetail["word"] = spannableString
             wordbdetail["worddetails"] = tagspannables
             if (corpusSurahWord[0].corpus.detailsone!!.contains("SP:kaAn")) {
@@ -749,12 +768,16 @@ open class AnnotatedQuranMorphologyDetails(
                 tagthree,
                 tagfour,
                 tagfive,
-                expandTagsfive,
-                expandTagsfour,
-                expandTagsthree,
+
+
+
+                expandTagsone,
                 expandTagstwo,
-                expandTagsone
+                expandTagsthree,
+                expandTagsfour,
+                expandTagsfive
             )
+
             sb.append(corpusSurahWord[0].corpus.tagfive)
             sb.append("|")
             sb.append(corpusSurahWord[0].corpus.tagfour)

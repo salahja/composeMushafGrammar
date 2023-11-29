@@ -678,30 +678,11 @@ fun BottomSheetWordDetails(
                                     )
                                 }
                             )
-                            /*       Button(
-                                       modifier = Modifier
-                                           .padding(20.dp),
-                                       onClick = {
 
-                                           navController.navigate(
-                                               "conjugator/${conjugation}/${root}/${mood}"
-                                           )
-                                           *//*     val intent = Intent(Intent.ACTION_VIEW)
-                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                         val i = Intent(context, SurahComposeAct::class.java)
-                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                         context!!.startActivity(i)
-
-     *//*
-                                }
-                            ) {
-                                Text(
-                                    text = "Conjugate" + vbdetail["thulathi"].toString()
-                                )
-                            }*/
 
 
                         }
+
                     }
                     Row(
                         horizontalArrangement = Arrangement.Center,
@@ -741,24 +722,31 @@ fun BottomSheetWordDetails(
                                     )
                                 }
                             )
+                        }
+                        if(worddetails["form"] !=null && worddetails["form"]!!.text!="I"){
+                            val conjugation = worddetails["form"].toString()
+                            val root = worddetails["root"].toString()
+                            val mood = "Indicative"
+                            AssistChip(
+                                elevation = AssistChipDefaults.assistChipElevation(
+                                    elevation = 16.dp
+                                ),
 
+                                onClick = {
 
-
-                            /*
-                                    Button(
-                                        modifier = Modifier
-                                            .padding(20.dp),
-                                        onClick = {
-                                            navController.navigate(
-                                                "conjugator/${conjugation}/${root}/${mood}"
-                                            )
-                                        }
-                                    ) {
-                                        Text(
-                                            text = "Conjugate" + vbdetail["formnumber"].toString()
-                                        )
-                                    }
-        */
+                                    navController.navigate(
+                                        "conjugator/${conjugation}/${root}/${mood}"
+                                    )
+                                },
+                                label = { Text("Conjugate" + vbdetail["formnumber"].toString()) },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Filled.Settings,
+                                        contentDescription = "Localized description",
+                                        Modifier.size(AssistChipDefaults.IconSize)
+                                    )
+                                }
+                            )
 
                         }
 

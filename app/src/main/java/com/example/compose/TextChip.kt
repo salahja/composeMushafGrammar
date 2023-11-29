@@ -122,6 +122,7 @@ fun TextChipWBW(
                 text = text,
                 color = it,
                 fontSize = 18.sp,
+
             )
         }
     }

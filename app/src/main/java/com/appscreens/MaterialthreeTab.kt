@@ -51,7 +51,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.codelab.basics.ui.theme.indopak
 import com.example.mushafconsolidated.Entities.QuranEntity
 import com.example.mushafconsolidated.Entities.VerbWazan
@@ -59,6 +58,7 @@ import com.example.mushafconsolidated.R
 import com.example.mushafconsolidated.Utils
 import com.example.utility.CorpusUtilityorig
 import com.example.utility.QuranGrammarApplication
+import com.previews.nonScaledSp
 
 import kotlinx.coroutines.launch
 import org.sj.conjugator.utilities.GatherAll
@@ -145,27 +145,32 @@ fun MatTab(
         // tab items
         tabItems = listOf(
             TabItems(
-
+                R.drawable.ic_web_home_24,
                 title = "Verb Conjugation Summary",
+
                 unselectedIcon = Icons.Outlined.Home,
                 selectedIcon = Icons.Filled.Home
             ),
             TabItems(
+                title1 = R.drawable.ic_baseline_construction_24,
                 title = "Verb Conjugation",
                 unselectedIcon = Icons.Outlined.Email,
                 selectedIcon = Icons.Filled.Email
             ),
             TabItems(
+                title1 = R.drawable.ic_web_home_24,
                 title = "Active/Passive Participles",
                 unselectedIcon = Icons.Outlined.FavoriteBorder,
                 selectedIcon = Icons.Filled.Favorite
             ),
             TabItems(
+                title1 = R.drawable.ic_web_home_24,
                 title = "Noun of Instruments",
                 unselectedIcon = Icons.Outlined.FavoriteBorder,
                 selectedIcon = Icons.Filled.Favorite
             ),
             TabItems(
+                title1 = R.drawable.baseline_place_24,
                 title = "Adverb of Place/time",
                 unselectedIcon = Icons.Outlined.FavoriteBorder,
                 selectedIcon = Icons.Filled.Favorite
@@ -176,16 +181,19 @@ fun MatTab(
          tabItems = listOf(
             TabItems(
 
+                title1 = R.drawable.ic_web_home_24,
                 title = "Verb Conjugation Summary",
                 unselectedIcon = Icons.Outlined.Home,
                 selectedIcon = Icons.Filled.Home
             ),
             TabItems(
+                title1 = R.drawable.ic_web_home_24,
                 title = "Verb Conjugation",
                 unselectedIcon = Icons.Outlined.Email,
                 selectedIcon = Icons.Filled.Email
             ),
             TabItems(
+                title1 = R.drawable.ic_web_home_24,
                 title = "Active/Passive Participles",
                 unselectedIcon = Icons.Outlined.FavoriteBorder,
                 selectedIcon = Icons.Filled.Favorite
@@ -368,8 +376,8 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-
+                    
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -378,7 +386,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -388,7 +396,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -412,7 +420,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -421,7 +429,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -431,7 +439,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -454,7 +462,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -463,7 +471,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -472,7 +480,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -494,7 +502,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -503,7 +511,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -512,7 +520,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -551,7 +559,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -575,7 +583,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -584,7 +592,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -593,7 +601,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -634,7 +642,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -659,7 +667,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -668,7 +676,7 @@ fun sagheerscreen() {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -677,7 +685,7 @@ fun sagheerscreen() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -735,7 +743,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -745,7 +753,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -755,50 +763,8 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
-                    fontFamily = indopak
-                )
-            }
-        }
-
-        Column {
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-
-
-                Text(
-                    text = "Check",
-                    fontWeight = FontWeight.Bold,
-                    ////color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = "Check",
-                    fontWeight = FontWeight.Bold,
-                    ////color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
-                    fontFamily = indopak
-                )
-                Text(
-                    text = "Check",
-
-                    fontWeight = FontWeight.Bold,
-                    ////color = Color.Black,
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
                     fontFamily = indopak
                 )
             }
@@ -821,7 +787,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -830,7 +796,40 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+
+                    fontWeight = FontWeight.Bold,
+                    ////color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
+                    fontFamily = indopak
+                )
+            }
+        }
+
+        Column {
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    ////color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -839,7 +838,16 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
+                    fontFamily = indopak
+                )
+                Text(
+                    text = "Check",
+                    fontWeight = FontWeight.Bold,
+                    ////color = Color.Black,
+
+                    textAlign = TextAlign.Center,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -861,7 +869,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -870,7 +878,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -879,7 +887,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -916,7 +924,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -940,7 +948,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -949,7 +957,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -958,7 +966,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1024,7 +1032,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1033,7 +1041,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1042,7 +1050,7 @@ fun sarfsagheers() {
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1130,7 +1138,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -1154,7 +1162,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1163,7 +1171,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1173,7 +1181,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1196,7 +1204,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1205,7 +1213,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1214,7 +1222,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1236,7 +1244,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1245,7 +1253,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1254,7 +1262,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1276,7 +1284,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1285,7 +1293,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1294,7 +1302,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1318,7 +1326,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1327,7 +1335,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1367,7 +1375,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1390,7 +1398,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1399,7 +1407,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1409,7 +1417,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1431,7 +1439,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1440,7 +1448,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1449,7 +1457,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1470,7 +1478,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1479,7 +1487,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1488,7 +1496,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1510,7 +1518,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1519,7 +1527,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1528,7 +1536,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1552,7 +1560,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1561,7 +1569,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1601,7 +1609,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1624,7 +1632,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1633,7 +1641,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1643,7 +1651,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1666,7 +1674,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1675,7 +1683,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1684,7 +1692,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1705,7 +1713,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1714,7 +1722,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1723,7 +1731,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1745,7 +1753,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1754,7 +1762,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1763,7 +1771,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1785,7 +1793,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1794,7 +1802,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1836,7 +1844,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1858,7 +1866,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1867,7 +1875,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1877,7 +1885,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1898,7 +1906,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1907,7 +1915,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1916,7 +1924,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1938,7 +1946,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1947,7 +1955,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     ////color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1956,7 +1964,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -1978,7 +1986,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1987,7 +1995,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -1996,7 +2004,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2021,7 +2029,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2030,7 +2038,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2070,7 +2078,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2092,7 +2100,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2101,7 +2109,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2110,7 +2118,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2132,7 +2140,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2141,7 +2149,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2150,7 +2158,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2189,7 +2197,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2210,7 +2218,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2219,7 +2227,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2228,7 +2236,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2250,7 +2258,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2259,7 +2267,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2268,7 +2276,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2279,6 +2287,7 @@ fun cscreen(madhimudhary: java.util.ArrayList<*>, amrandnahi: java.util.ArrayLis
 }
 
 data class TabItems(
+    val title1: Int,
     val title: String,
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector
@@ -2349,7 +2358,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -2373,7 +2382,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2382,7 +2391,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2392,7 +2401,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2416,7 +2425,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2425,7 +2434,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2434,7 +2443,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2456,7 +2465,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2465,7 +2474,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2474,7 +2483,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2516,7 +2525,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -2540,7 +2549,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2549,7 +2558,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2559,7 +2568,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2583,7 +2592,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2592,7 +2601,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2601,7 +2610,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2623,7 +2632,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2632,7 +2641,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2641,7 +2650,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2681,7 +2690,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -2705,7 +2714,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2714,7 +2723,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2724,7 +2733,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2748,7 +2757,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2757,7 +2766,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2766,7 +2775,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2788,7 +2797,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2797,7 +2806,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2806,7 +2815,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2848,7 +2857,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -2872,7 +2881,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2881,7 +2890,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2891,7 +2900,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2915,7 +2924,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2924,7 +2933,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2933,7 +2942,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -2955,7 +2964,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2964,7 +2973,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -2973,7 +2982,7 @@ fun participlescreen(faelmafool: java.util.ArrayList<*>) {
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3051,7 +3060,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -3075,7 +3084,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3084,7 +3093,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3094,7 +3103,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3103,7 +3112,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3127,7 +3136,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3136,7 +3145,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3145,7 +3154,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3154,7 +3163,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3176,7 +3185,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3185,7 +3194,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3194,7 +3203,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3203,7 +3212,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3245,7 +3254,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -3269,7 +3278,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3278,7 +3287,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3288,7 +3297,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3297,7 +3306,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3321,7 +3330,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3330,7 +3339,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3339,7 +3348,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3348,7 +3357,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3370,7 +3379,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3379,7 +3388,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3388,7 +3397,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3397,7 +3406,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3437,7 +3446,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -3461,7 +3470,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3470,7 +3479,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3480,7 +3489,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3489,7 +3498,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3513,7 +3522,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3522,7 +3531,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3531,7 +3540,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3540,7 +3549,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3562,7 +3571,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3571,7 +3580,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3580,7 +3589,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3589,7 +3598,7 @@ fun ismalascreen(mifalun: IsmAlaMifalun, mifalatun: IsmAlaMifalatun, mifaalun: I
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3670,7 +3679,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -3694,7 +3703,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3703,7 +3712,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3713,7 +3722,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3722,7 +3731,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3746,7 +3755,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3755,7 +3764,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3764,7 +3773,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3773,7 +3782,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3795,7 +3804,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3804,7 +3813,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3813,7 +3822,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3822,7 +3831,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3864,7 +3873,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -3888,7 +3897,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3897,7 +3906,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3907,7 +3916,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3916,7 +3925,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3940,7 +3949,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3949,7 +3958,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3958,7 +3967,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3967,7 +3976,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -3989,7 +3998,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -3998,7 +4007,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4007,7 +4016,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4016,7 +4025,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -4056,7 +4065,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
 
                     fontFamily = indopak
                 )
@@ -4080,7 +4089,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4089,7 +4098,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4099,7 +4108,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4108,7 +4117,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -4132,7 +4141,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4141,7 +4150,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4150,7 +4159,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4159,7 +4168,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }
@@ -4181,7 +4190,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4190,7 +4199,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4199,7 +4208,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
                 Text(
@@ -4208,7 +4217,7 @@ fun ismzarfscreen(mafilun: IsmZarfMafilun, zmafalatun: IsmZarfMafalatun, zmafalu
                     //color = Color.Black,
 
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp,
+                      fontSize = MaterialTheme.typography.bodyMedium.fontSize.nonScaledSp,
                     fontFamily = indopak
                 )
             }

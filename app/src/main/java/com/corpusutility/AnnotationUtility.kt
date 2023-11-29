@@ -6,7 +6,6 @@ import android.text.SpannableString
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.example.ComposeConstant
 import com.example.mushafconsolidated.Utils
 import com.example.utility.CorpusUtilityorig.Companion.dark
@@ -121,17 +120,21 @@ class AnnotationUtility(private var context: Context?) {
             tagthree: String,
             tagfour: String,
             tagfive: String,
-            araone: String,
-            aratwo:  String,
-            arathree: String,
-            arafour: String,
-            arafive: String,
-        ): AnnotatedString {
-            var arafive = arafive
-            var arafour = arafour
-            var arathree = arathree
-            var aratwo = aratwo
-            var araone = araone
+
+            expandtone: String,
+            expandttwo:  String,
+            expandtthree: String,
+            expandtfour: String,
+            expandtfive: String,
+
+
+
+            ): AnnotatedString {
+            var arafive = expandtfive
+            var arafour = expandtfour
+            var arathree = expandtthree
+            var aratwo = expandttwo
+            var araone = expandtone
             var str: SpannableString? = null
             var tagcounter = 0
             val b = tagone.isNotEmpty()
@@ -196,10 +199,10 @@ class AnnotationUtility(private var context: Context?) {
                     val charSequence = TextUtils.concat(strtwo, strone)
                     str = SpannableString(charSequence)*/
 
-                    val source = araone + aratwo
+                    val source =  aratwo+araone
                     // builder to attach metadata(link)
                     builder.append(source)
-                    val start = source.indexOf(araone)
+                    val start = source.indexOf(tagone)
                     val end = start + araone.length
 
                     val twostart = source.indexOf(aratwo)
@@ -235,7 +238,7 @@ class AnnotationUtility(private var context: Context?) {
                 }
                 3 -> {
                     spanhash[tagone]
-                    val source = araone + aratwo + arathree
+                    val source =  arathree+ aratwo+araone
                     // builder to attach metadata(link)
                     builder.append(source)
                     val start = source.indexOf(araone)
@@ -274,7 +277,7 @@ class AnnotationUtility(private var context: Context?) {
                 }
                 4 -> {
                     //  str = new SpannableString(arafour.trim() + arathree.trim() + aratwo.trim() + araone.trim());
-                    val source = araone + aratwo + arathree + arafour
+                    val source =arafour+arathree+ aratwo+araone
                     // builder to attach metadata(link)
                     builder.append(source)
                     val start = source.indexOf(araone)
@@ -317,7 +320,7 @@ class AnnotationUtility(private var context: Context?) {
 
                 }
                 5 -> {
-                    val source = araone + aratwo + arathree + arafour + arafive
+                    val source =arafive+arafour+arathree+ aratwo+araone
                     // builder to attach metadata(link)
                     builder.append(source)
                     val start = source.indexOf(araone)

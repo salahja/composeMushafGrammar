@@ -12,11 +12,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb6dd9d9-f759-41d9-88b6-b92b68f58893" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/previews/fonts.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/baseline_av_timer_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/baseline_place_24.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/audiomushaf/ShowMushafActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/audiomushaf/ShowMushafActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/appscreens/RootScreens.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/compose/TextChip.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/compose/TextChip.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/utility/CorpusUtilityorig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/viewmodels/ExpandableVerseViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,10 +76,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin File" />
-        <option value="Kotlin Class" />
         <option value="Class" />
         <option value="layoutResourceFile" />
         <option value="resourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -908,7 +913,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701173035160</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Initial commit">
+      <created>1701219075018</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1701219075018</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -965,7 +977,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>142</line>
+          <line>145</line>
           <option name="timeStamp" value="175" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1038,7 +1050,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/MaterialthreeTab.kt</url>
-          <line>285</line>
+          <line>293</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
@@ -1377,7 +1389,7 @@
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/appscreens/NewQuranVerseScreen.kt</url>
-          <line>182</line>
+          <line>185</line>
           <option name="timeStamp" value="579" />
         </line-breakpoint>
         <line-breakpoint type="kotlin-line">
