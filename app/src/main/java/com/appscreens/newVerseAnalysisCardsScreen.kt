@@ -58,6 +58,7 @@ import androidx.preference.PreferenceManager
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceIntSettingState
 import com.codelab.basics.ui.theme.cardCollapsedBackgroundColor
 import com.codelab.basics.ui.theme.cardExpandedBackgroundColor
+import com.codelab.basics.ui.theme.indopak
 import com.codelab.basics.ui.theme.qalam
 import com.example.mushafconsolidated.R
 import com.example.utility.QuranGrammarApplication
@@ -278,7 +279,7 @@ fun ExpandableVerseContent(
                         fontWeight = FontWeight.Light,
                         textDirection = TextDirection.ContentOrRtl,
                         textAlign = TextAlign.Center,
-                        fontFamily = qalam
+                     //   fontFamily = indopak
 
                     )
 

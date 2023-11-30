@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.activities.NavigationType
+import com.codelab.basics.ui.theme.indopak
 import com.corpusutility.AnnotationUtility
 import com.corpusutility.NounMorphologyDetails
 import com.example.compose.WordOccuranceLoading
@@ -219,7 +220,7 @@ fun NounGrid(
                 }, style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
+                    fontFamily = indopak
                 )
             )
 
@@ -247,7 +248,7 @@ fun NounGrid(
                 }, style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
+                    fontFamily = indopak
                 )
             )
 
@@ -262,7 +263,7 @@ fun NounGrid(
                 }, style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
+                    fontFamily = FontFamily.SansSerif
                 )
             )
 
@@ -286,7 +287,7 @@ fun NounGrid(
                 }, style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
+                    fontFamily = FontFamily.SansSerif
                 )
             )
 

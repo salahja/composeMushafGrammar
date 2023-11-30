@@ -469,53 +469,6 @@ fun  MainContent(
                //     QuranPageScreen(navController, id, myViewModel,darkThemePreference)
                 }
 
-                composable(Screen.Mushaf.route,
-                    //   composable("Mushaf/{id}",
-                    arguments = listOf(
-                        navArgument(name = "id") {
-                            type = NavType.IntType
-                            defaultValue = -1
-                        }
-                    )
-                ) { backStackEntry ->
-                    val id = backStackEntry.arguments!!.getInt("id")
-
-                    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-                //    val downloaderViewModel by viewModels<DownloaderViewModel>()
-                   //  val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
-                     val downloadModel: DownloaderViewModel = viewModel(factory = AudioDownloadFactory(9,darkThemePreference))
-                   // NewQuranPageScreen(navController, 4, myViewModel,darkThemePreference,downloadModel)
-
-
-
-                    val vmodel: VerseModel = viewModel(factory = newViewModelFactory(9,darkThemePreference))
-
-
-
-
-                    LineQuranPageScreens(navController, 9, vmodel,darkThemePreference,downloadModel)
-                }
-
-             //   composable(Screen.Mushaf.route,
-                      composable("play",
-                    arguments = listOf(
-                        navArgument(name = "id") {
-                            type = NavType.IntType
-                            defaultValue = -1
-                        }
-                    )
-                ) { backStackEntry ->
-                    val id = backStackEntry.arguments!!.getInt("id")
-
-                    val thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
-
-                    val myViewModel: QuranPagesModel = viewModel(factory = QuranVMFactory(4,darkThemePreference))
-
-                    AudioPlayer()
-
-                }
-
-
 
 
 
@@ -838,10 +791,14 @@ fun BottomNavBar(
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (screen.route == Screen.Home.route) Icons.Filled.Home else Icons.Filled.Favorite,
-                        contentDescription = null
+                        if (screen.route == Screen.Home.route) Icons.Filled.Home else Icons.Filled.Favorite,contentDescription = null
+
                     )
+
                 },
+
+
+
                 label = { Text(stringResource(screen.resourceId)) },
                 // it will use hierarchy to check if we have nested navigation,
                 // then for multiple routes it will check for all nested routes, suppose we are on nested route inside current route,
@@ -860,7 +817,6 @@ val items = listOf(
     Screen.Home,
     Screen.Profile,
     Screen.Settings,
-    Screen.Mushaf,
     Screen.Audio
 )
 

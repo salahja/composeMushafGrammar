@@ -364,7 +364,7 @@
 
     <string name="title_activity_compose">ComposeAct</string>
     <string name="title_activity_ajroomiya_detail_host">AjroomiyaDetailHostActivity</string>
-    <string name="app_name">QuranCorpus</string>
+    <string name="app_name">QuranGrammar</string>
     <string name="title_activity_quran_verb_root_detail_host">QuranVerbRootDetailHostActivity
     </string>
     <string name="title_quranverbroot_list">QuranVerbItems</string>
