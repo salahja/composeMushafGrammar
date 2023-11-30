@@ -119,14 +119,14 @@ fun TextChipWBW(
             vertical = 2.dp,
             horizontal = 4.dp
         )
-        /*          .border(
+              .border(
           width = 0.3.dp,
           color = if (isSelected) selectedColor else LightGray,
           shape = RectangleShape
-      )*/
+      )
         .background(
             color = if (isSelected) Transparent else Transparent,
-            shape = RectangleShape
+         //   shape = RectangleShape
         )
 
         .clip(shape = RectangleShape)
@@ -136,12 +136,15 @@ fun TextChipWBW(
         }
         .padding(4.dp)
   ) {
-/*
-    if (isSelected) {
-      cid = 0
-    }*/
-    (if (isSelected) White else White)?.let {
 
+
+    (if (isSelected) White else White)?.let {
+      if (isSelected && cid != 0 && aid != 0) {
+        Box {
+          WordAlertDialog(viewModel(), cid, aid, wid, navController)
+
+        }
+      }
       Text(
         text = text,
         //  color = it,

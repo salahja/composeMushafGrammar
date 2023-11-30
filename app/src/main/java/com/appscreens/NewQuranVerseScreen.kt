@@ -576,10 +576,10 @@ fun mysearchbar(
 
                                             showWordDetails.value = true
 
-                                           navController.navigate(
+                                        /*   navController.navigate(
                                                 "wordalert/$cid/$aid/$wid"
                                             )
-
+*/
                                         },
 
 
@@ -1447,6 +1447,274 @@ fun SingleItemCard(
     }
 }
 
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ReplySearchBar(
+    modifier: Modifier = Modifier,
+    searchText: String,
+    searchViewModel: QuranSearchViewModel
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(1.dp)
+            .background(MaterialTheme.colorScheme.background, CircleShape),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+    }
+}
+
+@Composable
+fun ReplyProfileImage(
+    drawableResource: Int,
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(40.dp)
+            .clip(CircleShape),
+        painter = painterResource(id = drawableResource),
+        contentDescription = description,
+    )
+}
+
+
+@Composable
+fun RightToLeftLayout(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        content()
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchScreen(
+    searchQuery: String,
+    searchResults: List<Movie>,
+    onSearchQueryChange: (String) -> Unit
+) {
+    SearchBar(
+        query = searchQuery,
+        onQueryChange = onSearchQueryChange,
+        onSearch = {},
+        placeholder = {
+            Text(text = "Search movies")
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = null
+            )
+        },
+        trailingIcon = {},
+        content = {},
+        active = true,
+        onActiveChange = {},
+        tonalElevation = 0.dp
+    )
+}
+
+@Composable
+fun TopSearchAppBar(
+    onSearchIconClicked: () -> Unit,
+
+    ) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(top = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Search",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            //  color = Color.White,
+            fontFamily = FontFamily.Cursive
+        )
+        Spacer(modifier = Modifier.weight(1f))
+
+        IconButton(onClick = onSearchIconClicked) {
+            Icon(
+                imageVector = Icons.Rounded.Search,
+                contentDescription = "Search Icon",
+                //   tint = Color.White,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun SearchAppBar(
+    searchText: String,
+    verseModel: VerseModel,
+    onCloseIconClicked: () -> Unit,
+    onInputValueChange: (String) -> Unit,
+    text: String,
+    onSearchClicked: () -> Unit
+) {
+    Row {
+        //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
+        val lightBlue = Color(0xffd8e6ff)
+        val blue = Color(0xff76a9ff)
+        TextField(
+            value = searchText, onValueChange = verseModel::onSearchTextChange,
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                //    .background(MaterialTheme.colorScheme.inversePrimary)
+                .padding(15.dp),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+
+            shape = RoundedCornerShape(48.dp),
+            placeholder = {
+                Text(
+                    text = "Search...",
+                    // fontFamily = cairoFont,
+                    //  color = Color.White.copy(alpha = ContentAlpha.medium)
+                )
+            },
+
+            leadingIcon = {
+                Icon(
+                    Icons.Filled.Search,
+                    contentDescription = "Localized description",
+                    Modifier.size(AssistChipDefaults.IconSize)
+                )
+            },
+            trailingIcon = {
+                androidx.compose.material.IconButton(
+                    onClick = {
+                        if (text.isNotEmpty()) {
+                            onInputValueChange("")
+                        } else {
+                            onCloseIconClicked()
+                        }
+                    }
+                ) {
+                    androidx.compose.material.Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Close Icon",
+                        tint = Color.Blue
+                    )
+                }
+            },
+
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = lightBlue,
+                cursorColor = Color.Black,
+                disabledLabelColor = lightBlue,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+
+            /*   colors = TextFieldDefaults.outlinedTextFieldColors(
+                   unfocusedBorderColor = Color.Red.copy(
+                       alpha = ContentAlpha.medium
+                   ),
+                   focusedBorderColor = Color.Red,
+                   cursorColor = Color.White,
+               ),
+   */
+            /*
+                          keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                  keyboardActions = KeyboardActions(
+                      onSearch = { onSearchClicked() }
+                  )*/
+
+        )
+
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+    }
+
+
+}
+
+
+@Composable
+fun Tooltips(utils: Utils) {
+    //  TooltipOnLongClickExample()
+    val openDialogCustom: MutableState<Boolean> = remember {
+        mutableStateOf(true)
+    }
+
+
+    val tooltipPopupProperties = PopupProperties(focusable = true)
+    val tooltipOffset = DpOffset(0.dp, 0.dp)
+    val corpusNounWord: ArrayList<NounCorpus?> =
+        utils.getQuranNouns(
+            cid,
+            aid,
+            wid
+        ) as ArrayList<NounCorpus?>
+    val verbCorpusRootWord: List<VerbCorpus?> =
+        utils.getQuranRoot(
+            cid,
+            aid,
+            wid
+
+
+        ) as List<VerbCorpus>
+
+    val qm =
+        refWordMorphologyDetails(
+            wordarray!![0].corpus!!,
+            corpusNounWord,
+            verbCorpusRootWord
+        )
+    val workBreakDown = qm.workBreakDown
+    Tooltips(
+        expanded = openDialogCustom,
+        modifier = Modifier,
+        2000L,
+        tooltipOffset,
+        tooltipPopupProperties
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth(),
+
+            ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Color.Red)
+            ) {
+
+
+                Text(
+                    text = workBreakDown.toString(),
+                    fontWeight = FontWeight.Bold,
+
+
+                    textAlign = TextAlign.Center,
+                    fontSize = 25.sp
+                )
+            }
+
+
+        }
+    }
+
+}
+
+
+/*
 @Composable
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun Display(
@@ -1504,7 +1772,8 @@ private fun Display(
 
     }
 }
-
+*/
+/*
 @Composable
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun extracted(
@@ -1897,266 +2166,4 @@ private fun extracted(
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ReplySearchBar(
-    modifier: Modifier = Modifier,
-    searchText: String,
-    searchViewModel: QuranSearchViewModel
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(1.dp)
-            .background(MaterialTheme.colorScheme.background, CircleShape),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-    }
-}
-
-@Composable
-fun ReplyProfileImage(
-    drawableResource: Int,
-    description: String,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        modifier = modifier
-            .size(40.dp)
-            .clip(CircleShape),
-        painter = painterResource(id = drawableResource),
-        contentDescription = description,
-    )
-}
-
-
-@Composable
-fun RightToLeftLayout(content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        content()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchScreen(
-    searchQuery: String,
-    searchResults: List<Movie>,
-    onSearchQueryChange: (String) -> Unit
-) {
-    SearchBar(
-        query = searchQuery,
-        onQueryChange = onSearchQueryChange,
-        onSearch = {},
-        placeholder = {
-            Text(text = "Search movies")
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = null
-            )
-        },
-        trailingIcon = {},
-        content = {},
-        active = true,
-        onActiveChange = {},
-        tonalElevation = 0.dp
-    )
-}
-
-@Composable
-fun TopSearchAppBar(
-    onSearchIconClicked: () -> Unit,
-
-    ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(top = 7.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Search",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            //  color = Color.White,
-            fontFamily = FontFamily.Cursive
-        )
-        Spacer(modifier = Modifier.weight(1f))
-
-        IconButton(onClick = onSearchIconClicked) {
-            Icon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = "Search Icon",
-                //   tint = Color.White,
-                modifier = Modifier.size(30.dp)
-            )
-        }
-    }
-}
-
-
-@Composable
-fun SearchAppBar(
-    searchText: String,
-    verseModel: VerseModel,
-    onCloseIconClicked: () -> Unit,
-    onInputValueChange: (String) -> Unit,
-    text: String,
-    onSearchClicked: () -> Unit
-) {
-    Row {
-        //   SearchAppBar(text = searchText, onTextChange = verseModel::onSearchTextChange, onCloseClicked = { }, onSearchClicked ={} )
-        val lightBlue = Color(0xffd8e6ff)
-        val blue = Color(0xff76a9ff)
-        TextField(
-            value = searchText, onValueChange = verseModel::onSearchTextChange,
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                //    .background(MaterialTheme.colorScheme.inversePrimary)
-                .padding(15.dp),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-
-            shape = RoundedCornerShape(48.dp),
-            placeholder = {
-                Text(
-                    text = "Search...",
-                    // fontFamily = cairoFont,
-                    //  color = Color.White.copy(alpha = ContentAlpha.medium)
-                )
-            },
-
-            leadingIcon = {
-                Icon(
-                    Icons.Filled.Search,
-                    contentDescription = "Localized description",
-                    Modifier.size(AssistChipDefaults.IconSize)
-                )
-            },
-            trailingIcon = {
-                androidx.compose.material.IconButton(
-                    onClick = {
-                        if (text.isNotEmpty()) {
-                            onInputValueChange("")
-                        } else {
-                            onCloseIconClicked()
-                        }
-                    }
-                ) {
-                    androidx.compose.material.Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = "Close Icon",
-                        tint = Color.Blue
-                    )
-                }
-            },
-
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = lightBlue,
-                cursorColor = Color.Black,
-                disabledLabelColor = lightBlue,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-
-            /*   colors = TextFieldDefaults.outlinedTextFieldColors(
-                   unfocusedBorderColor = Color.Red.copy(
-                       alpha = ContentAlpha.medium
-                   ),
-                   focusedBorderColor = Color.Red,
-                   cursorColor = Color.White,
-               ),
-   */
-            /*
-                          keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                  keyboardActions = KeyboardActions(
-                      onSearch = { onSearchClicked() }
-                  )*/
-
-        )
-
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-    }
-
-
-}
-
-
-@Composable
-fun Tooltips(utils: Utils) {
-    //  TooltipOnLongClickExample()
-    val openDialogCustom: MutableState<Boolean> = remember {
-        mutableStateOf(true)
-    }
-
-
-    val tooltipPopupProperties = PopupProperties(focusable = true)
-    val tooltipOffset = DpOffset(0.dp, 0.dp)
-    val corpusNounWord: ArrayList<NounCorpus?> =
-        utils.getQuranNouns(
-            cid,
-            aid,
-            wid
-        ) as ArrayList<NounCorpus?>
-    val verbCorpusRootWord: List<VerbCorpus?> =
-        utils.getQuranRoot(
-            cid,
-            aid,
-            wid
-
-
-        ) as List<VerbCorpus>
-
-    val qm =
-        refWordMorphologyDetails(
-            wordarray!![0].corpus!!,
-            corpusNounWord,
-            verbCorpusRootWord
-        )
-    val workBreakDown = qm.workBreakDown
-    Tooltips(
-        expanded = openDialogCustom,
-        modifier = Modifier,
-        2000L,
-        tooltipOffset,
-        tooltipPopupProperties
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth(),
-
-            ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.dp, Color.Red)
-            ) {
-
-
-                Text(
-                    text = workBreakDown.toString(),
-                    fontWeight = FontWeight.Bold,
-
-
-                    textAlign = TextAlign.Center,
-                    fontSize = 25.sp
-                )
-            }
-
-
-        }
-    }
-
-}
+ */
