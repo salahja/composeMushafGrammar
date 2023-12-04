@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -56,7 +55,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -67,7 +65,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -94,6 +91,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
@@ -117,6 +115,7 @@ import com.example.mushafconsolidated.model.NewQuranCorpusWbw
 import com.example.mushafconsolidated.quranrepo.QuranVIewModel
 import com.example.searchwidgetdemo.QuranSearchViewModel
 import com.example.utility.QuranGrammarApplication
+import com.modelfactory.newViewModelFactory
 import com.previews.nonScaledSp
 import com.viewmodels.ActorsScreenState
 import com.viewmodels.UserAction
@@ -125,7 +124,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
 import java.text.MessageFormat
 
 var quranbySurah: List<QuranEntity>? = null
@@ -161,10 +159,11 @@ fun NewQuranVerseScreen(
 
     ) {
 
+    val verseModel: VerseModel = viewModel(factory = newViewModelFactory(chapid,darkThemePreference))
 
-    var loading by remember { mutableStateOf(false) }
+    var loading = verseModel.loading.value
 
-    scopes = CoroutineScope(Dispatchers.Main)
+
 
     val thememode = darkThemePreference.value
 
@@ -174,16 +173,15 @@ fun NewQuranVerseScreen(
     val wbwchoice = rememberPreferenceIntSettingState(key = "wbwtranslation", defaultValue = 0)
     var newnewadapterlist = LinkedHashMap<Int, ArrayList<NewQuranCorpusWbw>>()
   //  showWordDetails.value = false
-    loading = verseModel.loading.value
     LoadingData(isDisplayed = loading)
     val cardss by verseModel.cards.collectAsStateWithLifecycle()
-    loading = verseModel.loading.value
-    LoadingData(isDisplayed = loading)
+
+
     //  val searchViewModel = viewModel<VerseModel>()
     val searchText by verseModel.searchText.collectAsState()
     val isSearching by verseModel.isSearching.collectAsState()
     val quranbySurahsearch by verseModel.quransentity.collectAsState()
-    val quranbySurahsearchs by verseModel.quransentity.collectAsStateWithLifecycle()
+   // val quranbySurahsearchs by verseModel.quransentity.collectAsStateWithLifecycle()
 
     //val cards by verseModel.cards.collectAsStateWithLifecycle()
     if (cardss.isNotEmpty()) {
@@ -206,7 +204,7 @@ fun NewQuranVerseScreen(
     preferencesManager.saveData("lastread", chapid.toString())
     data.value = chapid.toString()
 
-    LoadingData(isDisplayed = false)
+
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(3) }
 
@@ -229,7 +227,7 @@ fun NewQuranVerseScreen(
             listState!!.firstVisibleItemIndex > 0
         }
     }
-
+    LoadingData(isDisplayed = loading)
 
 
     Column {
@@ -251,7 +249,8 @@ fun NewQuranVerseScreen(
                     newnewadapterlist,
                     navController,
                     showwordbyword,
-                    showtranslation
+                    showtranslation,
+                    loading
                 )
 
 
@@ -385,6 +384,7 @@ fun mysearchbar(
     navController: NavHostController,
     showwordbyword: BooleanPreferenceSettingValueState,
     showtranslation: BooleanPreferenceSettingValueState,
+    loading: Boolean,
 
     ) {
     Column(
@@ -440,6 +440,7 @@ fun mysearchbar(
             }
         }
         thememode = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
+        LoadingData(isDisplayed = false)
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

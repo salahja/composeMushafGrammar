@@ -194,7 +194,7 @@ class CardsViewModel(
         verbroot: String,
         selectTranslation: IntPreferenceSettingValueState?
     ) {
-
+        val value = selectTranslation!!.value
         viewModelScope.launch {
             loading.value = true
             withContext(Dispatchers.Default) {
@@ -220,7 +220,7 @@ class CardsViewModel(
                     for (nounverse in verses) {
                         val nounverseBuilder = StringBuilder()
 
-                        NounVerseBuilder(nounverse, nounverseBuilder,  lists,selectTranslation!!.value)
+                        NounVerseBuilder(nounverse, nounverseBuilder,  lists,value)
                         val span = AnnotatedString(nounverseBuilder.toString())
                      //   val ref = AnnotatedString(sb.toString())
                         val builder = AnnotatedString.Builder()

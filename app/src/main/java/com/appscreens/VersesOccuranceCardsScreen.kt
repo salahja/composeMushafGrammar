@@ -77,8 +77,8 @@ fun CardsScreen(viewModel: CardsViewModel) {
     // val words by wordoccuranceModel.words.collectAsStateWithLifecycle()
     val cards by viewModel.roots.collectAsStateWithLifecycle()
     val expandedCardIds by viewModel.expandedCardIdsList.collectAsStateWithLifecycle()
-    val collectAsStateWithLifecycle = viewModel.roots.collectAsStateWithLifecycle()
-    val collectAsState = viewModel.roots.collectAsState()
+//    val collectAsStateWithLifecycle = viewModel.roots.collectAsStateWithLifecycle()
+ //   val collectAsState = viewModel.roots.collectAsState()
     val context = LocalContext.current
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     viewModel.open.value = true
@@ -93,7 +93,7 @@ fun CardsScreen(viewModel: CardsViewModel) {
 
     ) { paddingValues ->
         val copyProgress: MutableState<Float> = remember { mutableStateOf(0.0f) }
-        loading = viewModel.loading.value
+     //   loading = viewModel.loading.value
         WordOccuranceLoading(isDisplayed = loading)
         LazyColumn(Modifier.padding(paddingValues)) {
             items(cards, ExpandableCardModelSpannableLists::id) { card ->

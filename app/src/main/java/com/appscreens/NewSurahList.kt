@@ -6,6 +6,8 @@ import android.annotation.SuppressLint
 import android.content.res.TypedArray
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +34,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,12 +58,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,6 +75,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.alorma.compose.settings.storage.preferences.BooleanPreferenceSettingValueState
 import com.alorma.compose.settings.storage.preferences.rememberPreferenceBooleanSettingState
+import com.codelab.basics.ui.theme.indopak
 import com.example.justJava.MyTextViewZoom
 import com.example.mushafconsolidated.Entities.ChaptersAnaEntity
 import com.example.mushafconsolidated.R
@@ -235,6 +243,9 @@ fun VerbRootGridList(
 
     val img = imgs.getDrawable(surahModelList!!.chapterid.toInt() - 1)
 
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val backgroundColor = if (isPressed) Yellow else MaterialTheme.colorScheme.surfaceVariant
 
     val themestate = rememberPreferenceBooleanSettingState(key = "Dark", defaultValue = false)
     Card(
@@ -245,14 +256,20 @@ fun VerbRootGridList(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 16.dp
         ),
-
-
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor
+        ),
         modifier = Modifier
             .fillMaxWidth()
 
             .padding(
                 horizontal = 10.dp,
                 vertical = 8.dp
+            )
+            .clickable (
+                onClick = {            navController.navigate("verses/" + surahModelList!!.chapterid) },
+                interactionSource = interactionSource,
+                indication = rememberRipple(color = Green )
             )
 
     )
@@ -264,52 +281,44 @@ fun VerbRootGridList(
             modifier = Modifier.fillMaxSize()
         ) {
             indexval = surahModelList!!.chapterid
-            ClickableText(
+            Text(
                 text = AnnotatedString(surahModelList!!.chapterid.toString()),
-
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    //    navController.navigate(NavigationItem.Books.route)
-
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
 
 
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
+
+
+                textAlign = TextAlign.Center,
+                fontFamily = indopak,
+
+
 
 
             )
-            ClickableText(
+            Text(
                 text = AnnotatedString(surahModelList!!.namearabic.toString()),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
 
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    //   navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid.toString())
 
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
+
+
+                textAlign = TextAlign.Center,
+                fontFamily = indopak,
+
             )
 
-            ClickableText(
+            Text(
                 text = AnnotatedString(surahModelList!!.nameenglish.toString()),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
 
-                onClick = {
-                    Log.d(MyTextViewZoom.TAG, "mode=ZOOM")
-                    // navController.navigate(NavigationItem.Books.route)
-                    navController.navigate("verses/" + surahModelList!!.chapterid)
 
-                }, style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.Cursive
-                )
+
+
+                textAlign = TextAlign.Center,
+                fontFamily = indopak,
             )
 
             /*       Text(
